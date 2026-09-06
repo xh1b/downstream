@@ -11,7 +11,7 @@ PARAMS_DIR = Path(__file__).resolve().parent.parent / "params"
 
 
 def test_version_stamp():
-    assert load(PARAMS_DIR / "parameters.csv").version == "v1.5"
+    assert load(PARAMS_DIR / "parameters.csv").version == "v1.6"
 
 
 def test_nodes_registry_loads_with_known_units():
@@ -38,9 +38,12 @@ def test_baselines_mortality_and_earnings_verified_others_pending():
     assert d.status == "verified"
     assert d.value == 0.1045
     assert "P70-125" in d.citation and "1995-1999" in d.citation
-    for name in ("ipv_annual_incidence", "youth_crime_participation"):
-        assert baselines[name].status == "pending", name
-        assert baselines[name].value is None, name
+    iv = baselines["ipv_annual_incidence"]
+    assert iv.status == "verified"
+    assert iv.value == 0.0027
+    assert "2.7 per 1,000" in iv.citation
+    assert baselines["youth_crime_participation"].status == "pending"
+    assert baselines["youth_crime_participation"].value is None
 
 
 def test_bib_parses_and_carries_evidence_classes():

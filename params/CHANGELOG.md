@@ -4,6 +4,18 @@ Semantics: a new parameter-set version is REQUIRED whenever a value,
 band, tier, or sampling methodology changes. Old versions stay
 queryable in git; published outputs stamp the version they used.
 
+## v1.6 — fourth baseline pinned (2026-09-06)
+
+- `ipv_annual_incidence` flipped pending -> **verified**: 0.0027
+  victimizations per person-year (BJS Criminal Victimization 2024
+  bulletin, NCVS intimate-partner-violence rate 2.7 per 1,000 persons
+  age 12+, 2024; warehouse `bjs_ncvs_victimization`, 10 rows via the
+  new `bjs-ipv-download` verb). UNIT CORRECTION: the placeholder row
+  declared a per-household rate; the pinned semantics follow the
+  published per-person measure (documented in the row). No count
+  conversion consumes it yet.
+- One baseline remains pending: youth_crime_participation.
+
 ## v1.5 — third baseline pinned (2026-09-06)
 
 - `divorce_5y_cumulative` flipped pending -> **verified**: 0.1045
