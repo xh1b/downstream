@@ -104,6 +104,63 @@ def sobol_indices(
     }
 
 
+def sobol_ci(
+    params: ParameterSet,
+    compute: Callable[[ParameterSet], float],
+    nodes: dict,
+    base: int = 128,
+    seed: int = 1901,
+    replicates: int = 5,
+) -> dict:
+    """Sobol S_total with estimator-noise bands (seed-replicate spread).
+
+    Runs `sobol_indices` on consecutive seeds and reports, per link,
+    the mean and sample sd of S_total across designs. The sd is DESIGN
+    noise (how much the estimate moves under a fresh sample), not a
+    posterior on the true index. A ranking is stable when the top
+    links' means separate by more than their sds. Cheap: the model
+    evaluates in microseconds.
+    """
+    if replicates < 2:
+        raise ValueError(f"replicates must be >= 2, got {replicates}")
+    runs = [
+        sobol_indices(params, compute, nodes, base=base, seed=seed + r)
+        for r in range(replicates)
+    ]
+    links = [r["link"] for r in runs[0]["indices"]]
+    out = []
+    for link in links:
+        vals = []
+        for run in runs:
+            match = [i for i in run["indices"] if i["link"] == link]
+            if not match:
+                raise ValueError(f"link {link!r} vanished between replicates")
+            vals.append(match[0]["S_total"])
+        mean = sum(vals) / replicates
+        sd = (sum((v - mean) ** 2 for v in vals) / (replicates - 1)) ** 0.5
+        out.append(
+            {
+                "link": link,
+                "S_total_mean": round(mean, 4),
+                "S_total_sd": round(sd, 4),
+                "values": [round(v, 4) for v in vals],
+            }
+        )
+    out.sort(key=lambda r: -r["S_total_mean"])
+    return {
+        "base": base,
+        "seed": seed,
+        "replicates": replicates,
+        "model_evals": runs[0]["model_evals"] * replicates,
+        "indices": out,
+        "note": (
+            "sd is across independent sampling designs (design noise), "
+            "not a confidence interval on a true index. Use it to check "
+            "that a ranking separates by more than its noise."
+        ),
+    }
+
+
 def _dist_for_param(p, nodes: dict) -> str:
     from .distributions import dist_for
 

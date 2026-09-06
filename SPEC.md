@@ -191,7 +191,38 @@ the extraction queue by precision value. Model evals =
 base x (N+2); the model evaluates in microseconds, so base sizes of
 a few hundred are cheap and seeded for reproducibility.
 
-## 9. Scoring rules (how predictions get graded)
+## 8b. Knob experiments (how the model is explored)
+
+`knobs.py` is the experiment layer. Two tools, both fail-loud:
+
+- **`sweep`** — pin one parameter at each of a list of values (band
+  collapsed onto the value; the value must lie inside the parameter's
+  cited band — the experiment door does not widen the evidence) and
+  recompute the scenario. The table shows every modeled count plus the
+  blocked list at each value, with deltas against the first row.
+- **`value_of_information`** — narrow each parameter's band by a
+  factor toward its point, re-run the Monte Carlo on a paired seed,
+  and report the surviving output-band width. Ranked, this is the
+  extraction queue in OUTPUT units: which knob, turned next, removes
+  the most uncertainty. (For the grandchild line, halving the direct
+  child-earnings band removes ~40% of the p05-p95 width; the youth-
+  crime elasticity removes ~0 — it cannot reach that outcome.)
+- **`sobol_ci`** (sensitivity.py) — re-run the Saltelli estimator on
+  consecutive seeds and report the mean and sd of S_total across
+  designs. The sd is design noise, not a confidence interval on a
+  true index; it exists to check that a ranking separates by more
+  than its noise.
+
+Honesty rules, tested: every overridden parameter set carries a
+`-knob` version marker (one experiment is never a published set);
+unknown links and out-of-band pins raise; zero-width bands are
+reported, not crashed on.
+
+CLI: `downstream knobs --action sweep --link X --values a,b,c` and
+`downstream knobs --action voi --outcome grandchild`; `downstream
+sensitivity --ci N`. Shell note: link ids contain `->`, quote them.
+
+
 
 `scoring.py` implements the verification layer for V1/V3
 (gneiting2007): sample-based CRPS (hersbach2000), band coverage, and

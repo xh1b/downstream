@@ -22,7 +22,7 @@ from .citations import parse_bib
 from .explanation import explain_child_line
 from .ledger import LEVEL
 from .mc import simulate_chain
-from .params import default_dir, load_all
+from .params import ParameterSet, default_dir, load_all
 from .render import load_citations, render_text
 from .scenario import ScenarioInput, compute_counts
 from .sensitivity import sobol_indices
@@ -64,6 +64,21 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
     p.add_argument("--outcome", default="grandchild", choices=["grandchild", "child"])
     p.add_argument("--base", type=int, default=128)
+    p.add_argument("--seed", type=int, default=1901)
+    p.add_argument("--ci", type=int, default=None, metavar="REPS",
+                   help="report S_total with seed-replicate spread over REPS designs")
+
+    p = sub.add_parser("knobs", help="knob experiments (sweep a parameter / rank what is worth pinning)")
+    p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
+    p.add_argument("--action", required=True, choices=["sweep", "voi"])
+    p.add_argument("--link", default=None, help="knob link id (sweep)")
+    p.add_argument("--values", default=None, help="comma-separated knob values (sweep)")
+    p.add_argument("--workers", type=float, default=1000.0)
+    p.add_argument("--children", type=int, default=2)
+    p.add_argument("--exposure-years", type=float, default=20.0)
+    p.add_argument("--outcome", default="grandchild", choices=["grandchild", "child", "excess_deaths"])
+    p.add_argument("--shrink", type=float, default=0.5)
+    p.add_argument("--draws", type=int, default=2000)
     p.add_argument("--seed", type=int, default=1901)
 
     p = sub.add_parser("simulate", help="Monte Carlo over a link chain")
@@ -127,13 +142,69 @@ def main(argv: list[str] | None = None) -> int:
             "grandchild": lambda ps: child_line(ps)["grandchild"].point,
             "child": lambda ps: child_line(ps)["child"].point,
         }[args.outcome]
+        if args.ci:
+            from .sensitivity import sobol_ci
+
+            _dump(
+                sobol_ci(
+                    params,
+                    outcome_fn,
+                    parts["nodes"],
+                    base=args.base,
+                    seed=args.seed,
+                    replicates=args.ci,
+                )
+            )
+        else:
+            _dump(
+                sobol_indices(
+                    params,
+                    outcome_fn,
+                    parts["nodes"],
+                    base=args.base,
+                    seed=args.seed,
+                )
+            )
+        return 0
+
+    if args.cmd == "knobs":
+        from .knobs import sweep as knob_sweep
+        from .knobs import value_of_information
+        from .scenario import ScenarioInput
+
+        scenario = ScenarioInput(
+            displaced_workers=args.workers,
+            n_children=args.children,
+            exposure_years=args.exposure_years,
+            label="knob-sweep",
+        )
+        if args.action == "sweep":
+            if not args.link or not args.values:
+                print("knobs sweep needs --link and --values", file=sys.stderr)
+                return 2
+            values = [float(v) for v in args.values.split(",")]
+            _dump(knob_sweep(params, parts["baselines"], scenario, args.link, values))
+            return 0
+        # voi: rank which knob is worth narrowing next
+        if args.outcome == "excess_deaths":
+            def outcome_fn(ps: ParameterSet) -> float:
+                out = compute_counts(ps, parts["baselines"], scenario)
+                return out["modeled"]["excess_deaths"]["point"]
+        else:
+            from .children import child_line
+
+            outcome_fn = {
+                "grandchild": lambda ps: child_line(ps)["grandchild"].point,
+                "child": lambda ps: child_line(ps)["child"].point,
+            }[args.outcome]
         _dump(
-            sobol_indices(
+            value_of_information(
                 params,
                 outcome_fn,
                 parts["nodes"],
-                base=args.base,
+                draws=args.draws,
                 seed=args.seed,
+                shrink=args.shrink,
             )
         )
         return 0

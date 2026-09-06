@@ -6,6 +6,11 @@
 % source of truth wherever the two disagree.
 % Style: short active sentences. One term per concept. No number that
 % the parameter set does not state.
+%
+% OUTLINE STATUS: this file is the complete section plan. Sections
+% marked [FILLED] carry prose. Sections marked [FROM <source>] fill
+% mechanically from the named repo artifact. Nothing is hand-typed
+% twice; the parameter set is the only home of a number.
 \documentclass[10pt]{article}
 
 \usepackage[letterpaper, margin=1.05in]{geometry}
@@ -14,10 +19,11 @@
 \usepackage{microtype}
 \usepackage{amsmath, amssymb, amsthm}
 \usepackage{booktabs}
+\usepackage{graphicx}
 \usepackage{enumitem}
 \usepackage[colorlinks=true, citecolor=blue, urlcolor=blue, linkcolor=blue]{hyperref}
 
-\title{A Citation-Calibrated Dynamic Microsimulation of the\\
+\title{A Citation-Calibrated Microsimulation of the\\
 Downstream Consequences of Worker Displacement}
 \author{John Larue\\ \small xh1b.org}
 \date{September 2026}
@@ -26,28 +32,54 @@ Downstream Consequences of Worker Displacement}
 \maketitle
 
 \begin{abstract}
-We present \texttt{downstream}, an open-source dynamic microsimulation
-that propagates the measured consequences of worker displacement
-through families and communities across three generations. Every
-transition parameter carries its published study, its effect size,
-and an evidence precision tier. We validate the model by retrodiction
-against the measured outcomes of trade-shock commuting zones, by
-out-of-sample back-tests on independent natural experiments, and by a
-pre-registered prospective forecasting protocol with proper scoring
-rules. Calibration curves and misses are published with the model.
+[FILLED — revise after V1 lands. Current draft:]
+We present \texttt{downstream}, an open-source microsimulation that
+propagates the measured consequences of worker displacement through
+workers, children, families, and communities across three generations.
+Every transition parameter carries its published study, its effect
+size, and an evidence precision tier; the model refuses to compute
+what its citations do not license, and refuses to publish a number it
+cannot walk back to a study. Uncertainty is propagated by Latin
+Hypercube sampling in the correct space for each unit, decomposed by
+Sobol indices, and reduced by a value-of-information ranking that
+tells the bibliography where the next full-text extraction buys the
+most precision. We validate by retrodiction against measured outcomes
+of China-shock commuting zones, by out-of-sample back-tests on
+independent natural experiments, and by pre-registered prospective
+forecasts graded with proper scoring rules. Calibration curves and
+misses are published with the model.
 \end{abstract}
 
 \section{Introduction}
-% To write after the V1 retrodiction lands. The design doc
-% (MODEL_REPO_DESIGN.md, private repository) holds the full plan.
-Placeholder.
+% [FROM internal/research/displacement-downstream/MODEL_REPO_DESIGN.md
+%  motivation + PRIOR_ATTEMPTS.md] Write after V1 lands. Arc:
+%  1. Displacement is measured as a labor-supply event; its family and
+%     community consequences are measured in scattered literatures that
+%     never meet. No public instrument composes them.
+%  2. The composition problem is not estimation but custody: each step
+%     must carry its study, its unit, and its scope, or the product is
+%     numerology. The v0 failure (Moretti's level ratio multiplied
+%     through an earnings chain; IGE levels compounded 9x) motivates
+%     the typed ledger.
+%  3. Contribution list (one paragraph, five claims):
+%     (a) typed composition ledger with unit-decided application rules;
+%     (b) citation-calibrated parameter set with precision tiers;
+%     (c) honesty architecture — fail-loud baselines, published misses;
+%     (d) uncertainty machinery: LHS/log-space/Iman-Conover, Sobol,
+%         value-of-information queue ranking;
+%     (e) validation program V0-V3 with proper scoring rules.
+%  4. Close on the retrodiction result (or the honest miss).
 
 \section{Related work}
+% [FROM docs/PRIOR_ATTEMPTS.md — the four traditions and what this
+%  model takes and refuses from each; keep the refuses.]
 \subsection{Dynamic microsimulation}
-Orcutt (1957) founded microsimulation. DYNASIM, CORSIM, and MINT
-age synthetic populations for policy analysis. None couples causal
+Orcutt (1957) founded microsimulation. DYNASIM, CORSIM, and MINT age
+synthetic populations for policy analysis. None couples causal
 labor-economics parameters to a displacement exposure layer with
 public citations.
+% Add: the coupling direction. Those models forecast totals; this
+% model composes measured causal links. One paragraph, then stop.
 
 \subsection{Agent-based models}
 Sugarscape founded artificial societies. The COVID simulation episode
@@ -60,17 +92,94 @@ Fagiolo, Moneta and Windrum (2007) systematized agent-based model
 validation. We adopt proper scoring rules (Gneiting and Raftery
 2007) and pre-registration.
 
+\subsection{Meta-analysis and evidence synthesis}
+% NEW subsection. The model is a mechanistic meta-analysis: where
+% Cochrane-style synthesis pools effect sizes, we COMPOSE them under
+% unit constraints. Cite the survey entries the parameter set already
+% carries in references.bib.
+
 \section{Model}
-% The DAG, the parameters, the two computation modes. To write from
-% src/downstream and params/parameters.csv.
-Placeholder.
+% [FROM SPEC.md — nearly verbatim; SPEC is public by design]
+\subsection{Exposure and streams}
+% The four streams table (SPEC §1). What an exposure is. What is
+% deliberately not computed (individual claims; the immigration-crime
+% link refusal, SPEC §13 — the refusal is a result, print it).
+\subsection{Units and the typed ledger}
+% The unit table (SPEC §2) and the six step kinds (SPEC §4). The v0
+% bug classes as design constraints: level-ratio chaining (rejected by
+% audit), IGE level-compounding (rejected by gap arithmetic). One
+% worked line: the standard family, father shocked to 0.80, three
+% generations (SPEC §4 worked example).
+\subsection{The parameter set}
+% [FROM params/parameters.csv verbatim as a booktabs table — generated,
+% not hand-typed. Add a make target if needed.] Tiers per CITING.md.
+% The active-set table plus tier definition.
+\subsection{Count conversion}
+% Relative-to-absolute only against verified baselines (SPEC §6).
+% The five baselines with their sources and pin dates. The blocked
+% semantics: missing baseline = blocked outcome, never a guess.
+\subsection{Composition semantics we refuse}
+% Side-by-side parallel streams; no silent additivity; contested
+% literatures as named alternate bands, never averaged (SPEC §13).
 
-\section{Validation}
-% V1 retrodiction (China shock), V2 back-tests (NAFTA, auto crisis,
-% BRAC), V3 prospective scoring. To write as results land.
-Placeholder.
+\section{Uncertainty and sensitivity}
+% [FROM SPEC §7-8 + src/downstream/{mc,distributions,sensitivity,knobs}.py]
+\subsection{Sampling}
+% LHS; log-space for ratios; declared normals from SEs; Iman-Conover
+% rank correlation with an EMPTY declared matrix — correlations need
+% citations like everything else.
+\subsection{Sobol decomposition}
+% Saltelli estimator; S_first vs S_total; the child-line result:
+% the direct child-earnings band drives ~91\% of grandchild output
+% variance. Design noise via seed-replicate spread (sobol_ci).
+\subsection{Value of information}
+% NEW — the knobs layer. Narrowing a parameter's band by half removes
+% a computable share of the output band (paired seed). This ranks the
+% extraction queue in output units: the next full-text extraction is
+% the knob with the largest width reduction per unit effort. Show the
+% voi table for the grandchild outcome.
 
-\section{Data and code availability}
+\section{Validation program}
+% [FROM validate.py + scoring.py; results land per TODO plan #2/#6/#10]
+\subsection{V0 — internal consistency}
+% The direct child estimate must overlap the IGE-composed path.
+% Divergence means a literature is misread. Report the current overlap.
+\subsection{V1 — China-shock retrodiction}
+% THE credibility test. Exposure only, no tuning. ADH 2019 measured
+% CZ deltas (marriage, nonmarital fertility, child poverty, prime-age
+% mortality) as validation targets. Pass/miss table scored with
+% CRPS + band coverage + PIT. Misses publish. [Slot for the scorecard
+% table — fills when TODO plan \#2 lands.]
+\subsection{V2 — back-tests}
+% NAFTA, 2008-09 auto crisis, BRAC. Same protocol, one scorecard each.
+\subsection{V3 — pre-registered forecasts}
+% 2-3 forecastable exposure events; forecasts published before
+% outcomes exist; graded with the same scoring rules.
+
+\section{Knob experiments}
+% NEW — the experiment layer as a first-class methods contribution.
+% [FROM knobs.py + CLI transcripts]
+%  1. Sweeps: pin one parameter across its cited band; the scenario
+%     table shows local behavior. The sweep cannot leave the band.
+%  2. Value-of-information: which knob is worth turning (§5.3).
+%  3. Structural variants (planned): named alternate composition
+%     assumptions run as a declared ensemble; the spread publishes.
+% Framing: a model whose readers cannot turn its knobs is a black
+% box with footnotes. Every knob is declared, versioned (-knob
+% marker), and inside the evidence band.
+
+\section{Limitations}
+% [FROM SPEC §14 verbatim — registered, not hidden. Add: design-noise
+% vs true-index distinction for Sobol CIs; band-derived distributions
+% not yet study-fitted; empty correlation matrix.]
+
+\section{Reproducibility and availability}
+% Versioned parameter set; seeds recorded in every output; the
+% explanation contract (claim -> steps -> citations -> falsifiers);
+% the credits engine (81 studies, 166 researchers, computed not
+% asserted); MIT license; the repository IS the appendix.
+
+\section*{Data and code availability}
 The model, parameter set, and paper build from this repository. The
 exposure layer derives from public disclosure records.
 
