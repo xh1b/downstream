@@ -62,11 +62,11 @@ below 1.0 as the tell for that bug class.
 population_scope, notes`. `citation` holds semicolon-separated bib
 keys — free-text citations are not allowed anywhere.
 
-### Active parameter set v1.0
+### Active parameter set v1.1
 
 | Link | Value [band] | Tier | Source keys |
 |:---|:---|:---|:---|
-| displacement→worker_earnings | 0.80 [0.75, 0.83] | EXACT-abstract | jacobson1993; oreopoulos2008 |
+| displacement→worker_earnings | 0.80 [0.75, 0.85] | EXACT-abstract | jacobson1993; oreopoulos2008; davis2011 |
 | earnings_shock→mortality_sustained | 1.17 [1.15, 1.20] | EXACT-abstract | sullivan2009 |
 | earnings_shock→mortality_peak | 1.75 [1.50, 2.00] | EXACT-abstract | sullivan2009 |
 | displacement→divorce_hazard | 1.11 [1.05, 1.25] | canonical | rege2007; charles2004 |

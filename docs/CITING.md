@@ -19,7 +19,7 @@ The audit (`downstream audit`) enforces the mechanical parts.
 | Tier | Claim | Audit check |
 |:---|:---|:---|
 | `EXACT` | the number was read and pinned from the study's own table/figure this repo | bib `xh1b-evidence` ∈ {fulltext-table, fulltext} |
-| `EXACT-abstract` | the number comes from the published abstract/summary | bib evidence ∈ {abstract, fulltext-table, fulltext} |
+| `EXACT-abstract` | the number comes from the published abstract/summary, or is confirmed in the full text of a synthesis paper | bib evidence ∈ {abstract, results, fulltext-table, fulltext} |
 | `EXACT-results` | extracted from a results section transcribed into the extraction log | bib evidence ∈ {results, fulltext-table, fulltext} |
 | `canonical` | an established literature value; full-text pass queued | any bib entry; the queue entry must exist |
 

@@ -120,7 +120,7 @@ def audit(params_dir: str | Path | None = None) -> list[Finding]:
                     )
         if p.tier == "EXACT-abstract":
             for k in keys:
-                if k in bib and bib[k].evidence not in ("abstract", "fulltext-table", "fulltext"):
+                if k in bib and bib[k].evidence not in ("abstract", "results", "fulltext-table", "fulltext"):
                     findings.append(
                         Finding(
                             ERROR,

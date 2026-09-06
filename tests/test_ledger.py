@@ -13,13 +13,13 @@ PARAMS = Path(__file__).resolve().parent.parent / "params" / "parameters.csv"
 def test_loads_versioned_and_acyclic():
     params = load(PARAMS)
     assert params.parameters
-    assert params.version == "v1.0"
+    assert params.version == "v1.1"
     assert any(p.tier == "EXACT" for p in params.parameters)
 
 
 def test_level_step_multiplies_band():
     led = start("x", "gap_multiplier").apply(LEVEL, load(PARAMS).by_link("displacement->worker_earnings"))
-    assert (led.point, led.low, led.high) == (0.80, 0.75, 0.83)
+    assert (led.point, led.low, led.high) == (0.80, 0.75, 0.85)
 
 
 def test_gap_step_propagates_in_gap_space_not_level_space():

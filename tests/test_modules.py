@@ -16,7 +16,7 @@ PARAMS = Path(__file__).resolve().parent.parent / "params" / "parameters.csv"
 def test_worker_stream_jls_band_and_split_mortality():
     w = worker_outcomes(load(PARAMS))
     e = w["worker_earnings"]
-    assert (e.point, e.low, e.high) == (0.80, 0.75, 0.83)
+    assert (e.point, e.low, e.high) == (0.80, 0.75, 0.85)
     # sustained vs peak are SEPARATE outcomes, never conflated into one row
     assert w["mortality_sustained"].point == 1.17
     assert w["mortality_peak"].point == 1.75
