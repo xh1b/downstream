@@ -3,6 +3,11 @@
 A citation-calibrated microsimulation of the downstream consequences
 of worker displacement. Fully open source.
 
+Incorporates the findings of 81 peer-reviewed studies by 166
+researchers (1979-2023); its parameters rest directly on 19 studies
+by 43 research teams. The claim is computed from the bibliography —
+see CREDITS.md and `downstream credits` — never asserted.
+
 Every modeled effect traces to a published study. Every parameter
 carries its citation, its evidence precision tier, and its population
 scope. Missing inputs fail loudly. The model publishes its own misses.
@@ -12,7 +17,9 @@ scope. Missing inputs fail loudly. The model publishes its own misses.
 - `src/downstream/` — the DAG engine, typed ledger (level / gap / direct /
   rate / elasticity composition), modules, scenario aggregation, Monte
   Carlo, audit, validation
+- `CREDITS.md` — the computed collective: every researcher, every study, every DOI
 - `docs/CITING.md` — the binding citation and evidence-tier rules
+- `docs/ATTRIBUTION.md` — how credit is given and kept exact
 - `docs/QUEUED_EXTRACTIONS.md` — modeled links awaiting their number, with
   the exact extraction target named
 - `docs/PRIOR_ATTEMPTS.md` — the four prior modeling traditions and what

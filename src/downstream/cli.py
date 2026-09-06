@@ -83,6 +83,10 @@ def main(argv: list[str] | None = None) -> int:
     p = sub.add_parser("citations", help="citation coverage report")
     p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
 
+    p = sub.add_parser("credits", help="the computed collective behind the model")
+    p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
+    p.add_argument("--write", action="store_true", help="regenerate CREDITS.md")
+
     args = parser.parse_args(argv)
     parts = load_all(args.params)
     params = parts["params"]
@@ -184,6 +188,25 @@ def main(argv: list[str] | None = None) -> int:
                 "entries": rows,
             }
         )
+        return 0
+
+    if args.cmd == "credits":
+        from .credits import attribution_sentences, collect, write_credits_md
+        from pathlib import Path as _P
+
+        data = collect(parts["bib"], _P(args.params))
+        if args.write:
+            text = write_credits_md(data, _P(args.params).parent / "CREDITS.md")
+            print(text.splitlines()[2])
+            print("written: CREDITS.md")
+        else:
+            _dump(
+                {
+                    "attribution": attribution_sentences(data),
+                    "studies": data["bib_entries"],
+                    "researchers": len(data["researchers"]),
+                }
+            )
         return 0
 
     return 2
