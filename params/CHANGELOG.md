@@ -4,6 +4,17 @@ Semantics: a new parameter-set version is REQUIRED whenever a value,
 band, tier, or sampling methodology changes. Old versions stay
 queryable in git; published outputs stamp the version they used.
 
+## v1.3 — first baseline pinned (2026-09-06)
+
+- `all_cause_mortality_annual` flipped pending -> **verified**:
+  0.004944 deaths per person-year, US prime-age men 45-54
+  (CDC WONDER D76, Male 45-54 years, pooled 2015-2019 =
+  514,314 / 104,024,440 = 494.4 per 100k; pulled via the new
+  `wonder-mortality` warehouse verb, 528 rows 1999-2020).
+  Unlocks the excess-deaths count conversion in `scenario.py`.
+  The other four baselines stay pending (fail-loud gates hold).
+- No parameter bands or link values changed.
+
 ## v1.2 — uncertainty methodology upgrade (2026-09-06)
 
 - Monte Carlo switched from IID-uniform to **Latin Hypercube

@@ -15,7 +15,7 @@ PARAMS_DIR = Path(__file__).resolve().parent.parent / "params"
 def test_vignette_structure_and_honesty_markers():
     parts = load_all(PARAMS_DIR)
     out = standard_family(parts["params"])
-    assert out["parameter_set_version"] == "v1.2"
+    assert out["parameter_set_version"] == "v1.3"
     assert "never a deterministic claim" in out["vignette"]["framing"]
     assert out["children_stream"]["weakest_identified"] == "greatgrandchild"
     assert out["family_stream"]["daughter_violence_odds"]["blocked"]
@@ -52,13 +52,19 @@ def _fake_verified_baselines():
     }
 
 
-def test_scenario_blocked_loudly_on_pending_baselines():
+def test_scenario_mortality_computed_pending_still_blocked():
+    # v1.3 verified the mortality baseline, so excess_deaths converts on
+    # the REAL pinned value; pending baselines stay loudly blocked.
     parts = load_all(PARAMS_DIR)
     out = compute_counts(
         parts["params"], parts["baselines"], ScenarioInput(displaced_workers=100)
     )
+    assert "excess_deaths" in out["modeled"]
+    deaths = out["modeled"]["excess_deaths"]
+    # 100 workers x 0.004944 x 0.17 x 20y = 1.681 ; peak: 100 x 0.004944 x 0.75 = 0.371
+    assert deaths["point"] == pytest.approx(2.05, abs=1e-6)  # engine rounds to 2dp
+    assert deaths["baseline"]["value"] == 0.004944
     blocked = {b["outcome"] for b in out["blocked"]}
-    assert "excess_deaths" in blocked
     assert "child_lifetime_earnings_lost_usd" in blocked
     # service jobs need no baseline: computed
     assert out["modeled"]["local_service_jobs_lost"]["point"] == 500

@@ -1,0 +1,73 @@
+{
+  "label": "scenario",
+  "parameter_set_version": "v1.3",
+  "exposure": {
+    "displaced_workers": 1000.0,
+    "n_children": 2,
+    "tradable_share": 1.0,
+    "exposure_years": 20.0
+  },
+  "modeled": {
+    "local_service_jobs_lost": {
+      "outcome": "local_service_jobs_lost",
+      "unit": "jobs",
+      "point": 5000.0,
+      "low": 1600.0,
+      "high": 5000.0,
+      "citation": "moretti2010",
+      "tier": "canonical",
+      "population_scope": "US metros"
+    },
+    "excess_deaths": {
+      "point": 20.52,
+      "unit": "deaths",
+      "baseline": {
+        "value": 0.004944,
+        "citation": "cdc_wonder D76 (Underlying Cause of Death, 1999-2020), Male 45-54 years, pooled 2015-2019: 514314 deaths / 104024440 person-years = 494.4 per 100k; pulled 2026-09-06 via scraper.cli wonder-mortality into warehouse wonder_mortality",
+        "population": "US prime-age men (45-54)"
+      },
+      "components": {
+        "sustained_window_years": 20.0,
+        "peak_year_excess": 3.71
+      }
+    }
+  },
+  "blocked": [
+    {
+      "outcome": "child_lifetime_earnings_lost_usd",
+      "reason": "baseline 'median_male_lifetime_earnings' is status='pending'; pin a value + citation in params/baselines.csv before computing counts"
+    }
+  ],
+  "multipliers": {
+    "worker_earnings": {
+      "point": 0.8,
+      "low": 0.75,
+      "high": 0.85
+    },
+    "mortality_sustained": {
+      "point": 1.17,
+      "low": 1.15,
+      "high": 1.2
+    },
+    "mortality_peak": {
+      "point": 1.75,
+      "low": 1.5,
+      "high": 2.0
+    },
+    "child_earnings": {
+      "point": 0.91,
+      "low": 0.86,
+      "high": 0.96
+    },
+    "grandchild_earnings": {
+      "point": 0.9505,
+      "low": 0.916,
+      "high": 0.984
+    },
+    "greatgrandchild_earnings": {
+      "point": 0.9728,
+      "low": 0.9496,
+      "high": 0.9936
+    }
+  }
+}

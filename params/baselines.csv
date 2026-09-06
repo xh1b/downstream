@@ -1,5 +1,5 @@
 outcome,unit,population,value,citation,source,status,notes
-all_cause_mortality_annual,deaths_per_person_year,US prime-age men (45-54),,cdc_wonder,,pending,"Sullivan & von Wachter counterfactual mortality; pin from CDC WONDER table"
+all_cause_mortality_annual,deaths_per_person_year,US prime-age men (45-54),0.004944,"cdc_wonder D76 (Underlying Cause of Death, 1999-2020), Male 45-54 years, pooled 2015-2019: 514314 deaths / 104024440 person-years = 494.4 per 100k; pulled 2026-09-06 via scraper.cli wonder-mortality into warehouse wonder_mortality",cdc_wonder,verified,"Pre-pandemic window: excludes 2020 (COVID-distorted; 2020 crude rate 601.5/100k). Single-year 2019 = 490.0/100k. Ages 45-54 match the Sullivan & von Wachter prime-age counterfactual population"
 divorce_5y_cumulative,prob_per_marriage,US married couples 5y window,,us_census_sipp,,pending,"5-year divorce hazard; pin from Census/SIPP table"
 ipv_annual_incidence,prob_per_household_year,US households,,bps_2010,,pending,"pin from BJS Intimate Partner Violence table"
 youth_crime_participation,prob_per_youth_year,US young men 16-24,,bjs_arrests,,pending,"pin from BJS arrest tables by age"
