@@ -1,0 +1,10 @@
+link,from_node,to_node,point,low,high,tier,citation,population_scope,notes
+displacement->earnings,displacement_event,household_earnings,0.80,0.75,0.83,EXACT-abstract,"Jacobson, LaLonde & Sullivan 1993 AER 83:685; replicated in Oreopoulos et al. 2008 JLE 26:455",US high-tenure displaced men,fathers long-run earnings multiplier (replicated -17% 8y+)
+children_earnings->adult_earnings,displacement_event,child_adult_earnings,0.91,0.86,0.96,EXACT,"Oreopoulos, Page & Stevens 2008 JLE 26:455",Canada 39k father-son pairs firm closures,children of displaced fathers ~9% lower adult earnings
+child_adult_earnings->grandchild_earnings,child_adult_earnings,grandchild_earnings,0.55,0.40,0.60,canonical,"Solon 1992; Corak 2013; Chetty et al. 2014 QJE 129:1555",US IGE literature,IGE 0.4-0.6 applied to the child-level gap
+divorce->child_outcomes,household_divorce,child_adult_earnings,0.95,0.90,0.99,canonical,"Gruber 2004 JPE 112:1216",US divorce-law-reform cohorts,intergenerational divorce transmission + attainment
+family_size->per_child_outcome,family_size,child_adult_earnings,0.98,0.95,1.00,canonical,"Black, Devereux & Salvanes 2005 QJE 120:273",Norway admin,later birth order / larger families lower per-child education
+mortality->none,household_earnings_shock,excess_mortality,1.17,1.15,2.00,EXACT-abstract,"Sullivan & von Wachter 2009 QJE 124:1265",US high-seniority displaced men,sustained +15-20% (peak year +50-100%)
+ipv->adult_daughter_risk,household_ipv,daughter_adult_violence_odds,2.5,2.0,3.0,canonical,"Widom 1989 Science 244:160; Ehrensaft et al. 2003 JCCP 71:741",US prospective cohorts,cycle-of-violence transmission
+local_economy->service_jobs,displacement_event,local_service_jobs,0.80,0.75,0.85,canonical,"Moretti 2010 AER P&P 100:373",US metros,each high-wage job supports ~5 local service jobs; loss multiplier applied to displacement
+school_spending->child_outcomes,school_spending_per_pupil,child_adult_earnings,1.07,1.03,1.10,canonical,"Jackson, Johnson & Persico 2016 QJE 131:249",US school-finance reforms,+10% per-pupil for 12y -> ~+7% adult earnings

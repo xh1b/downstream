@@ -1,0 +1,77 @@
+% SPDX-License-Identifier: MIT
+% Copyright (c) 2026 John Larue
+%
+% downstream — the paper. The methods paper for the citation-calibrated
+% microsimulation; the design doc in the parent repository remains the
+% source of truth wherever the two disagree.
+% Style: short active sentences. One term per concept. No number that
+% the parameter set does not state.
+\documentclass[10pt]{article}
+
+\usepackage[letterpaper, margin=1.05in]{geometry}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage[colorlinks=true, citecolor=blue, urlcolor=blue, linkcolor=blue]{hyperref}
+
+\title{A Citation-Calibrated Dynamic Microsimulation of the\\
+Downstream Consequences of Worker Displacement}
+\author{John Larue\\ \small xh1b.org}
+\date{September 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We present \texttt{downstream}, an open-source dynamic microsimulation
+that propagates the measured consequences of worker displacement
+through families and communities across three generations. Every
+transition parameter carries its published study, its effect size,
+and an evidence precision tier. We validate the model by retrodiction
+against the measured outcomes of trade-shock commuting zones, by
+out-of-sample back-tests on independent natural experiments, and by a
+pre-registered prospective forecasting protocol with proper scoring
+rules. Calibration curves and misses are published with the model.
+\end{abstract}
+
+\section{Introduction}
+% To write after the V1 retrodiction lands. The design doc
+% (MODEL_REPO_DESIGN.md, private repository) holds the full plan.
+Placeholder.
+
+\section{Related work}
+\subsection{Dynamic microsimulation}
+Orcutt (1957) founded microsimulation. DYNASIM, CORSIM, and MINT
+age synthetic populations for policy analysis. None couples causal
+labor-economics parameters to a displacement exposure layer with
+public citations.
+
+\subsection{Agent-based models}
+Sugarscape founded artificial societies. The COVID simulation episode
+showed that unvalidated models driving policy are destroyed in
+public. Covasim showed the fix: open source, calibrated to data
+streams.
+
+\subsection{Validation}
+Fagiolo, Moneta and Windrum (2007) systematized agent-based model
+validation. We adopt proper scoring rules (Gneiting and Raftery
+2007) and pre-registration.
+
+\section{Model}
+% The DAG, the parameters, the two computation modes. To write from
+% src/downstream and params/parameters.csv.
+Placeholder.
+
+\section{Validation}
+% V1 retrodiction (China shock), V2 back-tests (NAFTA, auto crisis,
+% BRAC), V3 prospective scoring. To write as results land.
+Placeholder.
+
+\section{Data and code availability}
+The model, parameter set, and paper build from this repository. The
+exposure layer derives from public disclosure records.
+
+\end{document}
