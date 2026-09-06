@@ -134,11 +134,28 @@ validation. We adopt proper scoring rules (Gneiting and Raftery
 % variance. Design noise via seed-replicate spread (sobol_ci).
 \subsection{Exact moment propagation}
 % NEW — inference.py. Because every step is a product or affine in
-% each argument, E and E2 propagate in closed form under parameter
-% independence. State the three identities. Show the grandchild line:
-% exact mean 0.9550 vs MC 0.95499 (0.07 SE apart), sds equal to 4
-% decimals. The MC exists to price skewness; the normal-vs-MC
-% quantile gap publishes as non-Gaussianity, not error.
+% each argument, E, E2, and E3 propagate in closed form under
+% parameter independence (level: products; gap: bilinear identities —
+% state all three). Show the grandchild line: exact mean 0.9550 vs MC
+% 0.95499 (0.07 SE apart), sds equal to 4 decimals. Exact skewness
+% feeds Cornish-Fisher quantile corrections; CF reduces to normal at
+% zero skew, and on a skewed synthetic product chain it sits strictly
+% closer to the MC quantile (trap-pinned). The MC remains the
+% referee.
+
+\subsection{Correlation stress: pricing the independence assumption}
+% NEW — correlation_stress. The declared correlation matrix ships
+% EMPTY (no correlation is citable yet), so every band assumes
+% independence. Bound the exposure: induce Spearman rho among a block
+% via Iman-Conover, rebuild the band, redraw truths under the same
+% dependence, publish the width move. Key result to feature: on the
+% grandchild line at rho=+0.5 (direct child effect x IGE), the band
+% NARROWS 18% — the gap step couples opposite-sign gradients, so
+% independence is conservative against positive correlation of this
+% pair. Coverage stays nominal under declared dependence: machinery
+% tracks what it is told; only a citation makes dependence real.
+% This subsection is the answer to "what if your parameters are
+% correlated" before any correlation exists to cite.
 
 \subsection{Coverage: what a 90\% band earns its label}
 % NEW — the closure test. Frequentist protocol: truths redrawn from

@@ -56,29 +56,32 @@ Z90 = 1.6448536269514722
 # ---------------------------------------------------------------- moments
 
 
-def _uniform_moments(lo: float, hi: float) -> tuple[float, float]:
-    """(E[X], E[X²]) for X ~ Uniform(lo, hi)."""
+def _uniform_moments(lo: float, hi: float) -> tuple[float, float, float]:
+    """(E[X], E[X²], E[X³]) for X ~ Uniform(lo, hi)."""
     if hi == lo:
-        return lo, lo * lo
-    m = (lo + hi) / 2
-    m2 = (hi**3 - lo**3) / (3 * (hi - lo))
-    return m, m2
+        return lo, lo * lo, lo**3
+    w = hi - lo
+    m1 = (lo + hi) / 2
+    m2 = (hi**3 - lo**3) / (3 * w)
+    m3 = (hi**4 - lo**4) / (4 * w)
+    return m1, m2, m3
 
 
-def _loguniform_moments(lo: float, hi: float) -> tuple[float, float]:
-    """(E[X], E[X²]) for X log-uniform on [lo, hi], lo > 0."""
+def _loguniform_moments(lo: float, hi: float) -> tuple[float, float, float]:
+    """(E[X], E[X²], E[X³]) for X log-uniform on [lo, hi], lo > 0."""
     if lo <= 0:
         raise ValueError(f"log-uniform band requires positive bounds, got [{lo}, {hi}]")
     L = math.log(hi) - math.log(lo)
     if L == 0:
-        return lo, lo * lo
-    m = (hi - lo) / L
+        return lo, lo * lo, lo**3
+    m1 = (hi - lo) / L
     m2 = (hi * hi - lo * lo) / (2 * L)
-    return m, m2
+    m3 = (hi**3 - lo**3) / (3 * L)
+    return m1, m2, m3
 
 
-def param_moments(p: Parameter, node_unit: str | None) -> tuple[float, float]:
-    """First two raw moments of a parameter under its sampling dist."""
+def param_moments(p: Parameter, node_unit: str | None) -> tuple[float, float, float]:
+    """First three raw moments of a parameter under its sampling dist."""
     lo, hi = sorted((p.low, p.high))
     if dist_for(p, node_unit) == LOGUNIFORM:
         return _loguniform_moments(lo, hi)
@@ -95,29 +98,49 @@ def analytic_chain(
     nodes: dict,
     base: float = 1.0,
     base_m2: float | None = None,
+    base_m3: float | None = None,
 ) -> dict:
-    """Exact mean/variance of a composed chain, plus a normal band.
+    """Exact mean/variance/skewness of a composed chain + quantile bands.
 
-    `base`/`base_m2` seed the tracked quantity (default: a constant 1).
-    Returns per-step moments so the paper can show the algebra.
+    `base`/`base_m2`/`base_m3` seed the tracked quantity (default: a
+    constant 1). Third-moment identities (independent T, V):
+      level   E3' = E3[V]·E[T³]
+      direct  E3' = E[T³]
+      gap     V' = (1−T) + TV; with A = 1−T, B = TV:
+              E[A³]   = 1 − 3t₁ + 3t₂ − t₃
+              E[A²B]  = (t₁ − 2t₂ + t₃)·v₁
+              E[AB²]  = (t₂ − t₃)·v₂
+              E[B³]   = t₃·v₃
+              E3'     = E[A³] + 3E[A²B] + 3E[AB²] + E[B³]
+    Skewness γ₁ = E[(X−μ)³]/σ³ follows from the raw moments; the
+    Cornish–Fisher expansion turns it into better quantiles:
+    q_α ≈ μ + σ·(z_α + (z_α² − 1)·γ₁/6). For symmetric outputs
+    γ₁ = 0 and CF reduces exactly to the normal band.
     """
     if len(links) != len(kinds):
         raise ValueError("links and kinds must be the same length")
-    m1, m2 = float(base), float(base) if base_m2 is None else base_m2
+    m1 = float(base)
+    m2 = m1 * m1 if base_m2 is None else float(base_m2)
+    m3 = m1**3 if base_m3 is None else float(base_m3)
     steps = []
     for link, kind in zip(links, kinds):
         p = params.by_link(link)  # KeyError names a typo'd link
         node = nodes.get(p.to_node)
-        t1, t2 = param_moments(p, node.unit if node else None)
+        t1, t2, t3 = param_moments(p, node.unit if node else None)
         if kind == "level":
-            m1, m2 = m1 * t1, m2 * t2
+            m1, m2, m3 = m1 * t1, m2 * t2, m3 * t3
         elif kind == "direct":
-            m1, m2 = t1, t2
+            m1, m2, m3 = t1, t2, t3
         elif kind == "gap":
-            v1, v2 = m1, m2
-            e_t, e_t2 = t1, t2
-            m1 = 1 - e_t + e_t * v1
-            m2 = (1 - 2 * e_t + e_t2) + 2 * (e_t - e_t2) * v1 + e_t2 * v2
+            v1, v2, v3 = m1, m2, m3
+            m1 = 1 - t1 + t1 * v1
+            m2 = (1 - 2 * t1 + t2) + 2 * (t1 - t2) * v1 + t2 * v2
+            m3 = (
+                (1 - 3 * t1 + 3 * t2 - t3)
+                + 3 * (t1 - 2 * t2 + t3) * v1
+                + 3 * (t2 - t3) * v2
+                + t3 * v3
+            )
         elif kind == "rate":
             raise ValueError(
                 "rate ratios are recorded, never chained — apply them to a "
@@ -125,31 +148,55 @@ def analytic_chain(
             )
         else:
             raise ValueError(f"unknown composition kind {kind!r}")
-        steps.append({"link": link, "kind": kind, "E": m1, "E2": m2})
+        steps.append({"link": link, "kind": kind, "E": m1, "E2": m2, "E3": m3})
     var = m2 - m1 * m1
-    if var < 0 and var > -1e-12:
+    if -1e-12 < var < 0:
         var = 0.0
     if var < 0:
         raise ArithmeticError(
             f"negative variance {var} after chain — moment algebra violated"
         )
     sd = math.sqrt(var)
+    central3 = m3 - 3 * m1 * var - m1**3
+    skew = (central3 / sd**3) if sd > 0 else 0.0
+    if abs(skew) > 1e9:  # degenerate pinned chain noise
+        skew = 0.0
     return {
         "links": links,
         "kinds": kinds,
         "mean": m1,
         "var": var,
         "sd": sd,
+        "skewness": skew,
         "p05_normal": m1 - Z90 * sd,
         "p50_normal": m1,
         "p95_normal": m1 + Z90 * sd,
+        "p05_cf": _cornish_fisher(m1, sd, skew, 0.05),
+        "p95_cf": _cornish_fisher(m1, sd, skew, 0.95),
         "steps": steps,
         "note": (
-            "Exact two-moment propagation under parameter independence; "
-            "quantiles are a normal approximation to the true shape. The "
-            "MC exists to price the skewness this misses."
+            "Exact three-moment propagation under parameter independence. "
+            "Quantiles twice: normal, and Cornish-Fisher corrected for the "
+            "exact skewness. CF reduces to normal when skewness is zero. "
+            "The MC remains the referee: CF that drifts from MC quantiles "
+            "is rejected, not excused."
         ),
     }
+
+
+def _cornish_fisher(mean: float, sd: float, skew: float, alpha: float) -> float:
+    """Cornish-Fisher quantile at `alpha` (order-1 in skewness)."""
+    z = _z_alpha(alpha)
+    return mean + sd * (z + (z * z - 1) * skew / 6)
+
+
+def _z_alpha(alpha: float) -> float:
+    """Standard normal quantile via Acklam probit (same approx as sampler)."""
+    if not 0.0 < alpha < 1.0:
+        raise ValueError(f"alpha must be in (0,1), got {alpha}")
+    from .distributions import _probit
+
+    return _probit(alpha)
 
 
 # --------------------------------------------------------- variance shares
@@ -338,6 +385,114 @@ def closure_coverage(
             "Coverage of MC bands over truths redrawn from the declared "
             "bands. Machinery self-test only — the economics is tested by "
             "V1 retrodiction, not here."
+        ),
+    }
+
+
+def _stress_matrix(n: int, block: list[int], rho: float) -> list[list[float]]:
+    """Identity Spearman matrix with one equicorrelated `block` at `rho`.
+
+    PSD requires rho > -1/(len(block)-1) for the block; violations are
+    refused HERE, at construction, not deep inside the Cholesky.
+    """
+    if len(block) > 1 and rho <= -1.0 / (len(block) - 1):
+        raise ValueError(
+            f"equicorrelation {rho} over {len(block)} links is not "
+            f"positive semi-definite (need rho > {-1.0 / (len(block) - 1):.3f})"
+        )
+    m = [[1.0 if i == j else 0.0 for j in range(n)] for i in range(n)]
+    for i in block:
+        for j in block:
+            if i != j:
+                m[i][j] = rho
+    return m
+
+
+def correlation_stress(
+    params: ParameterSet,
+    compute: Callable[[ParameterSet], float],
+    nodes: dict,
+    block_links: list[str],
+    rho: float,
+    draws: int = 5_000,
+    trials: int = 600,
+    level: float = 0.90,
+    seed: int = 1901,
+) -> dict:
+    """How much does the independence assumption cost?
+
+    The declared correlation matrix ships EMPTY (SPEC §7): no
+    correlation is citable yet, so every published band assumes
+    parameter independence. This stress test bounds the exposure to
+    that assumption BEFORE a citation exists:
+
+    - induce Spearman rank correlation `rho` among `block_links`
+      (Iman-Conover; marginals preserved exactly);
+    - build the 90% band under the correlation;
+    - redraw truths under the SAME correlation;
+    - report band width vs the independent case and the empirical
+      coverage of the correlated band for correlated truths.
+
+    Interpretation: coverage should stay ~nominal (the machinery
+    tracks whatever dependence it is told); the story is the WIDTH
+    move — the sign and size tell an attacker exactly what an
+    unmodeled correlation would buy. For gap-space chains the sign is
+    NOT the naive one: the IGE step couples gradients of OPPOSITE
+    sign, so positive correlation can NARROW the band. The number
+    publishes either way.
+    """
+    rows = list(params.parameters)
+    idx = {p.link: i for i, p in enumerate(rows)}
+    unknown = [l for l in block_links if l not in idx]
+    if unknown:
+        raise KeyError(f"unknown links in stress block: {unknown}")
+    block = [idx[l] for l in block_links]
+    spearman = _stress_matrix(len(rows), block, rho)
+
+    def correlated_samples(n: int, sd_seed: int, with_stress: bool) -> list[float]:
+        dp = plan(params, nodes, n, sd_seed, spearman=spearman if with_stress else None)
+        out = []
+        for k in range(n):
+            ps = params
+            for j, p in enumerate(rows):
+                lo, hi = sorted((p.low, p.high))
+                v = sample_unit_interval(dp.dists[j], dp.u[k][j], lo, hi)
+                ps = ps.with_param(p.link, v)
+            out.append(compute(ps))
+        return out
+
+    base_samples = correlated_samples(draws, seed + 2, with_stress=False)
+    base_lo, base_hi = _normal_quantile_band(base_samples[:], level)
+    width_ind = base_hi - base_lo
+
+    stressed = correlated_samples(draws, seed + 3, with_stress=True)
+    s_lo, s_hi = _normal_quantile_band(stressed[:], level)
+    width_rho = s_hi - s_lo
+
+    truths = correlated_samples(trials, seed + 4, with_stress=True)
+    covered = sum(1 for t in truths if s_lo <= t <= s_hi)
+    se = math.sqrt(level * (1 - level) / trials)
+    return {
+        "experiment": "correlation_stress",
+        "rho": rho,
+        "block": block_links,
+        "level": level,
+        "band_independent": {"lo": round(base_lo, 6), "hi": round(base_hi, 6),
+                              "width": round(width_ind, 6)},
+        "band_stressed": {"lo": round(s_lo, 6), "hi": round(s_hi, 6),
+                           "width": round(width_rho, 6)},
+        "width_change": round(width_rho / width_ind - 1, 4) if width_ind > 0 else 0.0,
+        "coverage_of_stressed_band": round(covered / trials, 4),
+        "coverage_binomial_se": round(se, 4),
+        "draws": draws,
+        "trials": trials,
+        "seed": seed,
+        "note": (
+            "Iman-Conover rank correlation among the block links only; "
+            "marginals unchanged. Width move is the published exposure to "
+            "the independence assumption. Coverage staying nominal shows "
+            "the machinery tracks declared dependence; it is NOT evidence "
+            "the correlation is real — that needs a citation."
         ),
     }
 

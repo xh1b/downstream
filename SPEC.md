@@ -203,6 +203,32 @@ module docstring). Three uses:
    Xi for gap/direct steps — the level-ratio bug in analytic
    disguise).
 
+**Third moments and Cornish–Fisher bands.** The chain propagates
+E, E², E³ exactly (level: products; gap: the bilinear identity in
+`analytic_chain`'s docstring). Skewness γ₁ follows from raw moments;
+the Cornish–Fisher expansion turns it into quantile corrections
+`q_α ≈ μ + σ(z_α + (z_α²−1)γ₁/6)` that reduce exactly to the normal
+band at γ₁ = 0. On a deliberately skewed two-step log-uniform product
+chain, CF sits strictly closer to the MC quantile than the normal
+band (trap-pinned) — the correction does work, and the MC remains
+the referee.
+
+**Correlation stress** (`correlation_stress`) — the bound on the
+independence assumption. The declared correlation matrix ships EMPTY;
+until a correlation is citable, every band assumes independence. The
+stress test induces Spearman ρ among a chosen block via Iman-Conover
+(marginals preserved; PSD violations refused at construction),
+rebuilds the band, redraws truths under the SAME dependence, and
+publishes the width move. Measured on the grandchild line at ρ = +0.5
+between the direct child effect and IGE transmission: the band
+NARROWS 18% — the gap step couples gradients of opposite sign
+(∂g'/∂g = t > 0, ∂g'/∂t = −(1−g) < 0), so positive correlation is
+cancellative. The independence assumption is therefore conservative
+against positive correlation of this pair, and the number publishes
+either way. Coverage stays nominal under declared dependence: the
+machinery tracks whatever it is told; only a citation can make the
+dependence real.
+
 **Coverage closure test** (`closure_coverage`) — what "a 90% band"
 means here and how it is earned: draw truths from the declared bands,
 build the MC band from an independent sample, and count coverage. On

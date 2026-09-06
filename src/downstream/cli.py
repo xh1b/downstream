@@ -95,7 +95,9 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--kinds", default=None, help="comma-separated: level|gap|direct per link")
     p.add_argument("--outcome", default=None, choices=["grandchild", "child"],
                    help="built-in child-line chains instead of --links")
-    p.add_argument("--action", default="chain", choices=["chain", "shares", "closure", "agree"])
+    p.add_argument("--action", default="chain", choices=["chain", "shares", "closure", "agree", "stress"])
+    p.add_argument("--rho", type=float, default=0.3, help="stress correlation (stress action)")
+    p.add_argument("--stress-links", default=None, help="comma-separated block to correlate (stress)")
     p.add_argument("--draws", type=int, default=20000)
     p.add_argument("--trials", type=int, default=400)
     p.add_argument("--seed", type=int, default=1901)
@@ -270,6 +272,26 @@ def main(argv: list[str] | None = None) -> int:
                 closure_coverage(
                     params, outcome_fn, parts["nodes"],
                     trials=args.trials, draws=min(args.draws, 5000), seed=args.seed,
+                )
+            )
+        elif args.action == "stress":
+            from .inference import correlation_stress
+
+            if not args.stress_links:
+                print("stress needs --stress-links", file=sys.stderr)
+                return 2
+            block = [l for l in args.stress_links.split(",") if l]
+
+            def outcome_fn(ps: ParameterSet) -> float:
+                from .ledger import chain as lchain
+
+                return lchain(ps, links, label="x", unit="gap_multiplier", kinds=kinds).point
+
+            _dump(
+                correlation_stress(
+                    params, outcome_fn, parts["nodes"], block,
+                    rho=args.rho, draws=min(args.draws, 5000),
+                    trials=args.trials, seed=args.seed,
                 )
             )
         else:  # agree

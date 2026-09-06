@@ -17,14 +17,17 @@ import pytest
 
 from downstream.children import CHILD_DIRECT, GRANDCHILD, child_line
 from downstream.inference import (
+    _cornish_fisher,
     _loguniform_moments,
+    _stress_matrix,
     _uniform_moments,
     analytic_chain,
     analytic_vs_mc,
     closure_coverage,
+    correlation_stress,
     logspace_variance_shares,
 )
-from downstream.params import load_all
+from downstream.params import Parameter, ParameterSet, load_all
 
 PARTS = load_all()
 PARAMS = PARTS["params"]
@@ -38,17 +41,18 @@ def _grandchild(ps):
 # --- trap: moment algebra silently wrong ------------------------------------
 
 def test_uniform_moments_hand_computed():
-    # U(0,1): E=0.5, E2=1/3
-    assert _uniform_moments(0.0, 1.0) == pytest.approx((0.5, 1 / 3))
-    # U(1,3): E=2, E2=(27-1)/(3*2)=13/3
-    assert _uniform_moments(1.0, 3.0) == pytest.approx((2.0, 13 / 3))
+    # U(0,1): E=0.5, E2=1/3, E3=1/4
+    assert _uniform_moments(0.0, 1.0) == pytest.approx((0.5, 1 / 3, 1 / 4))
+    # U(1,3): E=2, E2=(27-1)/(3*2)=13/3, E3=(81-1)/(4*2)=10
+    assert _uniform_moments(1.0, 3.0) == pytest.approx((2.0, 13 / 3, 10.0))
 
 
 def test_loguniform_moments_hand_computed():
-    # log-uniform on [1, e]: E = (e-1)/1, E2 = (e^2-1)/2
-    m, m2 = _loguniform_moments(1.0, math.e)
+    # log-uniform on [1, e]: E = (e-1)/1, E2 = (e^2-1)/2, E3 = (e^3-1)/3
+    m, m2, m3 = _loguniform_moments(1.0, math.e)
     assert m == pytest.approx(math.e - 1)
     assert m2 == pytest.approx((math.e**2 - 1) / 2)
+    assert m3 == pytest.approx((math.e**3 - 1) / 3)
 
 
 def test_gap_moments_match_direct_simulation_of_bilinear():
@@ -179,3 +183,129 @@ def test_analytic_chain_rejects_rate_kind():
 def test_unknown_link_names_the_typo():
     with pytest.raises(KeyError, match="no_such_link"):
         analytic_chain(PARAMS, ["no_such_link"], ["level"], NODES)
+
+
+# ===========================================================================
+# Round 2: third moments, Cornish-Fisher, correlation stress
+# ===========================================================================
+
+
+def _synthetic(levels: list[tuple[float, float, float]], unit: str = "rate_ratio") -> tuple[ParameterSet, dict]:
+    """A synthetic parameter set + node registry for math traps."""
+    rows, nodes = [], {}
+    for i, (lo, hi, pt) in enumerate(levels):
+        link = f"n{i}->n{i+1}"
+        rows.append(
+            Parameter(link=link, from_node=f"n{i}", to_node=f"n{i+1}",
+                      point=pt, low=lo, high=hi, tier="canonical",
+                      citation="synthetic", population_scope="test")
+        )
+        nodes[f"n{i+1}"] = type("N", (), {"name": f"n{i+1}", "unit": unit, "description": ""})()
+    return ParameterSet(version="t", parameters=tuple(rows)), nodes
+
+
+# --- trap: third-moment algebra silently wrong --------------------------------
+
+def test_loguniform_third_moment_hand_computed():
+    m1, m2, m3 = _loguniform_moments(1.0, math.e)
+    assert m3 == pytest.approx((math.e**3 - 1) / 3)
+
+
+def test_gap_third_moment_matches_brute_force():
+    out = analytic_chain(
+        PARAMS, [CHILD_DIRECT, GRANDCHILD], ["direct", "gap"], NODES
+    )
+    n = 300
+    s3 = 0.0
+    for i in range(n):
+        g = 0.86 + (0.96 - 0.86) * (i + 0.5) / n
+        for j in range(n):
+            t = 0.40 + (0.60 - 0.40) * (j + 0.5) / n
+            s3 += (1 - t * (1 - g)) ** 3
+    m3 = s3 / n**2
+    assert out["steps"][-1]["E3"] == pytest.approx(m3, abs=1e-6)
+
+
+# --- trap: Cornish-Fisher that is normal in disguise or off-target ------------
+
+def test_cf_reduces_to_normal_at_zero_skew():
+    # a single direct uniform step is symmetric: skewness exactly 0
+    out = analytic_chain(PARAMS, [CHILD_DIRECT], ["direct"], NODES)
+    assert out["skewness"] == pytest.approx(0.0, abs=1e-9)
+    assert out["p05_cf"] == pytest.approx(out["p05_normal"], abs=1e-9)
+    assert out["p95_cf"] == pytest.approx(out["p95_normal"], abs=1e-9)
+
+
+def test_cf_beats_normal_on_skewed_product_chain():
+    # two wide log-uniform multiplicative steps: strongly right-skewed.
+    # The CF band must sit strictly closer to the MC quantile than the
+    # normal band does, or the skewness algebra is wrong.
+    ps, nodes = _synthetic([(0.5, 2.0, 1.0), (0.5, 2.0, 1.0)], unit="rate_ratio")
+    links = ["n0->n1", "n1->n2"]
+    out = analytic_chain(ps, links, ["level", "level"], nodes)
+    assert out["skewness"] > 0.5  # it IS skewed; a zero here means a bug
+    from downstream.inference import _draw_samples
+
+    samples = sorted(_draw_samples(ps, lambda p: p.by_link(links[0]).point * p.by_link(links[1]).point,
+                                   nodes, 40_000, 99))
+    mc95 = samples[int(0.95 * (len(samples) - 1))]
+    err_cf = abs(out["p95_cf"] - mc95)
+    err_norm = abs(out["p95_normal"] - mc95)
+    assert err_cf < err_norm, (
+        f"CF no better than normal on a skewed chain: err_cf={err_cf}, "
+        f"err_norm={err_norm}, skew={out['skewness']}"
+    )
+
+
+def test_cornish_fisher_symmetric_tail_shifts():
+    # skewness shifts both tails by the SAME additive amount: the CF
+    # correction term (z^2-1)*g/6 is even in z. The band stays the
+    # normal WIDTH, translated — that is the order-1 CF behavior.
+    m, sd, skew = 1.0, 0.2, 0.4
+    from downstream.inference import _z_alpha
+
+    for a in (0.05, 0.95):
+        q = _cornish_fisher(m, sd, skew, a)
+        shift = (q - m) / sd - _z_alpha(a)
+        assert shift == pytest.approx((_z_alpha(a) ** 2 - 1) * skew / 6)
+
+
+# --- trap: correlation stress that compares two identical runs ----------------
+
+def test_stress_rho_zero_changes_nothing():
+    # rho=0 means identity matrix: stressed == independent up to
+    # sampling noise. A big "width change" at rho=0 means the baseline
+    # was accidentally stressed too (the exact bug fixed 2026-09-07).
+    out = correlation_stress(
+        PARAMS, _grandchild, NODES,
+        block_links=[CHILD_DIRECT, GRANDCHILD], rho=0.0,
+        draws=4000, trials=300, seed=13,
+    )
+    assert abs(out["width_change"]) < 0.05
+
+
+def test_stress_positive_rho_narrows_gap_chain():
+    # the gap step couples opposite-sign gradients: positive correlation
+    # between direct child effect and IGE transmission NARROWS the band.
+    # If the tool reports widening, the sign of the coupling is wrong.
+    out = correlation_stress(
+        PARAMS, _grandchild, NODES,
+        block_links=[CHILD_DIRECT, GRANDCHILD], rho=0.5,
+        draws=4000, trials=400, seed=13,
+    )
+    assert out["width_change"] < -0.05, f"expected narrowing, got {out['width_change']}"
+    assert abs(out["coverage_of_stressed_band"] - 0.9) < 2 * out["coverage_binomial_se"]
+
+
+def test_stress_unknown_link_fails():
+    with pytest.raises(KeyError, match="unknown links"):
+        correlation_stress(
+            PARAMS, _grandchild, NODES, block_links=["nope"], rho=0.3,
+            draws=100, trials=10,
+        )
+
+
+def test_stress_matrix_rejects_non_psd():
+    # equicorrelation of -0.9 over three links is not PSD
+    with pytest.raises(ValueError):
+        _stress_matrix(5, [0, 1, 2], -0.9)
