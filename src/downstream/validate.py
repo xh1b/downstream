@@ -125,9 +125,101 @@ def v1_backtest_spec() -> dict:
     }
 
 
+
+
+def _load_csv(name: str) -> list[dict]:
+    path = VALIDATION_DIR / name
+    with open(path, newline="", encoding="utf-8") as f:
+        return list(csv.DictReader(line for line in f if not line.startswith("#")))
+
+
+def v1_retrodict(params: ParameterSet) -> dict:
+    """The V1 unit-level retrodiction scorecard: model vs ADH measured.
+
+    Protocol (no tuning, exposure only):
+    - bridge: 1pp import shock displaces 2.52pp [1.74, 3.30] of
+      working-age adults from manufacturing (ADH T1 col10);
+    - model side: the S&vW mortality stream (sustained + peak) applied
+      to the displaced pool against ADH's reported 1990 death rates
+      (CDC-derived, transcribed in the bridge file);
+    - bands: exact interval arithmetic — excess deaths are monotone
+      increasing in every input, so the corner values are the band;
+    - measured side: ADH T5 male-female differential, 4.27 (SE 3.54)
+      per 100k adults per pp shock.
+
+    Verdicts are coverage statements, both directions. Scope caveats
+    publish: S&vW identifies high-seniority MEN; the bridge displaces
+    adults 18-39 of both sexes; the measured outcome is a male-female
+    DIFFERENTIAL (female response small per ADH T A4). Two variants
+    bound the scope question: all-adults (pooled death rate) and
+    all-male (declared assumption: every lost mfg job is a man's).
+
+    Outcomes with no non-circular model path are named as refusals:
+    ADH is the only source for the marriage/fertility/poverty
+    coefficients, so scoring the model against numbers only ADH
+    supplies would be circular. That refusal is a result.
+    """
+    bridge = {r["quantity"]: r for r in _load_csv("adh2019_exposure_bridge.csv")}
+    b = bridge["mfg_employment_share_change_per_pp"]
+    # displaced workers per 100k adults per 1pp shock = |pp| * 1000
+    n_point = abs(float(b["point"])) * 1000
+    n_lo = abs(float(b["high"])) * 1000
+    n_hi = abs(float(b["low"])) * 1000
+
+    m_all = (float(bridge["male_death_rate_1990_per100k"]["point"] or 0)
+             + float(bridge["female_death_rate_1990_per100k"]["point"] or 0)) / 2 / 100_000
+    m_male = float(bridge["male_death_rate_1990_per100k"]["point"]) / 100_000
+
+    sust = params.by_link("earnings_shock->mortality_sustained")
+    peak = params.by_link("earnings_shock->mortality_peak")
+    WINDOW = 10.0  # ADH measure decadal changes
+
+    def excess(n: float, m: float, s, pk) -> float:
+        return n * m * ((s - 1) * WINDOW + (pk - 1))
+
+    scored = []
+    for label, m, caveat in (
+        ("all_adults", m_all, "displaced pool mixed-sex, pooled death rate"),
+        ("all_male", m_male, "declared assumption: every lost mfg job is a man's"),
+    ):
+        point = excess(n_point, m, sust.point, peak.point)
+        lo = excess(n_lo, m, sust.low, peak.low)
+        hi = excess(n_hi, m, sust.high, peak.high)
+        measured, mse = 4.27, 3.54
+        scored.append({
+            "variant": label,
+            "scope_caveat": caveat,
+            "modeled_excess_deaths_per100k": {"point": round(point, 2), "low": round(lo, 2), "high": round(hi, 2)},
+            "measured_differential_per100k": {"point": measured, "ci95": [round(measured - 1.96 * mse, 2), round(measured + 1.96 * mse, 2)]},
+            "measured_inside_modeled_band": lo <= measured <= hi,
+            "modeled_point_inside_measured_ci": (measured - 1.96 * mse) <= point <= (measured + 1.96 * mse),
+        })
+
+    refusals = [
+        {"outcome": r["outcome"], "reason": "circular: ADH is the only source for this coefficient; the model has no independent path (no marriage/fertility/poverty parameter outside ADH)"}
+        for r in v1_targets()["targets"]
+        if r["outcome"] not in {"male_female_mort_diff_total"}
+    ]
+
+    return {
+        "stage": "V1 retrodiction — unit-level scorecard (per 1pp shock, per 100k adults)",
+        "bridge": {"displaced_per_100k": {"point": n_point, "low": n_lo, "high": n_hi}, "source": "ADH T1 col10 (validation/adh2019_exposure_bridge.csv)"},
+        "window_years": WINDOW,
+        "scored": scored,
+        "refusals": refusals,
+        "honesty": (
+            "No parameter was tuned to pass. Bands are exact interval "
+            "arithmetic on monotone paths. The scored outcome carries three "
+            "scope caveats (S&vW men-only identification, mixed-sex bridge, "
+            "differential-vs-level measurement) — published, not netted out."
+        ),
+    }
+
+
 def run(params: ParameterSet) -> dict:
     return {
         "v0_internal_consistency": internal_consistency(params),
         "v1_backtest": v1_backtest_spec(),
         "v1_targets": v1_targets(),
+        "v1_retrodict": v1_retrodict(params),
     }

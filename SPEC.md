@@ -323,9 +323,22 @@ level (no-migration-dampener) caveat lives in the validation docs.
   (oreopoulos2008) must overlap the IGE-composed path
   (jacobson1993 × IGE band). `downstream validate` runs it; a
   divergence means one of the two literatures is misread.
-- **V1 — retrodiction (scaffolded):** China-shock commuting zones;
-  reproduce measured marriage / fertility / child-poverty / mortality
-  deltas without tuning. Spec: `validate.v1_backtest_spec()`.
+- **V1 — retrodiction (FIRST SCORECARD 2026-09-07, unit-level):** the
+  exposure bridge is transcribed (ADH T1 col10: 1pp shock displaces
+  2.52pp [1.74, 3.30] of working-age adults from manufacturing) and
+  the mortality stream is scored against ADH's measured CZ
+  differential. Model: 9.0 excess deaths per 100k adults [5.1, 14.5]
+  (all-adults variant, 10y window) vs measured 4.27 (SE 3.54). HONEST
+  MISS on the level: the measured CI covers the model point; the
+  model band overshoots the measured point. Three scope caveats
+  publish with it (S&vW identifies high-seniority men; the bridge
+  displaces adults 18-39 of both sexes; the measured outcome is a
+  male-female differential). All non-mortality outcomes are named
+  refusals: ADH is their only source, so scoring against them would
+  be circular. Trap-pinned: the miss cannot be flipped to a pass by
+  code changes, only by new evidence. Spec: `validate.v1_backtest_spec()`;
+  scorecard: `validate.v1_retrodict()`; panel-level retrodiction
+  (per-CZ, CRPS/coverage/PIT) still pending CZ exposure data.
 - **V2 — back-tests (designed):** NAFTA, 2008-09 auto crisis, BRAC.
 - **V3 — prospective (designed):** pre-registered forecasts scored
   with proper rules; misses published.
