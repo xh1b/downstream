@@ -4,6 +4,17 @@ Semantics: a new parameter-set version is REQUIRED whenever a value,
 band, tier, or sampling methodology changes. Old versions stay
 queryable in git; published outputs stamp the version they used.
 
+## v1.5 — third baseline pinned (2026-09-06)
+
+- `divorce_5y_cumulative` flipped pending -> **verified**: 0.1045
+  probability a first marriage ends within 5 years (Census P70-125
+  Table 4, SIPP 2008 panel, 1995-1999 marriage cohort: 89.6/89.5
+  percent of men's/women's first marriages reached the 5th anniversary;
+  warehouse `census_marriage_survival`, 128 rows via the new
+  `census-marriage-download` verb). No count conversion consumes it
+  yet — the family-stream module stays a relative rate ratio until its
+  absolute-count conversion is built.
+
 ## v1.4 — second baseline pinned (2026-09-06)
 
 - `median_male_lifetime_earnings` flipped pending -> **verified**:
