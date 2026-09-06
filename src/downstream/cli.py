@@ -2,6 +2,8 @@
 
     downstream family                          standard-family vignette
     downstream scenario --workers 1000         modeled counts for an exposure
+    downstream explain                         the child-line claim, explained
+    downstream sensitivity --outcome grandchild
     downstream simulate --links a,b --kinds direct,gap
     downstream audit                           parameter/citation/DAG checks
     downstream validate                        V0 consistency + V1 target
@@ -16,30 +18,23 @@ import sys
 from pathlib import Path
 
 from .audit import audit, summary
-from .ledger import DIRECT, GAP, LEVEL
-from .mc import simulate, simulate_chain
-from .params import load_all
+from .citations import parse_bib
+from .explanation import explain_child_line
+from .ledger import LEVEL
+from .mc import simulate_chain
+from .params import default_dir, load_all
+from .render import load_citations, render_text
 from .scenario import ScenarioInput, compute_counts
+from .sensitivity import sobol_indices
 from .validate import run as validate_run
 from .vignette import standard_family
 
-DEFAULT_PARAMS_DIR = str(Path(__file__).resolve().parents[2] / "params")
+DEFAULT_PARAMS_DIR = str(default_dir())
 
 
 def _dump(obj) -> None:
     json.dump(obj, sys.stdout, indent=2)
     print()
-
-
-def _ledger_out(ledger) -> dict:
-    return {
-        "label": ledger.label,
-        "unit": ledger.unit,
-        "point": round(ledger.point, 4),
-        "low": round(ledger.low, 4),
-        "high": round(ledger.high, 4),
-        "steps": [s.as_dict() for s in ledger.steps],
-    }
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -59,6 +54,17 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--wage-multiplier", type=float, default=None)
     p.add_argument("--exposure-years", type=float, default=20.0)
     p.add_argument("--strict", action="store_true", help="fail on missing baselines")
+
+    p = sub.add_parser("explain", help="walk a claim from headline to citations")
+    p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
+    p.add_argument("--draws", type=int, default=4000)
+    p.add_argument("--text", action="store_true", help="plain-language rendering")
+
+    p = sub.add_parser("sensitivity", help="Sobol decomposition of an outcome")
+    p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
+    p.add_argument("--outcome", default="grandchild", choices=["grandchild", "child"])
+    p.add_argument("--base", type=int, default=128)
+    p.add_argument("--seed", type=int, default=1901)
 
     p = sub.add_parser("simulate", help="Monte Carlo over a link chain")
     p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
@@ -99,6 +105,33 @@ def main(argv: list[str] | None = None) -> int:
             strict=args.strict,
         )
         _dump(out)
+        return 0
+
+    if args.cmd == "explain":
+        exp = explain_child_line(params, draws=args.draws)
+        if args.text:
+            load_citations(parts["bib"])
+            print(render_text(exp))
+        else:
+            _dump(exp.as_dict())
+        return 0
+
+    if args.cmd == "sensitivity":
+        from .children import child_line
+
+        outcome_fn = {
+            "grandchild": lambda ps: child_line(ps)["grandchild"].point,
+            "child": lambda ps: child_line(ps)["child"].point,
+        }[args.outcome]
+        _dump(
+            sobol_indices(
+                params,
+                outcome_fn,
+                parts["nodes"],
+                base=args.base,
+                seed=args.seed,
+            )
+        )
         return 0
 
     if args.cmd == "simulate":

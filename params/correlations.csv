@@ -1,0 +1,5 @@
+from_param,to_param,spearman,justification
+# Declared rank correlations between parameters (Iman-Conover).
+# Rows only with a citable justification; judgment must say so.
+# Candidate queued in docs/QUEUED_EXTRACTIONS.md: shock depth vs
+# mortality response (Davis & von Wachter 2011 bad-case caveat).

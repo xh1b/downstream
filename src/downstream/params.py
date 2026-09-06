@@ -29,6 +29,7 @@ class Parameter:
     citation: str
     population_scope: str
     notes: str = ""
+    dist: str = ""  # optional declared distribution; unit decides the default
 
     @property
     def citation_keys(self) -> list[str]:
@@ -90,6 +91,7 @@ def load(path: str | Path, version: str | None = None) -> ParameterSet:
                     citation=row["citation"],
                     population_scope=row["population_scope"],
                     notes=row.get("notes", ""),
+                    dist=row.get("dist", ""),
                 )
             )
     _check_dag(rows)

@@ -62,7 +62,7 @@ below 1.0 as the tell for that bug class.
 population_scope, notes`. `citation` holds semicolon-separated bib
 keys — free-text citations are not allowed anywhere.
 
-### Active parameter set v1.1
+### Active parameter set v1.2
 
 | Link | Value [band] | Tier | Source keys |
 |:---|:---|:---|:---|
@@ -160,16 +160,55 @@ window, and `L` cited median lifetime earnings. Pending baselines
 block their outcome (`blocked`, with the fix named); `strict=True`
 raises instead. **No baseline value is ever guessed.**
 
-## 7. Monte Carlo
+## 7. Uncertainty propagation
 
-`mc.simulate` redraws every parameter uniformly in `[low, high]` and
-rebuilds the full module compute per draw, so nonlinear gap
-composition propagates correctly. Outputs carry p05/p50/p95/mean, the
-seed, the draw count, and a `-sampled` version mark. Uniform is the
-declared v1 default; distributions upgrade per-parameter as full-text
-passes pin them (see `docs/QUEUED_EXTRACTIONS.md`).
+`mc.simulate` rebuilds the full module compute per draw, so nonlinear
+gap composition propagates correctly. Outputs carry p05/p50/p95/mean,
+the seed, the draw count, the sampler id, and a `-sampled` version
+mark. Methodology (mckay1979; iman1982; hersbach2000 in references.bib):
 
-## 8. Scenario aggregation
+1. **Latin Hypercube Sampling** over the parameter space — one draw
+   per stratum per marginal, converging faster than IID.
+2. **Log-space sampling for positive ratios** (rate ratios, odds
+   ratios, level ratios): a ratio's uncertainty is multiplicative;
+   linear sampling biases toward the top of the band.
+3. **Declared normal** rows: SE from the band half-width / 1.96,
+   truncated to the band.
+4. **Rank correlation** between parameters via Iman-Conover —
+   marginals preserved exactly. The declared matrix
+   (`params/correlations.csv`) ships EMPTY; a correlation enters only
+   with a citation (candidate queued: shock depth vs mortality
+   response, from the Davis-von Wachter bad-case caveat).
+
+## 8. Sensitivity analysis (what drives the range)
+
+`sensitivity.sobol_indices` computes first-order and total Sobol
+indices (sobol2001; saltelli2002) over the same parameter space:
+`S_total` is the share of output variance driven by each parameter,
+interactions included. It powers layer 3 of every explanation ("the
+range is mostly driven by X — pinning X down helps most") and ranks
+the extraction queue by precision value. Model evals =
+base x (N+2); the model evaluates in microseconds, so base sizes of
+a few hundred are cheap and seeded for reproducibility.
+
+## 9. Scoring rules (how predictions get graded)
+
+`scoring.py` implements the verification layer for V1/V3
+(gneiting2007): sample-based CRPS (hersbach2000), band coverage, and
+PIT values with a calibration table. A published band that misses its
+stated coverage is a wrong model, whatever its citations say.
+
+## 10. The explanation contract (how claims travel)
+
+`explanation.Explanation` is the data contract between the model and
+every renderer (CLI, web, paper): claim with band, cited step list
+with contribution shares, Sobol drivers, declared assumptions,
+blocked outcomes with fixes, falsifiers, version + seed. Hard rules,
+tested: no naked point estimates; every step cited; refusals named
+with their missing input. Rendering rules live in
+`docs/RENDERING.md`; the reference renderer is `render.py`.
+
+## 11. Scenario aggregation
 
 `scenario.compute_counts` takes an exposure (workers, family
 structure, tradable share, window) and returns modeled counts +
@@ -177,7 +216,7 @@ multipliers + an explicit blocked list. Composition across units
 (summing deaths over workers) is linear-in-N by construction; the
 level (no-migration-dampener) caveat lives in the validation docs.
 
-## 9. Validation program
+## 12. Validation program
 
 - **V0 — internal consistency (running):** the direct child estimate
   (oreopoulos2008) must overlap the IGE-composed path
@@ -190,7 +229,7 @@ level (no-migration-dampener) caveat lives in the validation docs.
 - **V3 — prospective (designed):** pre-registered forecasts scored
   with proper rules; misses published.
 
-## 10. Queued and excluded
+## 13. Queued and excluded
 
 - Queued (structure known, number pending full-text extraction):
   `docs/QUEUED_EXTRACTIONS.md`. Each row names the study, the exact
@@ -204,13 +243,14 @@ level (no-migration-dampener) caveat lives in the validation docs.
   encoded as a parameter. When a headline needs it, both positions are
   computed as named alternate bands, never averaged silently.
 
-## 11. Limitations (registered, not hidden)
+## 14. Limitations (registered, not hidden)
 
 1. Linear, deterministic propagation inside a draw; interactions
    between outcomes are not modeled.
-2. Uniform parameter distributions; correlation between parameters
-   (e.g. earnings and mortality both worsening with shock depth) is
-   not yet modeled.
+2. Parameter correlations are mechanically supported
+   (Iman-Conover) but the declared matrix is EMPTY: no correlation is
+   yet citable. Sampling distributions are band-derived (uniform /
+   log-uniform / truncated normal), not study-fitted.
 3. US-centric parameters applied to US populations; scope mismatches
    are recorded per row.
 4. Displacement is treated as exogenous; the model does not select
@@ -218,13 +258,16 @@ level (no-migration-dampener) caveat lives in the validation docs.
 5. The great-grandchild layer is the weakest-identified number in the
    model (see the honesty statement shipped in its output).
 
-## 12. Layout
+## 15. Layout
 
 ```
-params/            VERSION, parameters.csv, nodes.csv, baselines.csv, references.bib
+params/            VERSION, parameters.csv, nodes.csv, baselines.csv,
+                   correlations.csv, CHANGELOG.md, references.bib
 src/downstream/    units, params, citations, ledger, worker, children,
-                   family, community, vignette, scenario, mc, audit,
-                   validate, cli
-docs/              CITING.md, QUEUED_EXTRACTIONS.md, PRIOR_ATTEMPTS.md
+                   family, community, vignette, scenario, mc,
+                   distributions, sensitivity, scoring, explanation,
+                   render, audit, validate, cli
+docs/              CITING.md, QUEUED_EXTRACTIONS.md, PRIOR_ATTEMPTS.md,
+                   RENDERING.md, MODEL_CARD.md
 paper/             make -> downstream.pdf
 ```

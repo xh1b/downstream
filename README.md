@@ -25,11 +25,18 @@ CLI:
 ```
 downstream family        # the standard-family vignette, fully cited
 downstream scenario --workers 1000
+downstream explain --text   # a claim walked from headline to citations
+downstream sensitivity      # Sobol: what drives the remaining range
 downstream audit         # parameter/citation/DAG/unit checks
 downstream validate      # V0 internal consistency + V1 retrodiction target
 downstream citations     # coverage report
 downstream simulate --links a,b --kinds direct,gap
 ```
+
+Uncertainty methodology: Latin Hypercube Sampling, log-space sampling
+for ratio parameters, optional declared rank correlation (empty until
+citable), Sobol sensitivity, CRPS/coverage scoring for the validation
+program. See `SPEC.md` §7-10 and `docs/MODEL_CARD.md`.
 
 Companion project: xh1b.org, which applies the model to employer,
 county, state, and family surfaces. This repo contains only the model,

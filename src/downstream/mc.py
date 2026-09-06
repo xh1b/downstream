@@ -1,11 +1,12 @@
 """Monte Carlo propagation over parameter uncertainty.
 
-Uniform sampling within [low, high] per parameter (the v1 default;
-distribution families upgrade per-parameter as full-text passes pin
-them). Every draw rebuilds the full module compute, so nonlinear gap
-composition propagates correctly. Outputs carry the parameter-set
-version (marked `-sampled`), the seed, and the draw count — published
-ranges are always reproducible.
+v1.2 methodology: Latin Hypercube Sampling over the parameter space,
+log-space sampling for positive ratio parameters, and optional
+declared rank correlation (Iman-Conover). Every draw rebuilds the
+full module compute, so nonlinear gap composition propagates
+correctly. Outputs carry the parameter-set version (marked
+`-sampled`), the seed, and the draw count — published ranges are
+always reproducible.
 """
 
 from __future__ import annotations
@@ -13,6 +14,7 @@ from __future__ import annotations
 import random
 from typing import Callable
 
+from .distributions import dist_for, plan, sample_unit_interval
 from .params import ParameterSet
 
 
@@ -21,19 +23,32 @@ def simulate(
     compute: Callable[[ParameterSet], float],
     draws: int = 10_000,
     seed: int = 1901,
+    nodes: dict | None = None,
+    spearman: list[list[float]] | None = None,
 ) -> dict:
     """Run `compute` over draws of the parameter space.
 
     `compute` takes a perturbed ParameterSet and returns the scalar
-    outcome to sample (e.g. grandchild gap point, excess-deaths count).
+    outcome to sample. Sampling is LHS by default; pass `spearman` to
+    induce declared rank correlations (Iman-Conover).
     """
-    rng = random.Random(seed)
+    rows = list(params.parameters)
+    if nodes is None:
+        from .params import default_dir, load_nodes
+
+        try:
+            nodes = load_nodes(default_dir() / "nodes.csv")
+        except OSError:
+            nodes = {}
+
+    dp = plan(params, nodes, draws, seed, spearman=spearman)
     samples: list[float] = []
-    for _ in range(draws):
+    for k in range(draws):
         ps = params
-        for p in params.parameters:
+        for j, p in enumerate(rows):
             lo, hi = sorted((p.low, p.high))
-            ps = ps.with_param(p.link, rng.uniform(lo, hi))
+            v = sample_unit_interval(dp.dists[j], dp.u[k][j], lo, hi)
+            ps = ps.with_param(p.link, v)
         samples.append(compute(ps))
     samples.sort()
 
@@ -43,6 +58,7 @@ def simulate(
     return {
         "draws": draws,
         "seed": seed,
+        "sampler": "lhs",
         "parameter_set_version": f"{params.version.split('-sampled')[0]}-sampled",
         "p05": round(pct(0.05), 4),
         "p50": round(pct(0.50), 4),
