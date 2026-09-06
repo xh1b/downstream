@@ -132,6 +132,25 @@ validation. We adopt proper scoring rules (Gneiting and Raftery
 % Saltelli estimator; S_first vs S_total; the child-line result:
 % the direct child-earnings band drives ~91\% of grandchild output
 % variance. Design noise via seed-replicate spread (sobol_ci).
+\subsection{Exact moment propagation}
+% NEW — inference.py. Because every step is a product or affine in
+% each argument, E and E2 propagate in closed form under parameter
+% independence. State the three identities. Show the grandchild line:
+% exact mean 0.9550 vs MC 0.95499 (0.07 SE apart), sds equal to 4
+% decimals. The MC exists to price skewness; the normal-vs-MC
+% quantile gap publishes as non-Gaussianity, not error.
+
+\subsection{Coverage: what a 90\% band earns its label}
+% NEW — the closure test. Frequentist protocol: truths redrawn from
+% the declared bands; bands built from independent samples; coverage
+% counts. Results (600 trials): 0.498/0.802/0.902/0.945 vs nominal
+% 0.50/0.80/0.90/0.95, all within 2 binomial SE. Scope this honestly:
+% it validates the interval MACHINERY under the model's assumptions;
+% V1 validates the assumptions against reality. A sabotaged band
+% fails the check (trap-pinned), so the test has teeth. This
+% subsection is the answer to "how do you know your bands mean
+% anything" before any retrodiction lands.
+
 \subsection{Value of information}
 % NEW — the knobs layer. Narrowing a parameter's band by half removes
 % a computable share of the output band (paired seed). This ranks the

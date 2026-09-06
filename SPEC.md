@@ -180,6 +180,42 @@ mark. Methodology (mckay1979; iman1982; hersbach2000 in references.bib):
    with a citation (candidate queued: shock depth vs mortality
    response, from the Davis-von Wachter bad-case caveat).
 
+## 7b. Analytic inference (the same algebra, done exactly)
+
+`inference.py` propagates the first two moments of a chain in CLOSED
+FORM. Every ledger step is a product (level), a replacement (direct),
+or affine in each argument (gap) — so under parameter independence
+the mean and variance propagate exactly (§7's identities are in the
+module docstring). Three uses:
+
+1. **Cross-check.** `analytic_vs_mc`: the MC mean must sit within ~3
+   sampling SE of the exact mean. On the grandchild line they agree
+   to 0.07 SE and the sds match to 4 decimals. A larger gap is a
+   sampler bug, and the test suite traps it.
+2. **Bands.** `analytic_chain` gives a normal-approximation p05/p95
+   for free (no seed). The MC exists to price the skewness this
+   misses — the normal-vs-MC quantile gap publishes as the output's
+   non-Gaussianity, not as error.
+3. **Exact decomposition.** `logspace_variance_shares`: for a purely
+   multiplicative (level) chain, Var[log Y] = Σ Var[ln Xi] and the
+   shares ARE the Sobol indices of log Y — first-order equals total,
+   no estimator, no seed. Non-level chains are REFUSED (log Y ≠ Σ ln
+   Xi for gap/direct steps — the level-ratio bug in analytic
+   disguise).
+
+**Coverage closure test** (`closure_coverage`) — what "a 90% band"
+means here and how it is earned: draw truths from the declared bands,
+build the MC band from an independent sample, and count coverage. On
+the grandchild line (600 trials): empirical 0.498/0.802/0.902/0.945
+against nominal 0.50/0.80/0.90/0.95 — all within 2 binomial SE. This
+validates the INTERVAL MACHINERY under the model's own assumptions.
+It does not validate the economics; that is V1's job. A test that
+sabotages the band fails the closure check — the test has teeth
+(trap-pinned in the suite).
+
+CLI: `downstream infer --outcome grandchild [--action chain|shares|
+closure|agree]`.
+
 ## 8. Sensitivity analysis (what drives the range)
 
 `sensitivity.sobol_indices` computes first-order and total Sobol

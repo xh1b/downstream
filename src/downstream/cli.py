@@ -89,6 +89,17 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--draws", type=int, default=10_000)
     p.add_argument("--seed", type=int, default=1901)
 
+    p = sub.add_parser("infer", help="exact moments, log-space shares, closure coverage")
+    p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
+    p.add_argument("--links", default=None, help="comma-separated link ids (chain analysis)")
+    p.add_argument("--kinds", default=None, help="comma-separated: level|gap|direct per link")
+    p.add_argument("--outcome", default=None, choices=["grandchild", "child"],
+                   help="built-in child-line chains instead of --links")
+    p.add_argument("--action", default="chain", choices=["chain", "shares", "closure", "agree"])
+    p.add_argument("--draws", type=int, default=20000)
+    p.add_argument("--trials", type=int, default=400)
+    p.add_argument("--seed", type=int, default=1901)
+
     p = sub.add_parser("audit", help="parameter/citation/DAG checks")
     p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
 
@@ -222,6 +233,54 @@ def main(argv: list[str] | None = None) -> int:
             kinds=kinds,
         )
         _dump(out)
+        return 0
+
+    if args.cmd == "infer":
+        from .inference import (
+            analytic_chain,
+            analytic_vs_mc,
+            closure_coverage,
+            logspace_variance_shares,
+        )
+
+        if args.outcome:
+            from .children import CHILD_DIRECT, GRANDCHILD
+
+            links = [CHILD_DIRECT, GRANDCHILD]
+            kinds = ["direct", "gap"]
+        else:
+            if not args.links:
+                print("infer needs --links or --outcome", file=sys.stderr)
+                return 2
+            links = args.links.split(",")
+            kinds = args.kinds.split(",") if args.kinds else [LEVEL] * len(links)
+
+        if args.action == "chain":
+            _dump(analytic_chain(params, links, kinds, parts["nodes"]))
+        elif args.action == "shares":
+            _dump(logspace_variance_shares(params, links, parts["nodes"], kinds=kinds))
+        elif args.action == "closure":
+            def outcome_fn(ps: ParameterSet) -> float:
+                from .ledger import DIRECT, GAP
+                from .ledger import chain as lchain
+
+                return lchain(ps, links, label="x", unit="gap_multiplier", kinds=kinds).point
+
+            _dump(
+                closure_coverage(
+                    params, outcome_fn, parts["nodes"],
+                    trials=args.trials, draws=min(args.draws, 5000), seed=args.seed,
+                )
+            )
+        else:  # agree
+            def outcome_fn(ps: ParameterSet) -> float:
+                from .ledger import chain as lchain
+
+                return lchain(ps, links, label="x", unit="gap_multiplier", kinds=kinds).point
+
+            analytic = analytic_chain(params, links, kinds, parts["nodes"])
+            _dump(analytic_vs_mc(params, outcome_fn, analytic, parts["nodes"],
+                                 draws=args.draws, seed=args.seed))
         return 0
 
     if args.cmd == "audit":

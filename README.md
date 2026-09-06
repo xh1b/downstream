@@ -37,6 +37,8 @@ downstream sensitivity      # Sobol: what drives the remaining range
 downstream sensitivity --ci 5   # ...with seed-replicate design noise
 downstream knobs --action sweep --link 'earnings_shock->mortality_sustained' --values 1.15,1.17,1.20
 downstream knobs --action voi --outcome grandchild   # which knob is worth pinning next
+downstream infer --outcome grandchild    # exact moments + normal band (no seed)
+downstream infer --outcome grandchild --action closure   # do the 90% bands cover 90%?
 downstream audit         # parameter/citation/DAG/unit checks
 downstream validate      # V0 internal consistency + V1 retrodiction target
 downstream citations     # coverage report
