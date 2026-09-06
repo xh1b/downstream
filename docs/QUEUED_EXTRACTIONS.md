@@ -17,7 +17,7 @@ P2 = completes a stream; P3 = breadth.
 | 3 | displacement→household_ipv | Aizer 2010 AER 100:1847 | elasticity of violence w.r.t. gender wage gap (Table ~4/5); gives household_ipv its producer | pending (full text queued) |
 | 4 | displacement→marriage_rate | Autor, Dorn & Hanson 2019 AEA P&P 109 | marriage-rate coefficient per shock SD | pending |
 | 5 | displacement→nonmarital_fertility | same | nonmarital fertility coefficient | pending |
-| 6 | earnings→mortality full-text anchor | Sullivan & von Wachter 2009 QJE 124:1265 | sustained + peak-year hazards from the tables; upgrades tier to EXACT | pending |
+| 6 | earnings→mortality full-text anchor | Sullivan & von Wachter 2009 QJE 124:1265 | sustained + peak-year hazards from the tables; upgrades tier to EXACT | pending (magnitudes CONFIRMED via Davis & von Wachter 2011 full-text synthesis 2026-09-06: near-term up to +100%, sustained for 20y, 1-1.5y life expectancy; QJE tables still needed for table-level pinning) |
 
 ## P2 — complete streams
 
