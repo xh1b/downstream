@@ -102,6 +102,9 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--trials", type=int, default=400)
     p.add_argument("--seed", type=int, default=1901)
 
+    p = sub.add_parser("ensemble", help="structural-variant ensemble (plan #9)")
+    p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
+
     p = sub.add_parser("audit", help="parameter/citation/DAG checks")
     p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
 
@@ -303,6 +306,12 @@ def main(argv: list[str] | None = None) -> int:
             analytic = analytic_chain(params, links, kinds, parts["nodes"])
             _dump(analytic_vs_mc(params, outcome_fn, analytic, parts["nodes"],
                                  draws=args.draws, seed=args.seed))
+        return 0
+
+    if args.cmd == "ensemble":
+        from .variants import run_ensemble
+
+        _dump(run_ensemble(params))
         return 0
 
     if args.cmd == "audit":

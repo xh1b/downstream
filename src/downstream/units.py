@@ -18,6 +18,7 @@ RATE_RATIO = "rate_ratio"     # relative rate vs counterfactual (applied to a ba
 ODDS_RATIO = "odds_ratio"     # relative odds vs counterfactual
 LEVEL_RATIO = "level_ratio"   # jobs per job, dollars per dollar: a LEVEL, never a chain link
 PERCENT_DELTA = "percent_delta"
+LOG_ELASTICITY = "log_elasticity"  # elasticity of ln(outcome); signed, samples linear
 USD = "usd"
 PROB = "probability"
 
@@ -48,6 +49,7 @@ COMPOSITION = {
     (PERSONS, LEVEL_RATIO): "level_ratio",
     (GAP, GAP): "gap",
     (GAP, PERCENT_DELTA): "elasticity",
+    (GAP, LOG_ELASTICITY): "elasticity",  # wage_ratio -> ln(IPV) elasticity (aizer2010)
 }
 
 

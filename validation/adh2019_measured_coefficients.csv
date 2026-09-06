@@ -1,0 +1,25 @@
+# ADH 2019 measured CZ coefficients — the V1 retrodiction targets.
+# Transcribed 2026-09-07 from the author-hosted full-text copy
+# (UCSD/Hanson) of Autor, Dorn & Hanson 2019, "When Work Disappears:
+# Manufacturing Decline and the Falling Marriage-Market Value of Young
+# Men", AER: Insights 1(2). Unit: per ONE PERCENTAGE-POINT rise in CZ
+# import penetration (10,000 USD/adult equivalent), 2SLS, stacked
+# first differences 1990-2007, N=1444 (722 CZ x 2 periods). SEs
+# clustered on state. These are MEASURED outcomes, not model
+# parameters: the exposure unit is the trade shock, not displaced
+# workers, so they do not enter parameters.csv. The V1 bridge needs
+# the ADH exposure->displacement conversion (Table 2 employment
+# effects) before modeled counts can be compared to these rows.
+# Table/column refer to the published tables.
+outcome,population,coefficient_per_pp_shock,se,level_1990,table_col,citation,notes
+marriage_rate_pp,"women 18-39 currently married, %pts",-0.72,0.34,53.05,"T6 col3","autor2019","panel A, overall shock, p<0.05"
+never_married_pp,"women 18-39 never married, %pts",0.44,0.30,34.84,"T6 col1","autor2019","panel A, overall shock, insignificant"
+marriage_rate_young_pp,"women 18-25 currently married, %pts",-1.22,0.50,27.74,"T6 col6","autor2019","panel B, overall shock, p<0.05"
+fertility_rate_per_k,"births per 1000 women 20-39",-3.30,0.51,86.9,"T7 col1","autor2019","overall shock, p<0.01; ~4% relative decline"
+teen_births_per_k,"births per 1000 women 15-19",-1.22,0.72,60.0,"T7 col2","autor2019","overall shock, p<0.10"
+teen_birth_share_pp,"share of births to teen mothers, %pts",0.63,0.17,12.8,"T7 col3","autor2019","overall shock, p<0.01"
+unmarried_mother_share_pp,"share of births to unmarried mothers, %pts",0.48,0.40,22.0,"T7 col4","autor2019","overall shock, imprecise; male-specific shock +3.41 (SE 1.02, p<0.01)"
+child_poverty_pp,"children 0-17 below poverty line, %pts",2.2,0.43,18.5,"T8 col1","autor2019","overall shock, t=5.1; ~12% relative increase; rise is WITHIN household types, not via single-headship"
+two_parent_household_pp,"children 0-17 in two-parent households, %pts",-0.44,,,"T8 col2-5","autor2019","half single-headedness, half grandparent-headed; component SEs not transcribed"
+male_female_mort_diff_total,"male-female deaths per 100k adults 20-39, all causes",4.27,3.54,, "T5 col1","autor2019","overall shock, insignificant (t=1.2); D&A poisoning +3.16 (SE 1.35, p<0.05)"
+gender_ratio_change,"100 x CZ male/female ratio change, adults 18-39",-1.65,0.50,98.6,"T4 B col1","autor2019","panel B, overall shock, p<0.01; mortality explains only ~1/40 of the fall"

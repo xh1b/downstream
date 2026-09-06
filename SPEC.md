@@ -330,6 +330,18 @@ level (no-migration-dampener) caveat lives in the validation docs.
 - **V3 — prospective (designed):** pre-registered forecasts scored
   with proper rules; misses published.
 
+## 12b. Structural-variant ensemble (declared assumptions, priced)
+
+`variants.run_ensemble` runs the named composition-assumption
+alternates side by side and publishes the spread (plan #9):
+baseline; parallel_gap_additive (direct + divorce + family-size gaps
+added in gap space — the additivity SPEC §4 refuses to assume
+silently, priced here at −3.9pp of grandchild gap); ige_decay_half /
+ige_decay_power (geometric re-parameterizations of the same cited
+IGE band, 0.933 / 0.963 vs baseline 0.9505). The baseline row always
+equals the shipped model (trap-pinned). No variant is silently
+substituted — the spread IS the result. CLI: `downstream ensemble`.
+
 ## 13. Queued and excluded
 
 - Queued (structure known, number pending full-text extraction):

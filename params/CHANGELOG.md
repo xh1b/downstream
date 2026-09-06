@@ -1,3 +1,14 @@
+
+## v1.8 (2026-09-07)
+- NEW wage_ratio->household_ipv (EXACT-results, aizer2010): elasticity of ln(IPV)
+  w.r.t. female/male wage ratio, -0.813 [CI -1.45, -0.18], AER Table 2 col 3 read
+  from full text. First producer for household_ipv (queue #3 landed). Node
+  wage_ratio added. Sign recorded honestly: male displacement lowers IPV against
+  women via the relative-wage channel; daughter-chain composition deliberately
+  deferred (needs incidence weights).
+- autor2019 bib corrected (was miscited as AEA P&P 109; actually AER: Insights
+  1(2):161-178) and upgraded to fulltext; Tables 4-8 transcribed to
+  validation/adh2019_measured_coefficients.csv (11 V1 targets).
 # Parameter set changelog
 
 Semantics: a new parameter-set version is REQUIRED whenever a value,
