@@ -11,7 +11,7 @@ PARAMS_DIR = Path(__file__).resolve().parent.parent / "params"
 
 
 def test_version_stamp():
-    assert load(PARAMS_DIR / "parameters.csv").version == "v1.6"
+    assert load(PARAMS_DIR / "parameters.csv").version == "v1.7"
 
 
 def test_nodes_registry_loads_with_known_units():
@@ -20,7 +20,7 @@ def test_nodes_registry_loads_with_known_units():
     assert nodes["child_earnings"].unit == "gap_multiplier"
 
 
-def test_baselines_mortality_and_earnings_verified_others_pending():
+def test_baselines_all_verified():
     # v1.3 pinned mortality (warehouse wonder_mortality, CDC WONDER D76,
     # male 45-54, pooled 2015-2019); v1.4 pinned lifetime earnings
     # (warehouse ssa_median_earnings, synthetic career ages 20-64). The
@@ -42,8 +42,13 @@ def test_baselines_mortality_and_earnings_verified_others_pending():
     assert iv.status == "verified"
     assert iv.value == 0.0027
     assert "2.7 per 1,000" in iv.citation
-    assert baselines["youth_crime_participation"].status == "pending"
-    assert baselines["youth_crime_participation"].value is None
+    y = baselines["youth_crime_participation"]
+    assert y.status == "verified"
+    assert y.value == 0.055948
+    assert "18-24" in y.population and "wwuj-iznp" in y.citation
+    # v1.7: every baseline row is now verified with a pinned value
+    assert all(b.status == "verified" and b.value is not None
+               for b in baselines.values())
 
 
 def test_bib_parses_and_carries_evidence_classes():

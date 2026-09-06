@@ -4,6 +4,18 @@ Semantics: a new parameter-set version is REQUIRED whenever a value,
 band, tier, or sampling methodology changes. Old versions stay
 queryable in git; published outputs stamp the version they used.
 
+## v1.7 — all five baselines verified (2026-09-06)
+
+- `youth_crime_participation` flipped pending -> **verified**:
+  0.055948 arrests per person-year, US men 18-24, 2023 (OJJDP SBB
+  arrest counts joined with Census population denominators, both via
+  new keyless verbs `ojjdp-arrests-download` + `census-popest-download`;
+  warehouse `ojjdp_arrests` 4,185 rows + `census_popest_agesex` 1,818
+  rows). BRACKET CORRECTION documented: published brackets give 18-24,
+  not the placeholder 16-24.
+- **baselines.csv is now fully verified** — every count conversion the
+  engine grows will land on cited absolute numbers.
+
 ## v1.6 — fourth baseline pinned (2026-09-06)
 
 - `ipv_annual_incidence` flipped pending -> **verified**: 0.0027
