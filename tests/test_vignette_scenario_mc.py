@@ -15,7 +15,7 @@ PARAMS_DIR = Path(__file__).resolve().parent.parent / "params"
 def test_vignette_structure_and_honesty_markers():
     parts = load_all(PARAMS_DIR)
     out = standard_family(parts["params"])
-    assert out["parameter_set_version"] == "v1.3"
+    assert out["parameter_set_version"] == "v1.4"
     assert "never a deterministic claim" in out["vignette"]["framing"]
     assert out["children_stream"]["weakest_identified"] == "greatgrandchild"
     assert out["family_stream"]["daughter_violence_odds"]["blocked"]
@@ -52,32 +52,45 @@ def _fake_verified_baselines():
     }
 
 
-def test_scenario_mortality_computed_pending_still_blocked():
-    # v1.3 verified the mortality baseline, so excess_deaths converts on
-    # the REAL pinned value; pending baselines stay loudly blocked.
+def test_scenario_both_conversions_computed_from_real_baselines():
+    # v1.3 verified mortality; v1.4 verified lifetime earnings — both
+    # count conversions now run on the REAL pinned values, nothing blocked.
     parts = load_all(PARAMS_DIR)
     out = compute_counts(
         parts["params"], parts["baselines"], ScenarioInput(displaced_workers=100)
     )
-    assert "excess_deaths" in out["modeled"]
     deaths = out["modeled"]["excess_deaths"]
     # 100 workers x 0.004944 x 0.17 x 20y = 1.681 ; peak: 100 x 0.004944 x 0.75 = 0.371
     assert deaths["point"] == pytest.approx(2.05, abs=1e-6)  # engine rounds to 2dp
     assert deaths["baseline"]["value"] == 0.004944
-    blocked = {b["outcome"] for b in out["blocked"]}
-    assert "child_lifetime_earnings_lost_usd" in blocked
+    child = out["modeled"]["child_lifetime_earnings_lost_usd"]
+    child_point = parts["params"].by_link("displacement->child_earnings").point
+    expected = 100 * 2 * (1 - child_point) * 2591418
+    assert child["point"] == pytest.approx(expected, abs=1.0)
+    assert child["baseline"]["value"] == 2591418
+    assert out["blocked"] == []
     # service jobs need no baseline: computed
     assert out["modeled"]["local_service_jobs_lost"]["point"] == 500
-    # every blocked reason names the fix
-    assert all("baselines.csv" in b["reason"] for b in out["blocked"])
 
 
 def test_scenario_strict_raises_on_missing_baseline():
+    # all shipped baselines are verified now, so strict SUCCEEDS on the
+    # shipped set and only trips when a consumed baseline is absent
     parts = load_all(PARAMS_DIR)
+    out = compute_counts(
+        parts["params"], parts["baselines"], ScenarioInput(displaced_workers=100), strict=True
+    )
+    assert out["blocked"] == []
+    baselines = dict(parts["baselines"])
+    baselines.pop("median_male_lifetime_earnings")
     with pytest.raises(BaselineMissing):
         compute_counts(
-            parts["params"], parts["baselines"], ScenarioInput(displaced_workers=100), strict=True
+            parts["params"], baselines, ScenarioInput(displaced_workers=100), strict=True
         )
+    out = compute_counts(
+        parts["params"], baselines, ScenarioInput(displaced_workers=100)
+    )
+    assert "child_lifetime_earnings_lost_usd" in {b["outcome"] for b in out["blocked"]}
 
 
 def test_scenario_counts_with_verified_baselines():

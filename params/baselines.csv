@@ -3,7 +3,7 @@ all_cause_mortality_annual,deaths_per_person_year,US prime-age men (45-54),0.004
 divorce_5y_cumulative,prob_per_marriage,US married couples 5y window,,us_census_sipp,,pending,"5-year divorce hazard; pin from Census/SIPP table"
 ipv_annual_incidence,prob_per_household_year,US households,,bps_2010,,pending,"pin from BJS Intimate Partner Violence table"
 youth_crime_participation,prob_per_youth_year,US young men 16-24,,bjs_arrests,,pending,"pin from BJS arrest tables by age"
-median_male_lifetime_earnings,usd_2024,US male median lifetime earnings,,ssa_cwhs,,pending,"pin from SSA earnings panel; converts earnings multipliers to dollars"
+median_male_lifetime_earnings,usd_2024,US male median lifetime earnings,2591418,"SSA Annual Statistical Supplement 2025, Table 4.B6 (CWHS/Master Earnings File, 1 percent sample): male median earnings by age, 2023 (preliminary) — synthetic career ages 20-64 = 5x(24218+42561+52485+60423+64962+67506+68160+64854)+2x60666+3x56666 = 2517175 usd_2023; CPI-U annual averages 304.702->313.689 (BLS series CUUR0000SA0, pulled 2026-09-06) -> 2591418 usd_2024; warehouse ssa_median_earnings (pulled via ssa-earnings-download)",ssa_cwhs,verified,"Derivation declared: the cross-sectional age profile summed over a 45-year working life (ages 20-64) is a synthetic cohort — the sum of age-band medians approximates rather than equals the median of individual lifetime sums; median-of-workers semantics excludes non-working years; 2023 medians are preliminary (SSA replaces them with final data in a later edition)"
 # baselines.csv — rows convert relative effects into absolute counts.
 # Every row needs a value AND a citation before any count conversion runs.
 # status: verified (value pinned to a cited source) | pending (fail-loud on use)

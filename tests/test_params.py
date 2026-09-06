@@ -11,7 +11,7 @@ PARAMS_DIR = Path(__file__).resolve().parent.parent / "params"
 
 
 def test_version_stamp():
-    assert load(PARAMS_DIR / "parameters.csv").version == "v1.3"
+    assert load(PARAMS_DIR / "parameters.csv").version == "v1.4"
 
 
 def test_nodes_registry_loads_with_known_units():
@@ -20,17 +20,22 @@ def test_nodes_registry_loads_with_known_units():
     assert nodes["child_earnings"].unit == "gap_multiplier"
 
 
-def test_baselines_mortality_verified_others_pending():
-    # v1.3 pinned the mortality baseline from warehouse `wonder_mortality`
-    # (CDC WONDER D76, male 45-54, pooled 2015-2019). The rest stay
-    # pending — the fail-loud gates must keep blocking them.
+def test_baselines_mortality_and_earnings_verified_others_pending():
+    # v1.3 pinned mortality (warehouse wonder_mortality, CDC WONDER D76,
+    # male 45-54, pooled 2015-2019); v1.4 pinned lifetime earnings
+    # (warehouse ssa_median_earnings, synthetic career ages 20-64). The
+    # rest stay pending — fail-loud gates must keep blocking them.
     baselines = load_baselines(PARAMS_DIR / "baselines.csv")
     m = baselines["all_cause_mortality_annual"]
     assert m.status == "verified"
     assert m.value == 0.004944
     assert "D76" in m.citation and "2015-2019" in m.citation
+    e = baselines["median_male_lifetime_earnings"]
+    assert e.status == "verified"
+    assert e.value == 2591418
+    assert "4.B6" in e.citation and "20-64" in e.citation
     for name in ("divorce_5y_cumulative", "ipv_annual_incidence",
-                 "youth_crime_participation", "median_male_lifetime_earnings"):
+                 "youth_crime_participation"):
         assert baselines[name].status == "pending", name
         assert baselines[name].value is None, name
 

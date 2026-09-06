@@ -4,6 +4,19 @@ Semantics: a new parameter-set version is REQUIRED whenever a value,
 band, tier, or sampling methodology changes. Old versions stay
 queryable in git; published outputs stamp the version they used.
 
+## v1.4 — second baseline pinned (2026-09-06)
+
+- `median_male_lifetime_earnings` flipped pending -> **verified**:
+  2,591,418 usd_2024, US male median lifetime earnings (SSA Annual
+  Statistical Supplement 2025 Table 4.B6, male 2023 medians by age,
+  synthetic career ages 20-64 = 2,517,175 usd_2023, CPI-U-deflated to
+  2024 dollars; warehouse `ssa_median_earnings`, 1,845 rows via the new
+  `ssa-earnings-download` verb). Unlocks the child-earnings dollar
+  conversion in `scenario.py`.
+- Remaining pending baselines: divorce_5y_cumulative,
+  ipv_annual_incidence, youth_crime_participation.
+- No parameter bands or link values changed.
+
 ## v1.3 — first baseline pinned (2026-09-06)
 
 - `all_cause_mortality_annual` flipped pending -> **verified**:
