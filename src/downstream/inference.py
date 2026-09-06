@@ -81,10 +81,26 @@ def _loguniform_moments(lo: float, hi: float) -> tuple[float, float, float]:
 
 
 def param_moments(p: Parameter, node_unit: str | None) -> tuple[float, float, float]:
-    """First three raw moments of a parameter under its sampling dist."""
+    """First three raw moments of a parameter under its sampling dist.
+
+    Declared-normal rows are REFUSED, loudly: the sampler truncates a
+    normal to the band (distributions.sample_unit_interval), and this
+    algebra has no truncated-normal moment rule. Treating such a row
+    as uniform would make the analytic layer silently disagree with
+    the MC — the fail-soft bug class this repo bans. When a normal
+    row is cited into the set, add the truncated-normal moments here
+    (both tails at ±1.96 SE) and unpin the matching trap.
+    """
     lo, hi = sorted((p.low, p.high))
-    if dist_for(p, node_unit) == LOGUNIFORM:
+    d = dist_for(p, node_unit)
+    if d == LOGUNIFORM:
         return _loguniform_moments(lo, hi)
+    if d == "normal":
+        raise NotImplementedError(
+            f"parameter {p.link!r} declares a normal sampling dist; the "
+            f"analytic moment rules cover uniform and log-uniform only. "
+            f"Refusing rather than silently treating it as uniform."
+        )
     return _uniform_moments(lo, hi)
 
 

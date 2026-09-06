@@ -242,6 +242,14 @@ sabotages the band fails the closure check — the test has teeth
 CLI: `downstream infer --outcome grandchild [--action chain|shares|
 closure|agree]`.
 
+**Property fuzz (test suite).** 24 randomly generated chains (mixed
+units, mixed level/direct/gap sequences, random bands) demand the
+exact moments agree with the MC sampler — mean within 4 sampling SE,
+variance within 6%, skewness sign exact when identifiable. Declared-
+`normal` sampling rows are REFUSED by the analytic layer (the sampler
+truncates them; the algebra has no truncated-normal rule) — when one
+is cited into the set, add the moment rule and unpin the trap.
+
 ## 8. Sensitivity analysis (what drives the range)
 
 `sensitivity.sobol_indices` computes first-order and total Sobol
