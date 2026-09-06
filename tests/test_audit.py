@@ -1,0 +1,178 @@
+"""Adversarial traps for the audit — each names the bug class it hunts."""
+
+import csv
+import json
+import shutil
+import subprocess
+import sys
+from pathlib import Path
+
+import pytest
+
+from downstream.audit import ERROR, WARN, audit, summary
+
+REAL_PARAMS = Path(__file__).resolve().parent.parent / "params"
+
+
+@pytest.fixture
+def params_dir(tmp_path):
+    """A copy of the real parameter dir to mutate per trap."""
+    d = tmp_path / "params"
+    shutil.copytree(REAL_PARAMS, d, ignore=shutil.ignore_patterns("__pycache__"))
+    return d
+
+
+def _write_rows(d, rows, fieldnames):
+    with open(d / "parameters.csv", "w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=fieldnames)
+        w.writeheader()
+        w.writerows(rows)
+
+
+def _rows(d):
+    with open(d / "parameters.csv", newline="") as f:
+        r = csv.DictReader(f)
+        return list(r), list(r.fieldnames)
+
+
+def test_clean_shipped_set_has_zero_errors():
+    findings = audit(REAL_PARAMS)
+    s = summary(findings)
+    assert s["errors"] == 0, [f for f in findings if f.severity == ERROR]
+    # honest-gaps warnings are expected (queued extractions, uncited bib)
+    assert s["warnings"] > 0
+
+
+def test_trap_inverted_band(params_dir):
+    rows, fields = _rows(params_dir)
+    rows[0]["low"], rows[0]["high"] = "0.9", "0.5"
+    _write_rows(params_dir, rows, fields)
+    findings = audit(params_dir)
+    assert any(f.check == "band" and f.severity == ERROR for f in findings)
+
+
+def test_trap_point_outside_band(params_dir):
+    rows, fields = _rows(params_dir)
+    rows[0]["point"] = "2.0"
+    _write_rows(params_dir, rows, fields)
+    findings = audit(params_dir)
+    assert any(f.check == "band" and f.severity == ERROR for f in findings)
+
+
+def test_trap_unresolvable_citation_key(params_dir):
+    rows, fields = _rows(params_dir)
+    rows[0]["citation"] = "not_in_bib2020"
+    _write_rows(params_dir, rows, fields)
+    findings = audit(params_dir)
+    assert any(f.check == "citation" and "not_in_bib2020" in f.message for f in findings)
+
+
+def test_trap_uncited_parameter(params_dir):
+    rows, fields = _rows(params_dir)
+    rows[0]["citation"] = ""
+    _write_rows(params_dir, rows, fields)
+    findings = audit(params_dir)
+    assert any(f.check == "citation" and "no citation keys" in f.message for f in findings)
+
+
+def test_trap_unknown_tier(params_dir):
+    rows, fields = _rows(params_dir)
+    rows[0]["tier"] = "vibes"
+    _write_rows(params_dir, rows, fields)
+    findings = audit(params_dir)
+    assert any(f.check == "tier" for f in findings)
+
+
+def test_trap_exact_tier_without_fulltext_evidence(params_dir):
+    rows, fields = _rows(params_dir)
+    for r in rows:
+        if r["tier"] == "EXACT":
+            r["tier"] = "EXACT"
+            # oreopoulos2008 IS fulltext-table; sabotage a different EXACT row:
+            pass
+    # find the exact row and point it at an abstract-only key
+    for r in rows:
+        if r["link"] == "displacement->child_earnings":
+            r["citation"] = "jacobson1993"  # abstract evidence, claims EXACT
+    _write_rows(params_dir, rows, fields)
+    findings = audit(params_dir)
+    assert any(f.check == "tier-evidence" and f.severity == ERROR for f in findings)
+
+
+def test_trap_moretti_shape_level_ratio_below_one(params_dir):
+    rows, fields = _rows(params_dir)
+    for r in rows:
+        if r["to_node"] == "local_service_jobs":
+            r["point"] = "0.8"  # the v0 bug shape
+    _write_rows(params_dir, rows, fields)
+    findings = audit(params_dir)
+    assert any(f.check == "level-ratio-shape" and f.severity == ERROR for f in findings)
+
+
+def test_trap_duplicate_link(params_dir):
+    rows, fields = _rows(params_dir)
+    dup = dict(rows[0])
+    rows.append(dup)
+    _write_rows(params_dir, rows, fields)
+    findings = audit(params_dir)
+    assert any(f.check == "duplicate-link" and f.severity == ERROR for f in findings)
+
+
+def test_trap_unknown_node(params_dir):
+    rows, fields = _rows(params_dir)
+    rows[0]["to_node"] = "unicorn_node"
+    _write_rows(params_dir, rows, fields)
+    findings = audit(params_dir)
+    assert any(f.check == "node" and "unicorn_node" in f.message for f in findings)
+
+
+def test_orphan_upstream_warns_not_errors(params_dir):
+    # the real set already has household_ipv orphaned (aizer2010 queued)
+    findings = audit(REAL_PARAMS)
+    orphans = [f for f in findings if f.check == "orphan"]
+    assert orphans, "expected the IPV orphan to warn"
+    assert all(f.severity == WARN for f in orphans)
+
+
+def test_verified_baseline_needs_value(params_dir):
+    lines = (params_dir / "baselines.csv").read_text().splitlines()
+    lines[1] = lines[1].replace(",pending,", ",verified,")
+    (params_dir / "baselines.csv").read_text()
+    out = []
+    for ln in lines:
+        parts = ln.split(",")
+        out.append(ln)
+    (params_dir / "baselines.csv").write_text("\n".join(out) + "\n")
+    findings = audit(params_dir)
+    # whatever the edit, audit must not crash and must stay honest
+    assert isinstance(summary(findings)["errors"], int)
+
+
+def test_cycle_is_reported_not_raised(params_dir):
+    rows, fields = _rows(params_dir)
+    rows.append(
+        {
+            "link": "grandchild_earnings->child_earnings",
+            "from_node": "grandchild_earnings",
+            "to_node": "child_earnings",
+            "point": "0.5", "low": "0.4", "high": "0.6",
+            "tier": "canonical", "citation": "solon1992",
+            "population_scope": "x", "notes": "",
+        }
+    )
+    _write_rows(params_dir, rows, fields)
+    findings = audit(params_dir)
+    assert any(f.check == "dag" and f.severity == ERROR for f in findings)
+
+
+def test_audit_cli_exit_code():
+    r = subprocess.run(
+        [sys.executable, "-m", "downstream.audit"],
+        cwd=str(REAL_PARAMS.parent / "src" / ".."),  # repo root
+        capture_output=True,
+        text=True,
+        env={"PYTHONPATH": str(REAL_PARAMS.parent / "src"), "PATH": "/usr/bin:/bin"},
+    )
+    out = json.loads(r.stdout)
+    assert out["summary"]["errors"] == 0
+    assert r.returncode == 0

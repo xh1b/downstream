@@ -1,0 +1,9 @@
+outcome,unit,population,value,citation,source,status,notes
+all_cause_mortality_annual,deaths_per_person_year,US prime-age men (45-54),,cdc_wonder,,pending,"Sullivan & von Wachter counterfactual mortality; pin from CDC WONDER table"
+divorce_5y_cumulative,prob_per_marriage,US married couples 5y window,,us_census_sipp,,pending,"5-year divorce hazard; pin from Census/SIPP table"
+ipv_annual_incidence,prob_per_household_year,US households,,bps_2010,,pending,"pin from BJS Intimate Partner Violence table"
+youth_crime_participation,prob_per_youth_year,US young men 16-24,,bjs_arrests,,pending,"pin from BJS arrest tables by age"
+median_male_lifetime_earnings,usd_2024,US male median lifetime earnings,,ssa_cwhs,,pending,"pin from SSA earnings panel; converts earnings multipliers to dollars"
+# baselines.csv — rows convert relative effects into absolute counts.
+# Every row needs a value AND a citation before any count conversion runs.
+# status: verified (value pinned to a cited source) | pending (fail-loud on use)
