@@ -15,3 +15,4 @@ male_death_rate_1990_per100k,213.43,,,,"T5 bottom","autor2019","adults 20-39, me
 female_death_rate_1990_per100k,78.89,,,,"T5 bottom","autor2019","adults 20-39, women, 1990 baseline"
 married_share_women_1839_1990,0.5305,,,,"T6 bottom","autor2019","level in 1990, currently married women 18-39; incidence weight for the divorce scorecard row"
 women_share_adults_1839,0.503,,,,"T4 B","autor2019","from gender ratio 98.6 men per 100 women; pp-of-women converter"
+male_death_rate_2544_1999_2003_per_person,0.00203019,,,,"warehouse wonder_mortality","cdc_wonder_d76","CDC WONDER D76 (Underlying Cause), US men 25-44 pooled 1999-2003, sum(deaths)/sum(population); age-matched cross-check pinned from the xh1b warehouse 2026-09-07"

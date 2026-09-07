@@ -177,10 +177,12 @@ def v1_retrodict(params: ParameterSet) -> dict:
     def excess(n: float, m: float, s, pk) -> float:
         return n * m * ((s - 1) * WINDOW + (pk - 1))
 
+    m_age = float(bridge["male_death_rate_2544_1999_2003_per_person"]["point"])
     scored = []
     for label, m, caveat in (
         ("all_adults", m_all, "displaced pool mixed-sex, pooled death rate"),
         ("all_male", m_male, "declared assumption: every lost mfg job is a man's"),
+        ("all_male_age_matched", m_age, "WONDER 25-44 male pooled 1999-2003 (warehouse-pinned); closes the era/provenance caveat"),
     ):
         point = excess(n_point, m, sust.point, peak.point)
         lo = excess(n_lo, m, sust.low, peak.low)
@@ -235,6 +237,13 @@ def v1_retrodict(params: ParameterSet) -> dict:
         "stage": "V1 retrodiction — unit-level scorecard (per 1pp shock, per 100k adults)",
         "bridge": {"displaced_per_100k": {"point": n_point, "low": n_lo, "high": n_hi}, "source": "ADH T1 col10 (validation/adh2019_exposure_bridge.csv)"},
         "window_years": WINDOW,
+        "window_semantics": (
+            "CONFIRMED cumulative per-decade (deposit Readme: variables "
+            "starting cum_mort measure cumulative per-decade mortality; all "
+            "d_ outcomes are 10-year equivalent changes) — the model's "
+            "window-multiplication is the correct comparison, not an annual "
+            "rate change."
+        ),
         "scored": scored,
         "scored_divorce": {
             "stream": "displacement->divorce_hazard (rege2007; charles2004) + census divorce_5y_cumulative baseline",
@@ -256,20 +265,20 @@ def v1_panel(params: ParameterSet) -> dict:
     """The V1 PANEL retrodiction: per-CZ exposure heterogeneity.
 
     Uses the authors' public-release CZ panel (openICPSR 116320-V2,
-    CC BY 4.0; extract in validation/adh_cz_panel.csv). Two tests,
-    exposure only, no tuning:
+    CC BY 4.0; extract in validation/adh_cz_panel.csv). Tercile tests
+    (within-period demeaned — raw stacked terciles are confounded by
+    period composition and flip sign; trap-pinned) plus proper slope
+    scoring. Exposure only, no tuning.
 
-    1. TERCILE TEST (the pass rule from v1_backtest_spec): rank CZ
-       periods by shock, compare the measured outcome change top-vs-
-       bottom tercile against the model-predicted gap (mean shock gap
-       x model slope). Sign agreement required; band coverage reported.
-    2. SLOPE CRPS + PIT: the model's slope distribution (bridge band
-       x divorce-hazard band, Monte Carlo) scored against the
-       published 2SLS coefficient with proper scoring rules.
-
-    Scored outcome: widowed/divorced/separated share of women 18-39
-    (d_sh_fem1839_widdivsep) — the non-circular stream (rege2007 et
-    al., census baseline; ADH supplies only the measurement).
+    Rows (all non-circular on the model side):
+    - divorce vs pooled shock (rege2007 stream + census baseline)
+    - divorce vs MALE-specific shock (d_impuschm_p9cen) — the stream
+      is about displaced (mostly male) workers, so the male shock is
+      the closer exposure
+    - male p25 earnings vs pooled shock (JLS worker-earnings stream,
+      incidence-weighted by displaced share of employed men; heavy
+      scope caveats: JLS identifies high-tenure displaced workers,
+      the p25 measures all men in the CZ)
     """
     import csv as _csv
     import random as _random
@@ -280,30 +289,56 @@ def v1_panel(params: ParameterSet) -> dict:
     with open(VALIDATION_DIR / "adh_cz_panel.csv", newline="", encoding="utf-8") as f:
         for row in _csv.DictReader(line for line in f if not line.startswith("#")):
             if row["d_impusch_p9"] and row["d_sh_fem1839_widdivsep"]:
-                rows.append(
-                    {
-                        "shock": float(row["d_impusch_p9"]),
-                        "widdivsep": float(row["d_sh_fem1839_widdivsep"]),
-                        "yr": row["yr"],
-                        "w": float(row["timepwt24"] or 0.0),
-                    }
-                )
+                rows.append(row)
     if not rows:
         return {"stage": "V1 panel", "status": "blocked: panel file missing"}
 
-    # Within-period demeaning (the authors' period dummy, absorbed):
-    # raw stacked terciles confound the shock with period composition —
-    # the un-demeaned gap flips sign (trap-pinned in the test suite).
-    for yr in {r["yr"] for r in rows}:
-        sub = [r for r in rows if r["yr"] == yr]
-        w = sum(r["w"] for r in sub) or 1.0
-        m_shock = sum(r["shock"] * r["w"] for r in sub) / w
-        m_out = sum(r["widdivsep"] * r["w"] for r in sub) / w
-        for r in sub:
-            r["shock"] -= m_shock
-            r["widdivsep"] -= m_out
+    def fnum(row: dict, col: str) -> float | None:
+        v = (row.get(col) or "").strip()
+        return float(v) if v not in ("", "nan") else None
 
-    # --- model slope (pp of women per pp shock), 10y window -------------
+    recs = [
+        {
+            "shock": fnum(r, "d_impusch_p9"),
+            "male_shock": fnum(r, "d_impuschm_p9cen"),
+            "widdivsep": fnum(r, "d_sh_fem1839_widdivsep"),
+            "p25": fnum(r, "d_inc1839m_p25"),
+            "p25_level": fnum(r, "l_inc1839m_p25"),
+            "emp_share": fnum(r, "l_sh_emp_age1839m"),
+            "yr": r["yr"],
+            "w": float(r["timepwt24"] or 0.0),
+        }
+        for r in rows
+    ]
+
+    def demean(col: str) -> None:
+        for yr in {r["yr"] for r in recs}:
+            sub = [r for r in recs if r["yr"] == yr and r.get(col) is not None]
+            w = sum(r["w"] for r in sub) or 1.0
+            m = sum(r[col] * r["w"] for r in sub) / w
+            for r in sub:
+                r[col] = r[col] - m
+
+    for c in ("shock", "male_shock", "widdivsep", "p25"):
+        demean(c)
+
+    def tercile_gap(recs: list[dict], shock_col: str, out_col: str, weight_by_level: bool = False):
+        use = [r for r in recs if r.get(shock_col) is not None and r.get(out_col) is not None]
+        use.sort(key=lambda r: r[shock_col])
+        k = len(use) // 3
+        bottom, top = use[:k], use[-k:]
+
+        def wgap(rs, col):
+            if weight_by_level:
+                ws = [r["w"] * (r["p25_level"] or 0.0) for r in rs]
+                tot = sum(ws) or 1.0
+                return sum(r[col] * w for r, w in zip(rs, ws)) / tot
+            w = sum(r["w"] for r in rs) or 1.0
+            return sum(r[col] * r["w"] for r in rs) / w
+
+        return wgap(top, out_col) - wgap(bottom, out_col), wgap(top, shock_col) - wgap(bottom, shock_col), len(use)
+
+    # --- model slopes ------------------------------------------------------
     divorce = params.by_link("displacement->divorce_hazard")
     rng = _random.Random(1901)
     slope_samples = []
@@ -316,37 +351,71 @@ def v1_panel(params: ParameterSet) -> dict:
     def q(p: float) -> float:
         return slope_samples[min(int(p * (len(slope_samples) - 1)), len(slope_samples) - 1)]
 
-    # --- tercile test -----------------------------------------------------
-    rows.sort(key=lambda r: r["shock"])  # raw shock ranks terciles (demeaned only ranks within-period, same order)
-    k = len(rows) // 3
-    bottom, top = rows[:k], rows[-k:]
+    jls = params.by_link("displacement->worker_earnings")
 
-    def wmean(rs: list[dict]) -> float:
-        w = sum(r["w"] for r in rs) or 1.0
-        return sum(r["widdivsep"] * r["w"] for r in rs) / w
+    # divorce vs pooled shock
+    d_gap, d_shock_gap, n1 = tercile_gap(recs, "shock", "widdivsep")
+    divorce_pooled = {
+        "outcome": "widowed/divorced/separated share of women 18-39 (pp)",
+        "exposure": "pooled shock (d_impusch_p9)",
+        "cz_periods": n1,
+        "shock_gap_pp": round(d_shock_gap, 4),
+        "measured_gap_pp": round(d_gap, 4),
+        "modeled_gap_pp": {"point": round(d_shock_gap * q(0.5), 4), "low": round(d_shock_gap * q(0.05), 4), "high": round(d_shock_gap * q(0.95), 4)},
+        "sign_agreement": (d_gap > 0) == (d_shock_gap * q(0.5) > 0),
+        "measured_inside_modeled_band": d_shock_gap * q(0.05) <= d_gap <= d_shock_gap * q(0.95),
+    }
 
-    def wmean_shock(rs: list[dict]) -> float:
-        w = sum(r["w"] for r in rs) or 1.0
-        return sum(r["shock"] * r["w"] for r in rs) / w
+    # divorce vs male-specific shock (same model slope; the male shock
+    # is pp of male-intensive employment exposure, closest to our stream)
+    dm_gap, dm_shock_gap, n2 = tercile_gap(recs, "male_shock", "widdivsep")
+    divorce_male = {
+        "outcome": "widowed/divorced/separated share of women 18-39 (pp)",
+        "exposure": "male-specific shock (d_impuschm_p9cen)",
+        "cz_periods": n2,
+        "shock_gap_pp": round(dm_shock_gap, 4),
+        "measured_gap_pp": round(dm_gap, 4),
+        "modeled_gap_pp": {"point": round(dm_shock_gap * q(0.5), 4), "low": round(dm_shock_gap * q(0.05), 4), "high": round(dm_shock_gap * q(0.95), 4)},
+        "sign_agreement": (dm_gap > 0) == (dm_shock_gap * q(0.5) > 0),
+        "measured_inside_modeled_band": dm_shock_gap * q(0.05) <= dm_gap <= dm_shock_gap * q(0.95),
+        "caveat": "the male shock interacts import exposure with male industry-employment share; treating its pp as equivalent to the pooled shock's pp is a declared approximation",
+    }
 
-    measured_gap = wmean(top) - wmean(bottom)
-    shock_gap = wmean_shock(top) - wmean_shock(bottom)
-    pred_lo, pred_hi = shock_gap * q(0.05), shock_gap * q(0.95)
-    pred_mid = shock_gap * q(0.50)
+    # earnings p25 vs pooled shock (JLS stream, incidence-weighted)
+    # model dollar gap = mean level x (1 - jls) x (shock_gap x 2.52%) / employed-men share
+    usable = [r for r in recs if r["p25"] is not None and r["p25_level"] and r["emp_share"]]
+    e_gap, e_shock_gap, n3 = tercile_gap(recs, "shock", "p25")
+    mean_level = sum(r["p25_level"] * r["w"] for r in usable) / (sum(r["w"] for r in usable) or 1.0)
+    mean_emp = sum(r["emp_share"] * r["w"] for r in usable) / (sum(r["w"] for r in usable) or 1.0) / 100.0
+    inc_factor = 0.0252 / mean_emp
 
-    # --- slope scoring -----------------------------------------------------
+    def earn_gap(gap_mult: float) -> float:
+        # earnings CHANGE (negative = fall): a gap multiplier below 1 is a
+        # LOSS of (1 - mult), so the change is the negated loss.
+        return -mean_level * (1 - gap_mult) * e_shock_gap * inc_factor
+
+    earnings = {
+        "outcome": "male p25 annual earnings change (USD, demeaned)",
+        "exposure": "pooled shock (d_impusch_p9)",
+        "stream": "displacement->worker_earnings (jacobson1993 et al.), incidence-weighted by displaced share of employed men",
+        "cz_periods": n3,
+        "shock_gap_pp": round(e_shock_gap, 4),
+        "measured_gap_usd": round(e_gap, 2),
+        "modeled_gap_usd": {"point": round(earn_gap(jls.point), 2), "low": round(earn_gap(jls.low), 2), "high": round(earn_gap(jls.high), 2)},
+        "sign_agreement": (e_gap < 0) == (earn_gap(jls.point) < 0),
+        "measured_inside_modeled_band": earn_gap(jls.low) <= e_gap <= earn_gap(jls.high),
+        "scope_caveats": [
+            "JLS identifies high-tenure displaced workers; p25 measures all CZ men (dilution biases the model magnitude UP)",
+            "incidence uses mean CZ male employment share (declared, panel mean)",
+            "p25 level baseline uses start-of-period panel mean",
+        ],
+    }
+
     observed_slope = 0.28  # ADH T6 col2, 2SLS, SE 0.15
     return {
         "stage": "V1 panel retrodiction (CZ terciles + slope scoring)",
-        "panel": {"cz_periods": len(rows), "source": "openICPSR 116320-V2 extract (validation/adh_cz_panel.csv)"},
-        "tercile_test": {
-            "outcome": "widowed/divorced/separated share of women 18-39 (pp)",
-            "shock_gap_top_minus_bottom_pp": round(shock_gap, 4),
-            "measured_gap_pp": round(measured_gap, 4),
-            "modeled_gap_pp": {"point": round(pred_mid, 4), "low": round(pred_lo, 4), "high": round(pred_hi, 4)},
-            "sign_agreement": (measured_gap > 0) == (pred_mid > 0),
-            "measured_inside_modeled_band": pred_lo <= measured_gap <= pred_hi,
-        },
+        "panel": {"cz_periods": len(recs), "source": "openICPSR 116320-V2 extract (validation/adh_cz_panel.csv)"},
+        "tercile_tests": [divorce_pooled, divorce_male, earnings],
         "slope_scoring": {
             "model_slope_pp_per_pp": {"p05": round(q(0.05), 4), "p50": round(q(0.5), 4), "p95": round(q(0.95), 4)},
             "observed_slope": observed_slope,
@@ -354,13 +423,13 @@ def v1_panel(params: ParameterSet) -> dict:
             "pit": round(pit(slope_samples, observed_slope), 4),
             "note": (
                 "CRPS in pp-of-women units against the published point "
-                "estimate; PIT near 1 means the observed slope sits above "
-                "the model's central mass (the unit-level undershoot, now "
-                "confirmed on panel terciles)."
+                "estimate; PIT 1.0 means the observed slope sits above "
+                "the model's central mass (the remarriage-margin "
+                "undershoot, confirmed on panel terciles)."
             ),
         },
         "honesty": (
-            "No tuning. The model slope reuses the same cited bands as the "
+            "No tuning. The model slopes reuse the same cited bands as the "
             "unit scorecard; the panel adds exposure HETEROGENEITY, not new "
             "parameters. ICPSR deposit 116320 cited per its terms."
         ),

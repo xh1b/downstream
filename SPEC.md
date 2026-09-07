@@ -354,6 +354,20 @@ level (no-migration-dampener) caveat lives in the validation docs.
   candidate). The un-demeaned stacked tercile gap flips sign
   (period confounding) — trap-pinned so the demeaning can never be
   quietly dropped.
+
+  V1 COMPLETE-ROUND ADDITIONS (2026-09-07, extract v2): the age-
+  matched mortality variant (WONDER 25-44 male, warehouse-pinned)
+  makes the mortality miss SHARPER (model 12.5 [7.1, 20.1] vs
+  measured 4.27, CI covers neither direction) — the overprediction
+  is robust to baseline choice, and window semantics are CONFIRMED
+  cumulative-per-decade from the deposit Readme. The male-specific
+  shock tercile row PASSES with the model point within 2% of
+  measured (0.0626 vs 0.062). The earnings row (JLS stream,
+  incidence-weighted) sign-agrees but undershoots ~5x (model −$74
+  [−92, −55] vs measured −$353): the CZ p25 earnings response exceeds
+  the direct-displacement composition — evidence of local wage
+  spillovers the model does not encode (a missing LINK, now named in
+  the queue).
 - **V2 — back-tests (designed):** NAFTA, 2008-09 auto crisis, BRAC.
 - **V3 — prospective (designed):** pre-registered forecasts scored
   with proper rules; misses published.

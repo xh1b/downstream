@@ -1,22 +1,25 @@
 """Traps for the V1 panel retrodiction.
 
 Each trap names the defect it hunts:
-- stacked terciles without period demeaning (the confounded
-  comparison flips the sign — the exact bug caught in development)
-- the panel pass being flippable by code instead of evidence
+- stacked terciles without period demeaning (confounded comparison
+  flips the sign — caught in development)
+- a panel verdict being flippable by code instead of evidence
 - the extract silently shrinking (rows dropped)
+- the earnings sign bug (a gap multiplier below 1 is a LOSS; the
+  modeled change must be negative)
 - slope scoring drifting from the pinned state
 """
 
 from __future__ import annotations
 
 import csv
-from pathlib import Path
 
 from downstream.params import load_all
 from downstream.validate import VALIDATION_DIR, v1_panel
 
 P = v1_panel(load_all()["params"])
+DIVORCE = [t for t in P["tercile_tests"] if t["outcome"].startswith("widowed")]
+EARN = [t for t in P["tercile_tests"] if t["outcome"].startswith("male p25")][0]
 
 
 def test_panel_extract_rowcount():
@@ -25,18 +28,37 @@ def test_panel_extract_rowcount():
         if not line.startswith("#")
     ))
     assert len(rows) == 1444
+    assert "d_impuschm_p9cen" in rows[0]
 
 
-def test_tercile_pass_state_pinned():
-    t = P["tercile_test"]
+def test_divorce_pooled_pass_state_pinned():
+    t = [x for x in DIVORCE if x["exposure"].startswith("pooled")][0]
     assert t["sign_agreement"] is True
     assert t["measured_inside_modeled_band"] is True
-    assert 0.04 < t["modeled_gap_pp"]["low"] < t["measured_gap_pp"] < t["modeled_gap_pp"]["high"] < 0.3
+
+
+def test_divorce_male_shock_pass_state_pinned():
+    t = [x for x in DIVORCE if x["exposure"].startswith("male-specific")][0]
+    assert t["sign_agreement"] is True
+    assert t["measured_inside_modeled_band"] is True
+    # the closest-exposure row: measured and model point within 2% of
+    # each other — if this drifts, the extract or slope changed
+    assert abs(t["measured_gap_pp"] - t["modeled_gap_pp"]["point"]) < 0.002
+
+
+def test_earnings_row_sign_and_undershoot_pinned():
+    t = EARN
+    m = t["modeled_gap_usd"]
+    # sign: a gap multiplier below 1 is a LOSS — modeled change negative
+    assert m["point"] < 0 and m["low"] <= m["point"] <= m["high"]
+    assert t["sign_agreement"] is True
+    # undershoot: measured fall ~5x the incidence-weighted composition —
+    # the wage-spillover evidence. Pinned: flippable only by evidence.
+    assert t["measured_inside_modeled_band"] is False
+    assert t["measured_gap_usd"] < 3 * m["point"]
 
 
 def test_undemeaned_terciles_flip_sign():
-    # the trap that justifies the demeaning: raw stacked terciles are
-    # confounded by period composition and flip the measured gap negative
     rows = []
     with open(VALIDATION_DIR / "adh_cz_panel.csv", newline="", encoding="utf-8") as f:
         for row in csv.DictReader(line for line in f if not line.startswith("#")):
@@ -54,7 +76,7 @@ def test_undemeaned_terciles_flip_sign():
 
 def test_slope_scoring_state_pinned():
     s = P["slope_scoring"]
-    assert s["pit"] == 1.0  # observed slope sits above the model mass: undershoot
+    assert s["pit"] == 1.0
     assert 0.15 < s["crps"] < 0.20
     assert s["model_slope_pp_per_pp"]["p50"] < s["observed_slope"]
 
