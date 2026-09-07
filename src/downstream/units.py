@@ -18,6 +18,8 @@ RATE_RATIO = "rate_ratio"     # relative rate vs counterfactual (applied to a ba
 ODDS_RATIO = "odds_ratio"     # relative odds vs counterfactual
 LEVEL_RATIO = "level_ratio"   # jobs per job, dollars per dollar: a LEVEL, never a chain link
 PERCENT_DELTA = "percent_delta"
+SD_DELTA = "sd_delta"          # change in standard-deviation units (achievement scales)
+LIFE_YEARS = "life_years"      # life-expectancy change in years
 LOG_ELASTICITY = "log_elasticity"  # elasticity of ln(outcome); signed, samples linear
 USD = "usd"
 PROB = "probability"
@@ -50,6 +52,14 @@ COMPOSITION = {
     (GAP, GAP): "gap",
     (GAP, PERCENT_DELTA): "elasticity",
     (GAP, LOG_ELASTICITY): "elasticity",  # wage_ratio -> ln(IPV) elasticity (aizer2010)
+    # Boundary-applied COEFFICIENTS: per-unit responses estimated on an
+    # external shock ($1k). They apply to a baseline at the count
+    # boundary (like "rate") and must NEVER be chained — the response
+    # size depends on the shock magnitude, which is not carried by a
+    # chain step.
+    (USD, PERCENT_DELTA): "rate",   # import_shock -> local wage spillover (adh2013)
+    (USD, SD_DELTA): "rate",        # family income -> child achievement (dahl2012)
+    (USD, LIFE_YEARS): "rate",      # family income -> life expectancy (chetty2016)
 }
 
 

@@ -16,3 +16,8 @@ local_service_jobs,level_ratio,"local non-traded service jobs per displaced trad
 school_spending,gap_multiplier,"per-pupil spending multiplier vs baseline"
 youth_wages,gap_multiplier,"local youth-relevant wage level vs baseline"
 youth_crime_rate,percent_delta,"percent change in youth crime participation (applied via elasticity)"
+import_shock_per_worker,usd,"decadal change in Chinese import exposure per worker, in $1,000s (ADH 2013 exposure measure)"
+local_wage_response,percent_delta,"percent change in local nonmanufacturing (non-displaced) wages per $1k/worker import exposure; boundary-applied vs a baseline wage"
+family_income_shock,usd,"family income change in $1,000s of year-2000 dollars (positive = gain)"
+child_achievement_sd,sd_delta,"child math-reading achievement change in standard deviations (normalized PIAT combined score)"
+life_expectancy_years,life_years,"life-expectancy change in years at age 40 per $1k household earnings (near-median local slope)"

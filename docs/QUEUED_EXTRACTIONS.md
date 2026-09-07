@@ -17,7 +17,7 @@ P2 = completes a stream; P3 = breadth.
 | 3 | displacement→household_ipv | Aizer 2010 AER 100:1847 | LANDED v1.8: wage_ratio->household_ipv elasticity -0.813 (Table 2 col 3); remaining: incidence-weighted wiring into the daughter chain | done 2026-09-07 |
 | 4 | trade_shock→marriage/fertility parameter links | Autor, Dorn & Hanson 2019 AER:I 1(2) | coefficients transcribed to validation/adh2019_measured_coefficients.csv (T6-T8, 11 rows); remaining: shock→displaced-workers conversion (ADH Table 2) to turn them into parameters | bridge pending 2026-09-07 |
 | 5 | (merged into #4) | — | — | merged |
-| 24 | displacement→non_displaced_wage_spillover | ADH 2019 panel (openICPSR 116320-V2) + local-labor-market lit | V1 earnings row: CZ p25 male earnings response ~5x the incidence-weighted direct-displacement composition (−$353 vs −$74) — a spillover link (wage effects on NON-displaced workers) the model lacks; candidate sources: ADH 2013 AER local labor markets, Beaudry et al. 2012 | evidence-gather pending 2026-09-07 |
+| 24 | displacement→non_displaced_wage_spillover | ADH 2019 panel (openICPSR 116320-V2) + local-labor-market lit | LANDED v1.12 via ADH 2013 AER (stronger than the queued candidates): Table 7 Panel B col 6 — nonmanufacturing (non-displaced) noncollege wage response −0.822 log pts per $1k/worker exposure [−1.304, −0.340] EXACT; pooled male TOTAL CZ response (Table 6 col 2, −0.892 SE 0.294) recorded in notes for the V1 cross-check | done 2026-09-07 |
 | 6 | earnings→mortality full-text anchor | Sullivan & von Wachter 2009 QJE 124:1265 | LANDED v1.9: Table 5 col 2 sustained OR 1.135 [1.033,1.247], peak OR 2.672 [2.116,3.374], tier EXACT (read via NBER WP w13626) | done 2026-09-07 |
 
 ## P2 — complete streams
@@ -25,10 +25,10 @@ P2 = completes a stream; P3 = breadth.
 | # | Link | Study | Extraction target | Status |
 |:--|:--|:--|:--|:--|
 | 7 | wage→fertility (converse) | Kearney & Wilson 2020 REStat | fertility elasticity to male income from fracking boom | pending |
-| 8 | income→child achievement | Dahl & Lochner 2012 AER 102:1719 | SD achievement per $1k family income | pending |
+| 8 | income→child achievement | Dahl & Lochner 2012 AER 102(5):1927-1956 (queue page ref corrected) | LANDED v1.12: +0.0610 SD per $1,000 year-2000 $ [0.016, 0.106] EXACT — Table 3 col (i), SE 0.0231, N=8,608, EITC IV (read via NBER w14599) | done 2026-09-07 |
 | 9 | early-poverty→adult attainment | Duncan, Ziol-Guest & Kalil 2010 | adult earnings effect of ages 0-5 poverty | pending |
 | 10 | unemployment→property crime | Raphael & Winter-Ebmer 2001; Lin 2008 | property-crime elasticity per pp unemployment | pending |
-| 11 | parental displacement→college | Hilger 2016 AEJ:Applied 8:787 | college-attendance effect of father layoff | pending |
+| 11 | parental displacement→college | Hilger 2016 AEJ:Applied 8(3):247-283, DOI 10.1257/app.20150295 (queue citation CORRECTED; was 8:787) | pending — BLOCKED: AEA full text is viewer-gated (abstract only); headline from abstract: layoffs cut income dramatically but college enrollment/quality only SLIGHTLY, and firm-closure-based estimates suffer selection — expect a SMALL link, weaker than assumed; needs the published tables (replication package or library access) before an EXACT row | blocked 2026-09-07 |
 | 12 | displacement→test scores | Stevens & Schaller 2011 | math/reading effect sizes | pending |
 | 13 | displacement→infant health | Lindo 2011 J Health Econ 30:869-879 | LANDED v1.10: displacement->infant_birth_weight 0.954 [0.912,0.998] EXACT (Table 2 col 3 via IZA DP 5213) | done 2026-09-07 |
 | 14 | local decline→child maltreatment | Lindo, Schaller & Hansen 2018 | maltreatment effect per local shock | pending |
@@ -36,7 +36,7 @@ P2 = completes a stream; P3 = breadth.
 | 16 | import exposure→polarization | Autor et al. 2020 AER 110 | GOP-margin effect per shock | pending |
 | 17 | eviction→hardship chain | Desmond & Gershenson 2016; Collinson & Reed 2018 | job-loss effect of eviction (structural link into homelessness) | pending |
 | 18 | foreclosure→neighborhood prices | Immergluck & Smith 2006; Campbell et al. 2011 QJE 126 | price spillover per foreclosure within radius | pending |
-| 19 | income→life expectancy slope | Chetty et al. 2016 JAMA 315:1750 | local slope of life-expectancy gradient at median income (for the earnings→life-years conversion) | pending |
+| 19 | income→life expectancy slope | Chetty et al. 2016 JAMA 315(16):1750-1766 | LANDED v1.12: 0.1333 y per $1k [0.117, 0.150] EXACT-derived — the paper's own concavity example $14k→$20k (P15→P20) carries +0.7-0.9y, slope 0.8/6; associational (authors' caveat) — row records it as a conversion factor, causal deaths stay anchored on sullivan2009 | done 2026-09-07 |
 | 20 | unemployment→mental health | Paul & Moser 2009 JVB 74:264 | distress effect size (d ≈ 0.5) + re-employment reversal | pending |
 | 21 | IPV exposure→child mental health | Evans, Davies & DiLillo 2008 | meta effect of exposure on internalizing/externalizing | pending |
 | 22 | recessions→IPV | Schneider, Harknett & McLanahan 2016 | employment-status IPV effect (converges with Aizer) | pending |
