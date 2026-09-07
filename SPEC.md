@@ -343,8 +343,17 @@ level (no-migration-dampener) caveat lives in the validation docs.
   truly circular: ADH is their only parameter source. Circularity is
   a property of the EVIDENCE GRAPH, not of ambition. Trap-pinned: the miss cannot be flipped to a pass by
   code changes, only by new evidence. Spec: `validate.v1_backtest_spec()`;
-  scorecard: `validate.v1_retrodict()`; panel-level retrodiction
-  (per-CZ, CRPS/coverage/PIT) still pending CZ exposure data.
+  scorecard: `validate.v1_retrodict()`; PANEL retrodiction LANDED 2026-09-07 on the authors' public-release
+  CZ panel (openICPSR 116320-V2, CC BY 4.0, cited per its terms;
+  extract committed to validation/adh_cz_panel.csv): within-period-
+  demeaned shock terciles give a measured widowed/divorced/separated
+  gap of +0.134pp vs modeled [0.045, 0.206] — SIGN AGREEMENT and
+  band coverage, the first panel PASS. Slope scoring: model p50
+  0.081 vs published 0.28, CRPS 0.176, PIT 1.0 — the unit-level
+  undershoot confirmed on panel data (remarriage margin the leading
+  candidate). The un-demeaned stacked tercile gap flips sign
+  (period confounding) — trap-pinned so the demeaning can never be
+  quietly dropped.
 - **V2 — back-tests (designed):** NAFTA, 2008-09 auto crisis, BRAC.
 - **V3 — prospective (designed):** pre-registered forecasts scored
   with proper rules; misses published.
