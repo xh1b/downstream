@@ -17,6 +17,7 @@ P2 = completes a stream; P3 = breadth.
 | 3 | displacement→household_ipv | Aizer 2010 AER 100:1847 | LANDED v1.8: wage_ratio->household_ipv elasticity -0.813 (Table 2 col 3); remaining: incidence-weighted wiring into the daughter chain | done 2026-09-07 |
 | 4 | trade_shock→marriage/fertility parameter links | Autor, Dorn & Hanson 2019 AER:I 1(2) | coefficients transcribed to validation/adh2019_measured_coefficients.csv (T6-T8, 11 rows); remaining: shock→displaced-workers conversion (ADH Table 2) to turn them into parameters | bridge pending 2026-09-07 |
 | 5 | (merged into #4) | — | — | merged |
+| 24 | displacement→non_displaced_wage_spillover | ADH 2019 panel (openICPSR 116320-V2) + local-labor-market lit | V1 earnings row: CZ p25 male earnings response ~5x the incidence-weighted direct-displacement composition (−$353 vs −$74) — a spillover link (wage effects on NON-displaced workers) the model lacks; candidate sources: ADH 2013 AER local labor markets, Beaudry et al. 2012 | evidence-gather pending 2026-09-07 |
 | 6 | earnings→mortality full-text anchor | Sullivan & von Wachter 2009 QJE 124:1265 | sustained + peak-year hazards from the tables; upgrades tier to EXACT | pending (magnitudes CONFIRMED via Davis & von Wachter 2011 full-text synthesis 2026-09-06: near-term up to +100%, sustained for 20y, 1-1.5y life expectancy; QJE tables still needed for table-level pinning) |
 
 ## P2 — complete streams
