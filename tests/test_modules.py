@@ -18,8 +18,8 @@ def test_worker_stream_jls_band_and_split_mortality():
     e = w["worker_earnings"]
     assert (e.point, e.low, e.high) == (0.80, 0.75, 0.85)
     # sustained vs peak are SEPARATE outcomes, never conflated into one row
-    assert w["mortality_sustained"].point == 1.17
-    assert w["mortality_peak"].point == 1.75
+    assert w["mortality_sustained"].point == 1.135
+    assert w["mortality_peak"].point == 2.672
 
 
 def test_worker_pinned_multiplier_scales_band_not_point():

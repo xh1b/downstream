@@ -15,7 +15,7 @@ PARAMS_DIR = Path(__file__).resolve().parent.parent / "params"
 def test_vignette_structure_and_honesty_markers():
     parts = load_all(PARAMS_DIR)
     out = standard_family(parts["params"])
-    assert out["parameter_set_version"] == "v1.8"
+    assert out["parameter_set_version"] == "v1.10"
     assert "never a deterministic claim" in out["vignette"]["framing"]
     assert out["children_stream"]["weakest_identified"] == "greatgrandchild"
     assert out["family_stream"]["daughter_violence_odds"]["blocked"]
@@ -60,8 +60,9 @@ def test_scenario_both_conversions_computed_from_real_baselines():
         parts["params"], parts["baselines"], ScenarioInput(displaced_workers=100)
     )
     deaths = out["modeled"]["excess_deaths"]
-    # 100 workers x 0.004944 x 0.17 x 20y = 1.681 ; peak: 100 x 0.004944 x 0.75 = 0.371
-    assert deaths["point"] == pytest.approx(2.05, abs=1e-6)  # engine rounds to 2dp
+    # v1.10 table-pinned S&vW (sustained 1.135, peak 2.672):
+    # 100 x 0.004944 x (0.135*20 + 1.672) = 2.163
+    assert deaths["point"] == pytest.approx(2.16, abs=0.005)  # engine rounds to 2dp
     assert deaths["baseline"]["value"] == 0.004944
     child = out["modeled"]["child_lifetime_earnings_lost_usd"]
     child_point = parts["params"].by_link("displacement->child_earnings").point
@@ -99,8 +100,9 @@ def test_scenario_counts_with_verified_baselines():
         parts["params"], _fake_verified_baselines(), ScenarioInput(displaced_workers=100)
     )
     deaths = out["modeled"]["excess_deaths"]
-    # sustained: 100 * 0.004 * 0.17 * 20y = 1.36 ; peak: 100 * 0.004 * 0.75 = 0.30
-    assert deaths["point"] == pytest.approx(1.66, abs=1e-6)
+    # v1.10 table-pinned S&vW: sustained 1.135, peak 2.672
+    # 100 * 0.004 * (0.135*20 + 1.672) = 1.7488
+    assert deaths["point"] == pytest.approx(1.7488, abs=0.005)  # output rounded to 2dp
     child = out["modeled"]["child_lifetime_earnings_lost_usd"]
     # 100 workers x 2 children x 9% x $1M
     assert child["point"] == pytest.approx(18_000_000.0, abs=1.0)

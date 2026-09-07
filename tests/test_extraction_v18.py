@@ -1,4 +1,4 @@
-"""Traps for the v1.8 extraction round (ADH validation + Aizer IPV producer).
+"""Traps for the v1.10 extraction round (ADH validation + Aizer IPV producer).
 
 Each trap names the defect it hunts:
 - a transcribed coefficient that cites a key the bibliography lacks
@@ -65,3 +65,28 @@ def test_log_elasticity_samples_linear_not_log():
 
 def test_wage_ratio_node_exists_and_is_gap():
     assert NODES["wage_ratio"].unit == "gap_multiplier"
+
+
+# --- v1.10 round: Lindo infant health + CSV integrity ------------------------
+
+def test_lindo_row_pinned_and_paper_corrected():
+    p = PARAMS.by_link("displacement->infant_birth_weight")
+    assert p.point == 0.9541
+    assert (p.low, p.high) == (0.912, 0.9981)
+    assert p.tier == "EXACT"
+    entry = BIB["lindo2011"]
+    assert "Job Loss" in entry.fields["title"]  # the miscited UI paper is gone
+
+
+def test_parameters_csv_every_row_exact_field_count():
+    # 2026-09-07: the aizer note field was left UNTERMINATED at v1.8;
+    # it silently absorbed the next appended row. One row = 10 fields.
+    import csv as _csv
+    from downstream.params import default_dir
+
+    with open(default_dir() / "parameters.csv", newline="") as f:
+        rows = list(_csv.reader(f))
+    assert all(len(r) == 10 for r in rows), (
+        f"malformed rows: {[i for i, r in enumerate(rows) if len(r) != 10]}"
+    )
+    assert rows[0][9] == "notes"

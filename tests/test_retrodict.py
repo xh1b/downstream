@@ -39,13 +39,16 @@ def test_male_variant_exceeds_all_adults():
 
 
 def test_current_honest_verdict_state():
-    # the miss publishes: measured point outside the modeled band,
-    # model point inside the measured CI. If a change flips this, the
-    # change must come with new evidence (a pinned parameter or a new
-    # transcribed table), never from touching the verdict logic.
+    # VERDICT FLIPPED BY EVIDENCE v1.10 (2026-09-07): the S&vW Table 5
+    # pin widened the mortality bands (study SEs replace the abstract-
+    # derived band), and the measured ADH differential now falls INSIDE
+    # the modeled band. The point still overshoots. This is the flip
+    # mechanism working as designed: new pinned evidence, not code.
     all_adults = R["scored"][0]
-    assert all_adults["measured_inside_modeled_band"] is False
+    assert all_adults["measured_inside_modeled_band"] is True
     assert all_adults["modeled_point_inside_measured_ci"] is True
+    # the overshoot itself persists at the point level
+    assert all_adults["modeled_excess_deaths_per100k"]["point"] > all_adults["measured_differential_per100k"]["point"]
 
 
 def test_refusals_exclude_only_the_scored_outcomes():

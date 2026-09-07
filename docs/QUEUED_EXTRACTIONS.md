@@ -18,7 +18,7 @@ P2 = completes a stream; P3 = breadth.
 | 4 | trade_shock→marriage/fertility parameter links | Autor, Dorn & Hanson 2019 AER:I 1(2) | coefficients transcribed to validation/adh2019_measured_coefficients.csv (T6-T8, 11 rows); remaining: shock→displaced-workers conversion (ADH Table 2) to turn them into parameters | bridge pending 2026-09-07 |
 | 5 | (merged into #4) | — | — | merged |
 | 24 | displacement→non_displaced_wage_spillover | ADH 2019 panel (openICPSR 116320-V2) + local-labor-market lit | V1 earnings row: CZ p25 male earnings response ~5x the incidence-weighted direct-displacement composition (−$353 vs −$74) — a spillover link (wage effects on NON-displaced workers) the model lacks; candidate sources: ADH 2013 AER local labor markets, Beaudry et al. 2012 | evidence-gather pending 2026-09-07 |
-| 6 | earnings→mortality full-text anchor | Sullivan & von Wachter 2009 QJE 124:1265 | sustained + peak-year hazards from the tables; upgrades tier to EXACT | pending (magnitudes CONFIRMED via Davis & von Wachter 2011 full-text synthesis 2026-09-06: near-term up to +100%, sustained for 20y, 1-1.5y life expectancy; QJE tables still needed for table-level pinning) |
+| 6 | earnings→mortality full-text anchor | Sullivan & von Wachter 2009 QJE 124:1265 | LANDED v1.9: Table 5 col 2 sustained OR 1.135 [1.033,1.247], peak OR 2.672 [2.116,3.374], tier EXACT (read via NBER WP w13626) | done 2026-09-07 |
 
 ## P2 — complete streams
 
@@ -30,7 +30,7 @@ P2 = completes a stream; P3 = breadth.
 | 10 | unemployment→property crime | Raphael & Winter-Ebmer 2001; Lin 2008 | property-crime elasticity per pp unemployment | pending |
 | 11 | parental displacement→college | Hilger 2016 AEJ:Applied 8:787 | college-attendance effect of father layoff | pending |
 | 12 | displacement→test scores | Stevens & Schaller 2011 | math/reading effect sizes | pending |
-| 13 | displacement→infant health | Lindo 2011 J Health Econ 30:229 | low-birth-weight / fetal-loss effect | pending |
+| 13 | displacement→infant health | Lindo 2011 J Health Econ 30:869-879 | LANDED v1.10: displacement->infant_birth_weight 0.954 [0.912,0.998] EXACT (Table 2 col 3 via IZA DP 5213) | done 2026-09-07 |
 | 14 | local decline→child maltreatment | Lindo, Schaller & Hansen 2018 | maltreatment effect per local shock | pending |
 | 15 | import competition→radical vote | Colantone & Stanig 2018 AJPS 62 | vote-share effect per import shock SD | pending |
 | 16 | import exposure→polarization | Autor et al. 2020 AER 110 | GOP-margin effect per shock | pending |
@@ -57,8 +57,8 @@ P2 = completes a stream; P3 = breadth.
 
 | # | Item | Source | Status |
 |:--|:--|:--|:--|
-| V1-a | CZ import-exposure shock values | ADH published instrument files | pending |
-| V1-b | measured CZ outcome deltas 1990-2014 | Autor, Dorn & Hanson 2019 tables (+ Autor et al. 2020) | pending |
+| V1-a | CZ import-exposure shock values | ADH published instrument files | LANDED 2026-09-07: openICPSR 116320-V2 extract (validation/adh_cz_panel.csv) |
+| V1-b | measured CZ outcome deltas 1990-2014 | Autor, Dorn & Hanson 2019 tables (+ Autor et al. 2020) | LANDED 2026-09-07: T4-T8 transcribed (validation/adh2019_measured_coefficients.csv) + panel outcome columns |
 | V1-c | CZ demographic baselines | Census/ACS | pending |
 
 ## Honesty in both directions (excluded from parameterization)

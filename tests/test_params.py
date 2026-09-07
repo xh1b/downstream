@@ -11,7 +11,7 @@ PARAMS_DIR = Path(__file__).resolve().parent.parent / "params"
 
 
 def test_version_stamp():
-    assert load(PARAMS_DIR / "parameters.csv").version == "v1.8"
+    assert load(PARAMS_DIR / "parameters.csv").version == "v1.10"
 
 
 def test_nodes_registry_loads_with_known_units():
@@ -46,7 +46,7 @@ def test_baselines_all_verified():
     assert y.status == "verified"
     assert y.value == 0.055948
     assert "18-24" in y.population and "wwuj-iznp" in y.citation
-    # v1.8: every baseline row is now verified with a pinned value
+    # v1.10: every baseline row is now verified with a pinned value
     assert all(b.status == "verified" and b.value is not None
                for b in baselines.values())
 

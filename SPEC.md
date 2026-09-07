@@ -62,13 +62,15 @@ below 1.0 as the tell for that bug class.
 population_scope, notes`. `citation` holds semicolon-separated bib
 keys — free-text citations are not allowed anywhere.
 
-### Active parameter set v1.2
+### Active parameter set (v1.10; S&vW mortality rows table-pinned v1.9 —
+Table 5 col 2 log-odds converted to OR; Lindo infant row added v1.10.
+Full history: params/CHANGELOG.md)
 
 | Link | Value [band] | Tier | Source keys |
 |:---|:---|:---|:---|
 | displacement→worker_earnings | 0.80 [0.75, 0.85] | EXACT-abstract | jacobson1993; oreopoulos2008; davis2011 |
-| earnings_shock→mortality_sustained | 1.17 [1.15, 1.20] | EXACT-abstract | sullivan2009 |
-| earnings_shock→mortality_peak | 1.75 [1.50, 2.00] | EXACT-abstract | sullivan2009 |
+| earnings_shock→mortality_sustained | 1.135 [1.033, 1.247] | EXACT | sullivan2009 |
+| earnings_shock→mortality_peak | 2.672 [2.116, 3.374] | EXACT | sullivan2009 |
 | displacement→divorce_hazard | 1.11 [1.05, 1.25] | canonical | rege2007; charles2004 |
 | displacement→child_earnings (direct) | 0.91 [0.86, 0.96] | EXACT | oreopoulos2008 |
 | divorce→child_earnings (parallel) | 0.95 [0.90, 0.99] | canonical | gruber2004 |
@@ -76,6 +78,8 @@ keys — free-text citations are not allowed anywhere.
 | child_earnings→grandchild_earnings (IGE) | 0.55 [0.40, 0.60] | canonical | solon1992; corak2013; chetty2014 |
 | grandchild_earnings→greatgrandchild_earnings (IGE) | 0.55 [0.40, 0.60] | canonical | lindahl2015; adermon2018 |
 | ipv_exposure→daughter_violence_odds | 2.5 [2.0, 3.0] | canonical | widom1989; ehrensaft2003 |
+| displacement→infant_birth_weight | 0.954 [0.912, 0.998] | EXACT | lindo2011 |
+| wage_ratio→household_ipv (ln-elasticity) | −0.813 [−1.45, −0.18] | EXACT-results | aizer2010 |
 | displacement→local_service_jobs | 5.0 [1.6, 5.0] | canonical | moretti2010 |
 | school_spending→child_earnings (per +10% × 12y) | 1.07 [1.03, 1.10] | canonical | jackson2016 |
 | youth_wages→youth_crime (elasticity) | −1.0 [−1.5, −0.5] | canonical | gould2002; grogger1998 |

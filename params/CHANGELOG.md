@@ -1,4 +1,24 @@
 
+## v1.10 (2026-09-07)
+- NEW displacement->infant_birth_weight (EXACT, lindo2011): queue #13 landed.
+  Level multiplier 0.954 [0.912, 0.998] from Table 2 col 3 (log birth weight
+  -0.047, SE 0.023, mother fixed effects; read via IZA DP 5213). Bib entry
+  CORRECTED: it previously cited Lindo's unemployment-insurance paper (JHE
+  30:1120-1131) instead of Parental Job Loss and Infant Health (JHE 30:869-879).
+
+## v1.9 (2026-09-07)
+- Sullivan & von Wachter 2009 mortality rows pinned from the tables (queue #6 /
+  plan #4 head): full text read from the NBER WP version (w13626; tables of the
+  QJE article). Table 5 col 2 (born 1930-59 main sample): sustained (year 6+)
+  log-odds 0.127 (SE 0.048) -> OR 1.135 [1.033, 1.247]; peak (displacement
+  year) log-odds 0.983 (SE 0.119) -> OR 2.672 [2.116, 3.374]. Both rows now
+  tier EXACT. The table-fitted bands are WIDER than the prior abstract-derived
+  ones (honest widening per CITING 3); the peak point is materially higher
+  (the immediate spike at low baseline hazard). OR~RR conversion declared.
+  V1 effect: the mortality model band widens so the measured ADH differential
+  now sits INSIDE the band (evidence-driven verdict flip, documented); the
+  point still overshoots.
+
 ## v1.8 (2026-09-07)
 - NEW wage_ratio->household_ipv (EXACT-results, aizer2010): elasticity of ln(IPV)
   w.r.t. female/male wage ratio, -0.813 [CI -1.45, -0.18], AER Table 2 col 3 read
