@@ -44,10 +44,12 @@ exact count is 166 — exact is more credible anyway).
 
 - 25 entries without DOIs sit in `params/doi_review.json` (books,
   working papers, government series, title ambiguities).
-- `kearney2020` and `kearney2020fracking` are title variants of the
-  Kearney-Wilson REStat work and may be the same paper recorded
-  twice; the queue #7 full-text pass resolves this and will collapse
-  the duplicate (CITING.md §5 duplicates rule).
+- RESOLVED 2026-09-07 (v1.14): the pair was NOT two copies of one
+  paper. `kearney2020` is the real Pill study (REStat 102(2):341-355,
+  kept). `kearney2020fracking` was a broken stub conflating the
+  fracking title with a Pill subtitle - deleted, and replaced by the
+  full record `kearney2018fracking` (REStat 100(4):678-690, DOI
+  10.1162/rest_a_00739), which queue #7 landed from (NBER w23408).
 
 ## 5. Citing this model
 

@@ -25,3 +25,7 @@ college_enrollment,rate_ratio,"children annual college-enrollment rate vs counte
 parental_income_shortrun,gap_multiplier,"parental ANNUAL income in the layoff event window vs counterfactual (short-run; NOT the long-run worker_earnings gap)"
 unemployment_rate,percent_delta,"change in the state/local unemployment rate, in percentage points"
 property_crime_response,percent_delta,"percent change in the property-crime rate per 1pp unemployment change (boundary-applied)"
+eitc_exposure,usd,"maximum potential EITC (federal+state, 2013 dollars) a household could receive, per $1,000, summed over a child age window"
+adult_earnings_early,usd,"child annual earnings ages 22-27 (2013 dollars) vs counterfactual, as a per-$1k-exposure response"
+male_earnings_pc,gap_multiplier,"local male earnings per capita vs counterfactual (1.0 = unchanged)"
+fertility_rate,log_elasticity,"elasticity of ln(birth rate) w.r.t. ln male earnings per capita"

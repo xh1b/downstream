@@ -62,8 +62,8 @@ below 1.0 as the tell for that bug class.
 population_scope, notes`. `citation` holds semicolon-separated bib
 keys — free-text citations are not allowed anywhere.
 
-### Active parameter set (v1.13; college-enrollment + income-shock + crime rows landed
-from Hilger 2016 and Raphael-Winter-Ebmer 2001; v1.12 spillover/achievement/longevity;
+### Active parameter set (v1.14; fertility elasticity + EITC earnings row + Behrman-
+Taubman IGE cross-check; v1.13 Hilger/Raphael; v1.12 spillover/achievement/longevity;
 v1.11 Oreopoulos pin; v1.9 S&vW; v1.10 Lindo.
 Full history: params/CHANGELOG.md)
 
@@ -90,6 +90,8 @@ Full history: params/CHANGELOG.md)
 | displacement→college_enrollment | 0.9894 [0.9848, 0.9939] | EXACT | hilger2016 |
 | displacement→parental_income (short-run) | 0.8640 [0.8568, 0.8712] | EXACT | hilger2016 |
 | unemployment_rate→property_crime (% per pp) | +5.018 [2.795, 7.241] | EXACT | raphael2001 |
+| eitc_exposure→adult_earnings_early (per $1k exposure, ages 13-18) | +564 [84, 1044] | EXACT | bastian2018 |
+| male_earnings→fertility (elasticity, ln-ln) | +1.24 [0.397, 2.083] | EXACT | kearney2018fracking |
 
 Tiers mean what `CITING.md` says they mean. The audit cross-checks
 each tier against the `xh1b-evidence` class recorded in the bib entry.

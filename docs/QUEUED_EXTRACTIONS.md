@@ -12,8 +12,8 @@ P2 = completes a stream; P3 = breadth.
 
 | # | Link | Study | Extraction target | Status |
 |:--|:--|:--|:--|:--|
-| 1 | baseline: all-cause mortality | CDC WONDER / S&vW 2009 counterfactual | annual rate, men 45-54, US; the study's control-group rate is the cleanest match | pending |
-| 2 | baseline: median male lifetime earnings | SSA Continuous Work History Sample | median lifetime earnings, men; pin cohort + year | pending |
+| 1 | baseline: all-cause mortality | CDC WONDER D76 | LANDED 2026-09-06 (pre-dating this queue's last pass): baselines.csv all_cause_mortality_annual = 0.004944/person-yr verified (men 45-54, pooled 2015-2019, pre-pandemic window, population matched to the S&vW prime-age counterfactual) | done 2026-09-07 |
+| 2 | baseline: median male lifetime earnings | SSA CWHS Table 4.B6 | LANDED 2026-09-06: baselines.csv median_male_lifetime_earnings = $2,591,418 (usd_2024) verified, synthetic-cohort derivation declared on the row | done 2026-09-07 |
 | 3 | displacement→household_ipv | Aizer 2010 AER 100:1847 | LANDED v1.8: wage_ratio->household_ipv elasticity -0.813 (Table 2 col 3); remaining: incidence-weighted wiring into the daughter chain | done 2026-09-07 |
 | 4 | trade_shock→marriage/fertility parameter links | Autor, Dorn & Hanson 2019 AER:I 1(2) | coefficients transcribed to validation/adh2019_measured_coefficients.csv (T6-T8, 11 rows); remaining: shock→displaced-workers conversion (ADH Table 2) to turn them into parameters | bridge pending 2026-09-07 |
 | 5 | (merged into #4) | — | — | merged |
@@ -24,7 +24,7 @@ P2 = completes a stream; P3 = breadth.
 
 | # | Link | Study | Extraction target | Status |
 |:--|:--|:--|:--|:--|
-| 7 | wage→fertility (converse) | Kearney & Wilson 2020 REStat | fertility elasticity to male income from fracking boom | pending |
+| 7 | wage→fertility (converse) | Kearney & Wilson 2018 REStat 100(4):678-690 (queue said 2020 — corrected; the 2020 REStat paper is their DIFFERENT Pill study) | LANDED v1.14: marital-birth-rate elasticity to male earnings 1.24 [0.397, 2.083] EXACT (Table 8 PB col 2, IV, F=11.8 declared; nonmarital same elasticity, marriage null; coal-boom 0.75 recorded as cross-context anchor) | done 2026-09-07 |
 | 8 | income→child achievement | Dahl & Lochner 2012 AER 102(5):1927-1956 (queue page ref corrected) | LANDED v1.12: +0.0610 SD per $1,000 year-2000 $ [0.016, 0.106] EXACT — Table 3 col (i), SE 0.0231, N=8,608, EITC IV (read via NBER w14599) | done 2026-09-07 |
 | 9 | early-poverty→adult attainment | Duncan, Ziol-Guest & Kalil 2010 | adult earnings effect of ages 0-5 poverty | pending |
 | 10 | unemployment→property crime | Raphael & Winter-Ebmer 2001 JLE 44(1):259-283 (NOT JOLE — venue corrected); Lin 2008 | LANDED v1.13: +5.018% property crime per 1pp unemployment [2.795, 7.241] EXACT 2SLS (overID passes); OLS 1.6-2.4% recorded; violent-crime null deliberately not landed; Lin 2008 stays queued as the second band anchor | done 2026-09-07 |
@@ -76,8 +76,8 @@ identical coefficient/SE, N corrected 8608→8609). Also available, not yet land
 
 | Study | What it could anchor |
 |:--|:--|
-| Bastian & Michelmore 2018 (JLE, DOI 10.1086/697477) | long-run EITC income → children's education/employment — second anchor for the income→attainment stream (#8 band cross-check) |
-| Behrman & Taubman 1990 (Review of Income and Wealth 36(2)) | PSID intergenerational earnings correlation — IGE-band cross-check (#9/#10 IGE rows) |
+| Bastian & Michelmore 2018 (JLE 36(4):1127-1163) | LANDED v1.14: eitc_exposure->adult_earnings_early 564.0 [84.0, 1044.0] EXACT (reduced form, ages 13-18; IV-scaled 10%-significant number recorded in notes); TIMING finding recorded: exposure before 13 ~ null — adolescent income is the operative window | done 2026-09-07 |
+| Behrman & Taubman 1990 (Review of Income and Wealth 36(2)) | LANDED v1.14 as CROSS-CHECK NOTES on both IGE rows (not a composed row — it is a correlation/attenuation result, not an elasticity): one-year measures R=0.20 (elasticity ~0.07) vs >0.5 long-run; brackets our [0.40,0.60] band honestly | done 2026-09-07 |
 | Carneiro et al. 2021 (DOI 10.1086/712443) | TIMING of parental income — which child ages matter; supports/bounds the sustained-exposure framing |
 | Michelmore & Pilkauskas 2021 (DOI 10.1086/711383) | EITC response by child age (maternal labor supply/childcare) — side stream, low priority |
 | Thornton 1980 | first-gen fertility/economic status → second-gen fertility — P3 fertility-transmission breadth |
