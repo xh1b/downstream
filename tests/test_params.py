@@ -11,7 +11,7 @@ PARAMS_DIR = Path(__file__).resolve().parent.parent / "params"
 
 
 def test_version_stamp():
-    assert load(PARAMS_DIR / "parameters.csv").version == "v1.10"
+    assert load(PARAMS_DIR / "parameters.csv").version == "v1.11"
 
 
 def test_nodes_registry_loads_with_known_units():
@@ -77,7 +77,7 @@ def test_with_param_overrides_and_marks_sampled():
     assert sampled.by_link(p0.link).point == 0.93
     assert sampled.version.endswith("-sampled")
     # original untouched (frozen dataclass semantics)
-    assert params.by_link(p0.link).point == 0.91
+    assert params.by_link(p0.link).point == 0.9076
 
 
 def test_cycle_rejection():

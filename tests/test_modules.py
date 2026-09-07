@@ -31,9 +31,9 @@ def test_worker_pinned_multiplier_scales_band_not_point():
 
 def test_child_line_gap_space_and_weakest_layer_flagged():
     line = child_line(load(PARAMS))
-    assert line["child"].point == 0.91
-    assert line["grandchild"].point == pytest.approx(0.9505, abs=1e-6)
-    assert line["greatgrandchild"].point == pytest.approx(0.9727750, abs=1e-6)
+    assert line["child"].point == 0.9076
+    assert line["grandchild"].point == pytest.approx(0.94918, abs=1e-6)
+    assert line["greatgrandchild"].point == pytest.approx(0.972049, abs=1e-6)
     assert line["weakest_identified"] == "greatgrandchild"
     assert "weakest" in line["honesty"]
 

@@ -15,7 +15,7 @@ PARAMS_DIR = Path(__file__).resolve().parent.parent / "params"
 def test_vignette_structure_and_honesty_markers():
     parts = load_all(PARAMS_DIR)
     out = standard_family(parts["params"])
-    assert out["parameter_set_version"] == "v1.10"
+    assert out["parameter_set_version"] == "v1.11"
     assert "never a deterministic claim" in out["vignette"]["framing"]
     assert out["children_stream"]["weakest_identified"] == "greatgrandchild"
     assert out["family_stream"]["daughter_violence_odds"]["blocked"]
@@ -26,7 +26,7 @@ def test_vignette_grandchild_matches_gap_math():
     parts = load_all(PARAMS_DIR)
     out = standard_family(parts["params"])
     gc = out["children_stream"]["grandchild"]
-    assert gc["point"] == pytest.approx(0.9505, abs=1e-4)
+    assert gc["point"] == pytest.approx(0.94918, abs=1e-4)
 
 
 def _fake_verified_baselines():
@@ -105,7 +105,7 @@ def test_scenario_counts_with_verified_baselines():
     assert deaths["point"] == pytest.approx(1.7488, abs=0.005)  # output rounded to 2dp
     child = out["modeled"]["child_lifetime_earnings_lost_usd"]
     # 100 workers x 2 children x 9% x $1M
-    assert child["point"] == pytest.approx(18_000_000.0, abs=1.0)
+    assert child["point"] == pytest.approx(18_480_000.0, abs=1.0)  # v1.11: 1-0.9076=0.0924 gap
 
 
 def test_mc_reproducible_and_bracketed():
@@ -127,7 +127,7 @@ def test_mc_reproducible_and_bracketed():
     assert a == b  # same seed -> identical published range
     assert a["p05"] <= a["p50"] <= a["p95"]
     # p50 of gap-space composition sits near the deterministic point
-    assert abs(a["p50"] - 0.9505) < 0.05
+    assert abs(a["p50"] - 0.94918) < 0.05
     assert a["p05"] > 0.80  # gap-space keeps the line near 1.0
 
 

@@ -62,8 +62,8 @@ below 1.0 as the tell for that bug class.
 population_scope, notes`. `citation` holds semicolon-separated bib
 keys — free-text citations are not allowed anywhere.
 
-### Active parameter set (v1.10; S&vW mortality rows table-pinned v1.9 —
-Table 5 col 2 log-odds converted to OR; Lindo infant row added v1.10.
+### Active parameter set (v1.11; Oreopoulos child row table-pinned —
+JOLE Table 2 col 3; S&vW mortality rows table-pinned v1.9; Lindo v1.10.
 Full history: params/CHANGELOG.md)
 
 | Link | Value [band] | Tier | Source keys |
@@ -72,7 +72,7 @@ Full history: params/CHANGELOG.md)
 | earnings_shock→mortality_sustained | 1.135 [1.033, 1.247] | EXACT | sullivan2009 |
 | earnings_shock→mortality_peak | 2.672 [2.116, 3.374] | EXACT | sullivan2009 |
 | displacement→divorce_hazard | 1.11 [1.05, 1.25] | canonical | rege2007; charles2004 |
-| displacement→child_earnings (direct) | 0.91 [0.86, 0.96] | EXACT | oreopoulos2008 |
+| displacement→child_earnings (direct) | 0.9076 [0.844, 0.976] | EXACT | oreopoulos2008 |
 | divorce→child_earnings (parallel) | 0.95 [0.90, 0.99] | canonical | gruber2004 |
 | family_size→child_earnings (parallel, per extra child) | 0.98 [0.95, 1.00] | canonical | black2005 |
 | child_earnings→grandchild_earnings (IGE) | 0.55 [0.40, 0.60] | canonical | solon1992; corak2013; chetty2014 |
@@ -105,9 +105,9 @@ band: g'_lo = 1 − t_hi·(1 − g_lo),  g'_hi = 1 − t_lo·(1 − g_hi)
 Worked line (the standard family, father shocked to 0.80):
 
 ```
-child gap        = 0.91                       (direct, oreopoulos2008)
-grandchild gap   = 1 − 0.55·0.09 = 0.9505     [0.916, 0.984]
-great-grandchild = 1 − 0.55·0.0495 = 0.9728   [0.9496, 0.9936]
+child gap        = 0.9076                     (direct, oreopoulos2008 JOLE Table 2 col 3)
+grandchild gap   = 1 − 0.55·0.0924 = 0.9492   [0.906, 0.990]
+great-grandchild = 1 − 0.55·0.0508 = 0.9720   [0.944, 0.996]
 ```
 
 v0 multiplied levels straight through (0.91 × 0.55 = 0.50) — that
@@ -384,7 +384,7 @@ baseline; parallel_gap_additive (direct + divorce + family-size gaps
 added in gap space — the additivity SPEC §4 refuses to assume
 silently, priced here at −3.9pp of grandchild gap); ige_decay_half /
 ige_decay_power (geometric re-parameterizations of the same cited
-IGE band, 0.933 / 0.963 vs baseline 0.9505). The baseline row always
+IGE band, 0.933 / 0.963 vs baseline 0.9492). The baseline row always
 equals the shipped model (trap-pinned). No variant is silently
 substituted — the spread IS the result. CLI: `downstream ensemble`.
 

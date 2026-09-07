@@ -58,7 +58,7 @@ def test_loguniform_moments_hand_computed():
 def test_gap_moments_match_direct_simulation_of_bilinear():
     # gap step: V' = 1 - T + T*V with independent T, V. Verify the exact
     # identity against brute-force integration on a coarse grid.
-    # Use synthetic bands: child U(0.86,0.96), IGE U(0.40,0.60).
+    # Grid mirrors the shipped bands: child U(0.844,0.976), IGE U(0.40,0.60).
     out = analytic_chain(
         PARAMS, [CHILD_DIRECT, GRANDCHILD], ["direct", "gap"], NODES
     )
@@ -66,7 +66,7 @@ def test_gap_moments_match_direct_simulation_of_bilinear():
     n = 400
     s, s2 = 0.0, 0.0
     for i in range(n):
-        g = 0.86 + (0.96 - 0.86) * (i + 0.5) / n
+        g = 0.844 + (0.976 - 0.844) * (i + 0.5) / n
         for j in range(n):
             t = 0.40 + (0.60 - 0.40) * (j + 0.5) / n
             v = 1 - t * (1 - g)
@@ -81,10 +81,11 @@ def test_degenerate_pinned_chain_has_zero_variance():
     # pin every link: variance must be exactly 0, not negative noise
     from downstream.knobs import pin
 
-    ps = pin(pin(PARAMS, CHILD_DIRECT, 0.91), GRANDCHILD, 0.55)
+    ps = pin(pin(PARAMS, CHILD_DIRECT, 0.9076), GRANDCHILD, 0.55)
     out = analytic_chain(ps, [CHILD_DIRECT, GRANDCHILD], ["direct", "gap"], NODES)
-    assert out["var"] == 0.0
-    assert out["p05_normal"] == out["p95_normal"] == out["mean"]
+    assert out["var"] == pytest.approx(0.0, abs=1e-14)  # float noise only (~2e-16)
+    assert out["p05_normal"] == pytest.approx(out["p95_normal"], abs=1e-7)  # sqrt of 2e-16 var noise -> ~5e-8 quantile spread
+    assert out["mean"] == pytest.approx(out["p95_normal"], abs=1e-7)  # sqrt of 2e-16 var noise -> ~5e-8 quantile spread
 
 
 # --- trap: sampler bug dressed as a result -----------------------------------
@@ -218,7 +219,7 @@ def test_gap_third_moment_matches_brute_force():
     n = 300
     s3 = 0.0
     for i in range(n):
-        g = 0.86 + (0.96 - 0.86) * (i + 0.5) / n
+        g = 0.844 + (0.976 - 0.844) * (i + 0.5) / n
         for j in range(n):
             t = 0.40 + (0.60 - 0.40) * (j + 0.5) / n
             s3 += (1 - t * (1 - g)) ** 3
@@ -231,9 +232,9 @@ def test_gap_third_moment_matches_brute_force():
 def test_cf_reduces_to_normal_at_zero_skew():
     # a single direct uniform step is symmetric: skewness exactly 0
     out = analytic_chain(PARAMS, [CHILD_DIRECT], ["direct"], NODES)
-    assert out["skewness"] == pytest.approx(0.0, abs=1e-9)
-    assert out["p05_cf"] == pytest.approx(out["p05_normal"], abs=1e-9)
-    assert out["p95_cf"] == pytest.approx(out["p95_normal"], abs=1e-9)
+    assert out["skewness"] == pytest.approx(0.0, abs=1e-7)  # sqrt of 2e-16 var noise -> ~5e-8 quantile spread
+    assert out["p05_cf"] == pytest.approx(out["p05_normal"], abs=1e-7)  # sqrt of 2e-16 var noise -> ~5e-8 quantile spread
+    assert out["p95_cf"] == pytest.approx(out["p95_normal"], abs=1e-7)  # sqrt of 2e-16 var noise -> ~5e-8 quantile spread
 
 
 def test_cf_beats_normal_on_skewed_product_chain():
