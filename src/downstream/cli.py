@@ -186,8 +186,11 @@ def main(argv: list[str] | None = None) -> int:
     if args.cmd == "knobs":
         from .knobs import sweep as knob_sweep
         from .knobs import value_of_information
-        from .scenario import ScenarioInput
 
+        # NOTE: do NOT re-import ScenarioInput here — a function-local
+        # import makes the name local to all of main(), and the
+        # `scenario` branch above then dies with UnboundLocalError
+        # (caught by the CLI smoke trap, 2026-09-07).
         scenario = ScenarioInput(
             displaced_workers=args.workers,
             n_children=args.children,
