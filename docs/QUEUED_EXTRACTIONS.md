@@ -27,8 +27,8 @@ P2 = completes a stream; P3 = breadth.
 | 7 | wage→fertility (converse) | Kearney & Wilson 2020 REStat | fertility elasticity to male income from fracking boom | pending |
 | 8 | income→child achievement | Dahl & Lochner 2012 AER 102(5):1927-1956 (queue page ref corrected) | LANDED v1.12: +0.0610 SD per $1,000 year-2000 $ [0.016, 0.106] EXACT — Table 3 col (i), SE 0.0231, N=8,608, EITC IV (read via NBER w14599) | done 2026-09-07 |
 | 9 | early-poverty→adult attainment | Duncan, Ziol-Guest & Kalil 2010 | adult earnings effect of ages 0-5 poverty | pending |
-| 10 | unemployment→property crime | Raphael & Winter-Ebmer 2001; Lin 2008 | property-crime elasticity per pp unemployment | pending |
-| 11 | parental displacement→college | Hilger 2016 AEJ:Applied 8(3):247-283, DOI 10.1257/app.20150295 (queue citation CORRECTED; was 8:787) | pending — BLOCKED: AEA full text is viewer-gated (abstract only); headline from abstract: layoffs cut income dramatically but college enrollment/quality only SLIGHTLY, and firm-closure-based estimates suffer selection — expect a SMALL link, weaker than assumed; needs the published tables (replication package or library access) before an EXACT row | blocked 2026-09-07 |
+| 10 | unemployment→property crime | Raphael & Winter-Ebmer 2001 JLE 44(1):259-283 (NOT JOLE — venue corrected); Lin 2008 | LANDED v1.13: +5.018% property crime per 1pp unemployment [2.795, 7.241] EXACT 2SLS (overID passes); OLS 1.6-2.4% recorded; violent-crime null deliberately not landed; Lin 2008 stays queued as the second band anchor | done 2026-09-07 |
+| 11 | parental displacement→college | Hilger 2016 AEJ:Applied 8(3):247-283 | LANDED v1.13 (published copy provided by owner): enrollment multiplier 0.9894 [0.9848, 0.9939] EXACT (−0.432pp on 40.66% base) + companion income bridge 0.8640 [0.8568, 0.8712]. CLOSURE-SELECTION WARNING recorded: Hilger's own closure-DD is wrong-signed and his fn31 names oreopoulos2008 + sullivan2009 as exposed designs — V2 reconciliation item queued; child-earnings band NOT silently changed | done 2026-09-07 |
 | 12 | displacement→test scores | Stevens & Schaller 2011 | math/reading effect sizes | pending |
 | 13 | displacement→infant health | Lindo 2011 J Health Econ 30:869-879 | LANDED v1.10: displacement->infant_birth_weight 0.954 [0.912,0.998] EXACT (Table 2 col 3 via IZA DP 5213) | done 2026-09-07 |
 | 14 | local decline→child maltreatment | Lindo, Schaller & Hansen 2018 | maltreatment effect per local shock | pending |
@@ -68,3 +68,16 @@ P2 = completes a stream; P3 = breadth.
 - Native-wage effects: contested (borjas2003 vs ottaviano2012; the
   Mariel re-analysis war). Not a parameter; alternate-band policy in
   SPEC §10 applies if a surface needs it.
+
+## Downloaded full texts available (owner, 2026-09-07 — ~/Downloads/papers)
+
+Landed: hilger2016, raphael2001, dahl2012 (published AER — v1.12 row verified
+identical coefficient/SE, N corrected 8608→8609). Also available, not yet landed:
+
+| Study | What it could anchor |
+|:--|:--|
+| Bastian & Michelmore 2018 (JLE, DOI 10.1086/697477) | long-run EITC income → children's education/employment — second anchor for the income→attainment stream (#8 band cross-check) |
+| Behrman & Taubman 1990 (Review of Income and Wealth 36(2)) | PSID intergenerational earnings correlation — IGE-band cross-check (#9/#10 IGE rows) |
+| Carneiro et al. 2021 (DOI 10.1086/712443) | TIMING of parental income — which child ages matter; supports/bounds the sustained-exposure framing |
+| Michelmore & Pilkauskas 2021 (DOI 10.1086/711383) | EITC response by child age (maternal labor supply/childcare) — side stream, low priority |
+| Thornton 1980 | first-gen fertility/economic status → second-gen fertility — P3 fertility-transmission breadth |

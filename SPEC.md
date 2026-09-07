@@ -62,8 +62,9 @@ below 1.0 as the tell for that bug class.
 population_scope, notes`. `citation` holds semicolon-separated bib
 keys — free-text citations are not allowed anywhere.
 
-### Active parameter set (v1.12; wage-spillover, child-achievement, income-longevity
-rows landed from full texts; v1.11 Oreopoulos table pin; v1.9 S&vW; v1.10 Lindo.
+### Active parameter set (v1.13; college-enrollment + income-shock + crime rows landed
+from Hilger 2016 and Raphael-Winter-Ebmer 2001; v1.12 spillover/achievement/longevity;
+v1.11 Oreopoulos pin; v1.9 S&vW; v1.10 Lindo.
 Full history: params/CHANGELOG.md)
 
 | Link | Value [band] | Tier | Source keys |
@@ -86,6 +87,9 @@ Full history: params/CHANGELOG.md)
 | import_shock→non_displaced_wage_spillover (log pts/$1k) | −0.822 [−1.304, −0.340] | EXACT | adh2013 |
 | family_income_shock→child_achievement (SD/$1k) | +0.061 [0.016, 0.106] | EXACT | dahl2012 |
 | family_income_shock→life_expectancy (yrs/$1k) | +0.133 [0.117, 0.150] | EXACT | chetty2016 |
+| displacement→college_enrollment | 0.9894 [0.9848, 0.9939] | EXACT | hilger2016 |
+| displacement→parental_income (short-run) | 0.8640 [0.8568, 0.8712] | EXACT | hilger2016 |
+| unemployment_rate→property_crime (% per pp) | +5.018 [2.795, 7.241] | EXACT | raphael2001 |
 
 Tiers mean what `CITING.md` says they mean. The audit cross-checks
 each tier against the `xh1b-evidence` class recorded in the bib entry.
