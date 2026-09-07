@@ -333,9 +333,15 @@ level (no-migration-dampener) caveat lives in the validation docs.
   model band overshoots the measured point. Three scope caveats
   publish with it (S&vW identifies high-seniority men; the bridge
   displaces adults 18-39 of both sexes; the measured outcome is a
-  male-female differential). All non-mortality outcomes are named
-  refusals: ADH is their only source, so scoring against them would
-  be circular. Trap-pinned: the miss cannot be flipped to a pass by
+  male-female differential). The divorce column (T6 col2) is scored as a
+  SECOND non-circular stream (rege2007/charles2004 hazard + census
+  divorce baseline): model 0.031pp / 0.061pp of women (5y/10y) vs
+  measured 0.28pp (SE 0.15) — the channel explains ~11-22% of the
+  measured stock change; undershoot published with the remarriage-
+  margin explanation candidate. Remaining refusals (fertility, teen
+  births, unmarried share, poverty, headship, gender ratio) are
+  truly circular: ADH is their only parameter source. Circularity is
+  a property of the EVIDENCE GRAPH, not of ambition. Trap-pinned: the miss cannot be flipped to a pass by
   code changes, only by new evidence. Spec: `validate.v1_backtest_spec()`;
   scorecard: `validate.v1_retrodict()`; panel-level retrodiction
   (per-CZ, CRPS/coverage/PIT) still pending CZ exposure data.

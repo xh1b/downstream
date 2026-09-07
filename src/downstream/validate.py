@@ -195,10 +195,40 @@ def v1_retrodict(params: ParameterSet) -> dict:
             "modeled_point_inside_measured_ci": (measured - 1.96 * mse) <= point <= (measured + 1.96 * mse),
         })
 
+    # --- divorce stream (non-circular: rege2007/charles2004, not ADH) ---
+    # additional divorces per 100k adults over W years =
+    #   N_displaced x married_share x divorce_5y_baseline x (hazard_ratio - 1)
+    # linearization of the cumulative hazard (declared approximation:
+    # valid for small cumulative probabilities), scaled W/5.
+    divorce = params.by_link("displacement->divorce_hazard")
+    married_share = float(bridge["married_share_women_1839_1990"]["point"])
+    women_share = float(bridge["women_share_adults_1839"]["point"])
+    d_measured, d_se = 0.28, 0.15
+    d_rows = []
+    for window in (5.0, 10.0):
+        def d_excess(n: float, hr: float) -> float:
+            return n * married_share * 0.1045 * (hr - 1) * (window / 5.0) / women_share / 1000.0
+
+        pt = d_excess(n_point, divorce.point)
+        lo = d_excess(n_lo, divorce.low)
+        hi = d_excess(n_hi, divorce.high)
+        d_rows.append({
+            "window_years": window,
+            "modeled_pp_women": {"point": round(pt, 4), "low": round(lo, 4), "high": round(hi, 4)},
+            "measured_pp_women": {"point": d_measured, "ci95": [round(d_measured - 1.96 * d_se, 4), round(d_measured + 1.96 * d_se, 4)]},
+            "measured_inside_modeled_band": lo <= d_measured <= hi,
+            "modeled_point_inside_measured_ci": (d_measured - 1.96 * d_se) <= pt <= (d_measured + 1.96 * d_se),
+            "assumptions": [
+                "cumulative hazard linearized in the rate ratio (declared approximation, small-p)",
+                "married_share incidence from ADH T6 1990 level (transcribed, cited)",
+                "one exposed marriage per married displaced worker",
+            ],
+        })
+
     refusals = [
         {"outcome": r["outcome"], "reason": "circular: ADH is the only source for this coefficient; the model has no independent path (no marriage/fertility/poverty parameter outside ADH)"}
         for r in v1_targets()["targets"]
-        if r["outcome"] not in {"male_female_mort_diff_total"}
+        if r["outcome"] not in {"male_female_mort_diff_total", "widowed_divorced_separated_pp"}
     ]
 
     return {
@@ -206,6 +236,10 @@ def v1_retrodict(params: ParameterSet) -> dict:
         "bridge": {"displaced_per_100k": {"point": n_point, "low": n_lo, "high": n_hi}, "source": "ADH T1 col10 (validation/adh2019_exposure_bridge.csv)"},
         "window_years": WINDOW,
         "scored": scored,
+        "scored_divorce": {
+            "stream": "displacement->divorce_hazard (rege2007; charles2004) + census divorce_5y_cumulative baseline",
+            "windows": d_rows,
+        },
         "refusals": refusals,
         "honesty": (
             "No parameter was tuned to pass. Bands are exact interval "

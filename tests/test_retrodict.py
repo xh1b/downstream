@@ -12,6 +12,8 @@ Each trap names the defect it hunts:
 
 from __future__ import annotations
 
+import pytest
+
 from downstream.params import load_all
 from downstream.validate import v1_retrodict
 
@@ -46,10 +48,31 @@ def test_current_honest_verdict_state():
     assert all_adults["modeled_point_inside_measured_ci"] is True
 
 
-def test_refusals_exclude_only_the_scored_outcome():
+def test_refusals_exclude_only_the_scored_outcomes():
     names = {r["outcome"] for r in R["refusals"]}
     assert "male_female_mort_diff_total" not in names
+    assert "widowed_divorced_separated_pp" not in names
     assert len(names) == 10
+
+
+def test_divorce_verdict_state():
+    # non-circular stream (rege2007, not ADH): model undershoots the
+    # measured stock change (~11-22% explained), measured CI covers the
+    # model point. Pinned: flippable only by evidence.
+    for w in R["scored_divorce"]["windows"]:
+        assert w["measured_inside_modeled_band"] is False
+        assert w["modeled_point_inside_measured_ci"] is True
+    w10 = [w for w in R["scored_divorce"]["windows"] if w["window_years"] == 10.0][0]
+    w5 = [w for w in R["scored_divorce"]["windows"] if w["window_years"] == 5.0][0]
+    assert w10["modeled_pp_women"]["point"] == pytest.approx(2 * w5["modeled_pp_women"]["point"], abs=1e-3)
+    for w in (w5, w10):
+        m = w["modeled_pp_women"]
+        assert m["low"] <= m["point"] <= m["high"]
+
+
+def test_divorce_stream_cites_non_adh_sources():
+    s = R["scored_divorce"]["stream"]
+    assert "rege2007" in s and "census" in s
 
 
 def test_retrodict_deterministic():

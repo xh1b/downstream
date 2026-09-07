@@ -14,6 +14,7 @@
 outcome,population,coefficient_per_pp_shock,se,level_1990,table_col,citation,notes
 marriage_rate_pp,"women 18-39 currently married, %pts",-0.72,0.34,53.05,"T6 col3","autor2019","panel A, overall shock, p<0.05"
 never_married_pp,"women 18-39 never married, %pts",0.44,0.30,34.84,"T6 col1","autor2019","panel A, overall shock, insignificant"
+widowed_divorced_separated_pp,"women 18-39 widowed/divorced/separated, %pts",0.28,0.15,12.11,"T6 col2","autor2019","panel A, overall shock, p<0.10; independently scoreable against the rege2007 divorce stream (non-circular)"
 marriage_rate_young_pp,"women 18-25 currently married, %pts",-1.22,0.50,27.74,"T6 col6","autor2019","panel B, overall shock, p<0.05"
 fertility_rate_per_k,"births per 1000 women 20-39",-3.30,0.51,86.9,"T7 col1","autor2019","overall shock, p<0.01; ~4% relative decline"
 teen_births_per_k,"births per 1000 women 15-19",-1.22,0.72,60.0,"T7 col2","autor2019","overall shock, p<0.10"
