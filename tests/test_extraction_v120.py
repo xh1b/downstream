@@ -1,4 +1,4 @@
-"""v1.20 pins: the Stevens & Schaller 2011 grade-retention row (queue
+"""v1.21 pins: the Stevens & Schaller 2011 grade-retention row (queue
 #12, read via NBER w15480; Economics of Education Review 30(2) is the
 version of record).
 
@@ -118,6 +118,6 @@ def test_dag_wiring_valid():
 
 
 def test_version_bumped_and_audit_clean():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.20"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.21"
     errors = [f for f in audit(PARAMS_DIR) if f.severity == ERROR]
     assert errors == []

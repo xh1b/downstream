@@ -33,3 +33,6 @@ gop_win_probability,percent_delta,"change in probability of electing a Republica
 male_mass_layoff_rate,percent_delta,"change in the county male mass-layoff rate, in percentage points"
 child_maltreatment_response,percent_delta,"percent change in child-maltreatment reports per 1pp male mass-layoff-rate change (boundary-applied)"
 grade_retention_hazard,rate_ratio,"relative probability of repeating a grade vs counterfactual (1.0 = unharmed); school-progress indicator, NOT test-score SDs"
+eviction_order,persons,"household heads displaced by an executed court eviction order entering the model (the collinson2024 IV treatment; no upstream producer yet — rent-burden/arrears conversion queued)"
+emergency_shelter_use,rate_ratio,"relative probability of emergency-shelter use vs the no-eviction counterfactual (1.0 = unharmed)"
+eviction_earnings_response,gap_multiplier,"evicted tenant average QUARTERLY earnings vs the no-eviction counterfactual (1.0 = unharmed; -$613/quarter on the $4,300 base = 0.857, 2016 USD in notes; NEVER composed into the worker_earnings multiplier)"

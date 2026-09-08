@@ -1,3 +1,24 @@
+## v1.21 — Collinson et al. 2024 eviction stream, queue #17 (2026-09-09)
+
+- QUEUE TARGET CORRECTED: #17 named the Collinson & Reed 2018 WP; the
+  version of record is Collinson, Humphries, Mader, Reed, Tannenbaum &
+  van Dijk, "Eviction and Poverty in American Cities," QJE 139(1):57-120
+  (doi 10.1093/qje/qjad042), which subsumes that WP. Read via NBER
+  w30382 (rev. July 2023, post-acceptance). Crossref-verified.
+- New rows (both EXACT, judge-leniency IV, Cook County + NYC):
+  `eviction_order->emergency_shelter_use` 4.778 [1.076, 8.480] — year-1
+  IV +3.4pp on the 0.9% base (Table V col 3); year-2 shelter null,
+  homelessness-services contact persists (+3.6pp, SE 1.5).
+  `eviction_order->eviction_earnings_response` -$613/quarter [-1,099,
+  -127] 2016 USD — year-2 (Q5-8) IV on the $4,300 base; year-1 -$323
+  (SE 175) ns recorded; female (-$767) / Black (-$931) concentration
+  noted, equality not formally rejected.
+- REFUSAL (SPEC §10): desmond2016 matched +11-22pp job-loss estimate is
+  NOT encoded — matching-on-observables class (CITING §1) cannot set a
+  point, and collinson2024 refutes the size (employment IV -1.5pp /
+  -1.8pp, both ns). The eviction stream starts at three nodes
+  (eviction_order, emergency_shelter_use, eviction_earnings_response);
+  no rent-burden upstream producer yet (queued).
 
 ## v1.20 — Stevens & Schaller 2011, queue #12 (2026-09-08)
 

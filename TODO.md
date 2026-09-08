@@ -30,8 +30,7 @@ Plan of record: owner-approved top 10 (2026-09-06). Every number cites
 Tracked in `docs/QUEUED_EXTRACTIONS.md` — the queue's status column is the
 truth; do not duplicate rows here.
 
-- **[P2] Remaining** — #15 Colantone-Stanig (owner download); #17 eviction chain (IN PROGRESS: desmond2016, collinson2018, and the version of record
-  collinson2024 via NBER w30382 all read in full; landing pending — see the
-  queue row); #18; #20-#22 (#22 owner download). #12 Stevens-Schaller LANDED
+- **[P2] Remaining** — #15 Colantone-Stanig (owner download); #18; #20-#22 (#22 owner download). #17 LANDED v1.21 (version of record corrected to
+  collinson2024 QJE; desmond2016 job-loss refusal in SPEC §10). #12 LANDED
   v1.20.
 - Also: remarriage-margin candidate from the V1 divorce row.
