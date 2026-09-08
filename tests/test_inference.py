@@ -117,25 +117,37 @@ def test_normal_band_prices_skewness_not_hides_it():
 
 # --- trap: a "90% band" that is not a 90% band -------------------------------
 
-def test_closure_coverage_hits_nominal_within_2se():
+def test_closure_coverage_hits_nominal_within_2p5se():
     # coverage is a frequentist property: one seed's empirical rate
     # carries binomial noise (observed to straddle 2 SE across seeds
     # as the parameter set evolved). Pool three seeds so the estimate
     # measures the property, not the seed's luck.
+    #
+    # 2026-09-09 forensics (v1.25): the 3-seed x 400 pool carried a
+    # -2-sigma family draw at nominal 0.8 after the parameter set grew
+    # (every parameter-set bump re-rolls the RNG streams). Exact-band
+    # calibration (200k-draw calibration quantiles against 25k truths,
+    # same truth-stream family) shows coverage IS nominal at every
+    # level (0.8 -> 0.7995, z = -0.19), and the estimated band edges
+    # match the exact quantiles to 4 decimals — the machinery is
+    # unbiased; the old pool was just a small, unlucky draw. Ten seeds
+    # x 1000 trials measures the property with 3x the precision, and
+    # the gate sits at 2.5 SE (the sabotage traps fail at tens of SE,
+    # so the tripwire keeps its teeth).
     rates = {lv: [] for lv in (0.5, 0.8, 0.9, 0.95)}
-    for seed in (11, 23, 47):
+    for seed in (11, 23, 47, 101, 211, 307, 409, 503, 601, 709):
         out = closure_coverage(
-            PARAMS, _grandchild, NODES, trials=400, draws=2000, seed=seed
+            PARAMS, _grandchild, NODES, trials=1000, draws=2000, seed=seed
         )
         for r in out["levels"]:
             rates[r["nominal"]].append(r["empirical"])
-    trials = 3 * 400
+    trials = 10 * 1000
     for nominal, emps in rates.items():
         pooled = sum(emps) / len(emps)
         se = (nominal * (1 - nominal) / trials) ** 0.5
-        assert abs(pooled - nominal) < 2 * se, (
+        assert abs(pooled - nominal) < 2.5 * se, (
             f"pooled coverage at {nominal}: {pooled:.3f} vs nominal, "
-            f"2SE = {2 * se:.3f} ({emps})"
+            f"2.5SE = {2.5 * se:.4f} ({emps})"
         )
 
 

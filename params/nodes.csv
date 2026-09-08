@@ -43,3 +43,5 @@ child_externalizing_sd,sd_delta,"child externalizing symptoms vs unexposed peers
 local_unemp_shock,rate_ratio,"relative 12-month change in the local (MSA) unemployment rate; 1.0 = flat, 2.0 = doubling (schneider2016 shock measure)"
 household_hardship,rate_ratio,"relative material-hardship incidence (1+ of 10 hardship items in the past 12 months)"
 couple_unemployment,rate_ratio,"relative incidence of couple unemployment (mother or partner unemployed and looking)"
+unemployment_status,rate_ratio,"relative incidence of involuntary unemployment vs employment (entry node; person-level status contrast, NOT the area unemployment rate whose level is a schneider2016 level-null)"
+mental_health_sd,sd_delta,"mental-health distress vs employed comparison, Cohen's d SD units (exposure contrast carried by the boundary rule, never chained)"

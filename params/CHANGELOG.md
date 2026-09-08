@@ -1,3 +1,18 @@
+## v1.25 — 2026-09-09 — queue #20 landed: unemployment -> mental health (paul2009)
+
+- One row (EXACT, the CITING meta class): unemployment_status->mental_health_sd 0.51 [0.47, 0.54]
+  (cross-sectional random-effects meta, outliers excluded, k=315, N=209,379; all-studies 0.54
+  [0.50, 0.57] beside). Band = reported CI.
+- Causality anchors recorded, never averaged: factory-closure natural experiments d=0.38 [0.25, 0.51]
+  (k=27); longitudinal job loss 0.19 / reemployment 0.35, retest-corrected 0.25/0.29; selection effects
+  small (0.23/0.15/0.08) and declared as running the other way.
+- Moderators scope-declared: men and blue-collar stronger; duration peaks at 9 months (d=0.73), the
+  post-29-month worsening UNSTABLE (k=5) — not landed; age U-shape unstable — not landed; country
+  moderators recorded (low-GDP .62 vs .49, Gini .57 vs .48, weak protection .58 vs .46, Gini/protection
+  confounded per the authors).
+- New nodes: unemployment_status, mental_health_sd (sd_delta). PARALLEL stream, never chained.
+- paul2009 bib entry upgraded to fulltext-table (owner-downloaded ScienceDirect PDF read in full).
+
 ## v1.24 — 2026-09-09 — queue #22 landed: recessions -> IPV (schneider2016)
 
 - Three rows (EXACT-results, area-level shock + household-level distress) onto the household_ipv node:
