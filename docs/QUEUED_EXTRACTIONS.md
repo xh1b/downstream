@@ -45,7 +45,9 @@ P2 = completes a stream; P3 = breadth.
 
 | # | Link | Study | Extraction target | Status |
 |:--|:--|:--|:--|:--|
-| 23 | county mobility modifier | Chetty & Hendren 2018 AER 108; CHKS 2014 QJE 129 | per-county causal place effects file (public data) as a pluggable `place_modifier` | pending |
+| 23 | county mobility modifier | Chetty & Hendren 2018 QJE 133(3):1163 (childhood exposure effects; AER 108 = the 2018 follow-on) | per-percentile exposure-effect parameter `neighborhood_exposure->child_outcomes_modifier` — the engine formula is FROZEN (v1.29, multiplier = 1 + (pct-50)/100 x point); the number lands as the parameter row with the unit conversion declared in notes | queued (paper: open PDF at QJE/NBER w23001) |
+| 30 | county mobility_percentile plug | Opportunity Atlas county outcomes (Chetty et al. 2018, public data) | per-county mobility T-rank percentile + n -> `params/places.csv` rows (the modifier's place input) | queued (open CSV download) |
+| 31 | county mortality plug | CDC WONDER D76 county query (FIPS-level deaths + population, 45-54 men, 2015-2019 pooled to match the national baseline pin) | `places.csv` mortality_rate (same unit as baselines.csv:all_cause_mortality_annual — per person-year prime-age) + mortality_n | queued — PARENT-REPO ingest task (scraper wonder-mortality CLI is national-only; county grouping is a new query) — handoff recorded, downstream repo does not touch the scraper |
 | 24 | neighborhood crime→child crime | Damm & Dustmann 2014 | exposure-duration elasticity | pending |
 | 25 | casino income→child outcomes | Akee et al. 2010 AEJ:Applied 2:86 | education/crime effects per $4k unconditional income | pending |
 | 26 | bankruptcy/default after job loss | Ganong & Noel 2022 QJE 137; Sullivan et al. 2000 | default hazard effect of income interruption | pending |

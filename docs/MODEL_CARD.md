@@ -48,10 +48,16 @@ Reporting". This card travels with the model.
   at v1.28, trap tests pin them); scoring blocks until each event's
   displacement bridge and measured coefficients land — recorded
   honestly, never fabricated.
+- Place-resolved layer (v1.29): county baselines with empirical-Bayes
+  shrinkage toward national (w = n/(n+k), declared prior n) + the
+  Chetty-Hendren mobility modifier (formula frozen; parameter row
+  pending — blocked, never fabricated). Plugs: places.csv rows from
+  the Opportunity Atlas + a county WONDER pull.
 - V3: designed, not built.
-- Unit tests: 351; adversarial traps for the known bug classes
+- Unit tests: 375; adversarial traps for the known bug classes
   (level-vs-gap composition, level-ratio misuse, naked estimates,
-  band inversion, pre-registration drift, fabricated scorecards).
+  band inversion, pre-registration drift, fabricated scorecards,
+  place-swap unit bugs, pooling-weight fabrication).
 
 ## Ethical considerations
 

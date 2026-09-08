@@ -23,6 +23,7 @@ from .params import (
     load_correlations,
     spearman_matrix,
 )
+from .place import MOBILITY_MODIFIER_LINK, load_places
 from . import units
 
 ERROR = "ERROR"
@@ -227,6 +228,60 @@ def audit(params_dir: str | Path | None = None) -> list[Finding]:
         else:
             findings.append(
                 Finding(ERROR, "baseline", f"baselines.csv:{name}: unknown status {b.status!r}")
+            )
+
+    # Place-resolved plug (params/places.csv, optional): rows need
+    # citations, the national fallback row is required when the file
+    # exists, and a rate without its precision n would make the
+    # pooling weight a guess — flagged as an honest gap, not applied.
+    places = load_places(d / "places.csv")
+    if places:
+        if "national" not in places:
+            findings.append(
+                Finding(
+                    ERROR,
+                    "places",
+                    "places.csv: no 'national' row — county shrinkage pools "
+                    "toward it; add the row with its citation",
+                )
+            )
+        for key, pl in places.items():
+            prow = f"places.csv:{key}"
+            if not pl.citation:
+                findings.append(Finding(ERROR, "places", f"{prow}: no citation"))
+            if pl.level not in ("national", "state", "county"):
+                findings.append(
+                    Finding(ERROR, "places", f"{prow}: unknown level {pl.level!r}")
+                )
+            if pl.mortality_rate is not None and pl.mortality_n is None:
+                findings.append(
+                    Finding(
+                        WARN,
+                        "places",
+                        f"{prow}: mortality_rate without mortality_n — pooling "
+                        "weight would be a guess; the outcome stays national "
+                        "until the n lands",
+                    )
+                )
+            if pl.divorce_rate is not None and pl.divorce_n is None:
+                findings.append(
+                    Finding(
+                        WARN,
+                        "places",
+                        f"{prow}: divorce_rate without divorce_n — pooling "
+                        "weight would be a guess; the outcome stays national "
+                        "until the n lands",
+                    )
+                )
+        if MOBILITY_MODIFIER_LINK not in {p.link for p in params.parameters}:
+            findings.append(
+                Finding(
+                    WARN,
+                    "places",
+                    f"mobility modifier {MOBILITY_MODIFIER_LINK!r} not extracted "
+                    "yet — child-outcome place modifiers blocked until the "
+                    "Chetty & Hendren 2018 row lands",
+                )
             )
 
     # Declared correlations: pairs must reference real links, the matrix

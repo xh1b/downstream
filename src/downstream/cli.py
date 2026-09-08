@@ -25,6 +25,8 @@ from .mc import simulate_chain
 from .params import ParameterSet, default_dir, load_all
 from .render import load_citations, render_text
 from .scenario import ScenarioInput, compute_counts
+from .snapshot import dumps as snapshot_dumps
+from .snapshot import write as snapshot_write
 from .sensitivity import sobol_indices
 from .validate import run as validate_run
 from .vignette import standard_family
@@ -105,8 +107,22 @@ def main(argv: list[str] | None = None) -> int:
     p = sub.add_parser("ensemble", help="structural-variant ensemble (plan #9)")
     p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
 
+    p = sub.add_parser(
+        "place",
+        help="place-resolved baselines + mobility modifier for one geography",
+    )
+    p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
+    p.add_argument("--key", required=True, help="places.csv key (e.g. 'national' or a FIPS)")
+
     p = sub.add_parser("audit", help="parameter/citation/DAG checks")
     p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
+
+    p = sub.add_parser(
+        "export",
+        help="version-stamped parameter_set.json snapshot (consumed by production; refuses while audit has ERRORs)",
+    )
+    p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
+    p.add_argument("--out", default=None, help="write to a file instead of stdout")
 
     p = sub.add_parser("validate", help="V0 internal consistency + V1 target")
     p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
@@ -317,6 +333,14 @@ def main(argv: list[str] | None = None) -> int:
         _dump(run_ensemble(params))
         return 0
 
+    if args.cmd == "export":
+        if args.out:
+            n = snapshot_write(args.out, args.params)
+            print(f"wrote {args.out}: {n} parameters", file=sys.stderr)
+        else:
+            print(snapshot_dumps(args.params), end="")
+        return 0
+
     if args.cmd == "audit":
         findings = audit(args.params)
         s = summary(findings)
@@ -326,6 +350,13 @@ def main(argv: list[str] | None = None) -> int:
     if args.cmd == "validate":
         _dump(validate_run(params))
         return 0 if validate_run(params)["v0_internal_consistency"]["pass"] else 1
+
+    if args.cmd == "place":
+        from .place import load_places, place_json
+
+        places = load_places(Path(args.params) / "places.csv")
+        _dump(place_json(places, parts["baselines"], args.key, params))
+        return 0
 
     if args.cmd == "citations":
         bib = parts["bib"]

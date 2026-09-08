@@ -1,3 +1,33 @@
+## v1.29 — 2026-09-09 — #7: place-resolved layer (shrinkage + mobility modifier, plugs pending)
+
+- place.py: the engine's place-resolved layer. County baselines swap
+  into the national values with empirical-Bayes shrinkage toward the
+  national mean, w = n/(n+k) (declared prior n per outcome, module
+  constant PRIOR_N; formula pinned, k is a modeling choice documented
+  in the docstring). No silent unit conversions: a county value must
+  be in the SAME unit and population as the national baseline it
+  replaces (declared in the row's citation; the note in the swapped
+  row says so).
+- Missing anything (no file, no row, no precision n, no declared k)
+  falls back to the national value with the exact reason stated —
+  never a fabricated pool.
+- Mobility modifier (Chetty & Hendren 2018, QJE 133(3):1163): formula
+  frozen now — multiplier = 1 + (mobility_percentile - 50)/100 *
+  param.point, band direction follows the gap sign, gap=0 -> exactly
+  1. The parameter row `neighborhood_exposure->child_outcomes_modifier`
+  is NOT extracted yet; the modifier reports `blocked` naming the
+  link until it lands. Extraction queued.
+- Audit: places.csv rows need citations; the national row is required
+  when the file exists; a rate without its precision n is a WARN (the
+  outcome stays national); the unextracted modifier link is a WARN.
+- CLI verb `place --key <fips|national>` prints the CLI-ready shrunk
+  baselines + modifier with provenance.
+- traps caught: the CLI place path would have crashed on Baseline
+  dataclass leakage into JSON (place_json fixes it); a loader crash on
+  miscounted CSV columns fails loudly (correct behavior — the trap CSV
+  was malformed).
+- 375 tests green.
+
 ## v1.28 — 2026-09-09 — #6: V2 back-test framework, PRE-REGISTERED (sources pending)
 
 - validate.py gains the V2 registry: three held-out events (NAFTA 1990-2000,

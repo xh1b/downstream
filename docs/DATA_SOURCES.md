@@ -32,6 +32,7 @@ the root `.env`. Status as of 2026-09-06.
 | Displacement events (WARN layoffs) | xh1b warehouse `warns` + `displacement_events` (WARN↔LCA match engine already built) | the documented-layoff exposure |
 | BLS OES medians by SOC | xh1b warehouse (BLS OES already ingested) | wage-gap inputs; also a fallback earnings baseline if SSA tables resist |
 | County FIPS resolution | `lcas.worksite_county_fips` | joins place-level baselines |
+| County mobility percentiles + county mortality baselines | place-resolved layer plugs (`params/places.csv`): mobility from the Opportunity Atlas county outcomes file (open CSV, queued as #30); mortality from CDC WONDER D76 county query (parent-repo scraper task, queued as #31 — the wonder-mortality CLI is national-only today) | engine (shrinkage + modifier formula) LANDED v1.29; plugs pending; county values must be derived in the SAME unit/population as the national baseline rows (per person-year, prime-age) |
 | Firm-size/lottery-era crowdout parameters | Doran-Gelber-Isen 2022 (already EXACT in evidence) | parameter-side, not a new pull |
 
 ## Access rules
