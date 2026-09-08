@@ -15,7 +15,7 @@ PARAMS_DIR = Path(__file__).resolve().parent.parent / "params"
 def test_vignette_structure_and_honesty_markers():
     parts = load_all(PARAMS_DIR)
     out = standard_family(parts["params"])
-    assert out["parameter_set_version"] == "v1.19"
+    assert out["parameter_set_version"] == "v1.20"
     assert "never a deterministic claim" in out["vignette"]["framing"]
     assert out["children_stream"]["weakest_identified"] == "greatgrandchild"
     assert out["family_stream"]["daughter_violence_odds"]["blocked"]

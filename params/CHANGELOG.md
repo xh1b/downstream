@@ -1,4 +1,29 @@
 
+## v1.20 — Stevens & Schaller 2011, queue #12 (2026-09-08)
+
+- New row `displacement->grade_retention_hazard` 1.1473 [1.012, 1.283]
+  EXACT (stevens2011, Table 4 col 1 child-FE): head's involuntary job
+  loss one or more years prior raises grade repetition by 0.8pp on the
+  0.055 sample average (~15% relative); multiplier = 1 + 0.0081/0.055,
+  band from 1.96SE scaled by the same base. Read via NBER w15480.
+- QUEUE TARGET CORRECTED: #12 said "math/reading effect sizes" — the
+  paper has no test scores; the outcome is grade retention, the
+  authors' own proxy for academic difficulties. New node
+  `grade_retention_hazard` (rate_ratio) is a PARALLEL stream: never
+  composed with child_achievement_sd (dahl2012) or the earnings-gap
+  multiplier.
+- VENUE CORRECTED: version of record is Economics of Education Review
+  30(2):289-299 (Crossref-verified); the queue and prior bib said
+  Sociology of Education 84(3):201-223 — no such Crossref record
+  exists. Bib evidence upgraded canonical -> fulltext-table.
+- Bonus cross-check: Table 3 family income −10.9% (SE 2.8pp) 1+ years
+  after loss recorded as a note on the hilger2016 short-run income row
+  (values unchanged).
+- BIB HYGIENE: three stale duplicate entries (dahl2012, hilger2016,
+  raphael2001 — pre-upgrade canonical copies shadowed by the later
+  fulltext-table entries under last-write-wins parsing) removed.
+  Current behavior unchanged; the silent-downgrade trap is gone.
+
 ## v1.19 — closure-selection ensemble variant (2026-09-08)
 
 - No parameter VALUES changed. The V2 item queued at v1.13 landed:
