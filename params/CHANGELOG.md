@@ -1,3 +1,20 @@
+## v1.26 — 2026-09-09 — queue #15 landed: import competition -> radical vote (colantone2018)
+
+- One row (EXACT, 2SLS): import_shock->radical_right_vote_share 13.2 [3.2, 23.2] pp per $1k/worker
+  exposure (IV Table 1 col 10: .132*** (SE .051) in vote-share fractions per 2-year $1k/worker
+  shock; authors' 1-SD scaling = +1.7pp on a 5% mean RR share; IV > OLS .041 — demand-shock
+  attenuation per the authors; first-stage F = 19.2, US-imports instrument).
+- NO-LEFT-WING discipline on record: protectionist left NULL, protectionist left proper NULL,
+  liberal right NULL — no polarization (declared contrast with the autor2020 US finding);
+  pro-trade left negative significant (-.134**) — abandonment of social-democratic parties;
+  protectionist right positive .278***.
+- Individual-level (ESS waves 1-4): confirms; response is SOCIOTROPIC — no significant group
+  heterogeneity (declared, cross-referenced against paul2009's person-level distress).
+- Window discipline declared: 2-year-window coefficient stored per $1k cumulative exposure.
+- New node: radical_right_vote_share (percent_delta, mirroring gop_win_probability).
+- colantone2018 bib upgraded to fulltext-table; staging doi (SSRN preprint) replaced with the
+  published AJPS doi 10.1111/ajps.12358.
+
 ## v1.25 — 2026-09-09 — queue #20 landed: unemployment -> mental health (paul2009)
 
 - One row (EXACT, the CITING meta class): unemployment_status->mental_health_sd 0.51 [0.47, 0.54]

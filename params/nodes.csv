@@ -45,3 +45,4 @@ household_hardship,rate_ratio,"relative material-hardship incidence (1+ of 10 ha
 couple_unemployment,rate_ratio,"relative incidence of couple unemployment (mother or partner unemployed and looking)"
 unemployment_status,rate_ratio,"relative incidence of involuntary unemployment vs employment (entry node; person-level status contrast, NOT the area unemployment rate whose level is a schneider2016 level-null)"
 mental_health_sd,sd_delta,"mental-health distress vs employed comparison, Cohen's d SD units (exposure contrast carried by the boundary rule, never chained)"
+radical_right_vote_share,percent_delta,"change in the vote share of radical-right parties, in percentage points, per $1k/worker import exposure (colantone2018; mirrors the gop_win_probability node convention)"
