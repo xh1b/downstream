@@ -118,12 +118,25 @@ def test_normal_band_prices_skewness_not_hides_it():
 # --- trap: a "90% band" that is not a 90% band -------------------------------
 
 def test_closure_coverage_hits_nominal_within_2se():
-    out = closure_coverage(
-        PARAMS, _grandchild, NODES, trials=600, draws=3000, seed=11
-    )
-    assert out["pass"], f"coverage drifted: {out['levels']}"
-    row90 = [r for r in out["levels"] if r["nominal"] == 0.9][0]
-    assert abs(row90["empirical"] - 0.9) < 2 * row90["binomial_se"]
+    # coverage is a frequentist property: one seed's empirical rate
+    # carries binomial noise (observed to straddle 2 SE across seeds
+    # as the parameter set evolved). Pool three seeds so the estimate
+    # measures the property, not the seed's luck.
+    rates = {lv: [] for lv in (0.5, 0.8, 0.9, 0.95)}
+    for seed in (11, 23, 47):
+        out = closure_coverage(
+            PARAMS, _grandchild, NODES, trials=400, draws=2000, seed=seed
+        )
+        for r in out["levels"]:
+            rates[r["nominal"]].append(r["empirical"])
+    trials = 3 * 400
+    for nominal, emps in rates.items():
+        pooled = sum(emps) / len(emps)
+        se = (nominal * (1 - nominal) / trials) ** 0.5
+        assert abs(pooled - nominal) < 2 * se, (
+            f"pooled coverage at {nominal}: {pooled:.3f} vs nominal, "
+            f"2SE = {2 * se:.3f} ({emps})"
+        )
 
 
 def test_closure_coverage_catches_a_corrupted_band():

@@ -76,6 +76,6 @@ def test_dahl_row_verified_against_published_version():
 
 
 def test_version_bumped_and_audit_clean():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.15"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.16"
     errors = [f for f in audit(PARAMS_DIR) if f.severity == ERROR]
     assert errors == []

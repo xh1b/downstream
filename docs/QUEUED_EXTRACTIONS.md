@@ -31,7 +31,7 @@ P2 = completes a stream; P3 = breadth.
 | 11 | parental displacement→college | Hilger 2016 AEJ:Applied 8(3):247-283 | LANDED v1.13 (published copy provided by owner): enrollment multiplier 0.9894 [0.9848, 0.9939] EXACT (−0.432pp on 40.66% base) + companion income bridge 0.8640 [0.8568, 0.8712]. CLOSURE-SELECTION WARNING recorded: Hilger's own closure-DD is wrong-signed and his fn31 names oreopoulos2008 + sullivan2009 as exposed designs — V2 reconciliation item queued; child-earnings band NOT silently changed | done 2026-09-07 |
 | 12 | displacement→test scores | Stevens & Schaller 2011 | math/reading effect sizes | pending |
 | 13 | displacement→infant health | Lindo 2011 J Health Econ 30:869-879 | LANDED v1.10: displacement->infant_birth_weight 0.954 [0.912,0.998] EXACT (Table 2 col 3 via IZA DP 5213) | done 2026-09-07 |
-| 14 | local decline→child maltreatment | Lindo, Schaller & Hansen 2018 | maltreatment effect per local shock | pending |
+| 14 | local decline→child maltreatment | Lindo, Schaller & Hansen 2018 JPubE 163:77-98 (DOI 10.1016/j.jpubeco.2018.04.007; read via NBER w18994 — the AEJ:Applied title in this queue row was wrong, the paper is the JPubE 'Caution! Men Not at Work' study) | LANDED v1.16: +6.0% maltreatment reports per 1pp male mass-layoff rate [3.65, 8.35] EXACT (Table 3 PA col 3); female-shock opposite-signed (scope-declared); unemployment-rate association negative/endogenous (declared) | done 2026-09-07 |
 | 15 | import competition→radical vote | Colantone & Stanig 2018 AJPS 62(4):936-953 (Crossref-verified; bib record already correct) | pending — full text bot-walled (author site 403, Wiley 403, SSRN login); owner-download unblocks. Related landed: #16 Autor et al. 2020 gives the US win-probability row | pending 2026-09-07 |
 | 16 | import exposure→polarization | Autor et al. 2020 AER 110(10):3139-3183 | LANDED v1.15: GOP House win probability +24.08pp per $1k/worker exposure [0.42, 47.74] EXACT (Table 4 col 6); vote-share columns NULL and declared (re-sorting, not uniform shift); effect emerges 2010+ | done 2026-09-07 |
 | 17 | eviction→hardship chain | Desmond & Gershenson 2016; Collinson & Reed 2018 | job-loss effect of eviction (structural link into homelessness) | pending |
@@ -39,7 +39,7 @@ P2 = completes a stream; P3 = breadth.
 | 19 | income→life expectancy slope | Chetty et al. 2016 JAMA 315(16):1750-1766 | LANDED v1.12: 0.1333 y per $1k [0.117, 0.150] EXACT-derived — the paper's own concavity example $14k→$20k (P15→P20) carries +0.7-0.9y, slope 0.8/6; associational (authors' caveat) — row records it as a conversion factor, causal deaths stay anchored on sullivan2009 | done 2026-09-07 |
 | 20 | unemployment→mental health | Paul & Moser 2009 JVB 74:264 | distress effect size (d ≈ 0.5) + re-employment reversal | pending |
 | 21 | IPV exposure→child mental health | Evans, Davies & DiLillo 2008 | meta effect of exposure on internalizing/externalizing | pending |
-| 22 | recessions→IPV | Schneider, Harknett & McLanahan 2016 | employment-status IPV effect (converges with Aizer) | pending |
+| 22 | recessions→IPV | Schneider, Harknett & McLanahan 2016 Demography 53(2):471-505, DOI 10.1007/s13524-016-0462-1 (Crossref-verified 2026-09-07) | pending — Springer PDF blocked to scripts; Demography is open access so an owner download unblocks | pending 2026-09-07 |
 
 ## P3 — breadth and place resolution
 

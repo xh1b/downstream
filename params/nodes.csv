@@ -30,3 +30,5 @@ adult_earnings_early,usd,"child annual earnings ages 22-27 (2013 dollars) vs cou
 male_earnings_pc,gap_multiplier,"local male earnings per capita vs counterfactual (1.0 = unchanged)"
 fertility_rate,log_elasticity,"elasticity of ln(birth rate) w.r.t. ln male earnings per capita"
 gop_win_probability,percent_delta,"change in probability of electing a Republican to Congress, in percentage points, per $1k/worker import exposure"
+male_mass_layoff_rate,percent_delta,"change in the county male mass-layoff rate, in percentage points"
+child_maltreatment_response,percent_delta,"percent change in child-maltreatment reports per 1pp male mass-layoff-rate change (boundary-applied)"
