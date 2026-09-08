@@ -23,6 +23,12 @@ Variants (v1):
 - ige_decay_power       grandchild transmission strengthens: t2 = t^1.5
   (both decay shapes are geometric re-parameterizations of the SAME
   cited IGE band — declared assumption alternates, not new evidence)
+- closure_selection_contrast (v1.19) the direct child anchor
+  (oreopoulos2008, a firm-closure design) set aside and the children
+  line stood on the JLS father-shock path composed through the SAME
+  cited IGE band — the design contrast Hilger 2016 fn31 forces (his
+  closure-DD is wrong-signed; fn31 names the closure designs). The
+  shipped direct row is NOT changed; this variant prices the critique.
 """
 
 from __future__ import annotations
@@ -33,7 +39,13 @@ from .children import CHILD_DIRECT, GRANDCHILD, child_line
 from .ledger import DIRECT, GAP, combine_parallel, start
 from .params import ParameterSet
 
-VARIANT_IDS = ("baseline", "parallel_gap_additive", "ige_decay_half", "ige_decay_power")
+VARIANT_IDS = (
+    "baseline",
+    "parallel_gap_additive",
+    "ige_decay_half",
+    "ige_decay_power",
+    "closure_selection_contrast",
+)
 
 
 def _with_transmission(params: ParameterSet, link: str, exponent: float) -> ParameterSet:
@@ -69,6 +81,29 @@ def _parallel_additive_child(params: ParameterSet) -> dict:
     high = max(0.0, 1 - ((1 - direct.low) + (1 - parallel.high)))
     child = start("child_earnings", "gap_multiplier")
     child = replace(child, point=round(point, 4), low=round(low, 4), high=round(high, 4))
+    grand = child.apply(GAP, params.by_link(GRANDCHILD), label="grandchild")
+    return {"child": child, "grandchild": grand}
+
+
+def _closure_contrast_child(params: ParameterSet) -> dict:
+    """Closure-selection design contrast (Hilger 2016 fn31).
+
+    Hilger's own closure-DD (his Table 4) is wrong-signed and not
+    significant, which he reads as assortative matching of workers and
+    firms on unobservables correlated with children's outcomes; his
+    fn31 names Oreopoulos, Page & Stevens (2005, 2008) as 'the most
+    directly related example' of closure designs that yield
+    'surprisingly large estimates' against cross-sectional benchmarks.
+    The direct child anchor here (oreopoulos2008) is that design. This
+    variant sets the anchor aside and stands the children line on the
+    NON-closure exposure path instead: the JLS father-shock gap
+    composed through the SAME cited IGE transmission band. The shipped
+    direct row is not changed — the variant prices the critique.
+    """
+    father = start("worker_earnings", "gap_multiplier").apply(
+        DIRECT, params.by_link("displacement->worker_earnings"), label="father_gap"
+    )
+    child = father.apply(GAP, params.by_link(GRANDCHILD), label="child_via_ige")
     grand = child.apply(GAP, params.by_link(GRANDCHILD), label="grandchild")
     return {"child": child, "grandchild": grand}
 
@@ -109,6 +144,17 @@ def run_ensemble(params: ParameterSet) -> dict:
         v = _with_transmission(params, GRANDCHILD, expo)
         line = child_line(v)
         _row(name, f"{desc}; declared assumption alternate, not new evidence", line["child"], line["grandchild"])
+
+    cc = _closure_contrast_child(params)
+    _row(
+        "closure_selection_contrast",
+        "direct child anchor (oreopoulos2008, firm-closure design) set aside; "
+        "children line stood on the JLS father-shock path composed through the "
+        "cited IGE band — the design contrast Hilger 2016 fn31 forces (his "
+        "closure-DD is wrong-signed; fn31 names closure designs as exposed to "
+        "assortative selection). Shipped direct row NOT changed; V2 item priced.",
+        cc["child"], cc["grandchild"],
+    )
 
     child_pts = [r["child_gap"]["point"] for r in rows]
     grand_pts = [r["grandchild_gap"]["point"] for r in rows]

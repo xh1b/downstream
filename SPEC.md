@@ -407,7 +407,13 @@ baseline; parallel_gap_additive (direct + divorce + family-size gaps
 added in gap space — the additivity SPEC §4 refuses to assume
 silently, priced here at −3.9pp of grandchild gap); ige_decay_half /
 ige_decay_power (geometric re-parameterizations of the same cited
-IGE band, 0.933 / 0.963 vs baseline 0.9492). The baseline row always
+IGE band, 0.933 / 0.963 vs baseline 0.9492); closure_selection_contrast
+(v1.19 — the V2 Hilger item: the direct child anchor set aside, the
+children line stood on the JLS father-shock path through the same
+cited IGE band; child 0.89 [0.85, 0.94] INSIDE the direct band, so
+the design contrast reconciles rather than contradicts; direction
+pinned — dropping the closure anchor moves the modeled child loss UP).
+The baseline row always
 equals the shipped model (trap-pinned). No variant is silently
 substituted — the spread IS the result. CLI: `downstream ensemble`.
 

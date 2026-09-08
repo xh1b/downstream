@@ -1,4 +1,26 @@
 
+## v1.19 — closure-selection ensemble variant (2026-09-08)
+
+- No parameter VALUES changed. The V2 item queued at v1.13 landed:
+  `closure_selection_contrast` joins the structural-variant ensemble
+  (variants.py). It sets the direct child anchor (oreopoulos2008, a
+  firm-closure design) aside and stands the children line on the JLS
+  father-shock path composed through the SAME cited IGE band — the
+  design contrast Hilger 2016 fn31 forces. Full fn31 text read from
+  the published copy: Hilger's closure-DD is wrong-signed and not
+  significant (his Table 4), which he reads as assortative matching of
+  workers and firms on unobservables correlated with children's
+  outcomes; fn31 names Oreopoulos, Page & Stevens (2005, 2008) as
+  "the most directly related example" of closure designs yielding
+  "surprisingly large estimates" against cross-sectional benchmarks.
+- Variant state: child gap 0.89 [0.85, 0.94] vs baseline 0.9076
+  [0.844, 0.976]; grandchild 0.9395 [0.91, 0.976]. The composed band
+  sits INSIDE the direct band (reconciliation within the evidence).
+  Direction pinned: dropping the closure anchor moves the modeled
+  child loss UP — the critique does not imply smaller losses under
+  current evidence. Ensemble spread: child [0.8376, 0.9076],
+  grandchild [0.9107, 0.9623].
+
 ## v1.18 — Thornton 1980 cross-check notes (2026-09-08)
 
 - No parameter VALUES changed; no new row. Thornton 1980 (Population
