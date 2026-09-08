@@ -11,7 +11,6 @@ Plan of record: owner-approved top 10 (2026-09-06). Every number cites
 
 ## Engine
 
-- **[P2] #6: V2 back-tests** — NAFTA, 2008-09 auto crisis, BRAC.
 - **[P2] #7: place-resolved layer with shrinkage** — Chetty-Hendren modifier, WONDER county baselines, partial pooling.
 - **[P2] #8: fill the paper prose** — methods, V1 scorecard, limitations; `make` builds clean.
 - **[P3] #10: pre-registered prospective forecasts** — 2-3 events scored before outcomes.
@@ -24,5 +23,5 @@ Plan of record: owner-approved top 10 (2026-09-06). Every number cites
 Tracked in `docs/QUEUED_EXTRACTIONS.md` — the queue's status column is the
 truth; do not duplicate rows here.
 
-- **[P2] Remaining** — engine-level work: #6 back-tests, #7 place-resolved layer, #8 paper prose, employer scenario shape, P3s. (#5 distributions + correlations LANDED v1.27.)
+- **[P2] Remaining** — engine-level work: #7 place-resolved layer, #8 paper prose, employer scenario shape, P3s. (#5 distributions + correlations LANDED v1.27; #6 V2 framework pre-registered v1.28 — scoring blocked on per-event displacement bridges: BRAC needs GAO app. II transcription + w6941 OCR; NAFTA needs a tariff-unit displacement bridge that no published source provides; auto crisis has no quasi-experimental measured side.)
 - Also: remarriage-margin candidate from the V1 divorce row.

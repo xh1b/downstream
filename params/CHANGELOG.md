@@ -1,3 +1,30 @@
+## v1.28 — 2026-09-09 — #6: V2 back-test framework, PRE-REGISTERED (sources pending)
+
+- validate.py gains the V2 registry: three held-out events (NAFTA 1990-2000,
+  2008-09 auto crisis, BRAC 1988-95 closures) with outcome definitions and
+  scoring rules frozen in code BEFORE any event data lands (the
+  clinical-trials rule); trap tests pin the registry so definitions cannot
+  drift after a bridge arrives.
+- Scored streams pre-registered: excess_deaths_per100k (S&vW sustained+peak),
+  additional_divorces_per100k_women (rege2007/charles2004 + census baseline),
+  local_service_jobs_per_displaced (Moretti-shape level ratio). Same verdicts
+  as V1 (coverage both directions, no tuning, misses publish) with
+  across-shock stability reported on the SAME frozen parameter set.
+- v2_backtest(event) blocks BY DESIGN until both files exist per event
+  (exposure bridge + measured coefficients, transcribed with citations);
+  the blocked dict names the missing plugs. No fabrication.
+- 2026-09-09 source sweep recorded: NONE of the three events carries a
+  published displacement-count bridge (V1 had ADH's own Table 1). NAFTA
+  (Hakobyan & McLaren, REStat 98(4):728-741; open NBER w16535) measures
+  wage growth, not displacement counts, and the ADH import-penetration
+  bridge does not transfer to tariff units. Auto crisis: BLS national
+  counts only; no quasi-experimental local estimate surfaced (honest
+  refusal recorded). BRAC: measured side identified — Hooker & Knetter
+  (Economic Inquiry 39(4):583-598, 2001; NBER w6941, scanned -> needs OCR;
+  RAND MR-667 open PDF as cross-checks); bridge = GAO-05-138 app. II
+  transcription (open).
+- 351 tests green; audit 0 errors.
+
 ## v1.27 — 2026-09-09 — #5: per-parameter distributions + first citable correlations
 
 - parameters.csv gains a `dist` column. Twenty rows whose band is a reported

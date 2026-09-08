@@ -22,7 +22,7 @@ the root `.env`. Status as of 2026-09-06.
 | V1-a | CZ import-exposure shock | ADH published instrument + replication files (Dorn's site: dornsife.usc.edu / daviddorn.net ADH data) | direct file fetch (zip of Stata/CSV tables) | none | pending |
 | V1-b | measured CZ outcome deltas 1990-2014 | ADH 2019 AEA P&P tables + Autor et al. 2020 AER appendix | transcribe with citations per CITING.md (papers are paywalled; AEA appendices are open) | none | pending |
 | V1-c | CZ/county demographic baselines | Census ACS 5-year (population, marriage %, poverty, employment by CZ/county) | Census Data API (`api.census.gov`); CZ crosswalk public (Dorn site / USDA ERS) | **CENSUS_API_KEY** (free, census.gov/developers) — the only NEW env var this subsystem needs | pending |
-| V2 | NAFTA / auto-crisis / BRAC exposures | published replication packages (Hakobyan-McLaren; Autor-Dorn-Hanson 2013 adjacent; GAO BRAC reports) | file fetch per package | none | pending |
+| V2 | NAFTA / auto-crisis / BRAC exposures | SPECIFIC sources identified 2026-09-09: NAFTA = Hakobyan & McLaren REStat 98(4):728-741 (open NBER w16535; measured wage-growth side, NO displacement bridge — the ADH import-penetration bridge does not transfer to tariff units); auto crisis = BLS national counts (no quasi-experimental local estimate found — honest refusal recorded); BRAC = Hooker & Knetter Economic Inquiry 39(4):583-598 (NBER w6941, scanned — needs GLM-OCR) + GAO-05-138 app. II (open HTML) + RAND MR-667 (open PDF) | fetch: w16535 done (laptop /tmp), w6941 downloaded (needs OCR), GAO HTML direct | none | scaffolded (pre-registered at v1.28; scoring blocked until bridges land) |
 
 ## Exposure construction (warehouse — ALREADY AVAILABLE)
 

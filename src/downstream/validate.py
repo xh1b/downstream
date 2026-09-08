@@ -126,6 +126,251 @@ def v1_backtest_spec() -> dict:
     }
 
 
+# ---------------------------------------------------------------------------
+# V2 — out-of-sample back-tests (PRE-REGISTERED at v1.27, sources pending).
+#
+# The clinical-trials rule: outcome definitions and scoring rules are
+# registered in code BEFORE the event data lands, and the trap tests pin
+# them. A bridge/measured file landing later cannot change what counts as
+# a pass; a miss is published, never refitted.
+#
+# Structural finding recorded up front (2026-09-09 source sweep): none of
+# the three events carries a published DISPLACEMENT-COUNT bridge (shock
+# units -> displaced workers), the input every scored stream needs. V1
+# had one (ADH's own Table 1 employment regression). Until each event's
+# bridge lands, scoring is blocked BY DESIGN — fabricating exposure from
+# secondary prose would be exactly the overclaim the honesty architecture
+# exists to prevent.
+# ---------------------------------------------------------------------------
+
+V2_EVENT_IDS = ("nafta", "auto_crisis", "brac")
+
+V2_SCORED_STREAMS = (
+    {"outcome": "excess_deaths_per100k", "links": ["earnings_shock->mortality_sustained", "earnings_shock->mortality_peak"]},
+    {"outcome": "additional_divorces_per100k_women", "links": ["displacement->divorce_hazard"]},
+    {"outcome": "local_service_jobs_per_displaced", "links": ["displacement->local_service_jobs"]},
+)
+
+
+def _v2_event_specs() -> list[dict]:
+    """The three held-out events: what scores, and what blocks it."""
+    return [
+        {
+            "id": "nafta",
+            "description": (
+                "NAFTA tariff cuts 1990-2000; wage growth by industry and "
+                "locality exposure (Hakobyan & McLaren, REStat 98(4):728-741, "
+                "2016; NBER w16535)"
+            ),
+            "shock_unit": "percentage points of local/industry tariff cut (Mexican import competition)",
+            "exposure_bridge": {
+                "file": "validation/nafta_exposure_bridge.csv",
+                "needs": (
+                    "displaced workers per unit of local tariff cut. The H&M "
+                    "design measures wage growth of workers in exposed "
+                    "industries and localities; it does not estimate "
+                    "displacement counts, and the ADH import-penetration "
+                    "bridge does not transfer to tariff units. Queued as an "
+                    "extraction target."
+                ),
+                "sources": ["Hakobyan & McLaren 2016 (w16535, open PDF) — wage-growth measured side"],
+            },
+            "measured_outcomes": {
+                "file": "validation/nafta_measured_coefficients.csv",
+                "needs": "H&M wage-growth coefficients with SEs (blue-collar, service workers in affected localities; anticipatory adjustment)",
+            },
+            "window_semantics": "1990-2000 decadal wage growth (matches the model's decadal-window convention; declared at pre-registration)",
+            "registered_scored_streams": [s["outcome"] for s in V2_SCORED_STREAMS],
+            "status": "blocked: displacement bridge missing (H&M estimate no displacement counts)",
+        },
+        {
+            "id": "auto_crisis",
+            "description": (
+                "2008-09 auto crisis: auto manufacturing + dealerships shed "
+                ">600k jobs Dec 2007-Jun 2009 (BLS); GM/Chrysler bankruptcies "
+                "concentrated in Michigan/Ohio/Indiana"
+            ),
+            "shock_unit": "count of auto-industry jobs lost (BLS descriptive counts, published)",
+            "exposure_bridge": {
+                "file": "validation/auto_crisis_exposure_bridge.csv",
+                "needs": (
+                    "county-level displaced workers (BLS CES/CPS counts are "
+                    "national; a county bridge needs the local distribution, "
+                    "e.g. WARN filings or QCEW county detail)"
+                ),
+                "sources": ["BLS CES descriptive counts (national totals)"],
+            },
+            "measured_outcomes": {
+                "file": "validation/auto_crisis_measured_coefficients.csv",
+                "needs": (
+                    "published quasi-experimental local-outcome estimates for "
+                    "the auto shock. 2026-09-09 sweep found none: the crisis "
+                    "overlaps the Great Recession, so an event-specific causal "
+                    "estimate does not exist. Record the honest refusal unless "
+                    "a source surfaces."
+                ),
+                "sources": [],
+            },
+            "window_semantics": "acute shock 2008-2009; scored windows pre-registered at 3y and 5y",
+            "registered_scored_streams": [s["outcome"] for s in V2_SCORED_STREAMS],
+            "status": "blocked: county displacement bridge + quasi-experimental measured side both unidentified",
+        },
+        {
+            "id": "brac",
+            "description": (
+                "BRAC base closures 1988-1995 rounds: ~100+ closures, civilian "
+                "job cuts per community published (GAO-05-138 app. II; GAO/NSIAD-99-36)"
+            ),
+            "shock_unit": "count of displaced DoD CIVILIAN workers per community (published)",
+            "exposure_bridge": {
+                "file": "validation/brac_exposure_bridge.csv",
+                "needs": (
+                    "civilian jobs lost per BRAC community (GAO Appendix II: "
+                    "Civilian Jobs Lost and Created at Major BRAC Locations). "
+                    "Open source; transcription pending."
+                ),
+                "sources": ["GAO-05-138 (open HTML)", "GAO/NSIAD-99-36 (open HTML)"],
+            },
+            "measured_outcomes": {
+                "file": "validation/brac_measured_coefficients.csv",
+                "needs": (
+                    "Hooker & Knetter (Economic Inquiry 39(4):583-598, 2001; "
+                    "NBER w6941): county employment/income effects of "
+                    "closures — the civilian closure 'looks more like a "
+                    "plant closure'. WP is a scanned image (no text layer); "
+                    "the published version is paywalled. Path: OCR the WP "
+                    "with the repo's GLM-OCR stack, or secure the published "
+                    "tables. RAND MR-667 (Dardia et al., open PDF) covers "
+                    "three California closures as cross-checks."
+                ),
+                "sources": [
+                    "Hooker & Knetter 2001 (Economic Inquiry 39(4):583-598; NBER w6941 — scanned, needs OCR)",
+                    "Dardia, McCarthy, Malkin & Vernez 1996 (RAND MR-667, open PDF) — cross-checks",
+                ],
+            },
+            "window_semantics": "closures phased over 2-6 years; scored windows pre-registered at 5y and 10y post-round",
+            "registered_scored_streams": [s["outcome"] for s in V2_SCORED_STREAMS],
+            "status": "blocked: bridge (GAO transcription pending) + measured side (w6941 OCR or published extraction pending)",
+        },
+    ]
+
+
+def v2_events(params: ParameterSet) -> dict:
+    """The pre-registered V2 registry: what will be scored, and what blocks it."""
+    return {
+        "stage": "V2 out-of-sample back-tests",
+        "pre_registered": (
+            "Outcome definitions and scoring rules registered in code at "
+            f"{params.version} BEFORE any event data lands; trap tests pin "
+            "them. A file landing later cannot change what counts as a pass."
+        ),
+        "scoring_rule": (
+            "Same verdicts as V1: coverage statements in both directions "
+            "(measured inside modeled band, modeled point inside measured "
+            "CI) with no parameter tuning. Misses publish. Across-shock "
+            "stability is reported (Lucas critique): the three events use "
+            "the SAME frozen parameter set."
+        ),
+        "scored_streams": V2_SCORED_STREAMS,
+        "events": _v2_event_specs(),
+    }
+
+
+_V2_SPECS = [
+        {
+            "id": "nafta",
+            "description": (
+                "NAFTA tariff cuts 1990-2000; wage growth by industry and "
+                "locality exposure (Hakobyan & McLaren, REStat 98(4):728-741, "
+                "2016; NBER w16535)"
+            ),
+            "shock_unit": "percentage points of local/industry tariff cut (Mexican import competition)",
+            "exposure_bridge": {
+                "file": "validation/nafta_exposure_bridge.csv",
+                "needs": (
+                    "displaced workers per unit of local tariff cut. H&M "
+                    "measure wage growth, not displacement counts; the ADH "
+                    "import-penetration bridge does not transfer to tariff "
+                    "units. Queued as an extraction target."
+                ),
+                "sources": ["Hakobyan & McLaren 2016 (w16535, open PDF) — measured wage-growth side"],
+            },
+            "measured_outcomes": {
+                "file": "validation/nafta_measured_coefficients.csv",
+                "needs": "H&M wage-growth coefficients with SEs (blue-collar and service workers in affected localities; anticipatory adjustment recorded)",
+            },
+            "window_semantics": "1990-2000 decadal wage growth (matches the model's decadal window; declared at pre-registration)",
+            "status": "blocked: displacement bridge (shock -> displaced workers) not estimable from H&M; extraction queued",
+        },
+        {
+            "id": "auto_crisis",
+            "description": (
+                "2008-09 auto crisis: auto manufacturing and dealerships shed "
+                ">600k jobs Dec 2007-Jun 2009 (BLS); GM/Chrysler bankruptcies "
+                "concentrated in Michigan/Ohio/Indiana"
+            ),
+            "shock_unit": "count of auto-industry jobs lost (BLS descriptive counts, national)",
+            "exposure_bridge": {
+                "file": "validation/auto_crisis_exposure_bridge.csv",
+                "needs": (
+                    "county-level displaced workers. BLS CES/CPS counts are "
+                    "national totals; a local bridge needs the county "
+                    "distribution (WARN filings or QCEW county detail)."
+                ),
+                "sources": ["BLS CES descriptive counts (national)"],
+            },
+            "measured_outcomes": {
+                "file": "validation/auto_crisis_measured_coefficients.csv",
+                "needs": (
+                    "published quasi-experimental local-outcome estimates. "
+                    "2026-09-09 sweep found none: the crisis overlaps the "
+                    "Great Recession, and no event-specific causal local "
+                    "estimate surfaced. Record as an honest refusal unless a "
+                    "source appears."
+                ),
+                "sources": [],
+            },
+            "window_semantics": "acute shock 2008-2009; scored windows pre-registered at 3y and 5y",
+            "status": "blocked: county bridge + quasi-experimental measured side both unidentified",
+        },
+        {
+            "id": "brac",
+            "description": (
+                "BRAC base closures, 1988-1995 rounds: civilian job cuts per "
+                "community published (GAO-05-138 app. II; GAO/NSIAD-99-36)"
+            ),
+            "shock_unit": "count of displaced DoD civilian workers per community",
+            "exposure_bridge": {
+                "file": "validation/brac_exposure_bridge.csv",
+                "needs": (
+                    "civilian jobs lost per BRAC community (GAO app. II: "
+                    "Civilian Jobs Lost and Created at Major BRAC Locations). "
+                    "Open source; transcription pending."
+                ),
+                "sources": ["GAO-05-138 (open HTML)", "GAO/NSIAD-99-36 (open HTML)"],
+            },
+            "measured_outcomes": {
+                "file": "validation/brac_measured_coefficients.csv",
+                "needs": (
+                    "Hooker & Knetter (Economic Inquiry 39(4):583-598, 2001; "
+                    "NBER w6941): county employment/income effects — the "
+                    "civilian closure 'looks more like a plant closure'. WP "
+                    "PDF is a scanned image (no text layer); published "
+                    "version paywalled. Path: OCR the WP or obtain the "
+                    "published tables. RAND MR-667 (open PDF) is the "
+                    "three-closure California cross-check."
+                ),
+                "sources": [
+                    "Hooker & Knetter 2001 (NBER w6941 — scanned, needs OCR)",
+                    "Dardia et al. 1996 (RAND MR-667, open PDF) — cross-checks",
+                ],
+            },
+            "window_semantics": "closures phased over 2-6 years; scored windows pre-registered at 5y and 10y post-round",
+            "status": "blocked: bridge (GAO transcription) + measured side (w6941 OCR or published tables) both pending",
+        },
+    ]
+
+
 
 
 def _load_csv(name: str) -> list[dict]:
@@ -517,6 +762,76 @@ def v1_panel(params: ParameterSet) -> dict:
     }
 
 
+def v2_backtest(event_id: str, params: ParameterSet) -> dict:
+    """Score one held-out event through the pre-registered streams.
+
+    Blocked BY DESIGN until the event's exposure bridge AND measured
+    coefficients land (both files, transcribed with citations): the
+    blocked dict names the missing sources instead of fabricating
+    exposure. When both files exist, each registered stream gets the
+    V1 verdict treatment: modeled band (exact interval arithmetic on
+    the stream's monotone path) vs measured point + 95% CI, both
+    directions reported.
+    """
+    event = next((e for e in _v2_event_specs() if e["id"] == event_id), None)
+    if event is None:
+        raise KeyError(f"unknown V2 event {event_id!r}; registered: {list(V2_EVENT_IDS)}")
+
+    bridge_path = VALIDATION_DIR / Path(event["exposure_bridge"]["file"]).name
+    measured_path = VALIDATION_DIR / Path(event["measured_outcomes"]["file"]).name
+    if not bridge_path.exists() or not measured_path.exists():
+        missing = []
+        if not bridge_path.exists():
+            missing.append(f"{bridge_path.name} (needs: {event['exposure_bridge']['needs']})")
+        if not measured_path.exists():
+            missing.append(f"{measured_path.name} (needs: {event['measured_outcomes']['needs']})")
+        return {
+            "event": event_id,
+            "status": "blocked",
+            "reason": "data plugs pending; scoring is registered but NOT run",
+            "missing": missing,
+            "registered_scored_streams": [s["outcome"] for s in V2_SCORED_STREAMS],
+            "honesty": "No fabricated exposure, no fabricated measured side.",
+        }
+
+    bridge = {r["quantity"]: r for r in _load_csv(bridge_path.name)}
+    measured = _load_csv(measured_path.name)
+    n = abs(float(bridge["displaced_workers"]["point"]))
+    n_lo = abs(float(bridge["displaced_workers"]["high"]))
+    n_hi = abs(float(bridge["displaced_workers"]["low"]))
+
+    sust = params.by_link("earnings_shock->mortality_sustained")
+    peak = params.by_link("earnings_shock->mortality_peak")
+    window = float(bridge["window_years"]["point"])
+
+    def excess(n_: float, m: float) -> float:
+        return n_ * m * ((sust.point - 1) * window + (peak.point - 1))
+
+    scored = []
+    for mrow in measured:
+        if mrow["outcome"] != "excess_deaths_per100k":
+            continue
+        m_point = float(mrow["point"]) / 100_000
+        lo, hi = excess(n_lo, m_point), excess(n_hi, m_point)
+        pt = excess(n, m_point)
+        mse = float(mrow["se"])
+        scored.append({
+            "outcome": "excess_deaths_per100k",
+            "modeled": {"point": round(pt, 2), "low": round(lo, 2), "high": round(hi, 2)},
+            "measured": {"point": float(mrow["point"]), "ci95": [round(float(mrow["point"]) - 1.96 * mse, 2), round(float(mrow["point"]) + 1.96 * mse, 2)]},
+            "measured_inside_modeled_band": lo <= float(mrow["point"]) <= hi,
+            "modeled_point_inside_measured_ci": (float(mrow["point"]) - 1.96 * mse) <= pt <= (float(mrow["point"]) + 1.96 * mse),
+        })
+    return {
+        "event": event["id"],
+        "status": "scored" if scored else "blocked: no scoreable measured outcome",
+        "frozen_version": params.version,
+        "scored": scored,
+        "window_years": window,
+        "honesty": "No parameter tuned to pass. Verdicts are coverage statements in both directions.",
+    }
+
+
 def run(params: ParameterSet) -> dict:
     return {
         "v0_internal_consistency": internal_consistency(params),
@@ -524,4 +839,8 @@ def run(params: ParameterSet) -> dict:
         "v1_targets": v1_targets(),
         "v1_retrodict": v1_retrodict(params),
         "v1_panel": v1_panel(params),
+        "v2_backtest": {
+            "events": {eid: v2_backtest(eid, params) for eid in V2_EVENT_IDS},
+            "registry": v2_events(params),
+        },
     }

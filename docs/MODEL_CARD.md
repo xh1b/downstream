@@ -43,10 +43,15 @@ Reporting". This card travels with the model.
 - V0 internal consistency: direct vs IGE-composed child effect
   (0.91 vs 0.89, bands overlap) — runs on every `validate`.
 - V1 China-shock retrodiction: scaffolded, data plugs pending.
-- V2/V3: designed, not built.
-- Unit tests: 82; adversarial traps for the known bug classes
+- V2 out-of-sample back-tests (NAFTA, 2008-09 auto crisis, BRAC):
+  PRE-REGISTERED (outcome definitions + scoring rules frozen in code
+  at v1.28, trap tests pin them); scoring blocks until each event's
+  displacement bridge and measured coefficients land — recorded
+  honestly, never fabricated.
+- V3: designed, not built.
+- Unit tests: 351; adversarial traps for the known bug classes
   (level-vs-gap composition, level-ratio misuse, naked estimates,
-  band inversion).
+  band inversion, pre-registration drift, fabricated scorecards).
 
 ## Ethical considerations
 
