@@ -25,6 +25,6 @@ Plan of record: owner-approved top 10 (2026-09-06). Every number cites
 Tracked in `docs/QUEUED_EXTRACTIONS.md` — the queue's status column is the
 truth; do not duplicate rows here.
 
-- **[P2] Remaining** — #15 Colantone-Stanig, #20 Paul & Moser, #22 Schneider et al. (all three need owner downloads). LANDED: #21 v1.23 (evans2008),
-  #18 v1.22 (campbell2011 spillover, venue corrected to AER), #17 v1.21 (collinson2024), #12 v1.20.
+- **[P2] Remaining** — the extraction queue is EMPTY (all three owner downloads landed: #15 v1.26 colantone2018, #20 v1.25 paul2009, #22 v1.24 schneider2016).
+  Remaining work is engine-level: #5 distributions + correlations, #6 back-tests, #7 place-resolved layer, #8 paper prose, employer scenario shape, P3s.
 - Also: remarriage-margin candidate from the V1 divorce row.
