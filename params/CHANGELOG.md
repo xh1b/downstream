@@ -1,4 +1,24 @@
 
+## v1.17 — spillover wired into V1 (2026-09-08)
+
+- No parameter VALUES changed. The v1.12 spillover row
+  (import_shock->non_displaced_wage_spillover, adh2013) is now COMPOSED
+  into the V1 panel earnings row (validate.v1_panel), the open wiring
+  left by v1.12. Four tercile rows now publish:
+  - direct-only p25 row RETAINED unchanged (miss −$73.59 [−91.99, −55.19]
+    vs measured −$352.73) — misses publish, not overwritten;
+  - composed row (direct + spillover, applied to the non-displaced
+    share, exact exp conversion): −$165.31 [−237.03, −93.24] — closes
+    32.9% of the point-gap, measured still outside the band (residual
+    undershoot published);
+  - new aggregate cross-check: implied TOTAL male wage response
+    −1.408 [−2.019, −0.794] log pts per $1k/worker vs ADH 2013 T6 col 2
+    −0.892 (SE 0.294) — model point inside the measured CI AND measured
+    inside the model band. The residual p25 undershoot is therefore
+    distributional (bottom-quartile concentration), not aggregate.
+- Spillover units need no pp conversion: the coefficient is per
+  $1k/worker, the panel exposure's native unit.
+
 ## v1.10 (2026-09-07)
 - NEW displacement->infant_birth_weight (EXACT, lindo2011): queue #13 landed.
   Level multiplier 0.954 [0.912, 0.998] from Table 2 col 3 (log birth weight

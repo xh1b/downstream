@@ -62,7 +62,8 @@ below 1.0 as the tell for that bug class.
 population_scope, notes`. `citation` holds semicolon-separated bib
 keys — free-text citations are not allowed anywhere.
 
-### Active parameter set (v1.16; child-maltreatment row (JPubE 2018) landed; v1.15 GOP
+### Active parameter set (v1.17; spillover wired into the V1 earnings row (no value
+change); v1.16 child-maltreatment row (JPubE 2018) landed; v1.15 GOP
 win-probability + Carneiro notes; v1.14 fertility/EITC/IGE; v1.13 Hilger/Raphael;
 v1.12 spillover; v1.11 Oreopoulos pin; v1.9 S&vW; v1.10 Lindo.
 Full history: params/CHANGELOG.md)
@@ -372,7 +373,7 @@ level (no-migration-dampener) caveat lives in the validation docs.
 
   V1 COMPLETE-ROUND ADDITIONS (2026-09-07, extract v2): the age-
   matched mortality variant (WONDER 25-44 male, warehouse-pinned)
-  makes the mortality miss SHARPER (model 12.5 [7.1, 20.1] vs
+  makes the mortality miss   SHARPER (model 12.5 [7.1, 20.1] vs
   measured 4.27, CI covers neither direction) — the overprediction
   is robust to baseline choice, and window semantics are CONFIRMED
   cumulative-per-decade from the deposit Readme. The male-specific
@@ -382,7 +383,16 @@ level (no-migration-dampener) caveat lives in the validation docs.
   [−92, −55] vs measured −$353): the CZ p25 earnings response exceeds
   the direct-displacement composition — evidence of local wage
   spillovers the model does not encode (a missing LINK, now named in
-  the queue).
+  the queue). SPILLOVER WIRED (v1.17, `validate.v1_panel`): the
+  landed adh2013 link (−0.822 log pts per $1k/worker, native panel
+  units) composes onto the non-displaced share — direct-only row
+  RETAINED beside the composed row −$165 [−237, −93] (closes 32.9%
+  of the point-gap; measured still outside, residual published).
+  The composed model's implied TOTAL male wage response −1.41 log
+  pts/$1k [−2.02, −0.79] sits inside the measured aggregate CI
+  (ADH 2013 T6 col2: −0.892, SE 0.294 → CI [−1.47, −0.32]) — the
+  residual p25 undershoot is distributional (bottom-quartile
+  concentration), not aggregate.
 - **V2 — back-tests (designed):** NAFTA, 2008-09 auto crisis, BRAC.
 - **V3 — prospective (designed):** pre-registered forecasts scored
   with proper rules; misses published.

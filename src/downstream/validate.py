@@ -23,6 +23,7 @@ V3 — prospective pre-registered forecasting (designed, not built):
 from __future__ import annotations
 
 import csv
+import math
 from pathlib import Path
 
 from .children import CHILD_DIRECT, GRANDCHILD
@@ -275,10 +276,15 @@ def v1_panel(params: ParameterSet) -> dict:
     - divorce vs MALE-specific shock (d_impuschm_p9cen) — the stream
       is about displaced (mostly male) workers, so the male shock is
       the closer exposure
-    - male p25 earnings vs pooled shock (JLS worker-earnings stream,
-      incidence-weighted by displaced share of employed men; heavy
-      scope caveats: JLS identifies high-tenure displaced workers,
-      the p25 measures all men in the CZ)
+    - male p25 earnings vs pooled shock, DIRECT stream only
+      (jacobson1993 et al., incidence-weighted; heavy scope caveats:
+      JLS identifies high-tenure displaced workers, the p25 measures
+      all men in the CZ) — the historical miss, retained
+    - male p25 earnings, DIRECT + SPILLOVER composed (v1.17): the
+      adh2013 spillover link (-0.822 log pts per $1k/worker on
+      non-displaced noncollege wages) applied to the non-displaced
+      share. Plus an aggregate cross-check of the composed model's
+      implied total male wage response against ADH 2013 T6 col 2.
     """
     import csv as _csv
     import random as _random
@@ -388,6 +394,7 @@ def v1_panel(params: ParameterSet) -> dict:
     mean_level = sum(r["p25_level"] * r["w"] for r in usable) / (sum(r["w"] for r in usable) or 1.0)
     mean_emp = sum(r["emp_share"] * r["w"] for r in usable) / (sum(r["w"] for r in usable) or 1.0) / 100.0
     inc_factor = 0.0252 / mean_emp
+    displaced_share = e_shock_gap * inc_factor  # bridge incidence at the tercile gap (data-fixed)
 
     def earn_gap(gap_mult: float) -> float:
         # earnings CHANGE (negative = fall): a gap multiplier below 1 is a
@@ -395,7 +402,7 @@ def v1_panel(params: ParameterSet) -> dict:
         return -mean_level * (1 - gap_mult) * e_shock_gap * inc_factor
 
     earnings = {
-        "outcome": "male p25 annual earnings change (USD, demeaned)",
+        "outcome": "male p25 annual earnings change (USD, demeaned) — direct stream only",
         "exposure": "pooled shock (d_impusch_p9)",
         "stream": "displacement->worker_earnings (jacobson1993 et al.), incidence-weighted by displaced share of employed men",
         "cz_periods": n3,
@@ -404,6 +411,11 @@ def v1_panel(params: ParameterSet) -> dict:
         "modeled_gap_usd": {"point": round(earn_gap(jls.point), 2), "low": round(earn_gap(jls.low), 2), "high": round(earn_gap(jls.high), 2)},
         "sign_agreement": (e_gap < 0) == (earn_gap(jls.point) < 0),
         "measured_inside_modeled_band": earn_gap(jls.low) <= e_gap <= earn_gap(jls.high),
+        "status": (
+            "historical miss RETAINED (v1.12 diagnosis row): undershoot ~4.8x. "
+            "Kept published beside the composed row below — the miss is evidence, "
+            "not something to overwrite."
+        ),
         "scope_caveats": [
             "JLS identifies high-tenure displaced workers; p25 measures all CZ men (dilution biases the model magnitude UP)",
             "incidence uses mean CZ male employment share (declared, panel mean)",
@@ -411,11 +423,80 @@ def v1_panel(params: ParameterSet) -> dict:
         ],
     }
 
+    # composed row (v1.17): direct displacement + the landed spillover link
+    # (adh2013 T7PB col 6: -0.822 log pts per $1k/worker, NON-displaced
+    # noncollege workers). The spillover coefficient is in the panel's
+    # native exposure units ($1k/worker) — no pp conversion needed. It
+    # applies to the NON-displaced share; log points convert exactly (exp),
+    # not linearized. Channels compose additively in proportional change
+    # (small-effect linearization, declared).
+    spill = params.by_link("import_shock->non_displaced_wage_spillover")
+
+    def prop_spill(coef: float) -> float:
+        return math.exp(coef / 100.0 * e_shock_gap) - 1.0
+
+    def earn_gap_composed(gap_mult: float, coef: float) -> float:
+        prop = displaced_share * (gap_mult - 1.0) + (1.0 - displaced_share) * prop_spill(coef)
+        return mean_level * prop
+
+    comp_point = earn_gap_composed(jls.point, spill.point)
+    comp_low = earn_gap_composed(jls.low, spill.low)
+    comp_high = earn_gap_composed(jls.high, spill.high)
+    earnings_composed = {
+        "outcome": "male p25 annual earnings change (USD, demeaned) — direct + spillover composed",
+        "exposure": "pooled shock (d_impusch_p9)",
+        "stream": "displacement->worker_earnings (jacobson1993 et al.) + import_shock->non_displaced_wage_spillover (adh2013)",
+        "cz_periods": n3,
+        "shock_gap_pp": round(e_shock_gap, 4),
+        "measured_gap_usd": round(e_gap, 2),
+        "modeled_gap_usd": {"point": round(comp_point, 2), "low": round(comp_low, 2), "high": round(comp_high, 2)},
+        "sign_agreement": (e_gap < 0) == (comp_point < 0),
+        "measured_inside_modeled_band": comp_low <= e_gap <= comp_high,
+        "gap_closure_share": round(1.0 - abs(e_gap - comp_point) / abs(e_gap - earnings["modeled_gap_usd"]["point"]), 4),
+        "assumptions": [
+            "channels additive in proportional change (small-effect linearization, declared)",
+            "spillover applied to the non-displaced share (1 - displaced_share); displaced_share is data-fixed at the tercile gap",
+            "log-point coefficient converted exactly (exp form), not linearized",
+            "band corners exact interval arithmetic (loss monotone in both parameters)",
+        ],
+        "scope_caveats": [
+            "the coefficient identifies NONmanufacturing noncollege workers; the p25 population includes manufacturing men whose wage response is deeper (ADH 2013 T7PB) — the composition is conservative on the spillover margin",
+            "JLS high-tenure scope caveat inherited from the direct row",
+        ],
+    }
+
+    # aggregate cross-check: the composed model's implied TOTAL male wage
+    # response per $1k/worker vs ADH 2013 T6 col 2 (-0.892, SE 0.294) —
+    # recorded on the spillover row notes for exactly this use.
+    def total_response(gap_mult: float, coef: float) -> float:
+        return 100.0 * earn_gap_composed(gap_mult, coef) / mean_level / e_shock_gap
+
+    m_ci = [round(-0.892 - 1.96 * 0.294, 3), round(-0.892 + 1.96 * 0.294, 3)]
+    wage_cross_check = {
+        "check": "composed model implied TOTAL male wage response per $1k/worker vs ADH 2013 T6 col 2 (measured aggregate)",
+        "model_logpts_per_1k": {
+            "point": round(total_response(jls.point, spill.point), 3),
+            "low": round(total_response(jls.low, spill.low), 3),
+            "high": round(total_response(jls.high, spill.high), 3),
+        },
+        "measured_logpts_per_1k": {"point": -0.892, "se": 0.294, "ci95": m_ci},
+        "model_point_inside_measured_ci": m_ci[0] <= total_response(jls.point, spill.point) <= m_ci[1],
+        "measured_point_inside_model_band": total_response(jls.low, spill.low) <= -0.892 <= total_response(jls.high, spill.high),
+        "note": (
+            "The aggregate male wage response is reproduced within the measured "
+            "CI, while the p25 row still undershoots — the residual is "
+            "distributional (bottom-quartile wages fell more than the male "
+            "mean), consistent with ADH 2013 note 39 (CZ-average wages "
+            "understate composition-constant losses)."
+        ),
+    }
+
     observed_slope = 0.28  # ADH T6 col2, 2SLS, SE 0.15
     return {
         "stage": "V1 panel retrodiction (CZ terciles + slope scoring)",
         "panel": {"cz_periods": len(recs), "source": "openICPSR 116320-V2 extract (validation/adh_cz_panel.csv)"},
-        "tercile_tests": [divorce_pooled, divorce_male, earnings],
+        "tercile_tests": [divorce_pooled, divorce_male, earnings, earnings_composed],
+        "wage_response_cross_check": wage_cross_check,
         "slope_scoring": {
             "model_slope_pp_per_pp": {"p05": round(q(0.05), 4), "p50": round(q(0.5), 4), "p95": round(q(0.95), 4)},
             "observed_slope": observed_slope,
