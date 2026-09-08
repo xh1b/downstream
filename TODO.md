@@ -12,10 +12,10 @@ Plan of record: owner-approved top 10 (2026-09-06). Every number cites
 ## Engine
 
 - **[P1] Export verb** — export a version-stamped `parameter_set.json` snapshot. Prereq for the parent repo's `entity_analysis` runner (see internal/TODO.md,
-  Downstream integration section).
-- **[P1] Vector catalog v2 closeout.**
-  - Live-smoke the 24 new functions (limit 3; scores 0..1).
-  - Add the 6 signal MVs to `mv-catalog.md`.
+  Downstream integration section). LANDED 2026-09-09 (`downstream export`, schema downstream-parameter-set/1, refuses while audit has ERRORs).
+- NOTE (2026-09-09): the "vector catalog v2 closeout" item (24 functions live-smoke, 6 signal MVs, `mv-catalog.md`) is APP-SURFACE work — `agent/vectors.py`
+  + scraper MVs — not downstream model work. It was misfiled here during the TODO split; it belongs in the parent repo's `internal/TODO.md`, NOT this repo.
+  Do NOT touch it from downstream.
 - **[P2] #5: per-parameter distributions + first citable correlations.**
 - **[P2] #6: V2 back-tests** — NAFTA, 2008-09 auto crisis, BRAC.
 - **[P2] #7: place-resolved layer with shrinkage** — Chetty-Hendren modifier, WONDER county baselines, partial pooling.
