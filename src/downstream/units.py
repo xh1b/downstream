@@ -59,6 +59,9 @@ COMPOSITION = {
     # chain step.
     (USD, PERCENT_DELTA): "rate",   # import_shock -> local wage spillover (adh2013)
     (USD, SD_DELTA): "rate",        # family income -> child achievement (dahl2012)
+    (RATE_RATIO, SD_DELTA): "rate", # IPV exposure -> child SD outcomes (evans2008) - boundary
+                                    # coefficient like dahl2012: the d contrast is per exposed-vs-not,
+                                    # never chained
     (USD, LIFE_YEARS): "rate",      # family income -> life expectancy (chetty2016)
     (PERCENT_DELTA, PERCENT_DELTA): "rate",  # unemployment pp -> property crime % (raphael2001)
     (USD, USD): "rate",             # EITC $1k exposure -> adult annual earnings (bastian2018)

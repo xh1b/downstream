@@ -1,3 +1,16 @@
+## v1.23 — 2026-09-09 — queue #21 landed: IPV exposure -> child mental health (evans2008)
+
+- Two rows (EXACT, random-effects meta, CITING section 1 meta class): household_ipv->child_internalizing_sd
+  0.48 [0.39, 0.57] (k=58, N=7,602, homogeneous) and household_ipv->child_externalizing_sd 0.47 [0.38, 0.56]
+  (k=53, N=7,200, heterogeneous; boys .46 vs girls .23 declared).
+- TRAUMA REFUSAL: d = 1.54 NOT landed (k=6, heterogeneous — the authors' own caution).
+- Cross-checks recorded, never averaged: kitzmann2003 (-.50/-.43), wolfe2003 (.38/.42).
+- New nodes: child_internalizing_sd, child_externalizing_sd (sd_delta); new composition rule
+  (RATE_RATIO, SD_DELTA) = "rate" — boundary coefficient like dahl2012.
+- evans2008 bib entry upgraded canonical -> fulltext-table (accepted manuscript read via the
+  Nebraska DigitalCommons permission copy; Wayback mirror of the WAF-blocked PDF CGI).
+- household_ipv node description de-staled (aizer2010 upstream landed v1.8).
+
 ## v1.22 — 2026-09-09 — queue #18 landed: foreclosure price spillover (campbell2011)
 
 - New row: `foreclosure_order->house_price_gap` 0.99 [0.9875, 0.9925] EXACT-results — the
