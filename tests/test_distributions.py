@@ -6,6 +6,7 @@ import random
 import pytest
 
 from downstream.distributions import (
+    LOGNORMAL,
     LOGUNIFORM,
     UNIFORM,
     apply_rank_correlation,
@@ -24,13 +25,22 @@ def _unit(node_name):
 
 
 def test_rate_ratios_default_to_log_space():
-    from downstream.params import load, default_dir
+    from downstream.params import Parameter, load, default_dir
 
+    # the unit DEFAULT for ratio rows is loguniform (v1.27: a row may
+    # override it with a declared dist when its band is a reported CI)
+    fake = Parameter(
+        link="t", from_node="a", to_node="b", point=2.0, low=1.5, high=2.5,
+        tier="EXACT", citation="x", population_scope="t",
+    )
+    assert dist_for(fake, "rate_ratio") == LOGUNIFORM
     params = load(default_dir() / "parameters.csv")
     mort = params.by_link("earnings_shock->mortality_peak")
-    assert dist_for(mort, _unit("mortality_rate")) == LOGUNIFORM
+    # v1.27: the band IS exp(beta +/- 1.96 SE), so the row declares the
+    # CI shape — lognormal (still log space, same honesty property)
+    assert dist_for(mort, "rate_ratio") == LOGNORMAL
     gap = params.by_link("displacement->child_earnings")
-    assert dist_for(gap, _unit("child_earnings")) == UNIFORM
+    assert dist_for(gap, "child_earnings") == UNIFORM
 
 
 def test_log_space_sampling_is_the_geometric_midpoint():

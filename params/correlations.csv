@@ -1,5 +1,7 @@
 from_param,to_param,spearman,justification
 # Declared rank correlations between parameters (Iman-Conover).
 # Rows only with a citable justification; judgment must say so.
-# Candidate queued in docs/QUEUED_EXTRACTIONS.md: shock depth vs
-# mortality response (Davis & von Wachter 2011 bad-case caveat).
+# First citable pair LANDED v1.27 (the queued candidate: shock depth vs
+# mortality response).
+displacement->worker_earnings,earnings_shock->mortality_peak,-0.5,"Direction citable, magnitude DECLARED: both rows are calibrated on the Sullivan & von Wachter 2009 bad-case sample (early-1980s Pennsylvania recession); the mortality rows' own scope notes record the Davis & von Wachter 2011 caveat that earnings losses AND mortality effects are smaller in normal times, and the earnings row's band spans that same cross-study recession-depth spread. A coherent draw pairs the deep-loss edge of the earnings multiplier with the high end of the mortality response (deep case), or the shallow edge with the low end (normal times) - in multiplier-value space that is a NEGATIVE rank correlation. The papers report no sampling covariance, so -0.5 is a declared moderate coupling, not an extracted coefficient. Applied via Iman-Conover: marginals preserved exactly"
+displacement->worker_earnings,earnings_shock->mortality_sustained,-0.5,"Same justification as the peak row: declared moderate negative coupling between the long-run earnings multiplier and the sustained-mortality response, both calibrated on the same bad-case sample (Sullivan & von Wachter 2009; Davis & von Wachter 2011 smaller-in-normal-times caveat recorded in both rows' scope notes); magnitude DECLARED, direction citable"

@@ -57,10 +57,12 @@ def test_aizer_row_pinned_with_sign_and_ci():
 def test_log_elasticity_samples_linear_not_log():
     node = NODES["household_ipv_elasticity"]
     p = PARAMS.by_link("wage_ratio->household_ipv")
-    assert dist_for(p, node.unit) == "uniform", (
-        "a signed elasticity must NOT sample in log space — the negative "
-        "band would make the sampler explode"
-    )
+    # v1.27: the aizer band IS the reported 95% CI (clustered SE 0.317),
+    # so the row declares `normal` — a LINEAR-space truncated normal
+    # centered on the point. The v1.8 property stands: never log space
+    # (the negative band would make a log sampler explode).
+    assert dist_for(p, node.unit) == "normal"
+    assert dist_for(p, node.unit) not in ("loguniform", "lognormal")
 
 
 def test_wage_ratio_node_exists_and_is_gap():
@@ -81,12 +83,14 @@ def test_lindo_row_pinned_and_paper_corrected():
 def test_parameters_csv_every_row_exact_field_count():
     # 2026-09-07: the aizer note field was left UNTERMINATED at v1.8;
     # it silently absorbed the next appended row. One row = 10 fields.
+    # v1.27 appends the declared `dist` column -> 11.
     import csv as _csv
     from downstream.params import default_dir
 
     with open(default_dir() / "parameters.csv", newline="") as f:
         rows = list(_csv.reader(f))
-    assert all(len(r) == 10 for r in rows), (
-        f"malformed rows: {[i for i, r in enumerate(rows) if len(r) != 10]}"
+    assert all(len(r) == 11 for r in rows), (
+        f"malformed rows: {[i for i, r in enumerate(rows) if len(r) != 11]}"
     )
     assert rows[0][9] == "notes"
+    assert rows[0][10] == "dist"

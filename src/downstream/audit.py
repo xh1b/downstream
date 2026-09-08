@@ -9,11 +9,20 @@ Run: downstream audit   (or python -m downstream.audit)
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 from pathlib import Path
 
 from .citations import parse_bib
-from .params import VALID_TIERS, load, load_all
+from .distributions import KNOWN_DISTS, _cholesky
+from .params import (
+    VALID_TIERS,
+    Correlation,
+    load,
+    load_all,
+    load_correlations,
+    spearman_matrix,
+)
 from . import units
 
 ERROR = "ERROR"
@@ -129,6 +138,52 @@ def audit(params_dir: str | Path | None = None) -> list[Finding]:
                         )
                     )
 
+        # Declared distribution shape (v1.27): a row claiming a CI shape
+        # must have a band that shape can produce. A declared band
+        # (rounding band, cross-study spread, evidence-widened band) is
+        # expected to declare NOTHING — the dist column exists only for
+        # SE-derived CIs.
+        if p.dist:
+            if p.dist not in KNOWN_DISTS:
+                findings.append(
+                    Finding(ERROR, "dist", f"{where}: dist {p.dist!r} not in {sorted(KNOWN_DISTS)}")
+                )
+            elif p.dist in ("lognormal", "loguniform"):
+                if p.low <= 0 or p.high <= 0:
+                    findings.append(
+                        Finding(
+                            ERROR,
+                            "dist",
+                            f"{where}: dist {p.dist} needs positive band edges, got [{p.low}, {p.high}]",
+                        )
+                    )
+                elif p.dist == "lognormal":
+                    geo = math.sqrt(p.low * p.high)
+                    if abs(math.log(p.point) - math.log(geo)) > 0.01 + 1e-9:
+                        findings.append(
+                            Finding(
+                                WARN,
+                                "dist",
+                                f"{where}: dist lognormal but the point is not the band's "
+                                f"geometric mean ({p.point} vs {geo:.4g}) — an exp(beta +/- 1.96 SE) "
+                                "band centers on the point; a mismatch means the band was not "
+                                "built that way",
+                            )
+                        )
+            elif p.dist == "normal":
+                mid = (p.low + p.high) / 2
+                if abs(p.point - mid) > max(0.005 * abs(p.point), 0.005) + 1e-9:
+                    findings.append(
+                        Finding(
+                            WARN,
+                            "dist",
+                            f"{where}: dist normal but the point is not the band's midpoint "
+                            f"({p.point} vs {mid:.4g}) — the sampling centers on the point and "
+                            "truncates at the band; an off-midpoint band usually means it was "
+                            "widened or assembled, not SE-derived",
+                        )
+                    )
+
     # Orphan detection: from_node that is neither an entry point nor produced.
     entry_nodes = {"displacement_event", "family_size", "school_spending", "youth_wages"}
     produced = {p.to_node for p in params.parameters}
@@ -173,6 +228,62 @@ def audit(params_dir: str | Path | None = None) -> list[Finding]:
             findings.append(
                 Finding(ERROR, "baseline", f"baselines.csv:{name}: unknown status {b.status!r}")
             )
+
+    # Declared correlations: pairs must reference real links, the matrix
+    # must be a valid correlation matrix, and every row must carry a
+    # justification — a citable source for the direction, or the word
+    # `declared` for a modeling-choice magnitude.
+    corr_path = d / "correlations.csv"
+    if corr_path.exists():
+        try:
+            correlations = load_correlations(corr_path)
+        except Exception as e:
+            correlations = []
+            findings.append(Finding(ERROR, "correlation", f"correlations.csv failed to load: {e}"))
+        links = {p.link for p in params.parameters}
+        for c in correlations:
+            crow = f"correlations.csv:{c.from_param}->{c.to_param}"
+            if c.from_param not in links or c.to_param not in links:
+                findings.append(
+                    Finding(
+                        ERROR,
+                        "correlation",
+                        f"{crow}: references unknown link(s) {c.from_param!r}, {c.to_param!r}",
+                    )
+                )
+            if not (-1.0 < c.spearman < 1.0):
+                findings.append(
+                    Finding(
+                        ERROR,
+                        "correlation",
+                        f"{crow}: spearman {c.spearman} outside (-1, 1) — +/-1 forces a "
+                        "functional relationship between parameters, which no evidence here supports",
+                    )
+                )
+            if not c.justification:
+                findings.append(Finding(ERROR, "correlation", f"{crow}: no justification"))
+            elif "declared" not in c.justification.lower() and not any(
+                k in c.justification for k in links
+            ):
+                # Neither a declared-magnitude marker nor a scope anchor.
+                has_scope = any(w in c.justification.lower() for w in ("citable", "direction"))
+                if not has_scope:
+                    findings.append(
+                        Finding(
+                            ERROR,
+                            "correlation",
+                            f"{crow}: justification must name a citable basis or say 'declared'",
+                        )
+                    )
+        if correlations:
+            try:
+                mat = spearman_matrix(params, correlations)
+                assert mat is not None
+                _cholesky(mat)  # raises on non-PSD
+            except Exception as e:
+                findings.append(
+                    Finding(ERROR, "correlation", f"correlations.csv: matrix not PSD/loadable: {e}")
+                )
 
     return findings
 

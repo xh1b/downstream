@@ -1,3 +1,32 @@
+## v1.27 — 2026-09-09 — #5: per-parameter distributions + first citable correlations
+
+- parameters.csv gains a `dist` column. Twenty rows whose band is a reported
+  95% CI now declare the shape that CI implies: `normal` (17 rows — band =
+  point +/- 1.96 SE in linear space) and `lognormal` (3 rows — band =
+  exp(beta +/- 1.96 SE)). Rows with DECLARED bands (rounding bands,
+  cross-study spreads, evidence-widened bands) declare NOTHING: flat-in-band
+  is the only honest shape when the paper reports no standard error.
+- Sampling centers on the reported POINT, truncated at the band (a rounded
+  CI like paul2009's [0.47, 0.54] has midpoint 0.505 != point 0.51; the
+  point is the published estimate). Unknown dist tokens now FAIL LOUDLY
+  (was: silent uniform fallback — caught by the v1.27 traps).
+- New audit checks: declared-dist token validity, positive band edges for
+  log shapes, point-vs-band asymmetry flagged as a WARN (assembled-band
+  smell, with rounding epsilon).
+- First citable rank correlations land via params/correlations.csv (the
+  queued candidate: shock depth vs mortality response):
+  displacement->worker_earnings <-> earnings_shock->mortality_peak/-sustained,
+  spearman -0.5, direction citable (Sullivan & von Wachter 2009 bad-case
+  calibration + the Davis & von Wachter 2011 smaller-in-normal-times caveat
+  recorded in both rows' scope notes), magnitude DECLARED (no reported
+  sampling covariance). mc.simulate loads correlations.csv by default,
+  applies Iman-Conover (marginals preserved exactly), and stamps the
+  sampler `lhs+iman-conover`; `use_declared_correlations=False` gives raw LHS.
+- Stale v1.8-era pins updated: aizer row now samples `normal` (CI shape,
+  still linear space — the never-log-space property stands), CSV field
+  count 10 -> 11.
+- 340 tests green; audit 0 errors; export v1.27 = 36 params.
+
 ## v1.26 — 2026-09-09 — queue #15 landed: import competition -> radical vote (colantone2018)
 
 - One row (EXACT, 2SLS): import_shock->radical_right_vote_share 13.2 [3.2, 23.2] pp per $1k/worker

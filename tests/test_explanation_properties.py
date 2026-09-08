@@ -138,7 +138,9 @@ def test_property_all_monte_carlo_outputs_stamp_sampled_version():
     params = load(PARAMS_DIR / "parameters.csv")
     out = simulate(params, lambda ps: ps.by_link("displacement->child_earnings").point, draws=50)
     assert out["parameter_set_version"].endswith("-sampled")
-    assert out["sampler"] == "lhs"
+    # v1.27: declared correlations apply by default, so the sampler
+    # stamps the induction on the output
+    assert out["sampler"] == "lhs+iman-conover"
 
 
 def test_property_vignette_never_claims_determinism():

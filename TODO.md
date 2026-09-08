@@ -11,7 +11,6 @@ Plan of record: owner-approved top 10 (2026-09-06). Every number cites
 
 ## Engine
 
-- **[P2] #5: per-parameter distributions + first citable correlations.**
 - **[P2] #6: V2 back-tests** — NAFTA, 2008-09 auto crisis, BRAC.
 - **[P2] #7: place-resolved layer with shrinkage** — Chetty-Hendren modifier, WONDER county baselines, partial pooling.
 - **[P2] #8: fill the paper prose** — methods, V1 scorecard, limitations; `make` builds clean.
@@ -25,6 +24,5 @@ Plan of record: owner-approved top 10 (2026-09-06). Every number cites
 Tracked in `docs/QUEUED_EXTRACTIONS.md` — the queue's status column is the
 truth; do not duplicate rows here.
 
-- **[P2] Remaining** — the extraction queue is EMPTY (all three owner downloads landed: #15 v1.26 colantone2018, #20 v1.25 paul2009, #22 v1.24 schneider2016).
-  Remaining work is engine-level: #5 distributions + correlations, #6 back-tests, #7 place-resolved layer, #8 paper prose, employer scenario shape, P3s.
+- **[P2] Remaining** — engine-level work: #6 back-tests, #7 place-resolved layer, #8 paper prose, employer scenario shape, P3s. (#5 distributions + correlations LANDED v1.27.)
 - Also: remarriage-margin candidate from the V1 divorce row.

@@ -7,11 +7,20 @@ Methodology (each choice cited in SPEC §7):
   in LOG space by default: a ratio is multiplicative, so its
   uncertainty is multiplicative. A linear-uniform sample of a ratio
   is biased toward its upper band.
-- Optional trunc-NORMAL for rows that declare it.
+- Optional declared shape per row: parameters.csv carries a `dist`
+  column (v1.27). Rows whose band is a reported 95% CI declare the
+  shape that CI implies — `normal` for linear-space CIs (band = point
+  +/- 1.96 SE), `lognormal` for multiplier rows whose band is
+  exp(beta +/- 1.96 SE). Rows with DECLARED bands (rounding bands,
+  cross-study spreads, evidence-widened bands) declare nothing: a
+  flat density is the only honest shape when the paper reports no
+  standard error.
 - Rank-correlation induction between parameters (Iman & Conover 1982):
   preserves each marginal exactly (LHS strata survive) while applying
-  a declared Spearman matrix. The declared matrix ships EMPTY —
-  correlations enter only with a citation, via params/correlations.csv.
+  a declared Spearman matrix. Correlations enter only with a citation
+  (citable direction) or an explicit `declared` magnitude marker, via
+  params/correlations.csv — mc.simulate loads it by default and stamps
+  the sampler `lhs+iman-conover` when any pair applies.
 """
 
 from __future__ import annotations
@@ -25,6 +34,10 @@ from .params import Parameter
 NORMAL = "normal"
 UNIFORM = "uniform"
 LOGUNIFORM = "loguniform"
+LOGNORMAL = "lognormal"
+
+# Every distribution a row may declare; the audit rejects other tokens.
+KNOWN_DISTS = {NORMAL, UNIFORM, LOGUNIFORM, LOGNORMAL}
 
 # Node units that must sample in log space (positive, multiplicative).
 LOG_SPACE_UNITS = {"rate_ratio", "odds_ratio", "level_ratio"}
@@ -40,17 +53,35 @@ def dist_for(param: Parameter, unit: str | None) -> str:
     return UNIFORM
 
 
-def sample_unit_interval(dist: str, u: float, low: float, high: float) -> float:
-    """Inverse CDF at u in (0,1) for the declared band."""
+def sample_unit_interval(
+    dist: str, u: float, low: float, high: float, point: float | None = None
+) -> float:
+    """Inverse CDF at u in (0,1) for the declared band.
+
+    `point` centers the CI-shaped distributions (normal, lognormal) on
+    the reported estimate; when omitted, normal centers on the band
+    midpoint and lognormal on the geometric mean.
+    """
     lo, hi = sorted((low, high))
-    if dist == LOGUNIFORM:
+    if dist not in KNOWN_DISTS:
+        raise ValueError(f"unknown distribution {dist!r}; known: {sorted(KNOWN_DISTS)}")
+    if dist in (LOGUNIFORM, LOGNORMAL):
         if lo <= 0:
             raise ValueError(f"log-space band requires positive bounds, got [{lo}, {hi}]")
-        return math.exp(math.log(lo) + u * (math.log(hi) - math.log(lo)))
+        if dist == LOGUNIFORM:
+            return math.exp(math.log(lo) + u * (math.log(hi) - math.log(lo)))
+        # lognormal: the reported exp(beta +/- 1.96 SE) shape — normal in
+        # log space with SE = (log hi - log lo) / 3.92, clamped into the
+        # band (the CI edges ARE the +/-1.96 sigma points by construction).
+        log_mid = math.log(point) if point is not None else (math.log(lo) + math.log(hi)) / 2
+        z = max(-1.96, min(1.96, _probit(u)))
+        v = math.exp(log_mid + z * (math.log(hi) - math.log(lo)) / 3.92)
+        return min(hi, max(lo, v))
     if dist == NORMAL:
         se = (hi - lo) / (2 * 1.96)
+        center = point if point is not None else (lo + hi) / 2
         z = _probit(u)
-        v = (lo + hi) / 2 + z * se
+        v = center + z * se
         return min(hi, max(lo, v))
     return lo + u * (hi - lo)
 

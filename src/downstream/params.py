@@ -71,6 +71,62 @@ class Baseline:
     notes: str = ""
 
 
+@dataclass(frozen=True)
+class Correlation:
+    """A declared rank correlation between two parameter rows.
+
+    Row shape: from_param,to_param,spearman,justification. The
+    justification must cite a source for the DIRECTION or say
+    `declared` outright — a bare number is rejected by the audit.
+    """
+
+    from_param: str
+    to_param: str
+    spearman: float
+    justification: str = ""
+
+
+def load_correlations(path: str | Path) -> list[Correlation]:
+    """Read params/correlations.csv; comment lines start with #."""
+    out: list[Correlation] = []
+    with open(path, newline="", encoding="utf-8") as f:
+        lines = [ln for ln in f if not ln.lstrip().startswith("#")]
+    for row in csv.DictReader(lines):
+        out.append(
+            Correlation(
+                from_param=row["from_param"].strip(),
+                to_param=row["to_param"].strip(),
+                spearman=float(row["spearman"]),
+                justification=row.get("justification", "").strip(),
+            )
+        )
+    return out
+
+
+def spearman_matrix(params: "ParameterSet", correlations: list[Correlation]) -> list[list[float]] | None:
+    """Map declared pairs onto the parameter-set row order.
+
+    Returns None when no pair applies, so callers can skip the
+    Iman-Conover pass entirely.
+    """
+    idx = {p.link: i for i, p in enumerate(params.parameters)}
+    n = len(idx)
+    mat = [[0.0] * n for _ in range(n)]
+    for i in range(n):
+        mat[i][i] = 1.0
+    hit = False
+    for c in correlations:
+        a, b = idx.get(c.from_param), idx.get(c.to_param)
+        if a is None or b is None:
+            raise KeyError(
+                f"correlation references unknown link(s): {c.from_param!r}, {c.to_param!r}"
+            )
+        mat[a][b] = c.spearman
+        mat[b][a] = c.spearman
+        hit = True
+    return mat if hit else None
+
+
 def load(path: str | Path, version: str | None = None) -> ParameterSet:
     path = Path(path)
     if version is None:

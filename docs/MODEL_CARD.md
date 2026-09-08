@@ -60,8 +60,15 @@ Reporting". This card travels with the model.
 
 ## Caveats
 
-- Linear propagation inside a draw; parameter correlations ship
-  mechanically but EMPTY (nothing citable yet).
+- Linear propagation inside a draw. Per-parameter distributions: rows
+  whose band is a reported 95% CI declare the CI shape (normal, or
+  lognormal for exp-CI multiplier rows); rows with declared bands
+  (rounding bands, cross-study spreads, evidence-widened bands) sample
+  flat — no shape is invented.
+- Parameter correlations: two declared pairs (shock depth <-> mortality
+  response, spearman -0.5, direction citable, magnitude declared) applied
+  via Iman-Conover with marginals preserved; the sampler stamp
+  `lhs+iman-conover` declares when they apply.
 - The great-grandchild layer is the weakest-identified number in the
   model; its output carries that statement.
 - Pending baselines block absolute counts on purpose: no baseline, no
