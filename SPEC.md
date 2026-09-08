@@ -62,8 +62,10 @@ below 1.0 as the tell for that bug class.
 population_scope, notes`. `citation` holds semicolon-separated bib
 keys — free-text citations are not allowed anywhere.
 
-### Active parameter set (v1.17; spillover wired into the V1 earnings row (no value
-change); v1.16 child-maltreatment row (JPubE 2018) landed; v1.15 GOP
+### Active parameter set (v1.18; Thornton 1980 cross-check notes on the fertility row (no value
+change, no cross-generation fertility link — observational, CITING §1);
+v1.17 spillover wired into the V1 earnings row (no value change);
+v1.16 child-maltreatment row (JPubE 2018) landed; v1.15 GOP
 win-probability + Carneiro notes; v1.14 fertility/EITC/IGE; v1.13 Hilger/Raphael;
 v1.12 spillover; v1.11 Oreopoulos pin; v1.9 S&vW; v1.10 Lindo.
 Full history: params/CHANGELOG.md)

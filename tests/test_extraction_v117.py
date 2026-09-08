@@ -1,5 +1,5 @@
 """v1.17 pins: the adh2013 spillover link WIRED into the V1 panel
-earnings row (the open work left by v1.12's landing of the row).
+earnings row (the open wiring left by v1.12's landing of the row).
 
 What must hold:
 - the direct-only row keeps its v1.12 miss exactly — misses publish,

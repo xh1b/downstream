@@ -1,4 +1,23 @@
 
+## v1.18 — Thornton 1980 cross-check notes (2026-09-08)
+
+- No parameter VALUES changed; no new row. Thornton 1980 (Population
+  and Environment 3(1):51-72, DOI 10.1007/bf01253070, Crossref-verified;
+  full text read, page-1 title confirmed) landed as CROSS-CHECK NOTES
+  on the male_earnings->marital_fertility row, per the Behrman &
+  Taubman precedent: PSID two-generation OLS is observational, and
+  CITING §1 allows only quasi-experimental designs to set points.
+- Findings recorded on the row: ACTUAL parental family size transmits
+  near-null (siblings-of-husband -> total expected fertility: zero-
+  order .070, standardized .058 with education controls, ns; parity
+  sign-inconsistent across 1972/1974); IDEAL family size (preferences)
+  transmits strongly (.282* zero-order, .237* controlled; text
+  unstandardized: +1 parental ideal child -> child ideal +0.15,
+  expected +0.08); parental economic status correlates negatively
+  with child parity, attenuated by education controls.
+- This note is the recorded reason the model carries NO cross-
+  generation fertility multiplier.
+
 ## v1.17 — spillover wired into V1 (2026-09-08)
 
 - No parameter VALUES changed. The v1.12 spillover row
