@@ -62,8 +62,8 @@ below 1.0 as the tell for that bug class.
 population_scope, notes`. `citation` holds semicolon-separated bib
 keys — free-text citations are not allowed anywhere.
 
-### Active parameter set (v1.14; fertility elasticity + EITC earnings row + Behrman-
-Taubman IGE cross-check; v1.13 Hilger/Raphael; v1.12 spillover/achievement/longevity;
+### Active parameter set (v1.15; GOP win-probability row + Carneiro timing corroboration
+notes; v1.14 fertility/EITC/IGE-cross-check; v1.13 Hilger/Raphael; v1.12 spillover;
 v1.11 Oreopoulos pin; v1.9 S&vW; v1.10 Lindo.
 Full history: params/CHANGELOG.md)
 
@@ -92,6 +92,7 @@ Full history: params/CHANGELOG.md)
 | unemployment_rate→property_crime (% per pp) | +5.018 [2.795, 7.241] | EXACT | raphael2001 |
 | eitc_exposure→adult_earnings_early (per $1k exposure, ages 13-18) | +564 [84, 1044] | EXACT | bastian2018 |
 | male_earnings→fertility (elasticity, ln-ln) | +1.24 [0.397, 2.083] | EXACT | kearney2018fracking |
+| import_shock→gop_win_probability (pp/$1k) | +24.08 [0.42, 47.74] | EXACT | autor2020polarization |
 
 Tiers mean what `CITING.md` says they mean. The audit cross-checks
 each tier against the `xh1b-evidence` class recorded in the bib entry.

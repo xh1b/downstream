@@ -32,8 +32,8 @@ P2 = completes a stream; P3 = breadth.
 | 12 | displacement→test scores | Stevens & Schaller 2011 | math/reading effect sizes | pending |
 | 13 | displacement→infant health | Lindo 2011 J Health Econ 30:869-879 | LANDED v1.10: displacement->infant_birth_weight 0.954 [0.912,0.998] EXACT (Table 2 col 3 via IZA DP 5213) | done 2026-09-07 |
 | 14 | local decline→child maltreatment | Lindo, Schaller & Hansen 2018 | maltreatment effect per local shock | pending |
-| 15 | import competition→radical vote | Colantone & Stanig 2018 AJPS 62 | vote-share effect per import shock SD | pending |
-| 16 | import exposure→polarization | Autor et al. 2020 AER 110 | GOP-margin effect per shock | pending |
+| 15 | import competition→radical vote | Colantone & Stanig 2018 AJPS 62(4):936-953 (Crossref-verified; bib record already correct) | pending — full text bot-walled (author site 403, Wiley 403, SSRN login); owner-download unblocks. Related landed: #16 Autor et al. 2020 gives the US win-probability row | pending 2026-09-07 |
+| 16 | import exposure→polarization | Autor et al. 2020 AER 110(10):3139-3183 | LANDED v1.15: GOP House win probability +24.08pp per $1k/worker exposure [0.42, 47.74] EXACT (Table 4 col 6); vote-share columns NULL and declared (re-sorting, not uniform shift); effect emerges 2010+ | done 2026-09-07 |
 | 17 | eviction→hardship chain | Desmond & Gershenson 2016; Collinson & Reed 2018 | job-loss effect of eviction (structural link into homelessness) | pending |
 | 18 | foreclosure→neighborhood prices | Immergluck & Smith 2006; Campbell et al. 2011 QJE 126 | price spillover per foreclosure within radius | pending |
 | 19 | income→life expectancy slope | Chetty et al. 2016 JAMA 315(16):1750-1766 | LANDED v1.12: 0.1333 y per $1k [0.117, 0.150] EXACT-derived — the paper's own concavity example $14k→$20k (P15→P20) carries +0.7-0.9y, slope 0.8/6; associational (authors' caveat) — row records it as a conversion factor, causal deaths stay anchored on sullivan2009 | done 2026-09-07 |
