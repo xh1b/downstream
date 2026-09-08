@@ -1,375 +1,375 @@
 {
- "applied": [],
- "relaxed_applied": [
-  {
-   "key": "alesina1999",
-   "confidence": 0.9,
-   "doi": "10.3386/w6009",
-   "crossref_title": "Public Goods and Ethnic Divisions",
-   "crossref_year": "1997",
-   "crossref_container": ""
-  },
-  {
-   "key": "autor2019",
-   "confidence": 0.9,
-   "doi": "10.3386/w23173",
-   "crossref_title": "When Work Disappears: Manufacturing Decline and the Falling Marriage-Market Value of Young Men",
-   "crossref_year": "2017",
-   "crossref_container": ""
-  },
-  {
-   "key": "autor2020",
-   "confidence": 0.9,
-   "doi": "10.3386/w22637",
-   "crossref_title": "Importing Political Polarization? The Electoral Consequences of Rising Trade Exposure",
-   "crossref_year": "2016",
-   "crossref_container": ""
-  },
-  {
-   "key": "butcher1998",
-   "confidence": 0.9,
-   "doi": "10.3386/w6067",
-   "crossref_title": "Recent Immigrants: Unexpected Implications for Crime and Incarceration",
-   "crossref_year": "1997",
-   "crossref_container": ""
-  },
-  {
-   "key": "campbell2011",
-   "confidence": 0.9,
-   "doi": "10.3386/w14866",
-   "crossref_title": "Forced Sales and House Prices",
-   "crossref_year": "2009",
-   "crossref_container": ""
-  },
-  {
-   "key": "card1990",
-   "confidence": 0.9,
-   "doi": "10.3386/w3069",
-   "crossref_title": "The Impact of the Mariel Boatlift on the Miami Labor Market",
-   "crossref_year": "1989",
-   "crossref_container": ""
-  },
-  {
-   "key": "charles2004",
-   "confidence": 0.9,
-   "doi": "10.3386/w8578",
-   "crossref_title": "Job Displacement, Disability, and Divorce",
-   "crossref_year": "2001",
-   "crossref_container": ""
-  },
-  {
-   "key": "colantone2018",
-   "confidence": 0.9,
-   "doi": "10.2139/ssrn.2904105",
-   "crossref_title": "The Trade Origins of Economic Nationalism: Import Competition and Voting Behavior in Western Europe",
-   "crossref_year": "2017",
-   "crossref_container": "SSRN Electronic Journal"
-  },
-  {
-   "key": "dahl2012",
-   "confidence": 0.9,
-   "doi": "10.3386/w14599",
-   "crossref_title": "The Impact of Family Income on Child Achievement: Evidence from the Earned Income Tax Credit",
-   "crossref_year": "2008",
-   "crossref_container": ""
-  },
-  {
-   "key": "doran2022",
-   "confidence": 0.9,
-   "doi": "10.3386/w20668",
-   "crossref_title": "The Effects of High-Skilled Immigration Policy on Firms: Evidence from Visa Lotteries",
-   "crossref_year": "2014",
-   "crossref_container": ""
-  },
-  {
-   "key": "fetzer2019",
-   "confidence": 0.9,
-   "doi": "10.2139/ssrn.3251187",
-   "crossref_title": "Did Austerity Cause Brexit?",
-   "crossref_year": "2018",
-   "crossref_container": "SSRN Electronic Journal"
-  },
-  {
-   "key": "galofrevila2021",
-   "confidence": 0.9,
-   "doi": "10.3386/w24106",
-   "crossref_title": "Austerity and the Rise of the Nazi party",
-   "crossref_year": "2017",
-   "crossref_container": ""
-  },
-  {
-   "key": "grogger1998",
-   "confidence": 0.9,
-   "doi": "10.3386/w5983",
-   "crossref_title": "Market Wages and Youth Crime",
-   "crossref_year": "1997",
-   "crossref_container": ""
-  },
-  {
-   "key": "jackson2016",
-   "confidence": 0.9,
-   "doi": "10.3386/w20847",
-   "crossref_title": "The Effects of School Spending on Educational and Economic Outcomes: Evidence from School Finance Reforms",
-   "crossref_year": "2015",
-   "crossref_container": ""
-  },
-  {
-   "key": "jacobson1993",
-   "confidence": 0.9,
-   "doi": "10.17848/wp92-11",
-   "crossref_title": "Earnings Losses of Displaced Workers",
-   "crossref_year": "1992",
-   "crossref_container": ""
-  },
-  {
-   "key": "raphael2001",
-   "confidence": 0.9,
-   "doi": "10.2139/ssrn.145790",
-   "crossref_title": "Identifying the Effect of Unemployment on Crime",
-   "crossref_year": "1999",
-   "crossref_container": ""
-  },
-  {
-   "key": "stevens2011",
-   "confidence": 0.9,
-   "doi": "10.1016/j.econedurev.2010.10.002",
-   "crossref_title": "Short-run effects of parental job loss on children's academic achievement",
-   "crossref_year": "2011",
-   "crossref_container": "Economics of Education Review"
-  },
-  {
-   "key": "yagan2019",
-   "confidence": 0.9,
-   "doi": "10.3386/w23844",
-   "crossref_title": "Employment Hysteresis from the Great Recession",
-   "crossref_year": "2017",
-   "crossref_container": ""
-  },
-  {
-   "key": "yang2008",
-   "confidence": 0.9,
-   "doi": "10.3386/w12325",
-   "crossref_title": "International Migration, Remittances, and Household Investment: Evidence from Philippine Migrants' Exchange Rate Shocks",
-   "crossref_year": "2006",
-   "crossref_container": ""
-  },
-  {
-   "key": "desmond2016",
-   "confidence": 0.95,
-   "doi": "10.1093/socpro/spv025",
-   "crossref_title": "Housing and Employment Insecurity among the Working Poor",
-   "crossref_year": "2016",
-   "crossref_container": "Social Problems"
-  },
-  {
-   "key": "collinson2024",
-   "confidence": 0.95,
-   "doi": "10.1093/qje/qjad042",
-   "crossref_title": "Eviction and Poverty in American Cities",
-   "crossref_year": "2023",
-   "crossref_container": "The Quarterly Journal of Economics"
-  }
- ],
- "review": [
-  {
-   "key": "adermon2018",
-   "confidence": 0.15,
-   "doi": "10.2139/ssrn.3390290",
-   "crossref_title": "Dynastic Human Capital, Inequality and Intergenerational Mobility",
-   "crossref_year": "2019",
-   "crossref_container": ""
-  },
-  {
-   "key": "autor2003",
-   "confidence": 0.775,
-   "doi": "10.3386/w8336",
-   "crossref_title": "The Rise in Disability Recipiency and the Decline in Unemployment",
-   "crossref_year": "2001",
-   "crossref_container": ""
-  },
-  {
-   "key": "browning2006",
-   "confidence": 0.233,
-   "doi": "10.2139/ssrn.4526275",
-   "crossref_title": "Job Displacement and Migrant Labor Market Assimilation",
-   "crossref_year": "2023",
-   "crossref_container": ""
-  },
-  {
-   "key": "case2015",
-   "confidence": 0.665,
-   "doi": "10.3410/f.725940664.793520684",
-   "crossref_title": "Faculty Opinions recommendation of Rising morbidity and mortality in midlife among white non-Hispanic Americans in the 21st century.",
-   "crossref_year": "2016",
-   "crossref_container": "Faculty Opinions – Post-Publication Peer Review of the Biomedical Literature"
-  },
-  {
-   "key": "costello2003",
-   "confidence": 0.705,
-   "doi": "10.1001/jama.290.15.2023",
-   "crossref_title": "Relationships Between Poverty and Psychopathology",
-   "crossref_year": "2003",
-   "crossref_container": "JAMA"
-  },
-  {
-   "key": "currie2003",
-   "confidence": 0.767,
-   "doi": "10.3386/w9360",
-   "crossref_title": "Mother's Education and the Intergenerational Transmission of Human Capital: Evidence from College Openings and Longitudinal Data",
-   "crossref_year": "2002",
-   "crossref_container": ""
-  },
-  {
-   "key": "ganong2022",
-   "confidence": 0.829,
-   "doi": "10.3386/w24964",
-   "crossref_title": "Liquidity vs. Wealth in Household Debt Obligations: Evidence from Housing Policy in the Great Recession",
-   "crossref_year": "2018",
-   "crossref_container": ""
-  },
-  {
-   "key": "gould2002",
-   "confidence": 0.733,
-   "doi": "10.2139/ssrn.121969",
-   "crossref_title": "Crime Rates and Local Labor Market Opportunities\r\nIn the United States: 1979-1997",
-   "crossref_year": "1998",
-   "crossref_container": ""
-  },
-  {
-   "key": "gruber2004",
-   "confidence": 0.746,
-   "doi": "10.3386/w7968",
-   "crossref_title": "Is Making Divorce Easier Bad for Children? The Long Run Implications of Unilateral Divorce",
-   "crossref_year": "2000",
-   "crossref_container": ""
-  },
-  {
-   "key": "kearney2020",
-   "confidence": 0.669,
-   "doi": "10.3386/w23408",
-   "crossref_title": "Male Earnings, Marriageable Men, and Nonmarital Fertility: Evidence from the Fracking Boom",
-   "crossref_year": "2017",
-   "crossref_container": ""
-  },
-  {
-   "key": "kearney2020fracking",
-   "confidence": 0.567,
-   "doi": "10.3386/w23408",
-   "crossref_title": "Male Earnings, Marriageable Men, and Nonmarital Fertility: Evidence from the Fracking Boom",
-   "crossref_year": "2017",
-   "crossref_container": ""
-  },
-  {
-   "key": "lindo2011",
-   "confidence": 0.3,
-   "doi": "10.2139/ssrn.4962277",
-   "crossref_title": "Navigating Unemployment Without Unemployment Insurance: Evidence from Singapore",
-   "crossref_year": "2024",
-   "crossref_container": ""
-  },
-  {
-   "key": "lindo2018",
-   "confidence": 0.367,
-   "doi": "10.7249/rra4846-1",
-   "crossref_title": "Levers for Increasing College Student Access to the Supplemental Nutrition Assistance Program: Evidence from Colorado",
-   "crossref_year": "2026",
-   "crossref_container": ""
-  },
-  {
-   "key": "mclanahan1994",
-   "confidence": 0.567,
-   "doi": "10.2307/j.ctv22tnmnn",
-   "crossref_title": "Growing Up With a Single Parent",
-   "crossref_year": "1997",
-   "crossref_container": ""
-  },
-  {
-   "key": "moretti2010",
-   "confidence": 0.122,
-   "doi": "10.2139/ssrn.2043140",
-   "crossref_title": "Local Multipliers and Human Capital in the US and Sweden",
-   "crossref_year": "2012",
-   "crossref_container": ""
-  },
-  {
-   "key": "oreopoulos2008",
-   "confidence": 0.733,
-   "doi": "10.3386/w11587",
-   "crossref_title": "The Intergenerational Effect of Worker Displacement",
-   "crossref_year": "2005",
-   "crossref_container": ""
-  },
-  {
-   "key": "oreopoulos2012",
-   "confidence": 0.547,
-   "doi": "10.3386/w12159",
-   "crossref_title": "The Short- and Long-Term Career Effects of Graduating in a Recession: Hysteresis and Heterogeneity in the Market for College Graduates",
-   "crossref_year": "2006",
-   "crossref_container": ""
-  },
-  {
-   "key": "ottaviano2012",
-   "confidence": 0.757,
-   "doi": "10.3386/w12497",
-   "crossref_title": "Rethinking the Effects of Immigration on Wages",
-   "crossref_year": "2006",
-   "crossref_container": ""
-  },
-  {
-   "key": "putnam2007",
-   "confidence": 0.613,
-   "doi": "10.1111/j.1467-9477.2007.00176.x",
-   "crossref_title": "<i>E Pluribus Unum</i>\n                    : Diversity and Community in the Twenty‐first Century The 2006 Johan Skytte Prize Lecture",
-   "crossref_year": "2007",
-   "crossref_container": "Scandinavian Political Studies"
-  },
-  {
-   "key": "rege2007",
-   "confidence": 0.375,
-   "doi": "10.33915/etd.3107",
-   "crossref_title": "Communicative facework in marital dissolution and post-dissolution processes",
-   "crossref_year": "",
-   "crossref_container": ""
-  },
-  {
-   "key": "solon1992",
-   "confidence": 0.471,
-   "doi": "10.3386/w12007",
-   "crossref_title": "Trends in Intergenerational Income Mobility",
-   "crossref_year": "2006",
-   "crossref_container": ""
-  },
-  {
-   "key": "sullivan2000",
-   "confidence": 0.471,
-   "doi": "10.12987/9780300253733",
-   "crossref_title": "The Fragile Middle Class",
-   "crossref_year": "2020",
-   "crossref_container": ""
-  },
-  {
-   "key": "vonwachter2009",
-   "confidence": 0.268,
-   "doi": "10.1257/pandp.20211091",
-   "crossref_title": "Long-Term Employment Effects from Job Losses during the COVID-19 Crisis? A Comparison to the Great Recession and Its Slow Recovery",
-   "crossref_year": "2021",
-   "crossref_container": "AEA Papers and Proceedings"
-  },
-  {
-   "key": "widom1989",
-   "confidence": 0.471,
-   "doi": "10.4135/9781412959193.n276",
-   "crossref_title": "Widom, Cathy Spatz: The Cycle of Violence",
-   "crossref_year": "2010",
-   "crossref_container": "Encyclopedia of Criminological Theory"
-  },
-  {
-   "key": "worldbank2023",
-   "confidence": 0.329,
-   "doi": "10.22617/tcs189320",
-   "crossref_title": "Migration and Remittances for Development in Asia",
-   "crossref_year": "2018",
-   "crossref_container": ""
-  }
- ]
+  "applied": [],
+  "relaxed_applied": [
+    {
+      "key": "alesina1999",
+      "confidence": 0.9,
+      "doi": "10.3386/w6009",
+      "crossref_title": "Public Goods and Ethnic Divisions",
+      "crossref_year": "1997",
+      "crossref_container": ""
+    },
+    {
+      "key": "autor2019",
+      "confidence": 0.9,
+      "doi": "10.3386/w23173",
+      "crossref_title": "When Work Disappears: Manufacturing Decline and the Falling Marriage-Market Value of Young Men",
+      "crossref_year": "2017",
+      "crossref_container": ""
+    },
+    {
+      "key": "autor2020",
+      "confidence": 0.9,
+      "doi": "10.3386/w22637",
+      "crossref_title": "Importing Political Polarization? The Electoral Consequences of Rising Trade Exposure",
+      "crossref_year": "2016",
+      "crossref_container": ""
+    },
+    {
+      "key": "butcher1998",
+      "confidence": 0.9,
+      "doi": "10.3386/w6067",
+      "crossref_title": "Recent Immigrants: Unexpected Implications for Crime and Incarceration",
+      "crossref_year": "1997",
+      "crossref_container": ""
+    },
+    {
+      "key": "campbell2011",
+      "confidence": 0.9,
+      "doi": "10.3386/w14866",
+      "crossref_title": "Forced Sales and House Prices",
+      "crossref_year": "2009",
+      "crossref_container": ""
+    },
+    {
+      "key": "card1990",
+      "confidence": 0.9,
+      "doi": "10.3386/w3069",
+      "crossref_title": "The Impact of the Mariel Boatlift on the Miami Labor Market",
+      "crossref_year": "1989",
+      "crossref_container": ""
+    },
+    {
+      "key": "charles2004",
+      "confidence": 0.9,
+      "doi": "10.3386/w8578",
+      "crossref_title": "Job Displacement, Disability, and Divorce",
+      "crossref_year": "2001",
+      "crossref_container": ""
+    },
+    {
+      "key": "colantone2018",
+      "confidence": 0.9,
+      "doi": "10.2139/ssrn.2904105",
+      "crossref_title": "The Trade Origins of Economic Nationalism: Import Competition and Voting Behavior in Western Europe",
+      "crossref_year": "2017",
+      "crossref_container": "SSRN Electronic Journal"
+    },
+    {
+      "key": "dahl2012",
+      "confidence": 0.9,
+      "doi": "10.3386/w14599",
+      "crossref_title": "The Impact of Family Income on Child Achievement: Evidence from the Earned Income Tax Credit",
+      "crossref_year": "2008",
+      "crossref_container": ""
+    },
+    {
+      "key": "doran2022",
+      "confidence": 0.9,
+      "doi": "10.3386/w20668",
+      "crossref_title": "The Effects of High-Skilled Immigration Policy on Firms: Evidence from Visa Lotteries",
+      "crossref_year": "2014",
+      "crossref_container": ""
+    },
+    {
+      "key": "fetzer2019",
+      "confidence": 0.9,
+      "doi": "10.2139/ssrn.3251187",
+      "crossref_title": "Did Austerity Cause Brexit?",
+      "crossref_year": "2018",
+      "crossref_container": "SSRN Electronic Journal"
+    },
+    {
+      "key": "galofrevila2021",
+      "confidence": 0.9,
+      "doi": "10.3386/w24106",
+      "crossref_title": "Austerity and the Rise of the Nazi party",
+      "crossref_year": "2017",
+      "crossref_container": ""
+    },
+    {
+      "key": "grogger1998",
+      "confidence": 0.9,
+      "doi": "10.3386/w5983",
+      "crossref_title": "Market Wages and Youth Crime",
+      "crossref_year": "1997",
+      "crossref_container": ""
+    },
+    {
+      "key": "jackson2016",
+      "confidence": 0.9,
+      "doi": "10.3386/w20847",
+      "crossref_title": "The Effects of School Spending on Educational and Economic Outcomes: Evidence from School Finance Reforms",
+      "crossref_year": "2015",
+      "crossref_container": ""
+    },
+    {
+      "key": "jacobson1993",
+      "confidence": 0.9,
+      "doi": "10.17848/wp92-11",
+      "crossref_title": "Earnings Losses of Displaced Workers",
+      "crossref_year": "1992",
+      "crossref_container": ""
+    },
+    {
+      "key": "raphael2001",
+      "confidence": 0.9,
+      "doi": "10.2139/ssrn.145790",
+      "crossref_title": "Identifying the Effect of Unemployment on Crime",
+      "crossref_year": "1999",
+      "crossref_container": ""
+    },
+    {
+      "key": "stevens2011",
+      "confidence": 0.9,
+      "doi": "10.1016/j.econedurev.2010.10.002",
+      "crossref_title": "Short-run effects of parental job loss on children's academic achievement",
+      "crossref_year": "2011",
+      "crossref_container": "Economics of Education Review"
+    },
+    {
+      "key": "yagan2019",
+      "confidence": 0.9,
+      "doi": "10.3386/w23844",
+      "crossref_title": "Employment Hysteresis from the Great Recession",
+      "crossref_year": "2017",
+      "crossref_container": ""
+    },
+    {
+      "key": "yang2008",
+      "confidence": 0.9,
+      "doi": "10.3386/w12325",
+      "crossref_title": "International Migration, Remittances, and Household Investment: Evidence from Philippine Migrants' Exchange Rate Shocks",
+      "crossref_year": "2006",
+      "crossref_container": ""
+    },
+    {
+      "key": "desmond2016",
+      "confidence": 0.95,
+      "doi": "10.1093/socpro/spv025",
+      "crossref_title": "Housing and Employment Insecurity among the Working Poor",
+      "crossref_year": "2016",
+      "crossref_container": "Social Problems"
+    },
+    {
+      "key": "collinson2024",
+      "confidence": 0.95,
+      "doi": "10.1093/qje/qjad042",
+      "crossref_title": "Eviction and Poverty in American Cities",
+      "crossref_year": "2023",
+      "crossref_container": "The Quarterly Journal of Economics"
+    }
+  ],
+  "review": [
+    {
+      "key": "adermon2018",
+      "confidence": 0.15,
+      "doi": "10.2139/ssrn.3390290",
+      "crossref_title": "Dynastic Human Capital, Inequality and Intergenerational Mobility",
+      "crossref_year": "2019",
+      "crossref_container": ""
+    },
+    {
+      "key": "autor2003",
+      "confidence": 0.775,
+      "doi": "10.3386/w8336",
+      "crossref_title": "The Rise in Disability Recipiency and the Decline in Unemployment",
+      "crossref_year": "2001",
+      "crossref_container": ""
+    },
+    {
+      "key": "browning2006",
+      "confidence": 0.233,
+      "doi": "10.2139/ssrn.4526275",
+      "crossref_title": "Job Displacement and Migrant Labor Market Assimilation",
+      "crossref_year": "2023",
+      "crossref_container": ""
+    },
+    {
+      "key": "case2015",
+      "confidence": 0.665,
+      "doi": "10.3410/f.725940664.793520684",
+      "crossref_title": "Faculty Opinions recommendation of Rising morbidity and mortality in midlife among white non-Hispanic Americans in the 21st century.",
+      "crossref_year": "2016",
+      "crossref_container": "Faculty Opinions – Post-Publication Peer Review of the Biomedical Literature"
+    },
+    {
+      "key": "costello2003",
+      "confidence": 0.705,
+      "doi": "10.1001/jama.290.15.2023",
+      "crossref_title": "Relationships Between Poverty and Psychopathology",
+      "crossref_year": "2003",
+      "crossref_container": "JAMA"
+    },
+    {
+      "key": "currie2003",
+      "confidence": 0.767,
+      "doi": "10.3386/w9360",
+      "crossref_title": "Mother's Education and the Intergenerational Transmission of Human Capital: Evidence from College Openings and Longitudinal Data",
+      "crossref_year": "2002",
+      "crossref_container": ""
+    },
+    {
+      "key": "ganong2022",
+      "confidence": 0.829,
+      "doi": "10.3386/w24964",
+      "crossref_title": "Liquidity vs. Wealth in Household Debt Obligations: Evidence from Housing Policy in the Great Recession",
+      "crossref_year": "2018",
+      "crossref_container": ""
+    },
+    {
+      "key": "gould2002",
+      "confidence": 0.733,
+      "doi": "10.2139/ssrn.121969",
+      "crossref_title": "Crime Rates and Local Labor Market Opportunities\r\nIn the United States: 1979-1997",
+      "crossref_year": "1998",
+      "crossref_container": ""
+    },
+    {
+      "key": "gruber2004",
+      "confidence": 0.746,
+      "doi": "10.3386/w7968",
+      "crossref_title": "Is Making Divorce Easier Bad for Children? The Long Run Implications of Unilateral Divorce",
+      "crossref_year": "2000",
+      "crossref_container": ""
+    },
+    {
+      "key": "kearney2020",
+      "confidence": 0.669,
+      "doi": "10.3386/w23408",
+      "crossref_title": "Male Earnings, Marriageable Men, and Nonmarital Fertility: Evidence from the Fracking Boom",
+      "crossref_year": "2017",
+      "crossref_container": ""
+    },
+    {
+      "key": "kearney2020fracking",
+      "confidence": 0.567,
+      "doi": "10.3386/w23408",
+      "crossref_title": "Male Earnings, Marriageable Men, and Nonmarital Fertility: Evidence from the Fracking Boom",
+      "crossref_year": "2017",
+      "crossref_container": ""
+    },
+    {
+      "key": "lindo2011",
+      "confidence": 0.3,
+      "doi": "10.2139/ssrn.4962277",
+      "crossref_title": "Navigating Unemployment Without Unemployment Insurance: Evidence from Singapore",
+      "crossref_year": "2024",
+      "crossref_container": ""
+    },
+    {
+      "key": "lindo2018",
+      "confidence": 0.367,
+      "doi": "10.7249/rra4846-1",
+      "crossref_title": "Levers for Increasing College Student Access to the Supplemental Nutrition Assistance Program: Evidence from Colorado",
+      "crossref_year": "2026",
+      "crossref_container": ""
+    },
+    {
+      "key": "mclanahan1994",
+      "confidence": 0.567,
+      "doi": "10.2307/j.ctv22tnmnn",
+      "crossref_title": "Growing Up With a Single Parent",
+      "crossref_year": "1997",
+      "crossref_container": ""
+    },
+    {
+      "key": "moretti2010",
+      "confidence": 0.122,
+      "doi": "10.2139/ssrn.2043140",
+      "crossref_title": "Local Multipliers and Human Capital in the US and Sweden",
+      "crossref_year": "2012",
+      "crossref_container": ""
+    },
+    {
+      "key": "oreopoulos2008",
+      "confidence": 0.733,
+      "doi": "10.3386/w11587",
+      "crossref_title": "The Intergenerational Effect of Worker Displacement",
+      "crossref_year": "2005",
+      "crossref_container": ""
+    },
+    {
+      "key": "oreopoulos2012",
+      "confidence": 0.547,
+      "doi": "10.3386/w12159",
+      "crossref_title": "The Short- and Long-Term Career Effects of Graduating in a Recession: Hysteresis and Heterogeneity in the Market for College Graduates",
+      "crossref_year": "2006",
+      "crossref_container": ""
+    },
+    {
+      "key": "ottaviano2012",
+      "confidence": 0.757,
+      "doi": "10.3386/w12497",
+      "crossref_title": "Rethinking the Effects of Immigration on Wages",
+      "crossref_year": "2006",
+      "crossref_container": ""
+    },
+    {
+      "key": "putnam2007",
+      "confidence": 0.613,
+      "doi": "10.1111/j.1467-9477.2007.00176.x",
+      "crossref_title": "<i>E Pluribus Unum</i>\n                    : Diversity and Community in the Twenty‐first Century The 2006 Johan Skytte Prize Lecture",
+      "crossref_year": "2007",
+      "crossref_container": "Scandinavian Political Studies"
+    },
+    {
+      "key": "rege2007",
+      "confidence": 0.375,
+      "doi": "10.33915/etd.3107",
+      "crossref_title": "Communicative facework in marital dissolution and post-dissolution processes",
+      "crossref_year": "",
+      "crossref_container": ""
+    },
+    {
+      "key": "solon1992",
+      "confidence": 0.471,
+      "doi": "10.3386/w12007",
+      "crossref_title": "Trends in Intergenerational Income Mobility",
+      "crossref_year": "2006",
+      "crossref_container": ""
+    },
+    {
+      "key": "sullivan2000",
+      "confidence": 0.471,
+      "doi": "10.12987/9780300253733",
+      "crossref_title": "The Fragile Middle Class",
+      "crossref_year": "2020",
+      "crossref_container": ""
+    },
+    {
+      "key": "vonwachter2009",
+      "confidence": 0.268,
+      "doi": "10.1257/pandp.20211091",
+      "crossref_title": "Long-Term Employment Effects from Job Losses during the COVID-19 Crisis? A Comparison to the Great Recession and Its Slow Recovery",
+      "crossref_year": "2021",
+      "crossref_container": "AEA Papers and Proceedings"
+    },
+    {
+      "key": "widom1989",
+      "confidence": 0.471,
+      "doi": "10.4135/9781412959193.n276",
+      "crossref_title": "Widom, Cathy Spatz: The Cycle of Violence",
+      "crossref_year": "2010",
+      "crossref_container": "Encyclopedia of Criminological Theory"
+    },
+    {
+      "key": "worldbank2023",
+      "confidence": 0.329,
+      "doi": "10.22617/tcs189320",
+      "crossref_title": "Migration and Remittances for Development in Asia",
+      "crossref_year": "2018",
+      "crossref_container": ""
+    }
+  ]
 }

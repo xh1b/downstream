@@ -25,7 +25,6 @@ Plan of record: owner-approved top 10 (2026-09-06). Every number cites
 Tracked in `docs/QUEUED_EXTRACTIONS.md` — the queue's status column is the
 truth; do not duplicate rows here.
 
-- **[P2] Remaining** — #15 Colantone-Stanig (owner download); #18; #20-#22 (#22 owner download). #17 LANDED v1.21 (version of record corrected to
-  collinson2024 QJE; desmond2016 job-loss refusal in SPEC §10). #12 LANDED
-  v1.20.
+- **[P2] Remaining** — #15 Colantone-Stanig (owner download); #20 Paul & Moser; #21 Evans et al.; #22 (owner download). LANDED: #17 v1.21 (collinson2024),
+  #18 v1.22 (campbell2011 spillover, venue corrected to AER), #12 v1.20.
 - Also: remarriage-margin candidate from the V1 divorce row.

@@ -118,6 +118,6 @@ def test_dag_wiring_valid():
 
 
 def test_version_bumped_and_audit_clean():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.21"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.22"
     errors = [f for f in audit(PARAMS_DIR) if f.severity == ERROR]
     assert errors == []

@@ -1,3 +1,21 @@
+## v1.22 — 2026-09-09 — queue #18 landed: foreclosure price spillover (campbell2011)
+
+- New row: `foreclosure_order->house_price_gap` 0.99 [0.9875, 0.9925] EXACT-results — the
+  authors' preferred estimate (each foreclosure ~0.05mi away lowers the price of a house by
+  about 1%, lead-vs-lag DiD; zero distance -2%), stored as a gap multiplier; band = rounding
+  band (no SE reported on the DiD) with the SE-carrying hedonic associates recorded beside,
+  not averaged in (-1.8% / -1.1% per foreclosure within 0.25mi; 0.1mi zero-distance -9.1% /
+  -7.3% clustering-inflated).
+- New nodes: `foreclosure_order` (persons), `house_price_gap` (gap_multiplier) — PARALLEL
+  stream, boundary-applied, never composed into the earnings/child chains (housing-contagion
+  composition is a queued P3 item).
+- QUEUE TARGET CORRECTED: venue is AER 101(5):2108-31, not QJE 126; Immergluck & Smith 2006
+  (Housing Studies) is their crime paper — the price study is the 2005 Woodstock report /
+  Housing Policy Debate (unread; recorded as a cross-check lead).
+- IDENTIFICATION LIMIT declared (authors' own statement): no instrument; estimates are not
+  structural — tier EXACT-results (read via NBER w14866 April 2009 draft; published AER
+  abstract confirms the preferred estimate and the 27% discount).
+
 ## v1.21 — Collinson et al. 2024 eviction stream, queue #17 (2026-09-09)
 
 - QUEUE TARGET CORRECTED: #17 named the Collinson & Reed 2018 WP; the
