@@ -40,3 +40,6 @@ foreclosure_order,persons,"household-headed foreclosure events within the declar
 house_price_gap,gap_multiplier,"neighbor house price vs the no-foreclosure counterfactual (1.0 = unharmed; -1% per foreclosure at the 0.05mi reference = 0.99)"
 child_internalizing_sd,sd_delta,"child internalizing symptoms vs unexposed peers, Cohen's d SD units (exposure contrast carried by the boundary rule, never chained)"
 child_externalizing_sd,sd_delta,"child externalizing symptoms vs unexposed peers, Cohen's d SD units (exposure contrast carried by the boundary rule, never chained)"
+local_unemp_shock,rate_ratio,"relative 12-month change in the local (MSA) unemployment rate; 1.0 = flat, 2.0 = doubling (schneider2016 shock measure)"
+household_hardship,rate_ratio,"relative material-hardship incidence (1+ of 10 hardship items in the past 12 months)"
+couple_unemployment,rate_ratio,"relative incidence of couple unemployment (mother or partner unemployed and looking)"

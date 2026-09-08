@@ -64,6 +64,9 @@ COMPOSITION = {
                                     # never chained
     (USD, LIFE_YEARS): "rate",      # family income -> life expectancy (chetty2016)
     (PERCENT_DELTA, PERCENT_DELTA): "rate",  # unemployment pp -> property crime % (raphael2001)
+    (RATE_RATIO, RATE_RATIO): "rate",  # unemployment shock -> IPV incidence (schneider2016) - boundary
+                                       # coefficient: multiplier per unit of the shock (doubling = 2.0),
+                                       # never chained
     (USD, USD): "rate",             # EITC $1k exposure -> adult annual earnings (bastian2018)
 }
 

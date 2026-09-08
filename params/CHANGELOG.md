@@ -1,3 +1,19 @@
+## v1.24 — 2026-09-09 — queue #22 landed: recessions -> IPV (schneider2016)
+
+- Three rows (EXACT-results, area-level shock + household-level distress) onto the household_ipv node:
+  local_unemp_shock->household_ipv 1.58 [1.49, 1.58] per UR doubling (Table 3 logit .454*, LDV .401*, FE .406*;
+  the band is the exp() spec range; the point is Model 1, the paper's headline spec);
+  household_hardship->household_ipv 2.14 [1.61, 2.68] (Model 1 prevalence 15% vs 7%; +/-25% rounding band — the
+  Table 1 coefficients are scrambled by text extraction and are recorded beside, NOT used for the band);
+  couple_unemployment->household_ipv 1.30 [1.04, 1.63] (13% vs 10%; logit .404**, FE magnitude unchanged).
+- LEVEL-NULL discipline on record: the UR LEVEL is null on all three outcomes — only the 12-month CHANGE moves
+  abuse; violent-only is null for both unemployment measures; hardship->violent is the authors' reverse-causality
+  concern.
+- New nodes: local_unemp_shock, household_hardship, couple_unemployment (all rate_ratio); new boundary
+  composition rule (RATE_RATIO, RATE_RATIO) = "rate" (per-unit shock multiplier, raphael-style, never chained).
+- PARALLEL stream: all three rows are boundary-applied, declared never-chained.
+- schneider2016 bib entry (Demography 53(2):471-505, owner-downloaded PDF read in full).
+
 ## v1.23 — 2026-09-09 — queue #21 landed: IPV exposure -> child mental health (evans2008)
 
 - Two rows (EXACT, random-effects meta, CITING section 1 meta class): household_ipv->child_internalizing_sd
