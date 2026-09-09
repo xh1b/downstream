@@ -25,6 +25,7 @@ USD = "usd"
 PROB = "probability"
 PERCENTILE = "percentile"      # a rank in 0-100 (Chetty-Hendren kfr scale)
 EDU_YEARS = "edu_years"        # additional years of educational attainment (akee2010)
+PERCENT = "percent"            # a LEVEL share expressed in percentage points (damm2014)
 
 
 @dataclass(frozen=True)
@@ -80,6 +81,10 @@ COMPOSITION = {
     (USD, PROB): "rate",            # unconditional income -> crime entry (akee2010) - the
                                     # probit marginal effects are exposure contrasts, boundary
                                     # applied like the rest
+    (PERCENT, PROB): "rate",        # area youth conviction share -> child conviction prob
+                                    # (damm2014) - per-1pp boundary coefficient: each 1pp of
+                                    # the area share adds the row's probability points; the
+                                    # share is a LEVEL, never chained from a crime-count delta
 }
 
 

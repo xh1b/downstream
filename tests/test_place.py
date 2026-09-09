@@ -101,7 +101,7 @@ def _places(philly: Place | None = None) -> dict[str, Place]:
 
 
 def test_version_is_v129():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.32"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.33"
 
 
 # --- loader -------------------------------------------------------

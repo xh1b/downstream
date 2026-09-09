@@ -52,3 +52,6 @@ unconditional_income,usd,"annual unconditional household income, in 2010 dollars
 child_education_years,edu_years,"additional years of educational attainment at age 21 (akee2010; a DIRECT treatment effect carried by the per-treatment boundary rule)"
 youth_any_crime,probability,"probability of committing any crime (arrest data) in the stated age window (akee2010 marginal probit effects, exposure contrast carried by the boundary rule)"
 youth_minor_crime_ever,probability,"probability of EVER committing a minor offense by age 21 (disorderly conduct, trespassing, shoplifting)"
+youth_crime_convicted,probability,"probability of at least one crime CONVICTION at ages 15-21 (court convictions, Danish register; distinct from akee2010's arrest-based youth_any_crime)"
+youth_crime_conviction_share,percent,"share of 15-25-year-olds with a crime conviction in the municipality-year, in percentage points (a LEVEL; damm2014's operative exposure — the committed-crime RATE is a declared null, Table 6)"
+youth_violent_crime_conviction_share,percent,"share of 15-25-year-olds with a VIOLENT-crime conviction in the municipality-year, in percentage points (the operative crime type; property/drug shares are declared nulls, Table 5)"

@@ -1,4 +1,4 @@
-"""v1.32 pins: #25 Akee casino quasi-experiment + #9 Duncan refusal.
+"""v1.33 pins: #25 Akee casino quasi-experiment + #9 Duncan refusal.
 
 What this file hunts:
 - the three landed akee2010 rows drifting: EXACT tier, reported-SE
@@ -27,7 +27,7 @@ PARAMS = load(PARAMS_DIR / "parameters.csv")
 
 
 def test_version_is_v132():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.32"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.33"
 
 
 EDUCATION = "unconditional_income->child_education_years"

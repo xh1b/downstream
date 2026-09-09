@@ -1,3 +1,31 @@
+## v1.33 — 2026-09-09 — #24 Damm & Dustmann neighborhood conviction-share exposure landed
+
+- #24 LANDED (damm2014, AER 104(6):1806-1832, read via the open Aarhus
+  WP 2013-17 Sept-2013 draft; no NBER version exists). Queue target
+  CORRECTED: the paper has NO clean exposure-duration elasticity (age
+  at assignment is perfectly correlated with potential exposure
+  years; the authors warn the age-cohort splits confound duration
+  with age) - the landed number is the per-1pp conviction-SHARE
+  exposure effect. TWO EXACT rows on the quasi-random refugee
+  municipality assignment design (males, N=4,425, avg age at
+  assignment 9): youth_crime_conviction_share ->
+  youth_crime_convicted 0.061 [0.000, 0.123] per 1pp of the area
+  15-25 conviction share (Table 3 spec 5 municipality-FE; conservative
+  spec-4 0.033 SE 0.017 + count-of-convictions 0.241/1pp recorded
+  beside; the band's lower edge rounds to 0.000, declared not
+  massaged), youth_violent_crime_conviction_share ->
+  youth_crime_convicted 0.366 [0.143, 0.589] per 1pp of the VIOLENT
+  conviction share (Table 5 spec 5; mean 0.286% thin level; spec-4
+  0.276 SE 0.089 beside).
+- Operative-channel discipline declared: the COMMITTED-crime rate is
+  a NULL (Table 6) - only the share of CONVICTED YOUTH moves
+  children; property/drug shares null (Table 5); FEMALE NULL (panel
+  B); co-national peer channel recorded (Table 7, social interaction
+  via co-nationals). New PERCENT level unit token + (PERCENT, PROB)
+  boundary 'rate' composition; both share nodes registered as entry
+  nodes. damm2014 bib upgraded canonical -> fulltext-table.
+- Parameter set 42 rows; version pins bumped across the suite.
+
 ## v1.32 — 2026-09-09 — #25 Akee casino quasi-experiment landed + #9 Duncan refusal
 
 - #25 LANDED (akee2010, AEJ:Applied 2(1):86-115, read via PMC2891175
