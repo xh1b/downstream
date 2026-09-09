@@ -4,15 +4,64 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "downstream"
-version = "0.1.0"
+version = "0.2.0"
 description = "Citation-calibrated microsimulation of displacement consequences"
 readme = "README.md"
 requires-python = ">=3.12"
 license = { text = "MIT" }
 dependencies = []
 
+[project.optional-dependencies]
+dev = [
+  "coverage[toml]>=7.6,<8",
+  "hypothesis>=6.120,<7",
+  "mutmut>=3.7,<4",
+  "pytest>=8,<9",
+  "ruff>=0.12,<1",
+]
+
 [project.scripts]
 downstream = "downstream.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.pytest.ini_options]
+addopts = "--ignore=mutants"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]
+
+[tool.coverage.run]
+branch = true
+source = ["downstream"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+precision = 1
+exclude_also = [
+  "if __name__ == .__main__.:",
+]
+
+[tool.mutmut]
+source_paths = [
+  "src/downstream/mortality.py",
+  "src/downstream/ledger.py",
+  "src/downstream/scenario.py",
+  "src/downstream/place.py",
+  "src/downstream/validate.py",
+]
+pytest_add_cli_args_test_selection = [
+  "tests/test_mathematics_v02.py",
+  "tests/test_properties_hypothesis.py",
+  "tests/test_ledger.py",
+  "tests/test_place.py",
+  "tests/test_v2_backtest.py",
+]
+mutate_only_covered_lines = true
+also_copy = ["src/downstream", "params", "validation"]

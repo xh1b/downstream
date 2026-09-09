@@ -4,9 +4,9 @@ from pathlib import Path
 
 import pytest
 
-from downstream.mc import simulate, simulate_chain
+from downstream.mc import simulate, simulate_chain, simulate_many
 from downstream.params import Baseline, load, load_all
-from downstream.scenario import BaselineMissing, ScenarioInput, compute_counts
+from downstream.scenario import BaselineMissing, ScenarioInput, compute_counts, sample_counts
 from downstream.vignette import standard_family
 
 PARAMS_DIR = Path(__file__).resolve().parent.parent / "params"
@@ -15,7 +15,7 @@ PARAMS_DIR = Path(__file__).resolve().parent.parent / "params"
 def test_vignette_structure_and_honesty_markers():
     parts = load_all(PARAMS_DIR)
     out = standard_family(parts["params"])
-    assert out["parameter_set_version"] == "v1.33"
+    assert out["parameter_set_version"] == "v1.34"
     assert "never a deterministic claim" in out["vignette"]["framing"]
     assert out["children_stream"]["weakest_identified"] == "greatgrandchild"
     assert out["family_stream"]["daughter_violence_odds"]["blocked"]
@@ -52,12 +52,12 @@ def _fake_verified_baselines():
     }
 
 
-def test_scenario_both_conversions_computed_from_real_baselines():
+def test_legacy_scenario_both_conversions_computed_from_real_baselines():
     # v1.3 verified mortality; v1.4 verified lifetime earnings — both
     # count conversions now run on the REAL pinned values, nothing blocked.
     parts = load_all(PARAMS_DIR)
     out = compute_counts(
-        parts["params"], parts["baselines"], ScenarioInput(displaced_workers=100)
+        parts["params"], parts["baselines"], ScenarioInput(displaced_workers=100, mortality_method="legacy_additive")
     )
     deaths = out["modeled"]["excess_deaths"]
     # v1.10 table-pinned S&vW (sustained 1.135, peak 2.672):
@@ -97,7 +97,7 @@ def test_scenario_strict_raises_on_missing_baseline():
 def test_scenario_counts_with_verified_baselines():
     parts = load_all(PARAMS_DIR)
     out = compute_counts(
-        parts["params"], _fake_verified_baselines(), ScenarioInput(displaced_workers=100)
+        parts["params"], _fake_verified_baselines(), ScenarioInput(displaced_workers=100, mortality_method="legacy_additive")
     )
     deaths = out["modeled"]["excess_deaths"]
     # v1.10 table-pinned S&vW: sustained 1.135, peak 2.672
@@ -142,3 +142,42 @@ def test_mc_generic_entry_rebuilds_full_module_per_draw():
     out = simulate(params, compute, draws=500, seed=3)
     assert out["parameter_set_version"].endswith("-sampled")
     assert out["p05"] <= out["p50"] <= out["p95"]
+
+
+def test_scenario_count_intervals_are_parameter_only_and_reproducible():
+    parts = load_all(PARAMS_DIR)
+    scenario = ScenarioInput(displaced_workers=100, mortality_method="odds_survival")
+    a = sample_counts(parts["params"], parts["baselines"], scenario, draws=80, seed=8,
+                      nodes=parts["nodes"], params_dir=PARAMS_DIR)
+    b = sample_counts(parts["params"], parts["baselines"], scenario, draws=80, seed=8,
+                      nodes=parts["nodes"], params_dir=PARAMS_DIR)
+    assert a == b
+    assert a["parameter_uncertainty"]["scope"] == "parameter uncertainty only"
+    assert "baseline estimation error" in a["parameter_uncertainty"]["excluded"]
+    for row in a["modeled"].values():
+        interval = row["parameter_interval_90"]
+        assert interval["p05"] <= interval["p50"] <= interval["p95"]
+    # The old low/high fields remain an explicitly different object: a
+    # support envelope, not an interval whose coverage is being claimed.
+    assert a["uncertainty"]["band_kind"].startswith("parameter-support")
+    predictive = a["predictive_uncertainty"]
+    assert predictive["available"] is True
+    assert predictive["exposed_deaths"]["p05"] <= predictive["exposed_deaths"]["p95"]
+    assert "not an observable paired" in predictive["counterfactual_design"]
+
+
+def test_predictive_counts_refuse_fractional_worker_aggregates():
+    parts = load_all(PARAMS_DIR)
+    out = sample_counts(parts["params"], parts["baselines"], ScenarioInput(2.5), draws=8,
+                        nodes=parts["nodes"], params_dir=PARAMS_DIR)
+    assert out["predictive_uncertainty"]["available"] is False
+
+
+def test_simulate_many_preserves_joint_draw_metadata():
+    params = load(PARAMS_DIR / "parameters.csv")
+    out = simulate_many(params, lambda ps: {"a": ps.parameters[0].point,
+                                             "b": 2 * ps.parameters[0].point},
+                        draws=40, seed=9, params_dir=PARAMS_DIR)
+    assert set(out["outcomes"]) == {"a", "b"}
+    # Published summaries round independently to four decimal places.
+    assert out["outcomes"]["b"]["mean"] == pytest.approx(2 * out["outcomes"]["a"]["mean"], abs=2e-4)

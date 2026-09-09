@@ -44,15 +44,14 @@ class Node:
 #   elasticity  : pct_delta = param * pct_input
 COMPOSITION = {
     (PERSONS, GAP): "level",             # displacement -> worker_earnings (JLS band)
+    (GAP, ODDS_RATIO): "rate",           # mortality odds, recorded before risk conversion
     (GAP, RATE_RATIO): "rate",           # earnings shock -> mortality
     (PERSONS, RATE_RATIO): "rate",       # displacement -> divorce hazard
     (RATE_RATIO, GAP): "direct",         # divorce -> child_earnings (parallel stream)
     (COUNT, GAP): "direct",              # family_size -> child_earnings (parallel stream)
-    (PERSONS, GAP): "level",             # direct displacement -> child_earnings
     (GAP, GAP): "gap",                   # IGE links (child -> grandchild -> great-grandchild)
     (RATE_RATIO, ODDS_RATIO): "direct",  # ipv -> daughter odds (dangling upstream)
     (PERSONS, LEVEL_RATIO): "level_ratio",
-    (GAP, GAP): "gap",
     (GAP, PERCENT_DELTA): "elasticity",
     (GAP, LOG_ELASTICITY): "elasticity",  # wage_ratio -> ln(IPV) elasticity (aizer2010)
     # Boundary-applied COEFFICIENTS: per-unit responses estimated on an

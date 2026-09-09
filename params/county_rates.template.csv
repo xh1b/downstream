@@ -1,0 +1,4 @@
+# Counts must share the outcome definition, population, and time window of the national rate.
+# This file is a template and is never loaded as a place baseline.
+key,outcome,events,person_years,population_scope,time_window,citation
+01001,all_cause_mortality_annual,12,2500,"US prime-age men 45-54","2015-2019",source2026

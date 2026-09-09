@@ -1,4 +1,4 @@
-# SPEC — the downstream model
+# SPEC — the downstream causal consequence graph
 
 Versioned with the parameter set (`params/VERSION`). This document is
 the algorithm: what is computed, from what, with which citations, and
@@ -6,10 +6,31 @@ what is deliberately not computed. Everything here is public by
 design. The companion research corpus is private; this repo carries
 only the model, the numbers, and their sources.
 
-## 1. What the model computes
+## 1. Purpose and what the model computes
 
-An **exposure** (workers displaced from tradable jobs) propagates
-through cited effect links into outcomes for four streams:
+`downstream` is a versioned, evidence-locked causal consequence graph. Given
+an initiating event or altered state, it discovers and composes the published,
+compatible downstream links through a person, their family, and their
+community over time. Its purpose is to make distant effects auditable: a result
+must identify every scientific bridge that led to it, its uncertainty, and the
+missing bridge that would block it.
+
+The model is descriptive. It does not contain a preferred political or moral
+conclusion. Positive, harmful, null, and conflicting effects are evidence
+records with the same status. Where high-quality evidence supports competing
+structures, it reports structural variants rather than silently selecting a
+story. The model simulates distributions for synthetic people and populations;
+it does not claim to predict an identified person's life.
+
+Worker displacement is the first seed event and the currently implemented
+graph. It is not the intended boundary: the graph will expand across health,
+housing and relocation, family structure, education, crime and incarceration,
+mental health, environment, and protective interventions as cited bridges are
+extracted.
+
+The current implementation takes an **exposure** (workers displaced from
+tradable jobs) and propagates it through cited effect links into four initial
+regions of the graph:
 
 | Stream | Outcomes |
 |:---|:---|
@@ -22,6 +43,11 @@ Every number carries: a point estimate, a band, a precision tier, at
 least one bib key (`params/references.bib`), and a population scope.
 The ledger records each step so any output can be audited back to its
 studies.
+
+The graph expansion requirements are defined in
+`docs/CAUSAL_GRAPH_PLAN.md`. New links must also carry their causal estimand
+(total, direct, mediated, null, or context-only), time semantics, and a
+unit-appropriate uncertainty representation before they can be composed.
 
 **Honesty architecture** (non-negotiable):
 
@@ -169,12 +195,24 @@ Relative effects become counts only against cited baselines
 with a value and a source before use:
 
 ```
-excess_deaths = N · m · (r_sust − 1) · Y  +  N · m · (r_peak − 1)
+q(r) = r*m / (1-m+r*m)
+a = min(Y, 1); u = min(max(Y-1, 0), 4); b = max(Y-5, 0)
+excess_deaths = N * ((1-m)**Y - (1-q(r_peak))**a * (1-m)**u * (1-q(r_sust))**b)
 child_earnings_lost_$ = N · children · (1 − g_child) · L
 ```
 
 where `m` is the cited baseline mortality rate, `Y` the exposure
-window, and `L` cited median lifetime earnings. Pending baselines
+window including the peak year, and `L` cited median lifetime earnings.
+The peak coefficient applies to year 1. Years 2--5 have no landed
+coefficient and therefore remain at the baseline hazard; the year-6+
+coefficient is currently applied from follow-up year 6 onward. The September
+10 source check found available early-year estimates and an offset error:
+source +6 corresponds to follow-up year 7 when displacement is year 1.
+`source_aligned` is therefore a historical option name for an incomplete
+profile, pending coherent re-extraction (see `docs/REVIEW_2026-09-10.md`).
+`immediate_sustained` backfills persistence as a sensitivity assumption.
+`legacy_additive` retains the
+historical linear formula. Pending baselines
 block their outcome (`blocked`, with the fix named); `strict=True`
 raises instead. **No baseline value is ever guessed.**
 
@@ -191,12 +229,11 @@ mark. Methodology (mckay1979; iman1982; hersbach2000 in references.bib):
    ratios, level ratios): a ratio's uncertainty is multiplicative;
    linear sampling biases toward the top of the band.
 3. **Declared normal** rows: SE from the band half-width / 1.96,
-   truncated to the band.
+   clamped to the band (including endpoint probability mass).
 4. **Rank correlation** between parameters via Iman-Conover —
    marginals preserved exactly. The declared matrix
-   (`params/correlations.csv`) ships EMPTY; a correlation enters only
-   with a citation (candidate queued: shock depth vs mortality
-   response, from the Davis-von Wachter bad-case caveat).
+   (`params/correlations.csv`) has two declared -0.5 earnings/mortality
+   pairs. Literature motivates their direction; magnitude is judgment.
 
 ## 7b. Analytic inference (the same algebra, done exactly)
 
@@ -232,8 +269,8 @@ band (trap-pinned) — the correction does work, and the MC remains
 the referee.
 
 **Correlation stress** (`correlation_stress`) — the bound on the
-independence assumption. The declared correlation matrix ships EMPTY;
-until a correlation is citable, every band assumes independence. The
+independence assumption. Two declared earnings/mortality pairs enter
+default Monte Carlo; analytic chains retain an independence assumption. The
 stress test induces Spearman ρ among a chosen block via Iman-Conover
 (marginals preserved; PSD violations refused at construction),
 rebuilds the band, redraws truths under the SAME dependence, and
@@ -441,12 +478,12 @@ substituted — the spread IS the result. CLI: `downstream ensemble`.
 
 ## 14. Limitations (registered, not hidden)
 
-1. Linear, deterministic propagation inside a draw; interactions
+1. Deterministic gap and survival propagation inside a draw; interactions
    between outcomes are not modeled.
 2. Parameter correlations are mechanically supported
-   (Iman-Conover) but the declared matrix is EMPTY: no correlation is
-   yet citable. Sampling distributions are band-derived (uniform /
-   log-uniform / truncated normal), not study-fitted.
+   (Iman-Conover) with two declared -0.5 earnings/mortality pairs. Their
+   magnitude is judgment. Sampling distributions are band-derived
+   (uniform, log-uniform, clamped normal/lognormal), not study-fitted.
 3. US-centric parameters applied to US populations; scope mismatches
    are recorded per row.
 4. Displacement is treated as exogenous; the model does not select

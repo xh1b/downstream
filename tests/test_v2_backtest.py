@@ -16,6 +16,7 @@ What this file hunts:
 """
 import pytest
 
+import downstream.validate as validate_module
 from downstream.params import default_dir, load
 from downstream.validate import (
     V2_EVENT_IDS,
@@ -29,8 +30,22 @@ PARAMS_DIR = default_dir()
 PARAMS = load(PARAMS_DIR / "parameters.csv")
 
 
+def _write_v2_inputs(directory, *, workers="100", low="50", high="150",
+                     baseline="0.01", window="5", measured="0", se="1"):
+    (directory / "nafta_exposure_bridge.csv").write_text(
+        "quantity,point,low,high\n"
+        f"displaced_workers,{workers},{low},{high}\n"
+        f"window_years,{window},{window},{window}\n"
+        f"baseline_mortality_per_person_year,{baseline},{baseline},{baseline}\n"
+    )
+    (directory / "nafta_measured_coefficients.csv").write_text(
+        "outcome,point,se\n"
+        f"excess_deaths_per100k,{measured},{se}\n"
+    )
+
+
 def test_version_is_v127():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.33"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.34"
 
 
 def test_registry_has_exactly_the_three_events():
@@ -107,3 +122,40 @@ def test_run_includes_v2_with_all_events_blocked():
     assert set(v2["events"]) == {"nafta", "auto_crisis", "brac"}
     assert all(r["status"] == "blocked" for r in v2["events"].values())
     assert v2["registry"]["pre_registered"]
+
+
+def test_v2_scores_synthetic_positive_count_bridge_with_ordered_corners(tmp_path, monkeypatch):
+    """Positive count endpoints are valid; they must not invert after abs()."""
+    monkeypatch.setattr(validate_module, "VALIDATION_DIR", tmp_path)
+    _write_v2_inputs(tmp_path, measured="0", se="0")
+    result = v2_backtest("nafta", PARAMS)
+    assert result["status"] == "scored"
+    row = result["scored"][0]
+    assert row["modeled"]["low"] <= row["modeled"]["point"] <= row["modeled"]["high"]
+    assert row["measured"]["ci95"] == [0.0, 0.0]
+
+
+@pytest.mark.parametrize(
+    ("bridge_kwargs", "expected"),
+    [
+        ({"baseline": ""}, "baseline_mortality_per_person_year"),
+        ({"baseline": "1.1"}, "invalid baseline_mortality_per_person_year"),
+        ({"window": "-1"}, "negative window_years"),
+    ],
+)
+def test_v2_refuses_malformed_bridge_inputs(tmp_path, monkeypatch, bridge_kwargs, expected):
+    monkeypatch.setattr(validate_module, "VALIDATION_DIR", tmp_path)
+    _write_v2_inputs(tmp_path, **bridge_kwargs)
+    result = v2_backtest("nafta", PARAMS)
+    assert result["status"].startswith("blocked:")
+    assert expected in result["status"]
+    assert result["scored"] == []
+
+
+@pytest.mark.parametrize("measured,se", [("not-a-number", "1"), ("1", "-0.1"), ("nan", "1")])
+def test_v2_refuses_malformed_measured_outcomes(tmp_path, monkeypatch, measured, se):
+    monkeypatch.setattr(validate_module, "VALIDATION_DIR", tmp_path)
+    _write_v2_inputs(tmp_path, measured=measured, se=se)
+    result = v2_backtest("nafta", PARAMS)
+    assert result["status"] == "blocked: malformed measured outcome"
+    assert result["scored"] == []

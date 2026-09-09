@@ -29,22 +29,25 @@ def greatgrandchild_earnings(grandchild: Ledger, params: ParameterSet) -> Ledger
     return grandchild.apply(GAP, params.by_link(GREATGRANDCHILD))
 
 
-def child_line(params: ParameterSet, place_modifier: Parameter | None = None) -> dict:
+def child_line(params: ParameterSet, place_modifier: Parameter | None = None,
+               place_application: str = "initial_only") -> dict:
     """The full three-generation line with the honest-weakness marker.
 
     place_modifier (optional): the place-resolved Chetty-Hendren
     mobility multiplier (built by place.modifier_parameter). It composes
     MULTIPLICATIVELY with the chain — a declared modeling assumption,
-    recorded as an extra level step on every generation so the audit
-    trail shows exactly where it was applied. None = the national
+    applied once to the initial child, then transmitted in gap space.
+    legacy_repeated reproduces the old extra descendant modifiers. None = the national
     median-county baseline (multiplier 1.0), the shipped framing.
     """
+    if place_application not in {"initial_only", "legacy_repeated"}:
+        raise ValueError("unknown place_application")
     child = child_earnings(params)
     if place_modifier is not None:
         child = child.apply(LEVEL, place_modifier)
     grandchild = grandchild_earnings(child, params)
     greatgrandchild = greatgrandchild_earnings(grandchild, params)
-    if place_modifier is not None:
+    if place_modifier is not None and place_application == "legacy_repeated":
         grandchild = grandchild.apply(LEVEL, place_modifier)
         greatgrandchild = greatgrandchild.apply(LEVEL, place_modifier)
     return {

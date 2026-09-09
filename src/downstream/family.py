@@ -2,7 +2,7 @@
 
 Parallel streams are reported SIDE BY SIDE with the displacement path.
 They are never silently composed into the child-earnings line —
-`combined_child_gap` exists for an explicit, flagged assumption only.
+The structural ensemble offers a separate, explicitly assumed additive view.
 """
 
 from __future__ import annotations

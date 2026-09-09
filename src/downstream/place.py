@@ -33,6 +33,7 @@ Design rules:
 from __future__ import annotations
 
 import csv
+import math
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -129,7 +130,9 @@ def load_places(path: str | Path = PLACES_PATH) -> dict[str, Place]:
         key = row["key"].strip()
         if not key:
             continue
-        places[key] = Place(
+        if key in places:
+            raise ValueError(f"duplicate place key {key!r}")
+        place = Place(
             key=key,
             name=row["name"].strip(),
             level=row["level"].strip(),
@@ -141,6 +144,15 @@ def load_places(path: str | Path = PLACES_PATH) -> dict[str, Place]:
             divorce_n=_maybe_float(row["divorce_n"]),
             citation=row["citation"].strip(),
         )
+        values = (place.mobility_percentile, place.mobility_n, place.mortality_rate,
+                  place.mortality_n, place.divorce_rate, place.divorce_n)
+        if any(v is not None and not math.isfinite(v) for v in values):
+            raise ValueError(f"place {key!r} has non-finite measurement")
+        if place.level not in PLACE_LEVELS:
+            raise ValueError(f"place {key!r} has unknown level {place.level!r}")
+        if any(v is not None and v < 0 for v in (place.mobility_n, place.mortality_n, place.divorce_n)):
+            raise ValueError(f"place {key!r} has negative precision count")
+        places[key] = place
     return places
 
 
@@ -166,10 +178,19 @@ def shrink(
     n <= 0 or a missing county value returns the national value with
     weight 0 — an unmeasured county IS the national mean, honestly.
     """
+    if not math.isfinite(national_value) or not math.isfinite(k) or k < 0:
+        raise ValueError("pooling inputs must be finite and have nonnegative prior precision")
+    if county_value is not None and not math.isfinite(county_value):
+        raise ValueError("county value must be finite")
+    if n is not None and not math.isfinite(n):
+        raise ValueError("county precision must be finite")
     if county_value is None or n is None or n <= 0:
         return national_value, 0.0
     w = n / (n + k)
-    return (1.0 - w) * national_value + w * county_value, w
+    # Clamp one-ulp roundoff back into the mathematical convex hull. This
+    # matters to callers that rely on pooling never exceeding either input.
+    value = (1.0 - w) * national_value + w * county_value
+    return min(max(value, min(national_value, county_value)), max(national_value, county_value)), w
 
 
 def place_baselines(
@@ -207,8 +228,6 @@ def place_baselines(
             f"unknown place {key!r}; load_places() has: "
             f"{sorted(places) if places else 'nothing (places.csv absent)'}"
         )
-    nat = national(places)
-
     out: dict[str, Baseline] = dict(baselines)
     overrides: dict = {}
     for col, outcome in _RATE_COLUMNS.items():

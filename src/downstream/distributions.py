@@ -86,6 +86,18 @@ def sample_unit_interval(
     return lo + u * (hi - lo)
 
 
+def materialize_parameter_set(params, nodes: dict, u_row: list[float], dists: list[str]):
+    """Apply one resolved draw consistently across every sampling surface."""
+    rows = list(params.parameters)
+    if len(u_row) != len(rows) or len(dists) != len(rows):
+        raise ValueError("draw dimensions must match parameter count")
+    out = params
+    for p, u, dist in zip(rows, u_row, dists):
+        lo, hi = sorted((p.low, p.high))
+        out = out.with_param(p.link, sample_unit_interval(dist, u, lo, hi, point=p.point))
+    return out
+
+
 def _probit(u: float) -> float:
     """Inverse standard normal CDF (Acklam-style rational approximation,
     adequate for sampling; not for tail probabilities)."""
@@ -140,18 +152,26 @@ def _cholesky(matrix: list[list[float]]) -> list[list[float]]:
     return lower
 
 
-def apply_rank_correlation(u: list[list[float]], spearman: list[list[float]]) -> list[list[float]]:
+def apply_rank_correlation(u: list[list[float]], spearman: list[list[float]],
+                           rng: random.Random | None = None) -> list[list[float]]:
     """Iman-Conover: reorder each column of u to match the rank order of
     correlated normal scores. Marginals are preserved exactly; rank
     correlation approximates the declared matrix."""
     n_rows, n_cols = len(u), len(u[0]) if u else 0
     if n_cols != len(spearman):
         raise ValueError("correlation matrix size must match parameter count")
-    lower = _cholesky(spearman)
+    # The input is Spearman rank correlation, while Cholesky operates on
+    # Gaussian-copula Pearson correlation.  For a bivariate normal copula,
+    # rho_S = 6/pi * asin(r/2), hence r = 2 sin(pi rho_S/6).
+    latent = [[2 * math.sin(math.pi * value / 6) if i != j else 1.0
+               for j, value in enumerate(row)] for i, row in enumerate(spearman)]
+    lower = _cholesky(latent)
 
     # Independent normal scores, then mix them through the Cholesky
     # factor: Z = L X gives cov(Z) = L L^T = R.
-    rng = random.Random(0)
+    # Plans must draw fresh copula ranks on each seed. Reusing one rank
+    # template makes the A/B designs in block Sobol almost identical.
+    rng = rng if rng is not None else random.Random(0)
     w = [[rng.gauss(0, 1) for _ in range(n_cols)] for _ in range(n_rows)]
     t = [[sum(lower[j][k] * w[i][k] for k in range(n_cols)) for j in range(n_cols)]
          for i in range(n_rows)]
@@ -189,6 +209,6 @@ def plan(
     rows = list(params.parameters)
     u = lhs_matrix(len(rows), draws, rng)
     if spearman is not None:
-        u = apply_rank_correlation(u, spearman)
+        u = apply_rank_correlation(u, spearman, rng=rng)
     dists = [dist_for(p, nodes.get(p.to_node).unit if p.to_node in nodes else None) for p in rows]
     return DrawPlan(u=u, dists=dists)

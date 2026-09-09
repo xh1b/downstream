@@ -30,6 +30,7 @@ from .children import CHILD_DIRECT, GRANDCHILD
 from .ledger import DIRECT, GAP, chain
 from .params import ParameterSet
 from .worker import WORKER_EARNINGS
+from .mortality import excess_deaths
 
 VALIDATION_DIR = Path(__file__).resolve().parents[2] / "validation"
 
@@ -227,7 +228,7 @@ def _v2_event_specs() -> list[dict]:
                 "needs": (
                     "civilian jobs lost per BRAC community (GAO Appendix II: "
                     "Civilian Jobs Lost and Created at Major BRAC Locations). "
-                    "Open source; transcription pending."
+                    "GAO Table 3 inventory landed (73 bases); county and window alignment pending."
                 ),
                 "sources": ["GAO-05-138 (open HTML)", "GAO/NSIAD-99-36 (open HTML)"],
             },
@@ -250,7 +251,7 @@ def _v2_event_specs() -> list[dict]:
             },
             "window_semantics": "closures phased over 2-6 years; scored windows pre-registered at 5y and 10y post-round",
             "registered_scored_streams": [s["outcome"] for s in V2_SCORED_STREAMS],
-            "status": "blocked: bridge (GAO transcription pending) + measured side (w6941 OCR or published extraction pending)",
+            "status": "blocked: county/window bridge alignment + causal measured side; GAO Table 3 inventory landed",
         },
     ]
 
@@ -345,7 +346,7 @@ _V2_SPECS = [
                 "needs": (
                     "civilian jobs lost per BRAC community (GAO app. II: "
                     "Civilian Jobs Lost and Created at Major BRAC Locations). "
-                    "Open source; transcription pending."
+                    "GAO Table 3 inventory landed (73 bases); county and window alignment pending."
                 ),
                 "sources": ["GAO-05-138 (open HTML)", "GAO/NSIAD-99-36 (open HTML)"],
             },
@@ -366,7 +367,7 @@ _V2_SPECS = [
                 ],
             },
             "window_semantics": "closures phased over 2-6 years; scored windows pre-registered at 5y and 10y post-round",
-            "status": "blocked: bridge (GAO transcription) + measured side (w6941 OCR or published tables) both pending",
+            "status": "blocked: county/window bridge alignment + causal measured side; GAO Table 3 inventory landed",
         },
     ]
 
@@ -421,7 +422,8 @@ def v1_retrodict(params: ParameterSet) -> dict:
     WINDOW = 10.0  # ADH measure decadal changes
 
     def excess(n: float, m: float, s, pk) -> float:
-        return n * m * ((s - 1) * WINDOW + (pk - 1))
+        # Must be the same odds-to-risk/survival kernel exposed by scenario.
+        return excess_deaths(n, m, pk, s, WINDOW, method="odds_survival")
 
     m_age = float(bridge["male_death_rate_2544_1999_2003_per_person"]["point"])
     scored = []
@@ -535,6 +537,7 @@ def v1_panel(params: ParameterSet) -> dict:
     import random as _random
 
     from .scoring import crps_sample, pit
+    from .distributions import dist_for, sample_unit_interval
 
     rows = []
     with open(VALIDATION_DIR / "adh_cz_panel.csv", newline="", encoding="utf-8") as f:
@@ -595,7 +598,10 @@ def v1_panel(params: ParameterSet) -> dict:
     slope_samples = []
     for _ in range(5000):
         n = rng.uniform(1740.0, 3300.0)
-        hr = rng.uniform(divorce.low, divorce.high)
+        hr = sample_unit_interval(
+            dist_for(divorce, "rate_ratio"), rng.random(), divorce.low, divorce.high,
+            point=divorce.point,
+        )
         slope_samples.append(n * 0.5305 * 0.1045 * (hr - 1) * 2.0 / (0.503 * 1000.0))
     slope_samples.sort()
 
@@ -794,33 +800,93 @@ def v2_backtest(event_id: str, params: ParameterSet) -> dict:
             "honesty": "No fabricated exposure, no fabricated measured side.",
         }
 
-    bridge = {r["quantity"]: r for r in _load_csv(bridge_path.name)}
+    bridge_rows = _load_csv(bridge_path.name)
+    if any(not row.get("quantity", "").strip() for row in bridge_rows):
+        return {
+            "event": event["id"], "status": "blocked: malformed bridge quantity",
+            "scored": [], "honesty": "Bridge rows must name their quantities.",
+        }
+    quantities = [row["quantity"] for row in bridge_rows]
+    if len(set(quantities)) != len(quantities):
+        return {
+            "event": event["id"], "status": "blocked: duplicate bridge quantity",
+            "scored": [], "honesty": "Duplicate bridge quantities are ambiguous.",
+        }
+    bridge = {r["quantity"]: r for r in bridge_rows}
     measured = _load_csv(measured_path.name)
-    n = abs(float(bridge["displaced_workers"]["point"]))
-    n_lo = abs(float(bridge["displaced_workers"]["high"]))
-    n_hi = abs(float(bridge["displaced_workers"]["low"]))
+
+    def number(quantity: str, field: str = "point") -> float:
+        try:
+            value = float(bridge[quantity][field])
+        except (KeyError, TypeError, ValueError) as exc:
+            raise ValueError(f"bridge lacks finite {quantity}.{field}") from exc
+        if not math.isfinite(value):
+            raise ValueError(f"bridge lacks finite {quantity}.{field}")
+        return value
+
+    try:
+        n = abs(number("displaced_workers"))
+        # Exposure bridges may report losses as negative changes or as positive
+        # counts.  Magnitude endpoints must be ordered after abs() in either
+        # convention; do not assume the signed-loss convention used by V1.
+        n_lo, n_hi = sorted((abs(number("displaced_workers", "low")),
+                             abs(number("displaced_workers", "high"))))
+        window = number("window_years")
+    except ValueError as exc:
+        return {"event": event["id"], "status": f"blocked: {exc}", "scored": [],
+                "honesty": "A score requires complete finite bridge inputs."}
+    if window < 0:
+        return {"event": event["id"], "status": "blocked: negative window_years",
+                "scored": [], "honesty": "A score requires a nonnegative follow-up window."}
 
     sust = params.by_link("earnings_shock->mortality_sustained")
     peak = params.by_link("earnings_shock->mortality_peak")
-    window = float(bridge["window_years"]["point"])
+    baseline_key = "baseline_mortality_per_person_year"
+    if baseline_key not in bridge:
+        return {
+            "event": event["id"],
+            "status": "blocked: bridge lacks cited baseline_mortality_per_person_year",
+            "scored": [],
+            "window_years": window,
+            "honesty": "Mortality scoring requires a baseline probability; measured excess deaths cannot be reused as that baseline.",
+        }
+    try:
+        baseline = number(baseline_key)
+    except ValueError as exc:
+        return {"event": event["id"], "status": f"blocked: {exc}", "scored": [],
+                "window_years": window, "honesty": "Mortality scoring requires a finite baseline probability."}
+    if not 0 <= baseline <= 1:
+        return {"event": event["id"], "status": "blocked: invalid baseline_mortality_per_person_year",
+                "scored": [], "window_years": window,
+                "honesty": "Mortality scoring requires a baseline probability in [0, 1]."}
 
-    def excess(n_: float, m: float) -> float:
-        return n_ * m * ((sust.point - 1) * window + (peak.point - 1))
+    def excess(n_: float, s: float, pk: float) -> float:
+        return excess_deaths(n_, baseline, pk, s, window, method="odds_survival")
 
     scored = []
     for mrow in measured:
         if mrow["outcome"] != "excess_deaths_per100k":
             continue
-        m_point = float(mrow["point"]) / 100_000
-        lo, hi = excess(n_lo, m_point), excess(n_hi, m_point)
-        pt = excess(n, m_point)
-        mse = float(mrow["se"])
+        corners = [excess(n_, s, pk) for n_ in (n_lo, n_hi)
+                   for s in (sust.low, sust.high) for pk in (peak.low, peak.high)]
+        lo, hi = min(corners), max(corners)
+        pt = excess(n, sust.point, peak.point)
+        try:
+            observed, mse = float(mrow["point"]), float(mrow["se"])
+        except (KeyError, TypeError, ValueError):
+            return {"event": event["id"], "status": "blocked: malformed measured outcome",
+                    "scored": [], "window_years": window,
+                    "honesty": "Measured outcome rows require finite point estimates and standard errors."}
+        if not math.isfinite(observed) or not math.isfinite(mse) or mse < 0:
+            return {"event": event["id"], "status": "blocked: malformed measured outcome",
+                    "scored": [], "window_years": window,
+                    "honesty": "Measured outcome rows require finite point estimates and nonnegative standard errors."}
         scored.append({
             "outcome": "excess_deaths_per100k",
             "modeled": {"point": round(pt, 2), "low": round(lo, 2), "high": round(hi, 2)},
-            "measured": {"point": float(mrow["point"]), "ci95": [round(float(mrow["point"]) - 1.96 * mse, 2), round(float(mrow["point"]) + 1.96 * mse, 2)]},
-            "measured_inside_modeled_band": lo <= float(mrow["point"]) <= hi,
-            "modeled_point_inside_measured_ci": (float(mrow["point"]) - 1.96 * mse) <= pt <= (float(mrow["point"]) + 1.96 * mse),
+            "measured": {"point": observed, "ci95": [round(observed - 1.96 * mse, 2), round(observed + 1.96 * mse, 2)]},
+            "measured_inside_modeled_band": lo <= observed <= hi,
+            "modeled_point_inside_measured_ci": (observed - 1.96 * mse) <= pt <= (observed + 1.96 * mse),
         })
     return {
         "event": event["id"],

@@ -17,7 +17,6 @@ Used by the V1 retrodiction and V3 prospective stages.
 
 from __future__ import annotations
 
-import math
 
 
 def crps_sample(samples: list[float], observed: float) -> float:

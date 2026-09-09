@@ -18,9 +18,7 @@ import sys
 from pathlib import Path
 
 from .audit import audit, summary
-from .citations import parse_bib
 from .explanation import explain_child_line
-from .ledger import LEVEL
 from .mc import simulate_chain
 from .params import ParameterSet, default_dir, load_all
 from .render import load_citations, render_text
@@ -57,9 +55,73 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--tradable-share", type=float, default=1.0)
     p.add_argument("--wage-multiplier", type=float, default=None)
     p.add_argument("--exposure-years", type=float, default=20.0)
+    p.add_argument("--mortality-method", choices=["odds_survival", "legacy_additive"], default="odds_survival")
+    p.add_argument("--mortality-timing", choices=["source_aligned", "immediate_sustained"], default="source_aligned",
+                   help="source_aligned holds years 2–5 at baseline; immediate_sustained is a sensitivity assumption")
+    p.add_argument("--place-application", choices=["initial_only", "legacy_repeated"], default="initial_only")
+    p.add_argument("--draws", type=int, default=2_000,
+                   help="parameter-only Monte Carlo draws for count intervals (minimum 2)")
+    p.add_argument("--seed", type=int, default=1901)
     p.add_argument("--strict", action="store_true", help="fail on missing baselines")
     p.add_argument("--place", default=None, metavar="KEY",
                    help="places.csv key — applies shrunk baselines + the mobility modifier")
+
+    p = sub.add_parser("forecast-register", help="freeze a prospective forecast locally")
+    p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
+    p.add_argument("--input", required=True)
+    p.add_argument("--out", required=True)
+
+    p = sub.add_parser("forecast-score", help="score a completed registered forecast")
+    p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
+    p.add_argument("--input", required=True)
+    p.add_argument("--measured", type=float, required=True)
+    p.add_argument("--unit", required=True)
+    p.add_argument("--source", required=True)
+
+    p = sub.add_parser("synthesize", help="random-effects synthesis of source-extracted, same-scale study estimates")
+    p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
+    p.add_argument("--input", required=True, help="CSV with study_id, link, point, standard_error, scale, and scope metadata")
+    p.add_argument("--link", default=None, help="optional link id to synthesize")
+    p.add_argument("--compare-params", action="store_true",
+                   help="add a read-only manual-review comparison to the shipped parameter row")
+
+    p = sub.add_parser("county-posterior", help="Beta-binomial county-rate posterior from count-compatible source data")
+    p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
+    p.add_argument("--input", required=True, help="CSV with county event counts and person-years")
+    p.add_argument("--key", required=True)
+    p.add_argument("--outcome", required=True)
+    p.add_argument("--time-window", required=True)
+    p.add_argument("--national-rate", required=True, type=float)
+    p.add_argument("--prior-person-years", required=True, type=float)
+    p.add_argument("--draws", default=10_000, type=int)
+    p.add_argument("--seed", default=1901, type=int)
+
+    p = sub.add_parser("county-wonder-posterior", help="posterior directly from a validated CDC WONDER county export")
+    p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
+    p.add_argument("--export", required=True, help="tab-delimited county WONDER export")
+    p.add_argument("--metadata", required=True, help="JSON saved query metadata")
+    p.add_argument("--key", required=True)
+    p.add_argument("--national-rate", required=True, type=float)
+    p.add_argument("--prior-person-years", required=True, type=float)
+    p.add_argument("--draws", default=10_000, type=int)
+    p.add_argument("--seed", default=1901, type=int)
+
+    p = sub.add_parser("bundle", help="export a pinned standalone engine and data directory")
+    p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
+    p.add_argument("--out", required=True)
+
+    p = sub.add_parser("policy", help="compare baseline and policy exposure assumptions")
+    p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
+    p.add_argument("--input", required=True, help="JSON with baseline and policy cases")
+
+    p = sub.add_parser("entity", help="modeled impacts from documented entity exposure")
+    p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
+    p.add_argument("--input", required=True, help="JSON documented exposure or warehouse row")
+    p.add_argument("--input-format", choices=["exposure", "warehouse"], default="exposure")
+    p.add_argument("--children", type=int, default=2)
+    p.add_argument("--exposure-years", type=float, default=20.0)
+    p.add_argument("--tradable-share", type=float, default=1.0)
+    p.add_argument("--place", default=None)
 
     p = sub.add_parser("explain", help="walk a claim from headline to citations")
     p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
@@ -67,14 +129,18 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--text", action="store_true", help="plain-language rendering")
 
     p = sub.add_parser("sensitivity", help="Sobol decomposition of an outcome")
+    p.add_argument("--place", default=None, metavar="KEY")
     p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
     p.add_argument("--outcome", default="grandchild", choices=["grandchild", "child"])
     p.add_argument("--base", type=int, default=128)
     p.add_argument("--seed", type=int, default=1901)
     p.add_argument("--ci", type=int, default=None, metavar="REPS",
                    help="report S_total with seed-replicate spread over REPS designs")
+    p.add_argument("--dependent-blocks", action="store_true",
+                   help="attribute declared correlated inputs as joint blocks instead of dropping their dependence")
 
     p = sub.add_parser("knobs", help="knob experiments (sweep a parameter / rank what is worth pinning)")
+    p.add_argument("--place", default=None, metavar="KEY")
     p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
     p.add_argument("--action", required=True, choices=["sweep", "voi"])
     p.add_argument("--link", default=None, help="knob link id (sweep)")
@@ -88,8 +154,11 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--seed", type=int, default=1901)
 
     p = sub.add_parser("simulate", help="Monte Carlo over a link chain")
+    p.add_argument("--place", default=None, metavar="KEY")
     p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
-    p.add_argument("--links", required=True, help="comma-separated link ids")
+    target = p.add_mutually_exclusive_group(required=True)
+    target.add_argument("--links", help="comma-separated link ids")
+    target.add_argument("--outcome", choices=["child", "grandchild"])
     p.add_argument("--kinds", default=None, help="comma-separated: level|gap|direct per link")
     p.add_argument("--base", type=float, default=1.0)
     p.add_argument("--draws", type=int, default=10_000)
@@ -142,6 +211,37 @@ def main(argv: list[str] | None = None) -> int:
     parts = load_all(args.params)
     params = parts["params"]
 
+    sampling_places = None
+    if args.cmd in {"sensitivity", "knobs", "simulate"}:
+        if args.place:
+            from .place import load_places, place_json
+
+            sampling_places = load_places(Path(args.params) / "places.csv")
+            if not sampling_places:
+                parser.error(f"places.csv absent under {args.params}")
+            if args.place not in sampling_places:
+                parser.error(f"unknown place {args.place!r}")
+        if args.cmd == "simulate" and args.links and args.place:
+            parser.error("--place requires --outcome; arbitrary link chains have no place composition")
+
+    def sampling_child(ps):
+        from .children import child_line
+        from .place import modifier_parameter
+
+        modifier = (modifier_parameter(ps, sampling_places, args.place)["parameter"]
+                    if sampling_places else None)
+        return child_line(ps, place_modifier=modifier)[args.outcome].point
+
+    def dump_sampling(out):
+        if sampling_places:
+            out["place"] = place_json(sampling_places, parts["baselines"], args.place, params)
+            out["place_uncertainty"] = (
+                "Mobility gamma is recomputed on every parameter draw; place measurements "
+                "and pooling weights are fixed. Multiplicative child-line composition "
+                "is a declared modeling assumption."
+            )
+        _dump(out)
+
     if args.cmd == "family":
         places = None
         if args.place:
@@ -156,6 +256,51 @@ def main(argv: list[str] | None = None) -> int:
         ))
         return 0
 
+    if args.cmd == "synthesize":
+        from .synthesis import load_study_estimates, synthesize
+
+        out = synthesize(load_study_estimates(args.input), args.link)
+        if args.compare_params:
+            from .admission import compare_synthesis_to_parameter
+
+            out["parameter_comparisons"] = [
+                compare_synthesis_to_parameter(params, report, parts["nodes"])
+                for report in out["reports"]
+            ]
+        _dump(out)
+        return 0
+
+    if args.cmd == "county-posterior":
+        from .county_rates import beta_binomial_posterior, load_county_rates
+
+        matches = [r for r in load_county_rates(args.input)
+                   if (r.key, r.outcome, r.time_window) == (args.key, args.outcome, args.time_window)]
+        if not matches:
+            parser.error("no county observation matches --key, --outcome, and --time-window")
+        _dump(beta_binomial_posterior(matches[0], args.national_rate, args.prior_person_years,
+                                      draws=args.draws, seed=args.seed))
+        return 0
+
+    if args.cmd == "county-wonder-posterior":
+        from .county_mortality import count_observations, parse_export
+        from .county_rates import beta_binomial_posterior
+
+        try:
+            metadata = json.loads(Path(args.metadata).read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            parser.error(f"invalid WONDER metadata JSON: {exc}")
+        parsed = parse_export(args.export, metadata=metadata)
+        matches = [r for r in count_observations(parsed) if r.key == args.key]
+        if not matches:
+            parser.error("county was absent or suppressed in the validated WONDER export")
+        out = beta_binomial_posterior(matches[0], args.national_rate, args.prior_person_years,
+                                      draws=args.draws, seed=args.seed)
+        out["wonder_export"] = {"source_sha256": parsed["source_sha256"],
+                                 "suppressed_count": parsed["suppressed_count"],
+                                 "query": parsed["query"]}
+        _dump(out)
+        return 0
+
     if args.cmd == "scenario":
         places = None
         if args.place:
@@ -164,7 +309,8 @@ def main(argv: list[str] | None = None) -> int:
             places = load_places(Path(args.params) / "places.csv")
             if not places:
                 raise SystemExit(f"places.csv absent under {args.params} — cannot resolve --place {args.place!r}")
-        out = compute_counts(
+        from .scenario import sample_counts
+        out = sample_counts(
             params,
             parts["baselines"],
             ScenarioInput(
@@ -173,12 +319,59 @@ def main(argv: list[str] | None = None) -> int:
                 tradable_share=args.tradable_share,
                 wage_multiplier=args.wage_multiplier,
                 exposure_years=args.exposure_years,
+                mortality_method=args.mortality_method,
+                mortality_timing=args.mortality_timing,
+                place_application=args.place_application,
             ),
             strict=args.strict,
             places=places,
             place_key=args.place,
+            draws=args.draws,
+            seed=args.seed,
+            nodes=parts["nodes"],
+            params_dir=Path(args.params),
         )
         _dump(out)
+        return 0
+
+    if args.cmd == "policy":
+        from .policy import PolicyCase, compare_policies
+        from .place import load_places
+        try:
+            payload = json.loads(Path(args.input).read_text())
+            before = PolicyCase.from_dict(payload["baseline"])
+            after = PolicyCase.from_dict(payload["policy"])
+            out = compare_policies(params, parts["baselines"], before, after,
+                                   places=load_places(Path(args.params) / "places.csv"))
+        except (OSError, ValueError, TypeError, KeyError) as exc:
+            parser.error(str(exc))
+        _dump(out)
+        return 0
+
+    if args.cmd == "entity":
+        from .employer import DocumentedExposure, compute_entity_counts
+        from .place import load_places
+
+        try:
+            payload = json.loads(Path(args.input).read_text())
+            adapter = (DocumentedExposure.from_warehouse if args.input_format == "warehouse"
+                       else DocumentedExposure)
+            exposure = adapter(**payload)
+        except (OSError, ValueError, TypeError) as exc:
+            parser.error(str(exc))
+        places = load_places(Path(args.params) / "places.csv") if args.place else None
+        if args.place and (not places or args.place not in places):
+            parser.error(f"cannot resolve place {args.place!r}")
+        try:
+            result = compute_entity_counts(
+                params, parts["baselines"], exposure,
+                ScenarioInput(0, n_children=args.children, exposure_years=args.exposure_years,
+                              tradable_share=args.tradable_share),
+                places=places, place_key=args.place,
+            )
+        except (ValueError, TypeError) as exc:
+            parser.error(str(exc))
+        _dump(result)
         return 0
 
     if args.cmd == "explain":
@@ -191,16 +384,24 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     if args.cmd == "sensitivity":
-        from .children import child_line
+        outcome_fn = sampling_child
+        if args.ci and args.dependent_blocks:
+            parser.error("--ci is currently available for classical independent Sobol only")
+        if args.dependent_blocks:
+            from .params import load_correlations
+            from .sensitivity import correlated_block_sobol
 
-        outcome_fn = {
-            "grandchild": lambda ps: child_line(ps)["grandchild"].point,
-            "child": lambda ps: child_line(ps)["child"].point,
-        }[args.outcome]
-        if args.ci:
+            dump_sampling(
+                correlated_block_sobol(
+                    params, outcome_fn, parts["nodes"],
+                    load_correlations(Path(args.params) / "correlations.csv"),
+                    base=args.base, seed=args.seed,
+                )
+            )
+        elif args.ci:
             from .sensitivity import sobol_ci
 
-            _dump(
+            dump_sampling(
                 sobol_ci(
                     params,
                     outcome_fn,
@@ -211,7 +412,7 @@ def main(argv: list[str] | None = None) -> int:
                 )
             )
         else:
-            _dump(
+            dump_sampling(
                 sobol_indices(
                     params,
                     outcome_fn,
@@ -240,22 +441,20 @@ def main(argv: list[str] | None = None) -> int:
             if not args.link or not args.values:
                 print("knobs sweep needs --link and --values", file=sys.stderr)
                 return 2
-            values = [float(v) for v in args.values.split(",")]
-            _dump(knob_sweep(params, parts["baselines"], scenario, args.link, values))
+            try:
+                values = [float(v) for v in args.values.split(",")]
+            except ValueError as exc:
+                parser.error(f"invalid --values: {exc}")
+            dump_sampling(knob_sweep(params, parts["baselines"], scenario, args.link, values, places=sampling_places, place_key=args.place))
             return 0
         # voi: rank which knob is worth narrowing next
         if args.outcome == "excess_deaths":
             def outcome_fn(ps: ParameterSet) -> float:
-                out = compute_counts(ps, parts["baselines"], scenario)
+                out = compute_counts(ps, parts["baselines"], scenario, places=sampling_places, place_key=args.place)
                 return out["modeled"]["excess_deaths"]["point"]
         else:
-            from .children import child_line
-
-            outcome_fn = {
-                "grandchild": lambda ps: child_line(ps)["grandchild"].point,
-                "child": lambda ps: child_line(ps)["child"].point,
-            }[args.outcome]
-        _dump(
+            outcome_fn = sampling_child
+        dump_sampling(
             value_of_information(
                 params,
                 outcome_fn,
@@ -263,22 +462,39 @@ def main(argv: list[str] | None = None) -> int:
                 draws=args.draws,
                 seed=args.seed,
                 shrink=args.shrink,
+                params_dir=Path(args.params),
             )
         )
         return 0
 
     if args.cmd == "simulate":
+        if args.outcome:
+            from .mc import simulate
+
+            if args.kinds or args.base != 1.0:
+                parser.error("--kinds and --base apply only to --links")
+            out = simulate(params, sampling_child, draws=args.draws, seed=args.seed,
+                           nodes=parts["nodes"], params_dir=Path(args.params))
+            out["outcome"] = args.outcome
+            dump_sampling(out)
+            return 0
+        if not args.kinds:
+            parser.error("--kinds is required with --links; arbitrary chains have no safe default composition")
         links = args.links.split(",")
-        kinds = args.kinds.split(",") if args.kinds else [LEVEL] * len(links)
-        out = simulate_chain(
-            params,
-            links,
-            base=args.base,
-            label="chain",
-            draws=args.draws,
-            seed=args.seed,
-            kinds=kinds,
-        )
+        kinds = args.kinds.split(",")
+        try:
+            out = simulate_chain(
+                params,
+                links,
+                base=args.base,
+                label="chain",
+                draws=args.draws,
+                seed=args.seed,
+                kinds=kinds,
+                nodes=parts["nodes"],
+            )
+        except (KeyError, ValueError) as exc:
+            parser.error(str(exc))
         _dump(out)
         return 0
 
@@ -299,8 +515,17 @@ def main(argv: list[str] | None = None) -> int:
             if not args.links:
                 print("infer needs --links or --outcome", file=sys.stderr)
                 return 2
+            if not args.kinds:
+                print("infer --links requires --kinds; arbitrary chains have no safe default composition", file=sys.stderr)
+                return 2
             links = args.links.split(",")
-            kinds = args.kinds.split(",") if args.kinds else [LEVEL] * len(links)
+            kinds = args.kinds.split(",")
+
+        from .ledger import validate_chain
+        try:
+            validate_chain(params, links, kinds, parts["nodes"])
+        except (KeyError, ValueError) as exc:
+            parser.error(str(exc))
 
         if args.action == "chain":
             _dump(analytic_chain(params, links, kinds, parts["nodes"]))
@@ -308,7 +533,6 @@ def main(argv: list[str] | None = None) -> int:
             _dump(logspace_variance_shares(params, links, parts["nodes"], kinds=kinds))
         elif args.action == "closure":
             def outcome_fn(ps: ParameterSet) -> float:
-                from .ledger import DIRECT, GAP
                 from .ledger import chain as lchain
 
                 return lchain(ps, links, label="x", unit="gap_multiplier", kinds=kinds).point
@@ -325,7 +549,7 @@ def main(argv: list[str] | None = None) -> int:
             if not args.stress_links:
                 print("stress needs --stress-links", file=sys.stderr)
                 return 2
-            block = [l for l in args.stress_links.split(",") if l]
+            block = [link for link in args.stress_links.split(",") if link]
 
             def outcome_fn(ps: ParameterSet) -> float:
                 from .ledger import chain as lchain
@@ -354,6 +578,20 @@ def main(argv: list[str] | None = None) -> int:
         from .variants import run_ensemble
 
         _dump(run_ensemble(params))
+        return 0
+
+    if args.cmd in {"forecast-register", "forecast-score"}:
+        from .forecast_registry import register, score
+        payload = json.loads(Path(args.input).read_text())
+        if args.cmd == "forecast-register":
+            _dump(register(args.out, payload))
+        else:
+            _dump(score(payload, args.measured, unit=args.unit, source=args.source))
+        return 0
+
+    if args.cmd == "bundle":
+        from .bundle import export_bundle
+        _dump(export_bundle(args.out, args.params))
         return 0
 
     if args.cmd == "export":

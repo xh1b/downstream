@@ -79,6 +79,9 @@ def sweep(
     scenario: ScenarioInput,
     link: str,
     values: list[float],
+    *,
+    places: dict | None = None,
+    place_key: str | None = None,
 ) -> dict:
     """Scenario counts at each pinned value of one knob.
 
@@ -92,7 +95,7 @@ def sweep(
     first: dict | None = None
     for v in values:
         ps = pin(params, link, v)
-        out = compute_counts(ps, baselines, scenario)
+        out = compute_counts(ps, baselines, scenario, places=places, place_key=place_key)
         flat = _flatten(out)
         if first is None:
             first = flat
@@ -108,6 +111,7 @@ def sweep(
             }
         )
     return {
+        "place": out["place"],
         "experiment": "sweep_1d",
         "knob": link,
         "parameter_set_version": params.version,
@@ -133,6 +137,7 @@ def value_of_information(
     draws: int = 2_000,
     seed: int = 1901,
     shrink: float = 0.5,
+    params_dir=None,
 ) -> dict:
     """Rank parameters by how much narrowing each one buys.
 
@@ -146,7 +151,7 @@ def value_of_information(
     if not 0.0 < shrink <= 1.0:
         raise ValueError(f"shrink must be in (0, 1], got {shrink}")
 
-    base = simulate(params, compute, draws=draws, seed=seed, nodes=nodes)
+    base = simulate(params, compute, draws=draws, seed=seed, nodes=nodes, params_dir=params_dir)
     base_width = base["p95"] - base["p05"]
 
     rows = []
@@ -175,7 +180,7 @@ def value_of_information(
         nlo = p.point - (p.point - lo) * shrink
         nhi = p.point + (hi - p.point) * shrink
         ps = with_band(params, p.link, nlo, nhi)
-        run = simulate(ps, compute, draws=draws, seed=seed, nodes=nodes)
+        run = simulate(ps, compute, draws=draws, seed=seed, nodes=nodes, params_dir=params_dir)
         width_after = run["p95"] - run["p05"]
         rows.append(
             {

@@ -27,7 +27,7 @@ PARAMS = load(PARAMS_DIR / "parameters.csv")
 
 
 def test_version_is_v132():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.33"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.34"
 
 
 EDUCATION = "unconditional_income->child_education_years"
@@ -107,7 +107,6 @@ def test_crime_band_directions_survive_band_math():
 # --- the refusal (duncan2010) ------------------------------------------
 
 def test_duncan_refused_not_a_parameter():
-    import pytest
 
     with pytest.raises(KeyError):
         PARAMS.by_link("early_poverty_income->adult_earnings")

@@ -9,6 +9,8 @@ rejects that shape).
 from __future__ import annotations
 
 from dataclasses import dataclass
+from dataclasses import replace
+import math
 
 from .ledger import DIRECT, Ledger, start
 from .params import ParameterSet
@@ -46,6 +48,14 @@ class SchoolExposure:
     spend_pct: float          # negative = spending cut
     exposure_years: float     # sustained years (JJP effect is per 12y)
 
+    def __post_init__(self):
+        for name in ("spend_pct", "exposure_years"):
+            value = getattr(self, name)
+            if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
+                raise ValueError(f"{name} must be finite")
+        if self.exposure_years < 0:
+            raise ValueError("exposure_years must be nonnegative")
+
 
 def school_spending_child_earnings(params: ParameterSet, exposure: SchoolExposure) -> Ledger:
     """Adult-earnings effect of a school-spending change.
@@ -57,16 +67,12 @@ def school_spending_child_earnings(params: ParameterSet, exposure: SchoolExposur
     p = params.by_link(SCHOOL_SPENDING)
     intensity = exposure.spend_pct / 10.0
     duration = exposure.exposure_years / 12.0
-    scaled = type(p)(
-        link=p.link,
-        from_node=p.from_node,
-        to_node=p.to_node,
+    low = 1 + (p.low - 1) * intensity * duration
+    high = 1 + (p.high - 1) * intensity * duration
+    scaled = replace(p,
         point=1 + (p.point - 1) * intensity * duration,
-        low=1 + (p.low - 1) * intensity * duration,
-        high=1 + (p.high - 1) * intensity * duration,
-        tier=p.tier,
-        citation=p.citation,
-        population_scope=p.population_scope,
+        low=min(low, high),
+        high=max(low, high),
         notes=p.notes + " | linear-normalized in intensity x duration",
     )
     return start("school_spending_child_earnings", "gap_multiplier").apply(DIRECT, scaled)

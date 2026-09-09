@@ -18,7 +18,6 @@ What this file hunts:
 """
 import json
 import subprocess
-import sys
 from pathlib import Path
 
 import pytest
@@ -104,3 +103,12 @@ def test_cli_export_matches_build():
         ).stdout
     )
     assert doc == build(PARAMS_DIR)
+
+
+def test_place_and_correlation_inputs_are_pinned():
+    import hashlib
+    doc = build(PARAMS_DIR)
+    assert len(doc["places"]) > 3000
+    assert len(doc["correlations"]) == 2
+    assert doc["source_sha256"]["places.csv"] == hashlib.sha256((PARAMS_DIR / "places.csv").read_bytes()).hexdigest()
+    assert doc["modeling_assumptions"]["mortality_method"] == "odds_survival"

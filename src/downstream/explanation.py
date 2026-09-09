@@ -26,7 +26,6 @@ from dataclasses import dataclass, field
 
 from .children import child_line
 from .params import ParameterSet
-from .worker import worker_outcomes
 
 
 @dataclass

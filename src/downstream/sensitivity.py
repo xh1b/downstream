@@ -18,8 +18,8 @@ from __future__ import annotations
 import random
 from typing import Callable
 
-from .distributions import sample_unit_interval
-from .params import ParameterSet
+from .distributions import materialize_parameter_set, plan
+from .params import Correlation, ParameterSet, spearman_matrix
 
 
 def sobol_indices(
@@ -50,11 +50,7 @@ def sobol_indices(
         return [[cols[j][i] for j in range(n)] for i in range(base)]
 
     def run(u_row: list[float]) -> float:
-        ps = params
-        for j, p in enumerate(rows):
-            lo, hi = sorted((p.low, p.high))
-            ps = ps.with_param(p.link, sample_unit_interval(_dist(j), u_row[j], lo, hi))
-        return compute(ps)
+        return compute(materialize_parameter_set(params, nodes, u_row, dists))
 
     dists = [
         _dist_for_param(p, nodes) for p in rows
@@ -100,6 +96,100 @@ def sobol_indices(
             "S_total is the share of output variance driven by each "
             "parameter including interactions; negative or >1 values at "
             "small base are estimator noise, not signal."
+        ),
+        "assumes_independent_parameters": True,
+        "correlation_note": (
+            "Classical Sobol indices require independent inputs. Declared "
+            "correlations are intentionally not applied; this is not a "
+            "decomposition of the correlated production-MC distribution."
+        ),
+    }
+
+
+def correlated_block_sobol(
+    params: ParameterSet,
+    compute: Callable[[ParameterSet], float],
+    nodes: dict,
+    correlations: list[Correlation],
+    base: int = 256,
+    seed: int = 1901,
+) -> dict:
+    """Sobol attribution for independent *blocks* of dependent parameters.
+
+    Classical individual Sobol indices are undefined under dependent inputs.
+    Rather than quietly dropping the declared copula, this groups every
+    connected correlated component into one joint input and estimates Sobol
+    effects for those blocks.  It is deliberately not presented as individual
+    Shapley attribution; a conditional-distribution model is required before
+    splitting a dependent block fairly.
+    """
+    rows = list(params.parameters)
+    index = {p.link: i for i, p in enumerate(rows)}
+    adjacency = {i: set() for i in range(len(rows))}
+    for c in correlations:
+        if c.spearman == 0:
+            continue
+        a, b = index[c.from_param], index[c.to_param]
+        adjacency[a].add(b)
+        adjacency[b].add(a)
+    seen: set[int] = set()
+    blocks: list[list[int]] = []
+    for root in range(len(rows)):
+        if root in seen:
+            continue
+        stack, component = [root], []
+        seen.add(root)
+        while stack:
+            i = stack.pop()
+            component.append(i)
+            for nxt in adjacency[i]:
+                if nxt not in seen:
+                    seen.add(nxt)
+                    stack.append(nxt)
+        blocks.append(sorted(component))
+
+    spearman = spearman_matrix(params, correlations)
+    a_plan = plan(params, nodes, base, seed, spearman=spearman)
+    b_plan = plan(params, nodes, base, seed + 1, spearman=spearman)
+    dists = a_plan.dists
+
+    def run(u_row: list[float]) -> float:
+        return compute(materialize_parameter_set(params, nodes, u_row, dists))
+
+    f_a = [run(row) for row in a_plan.u]
+    f_b = [run(row) for row in b_plan.u]
+    total_var = _var(f_a + f_b)
+    if total_var <= 0:
+        raise ValueError("output has zero variance; no sensitivity decomposition exists")
+    effects = []
+    for block in blocks:
+        f_ab = []
+        for i in range(base):
+            row = list(a_plan.u[i])
+            for j in block:
+                row[j] = b_plan.u[i][j]
+            f_ab.append(run(row))
+        first = sum(f_b[i] * (f_ab[i] - f_a[i]) for i in range(base)) / (base * total_var)
+        total = .5 * sum((f_a[i] - f_ab[i]) ** 2 for i in range(base)) / (base * total_var)
+        effects.append({
+            "links": [rows[j].link for j in block],
+            "S_first": round(first, 4),
+            "S_total": round(total, 4),
+        })
+    effects.sort(key=lambda row: -row["S_total"])
+    return {
+        "base": base,
+        "seed": seed,
+        "model_evals": base * (len(blocks) + 2),
+        "output_variance": round(total_var, 8),
+        "blocks": effects,
+        "method": "correlation-aware independent-block Sobol",
+        "correlations_applied": sum(c.spearman != 0 for c in correlations),
+        "note": (
+            "Connected correlated parameters are one joint input. This preserves "
+            "the declared production copula without pretending their individual "
+            "Sobol indices are defined. Conditional Shapley attribution is a "
+            "future extension once a citable conditional dependence model exists."
         ),
     }
 
@@ -158,6 +248,7 @@ def sobol_ci(
             "not a confidence interval on a true index. Use it to check "
             "that a ranking separates by more than its noise."
         ),
+        "assumes_independent_parameters": True,
     }
 
 

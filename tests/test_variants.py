@@ -10,7 +10,6 @@ Each trap names the defect it hunts:
 
 from __future__ import annotations
 
-import pytest
 
 from downstream.children import child_line
 from downstream.params import load_all
@@ -58,3 +57,9 @@ def test_spread_spans_the_rows():
 
 def test_ensemble_deterministic():
     assert run_ensemble(PARAMS) == run_ensemble(PARAMS)
+
+
+def test_variant_envelopes_contain_points():
+    for row in run_ensemble(PARAMS)["variants"]:
+        for key in ("child_gap", "grandchild_gap"):
+            assert row[key]["low"] <= row[key]["point"] <= row[key]["high"]

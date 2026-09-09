@@ -1,7 +1,7 @@
 node,unit,description
 displacement_event,persons,"count of displaced workers entering the model"
 worker_earnings,gap_multiplier,"displaced worker long-run earnings vs counterfactual (1.0 = unharmed)"
-mortality_rate,rate_ratio,"all-cause mortality rate ratio vs counterfactual"
+mortality_rate,odds_ratio,"all-cause mortality odds ratio vs counterfactual; convert to risk at the count boundary"
 divorce_hazard,rate_ratio,"relative divorce hazard vs counterfactual"
 wage_ratio,gap_multiplier,"female/male potential-wage ratio vs counterfactual (1.0 = unchanged; falls when female wages fall, rises when male wages fall)"
 household_ipv_elasticity,log_elasticity,"elasticity of ln(household IPV incidence) w.r.t. the wage ratio (aizer2010)"

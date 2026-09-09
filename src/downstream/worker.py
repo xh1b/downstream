@@ -1,7 +1,7 @@
 """Worker-level outcomes: earnings, mortality.
 
 The earnings shock IS the exposure (JLS 1993 band by default; a caller
-may pin a different multiplier). Mortality effects are recorded as rate
+may pin a different multiplier). Mortality effects are recorded as odds
 ratios — they convert to counts only at the scenario boundary, against
 a cited baseline.
 """
@@ -40,13 +40,13 @@ def worker_earnings(params: ParameterSet, wage_multiplier: float | None = None) 
 
 def mortality_sustained(params: ParameterSet) -> Ledger:
     return (
-        start("mortality_sustained", "rate_ratio")
+        start("mortality_sustained", "odds_ratio")
         .apply(RATE, params.by_link(MORT_SUSTAINED))
     )
 
 
 def mortality_peak(params: ParameterSet) -> Ledger:
-    return start("mortality_peak", "rate_ratio").apply(RATE, params.by_link(MORT_PEAK))
+    return start("mortality_peak", "odds_ratio").apply(RATE, params.by_link(MORT_PEAK))
 
 
 def worker_outcomes(params: ParameterSet, wage_multiplier: float | None = None) -> dict:

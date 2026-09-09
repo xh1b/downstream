@@ -1,0 +1,22 @@
+{
+  "source": "CDC WONDER Underlying Cause of Death, 1999-2020",
+  "source_url": "https://wonder.cdc.gov/ucd-icd10.html",
+  "local_file": "cdc_wonder_county_all_ages_1999_2020.csv",
+  "sha256": "9857ba1b7f6b1f9bdcbe6717812252ff0c44a5f5edf6c4d659af280efbbee455",
+  "retrieved_at": "2026-09-09T18:39:43",
+  "embedded_query": {
+    "dataset": "Underlying Cause of Death, 1999-2020",
+    "group_by": ["County"],
+    "show_totals": true,
+    "show_zero_values": true,
+    "show_suppressed": true,
+    "rate_denominator": 100000
+  },
+  "contents": {
+    "county_rows": 3147,
+    "measures": ["Deaths", "Population", "Crude Rate", "Age Adjusted Rate"],
+    "source_export_selection_note": "The user reports selecting all ages and all available years. The exported query-parameter block does not serialize age, sex, cause, or year selections, so those filters cannot be independently reconstructed from this file alone."
+  },
+  "integration_status": "raw validation context only; incompatible with the current all_cause_mortality_annual baseline until a reproducible export is made for male, age 45-54, years 2015-2019, with county deaths and population pooled over that window.",
+  "suppression_note": "Do not derive or publish suppressed small-cell counts."
+}

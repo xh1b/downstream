@@ -5,13 +5,11 @@ ANY parameter set and ANY seed, not just the shipped one.
 """
 
 import random
-from pathlib import Path
 
 import pytest
 
-from downstream.citations import parse_bib
 from downstream.children import child_line
-from downstream.explanation import Explanation, Step, explain_child_line
+from downstream.explanation import explain_child_line
 from downstream.params import default_dir, load, load_all
 from downstream.render import load_citations, render_text, validate_rendered
 from downstream.scenario import ScenarioInput, compute_counts

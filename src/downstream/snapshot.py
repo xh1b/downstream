@@ -19,12 +19,16 @@ living queue.
 from __future__ import annotations
 
 import json
+import hashlib
+from dataclasses import asdict
 from pathlib import Path
 
 from .audit import ERROR, audit
-from .params import default_dir, load_all
+from . import __version__
+from .params import default_dir, load_all, load_correlations
+from .place import load_places, PRIOR_N, DOSE_YEARS
 
-SCHEMA = "downstream-parameter-set/1"
+SCHEMA = "downstream-parameter-set/2"
 
 
 def build(params_dir: str | Path | None = None) -> dict:
@@ -47,6 +51,19 @@ def build(params_dir: str | Path | None = None) -> dict:
     return {
         "schema": SCHEMA,
         "version": params.version,
+        "engine_version": __version__,
+        "source_sha256": {
+            path.name: hashlib.sha256(path.read_bytes()).hexdigest()
+            for path in sorted(d.iterdir()) if path.is_file()
+        },
+        "places": [asdict(p) for p in load_places(d / "places.csv").values()],
+        "correlations": [asdict(c) for c in load_correlations(d / "correlations.csv")]
+            if (d / "correlations.csv").exists() else [],
+        "modeling_assumptions": {
+            "place_prior_n": PRIOR_N, "childhood_exposure_years": DOSE_YEARS,
+            "place_application": "initial_only", "mortality_method": "odds_survival",
+            "mortality_timing": "initial peak year; years 2-5 unidentified and held at baseline; year-6+ coefficient thereafter",
+        },
         "parameters": [
             {
                 "link": p.link,

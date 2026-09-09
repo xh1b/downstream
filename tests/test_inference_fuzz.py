@@ -111,13 +111,14 @@ def test_skewness_sign_matches_mc_on_random_chains():
 
 # --- trap: declared-normal row silently treated as uniform --------------------
 
-def test_declared_normal_refused_by_analytic_layer():
+def test_declared_normal_uses_its_own_moments():
     p = Parameter(
         link="a->b", from_node="a", to_node="b", point=1.0, low=0.9, high=1.1,
         tier="canonical", citation="x", population_scope="t", dist="normal",
     )
-    with pytest.raises(NotImplementedError, match="normal"):
-        param_moments(p, "gap_multiplier")
+    m1, m2, _ = param_moments(p, "gap_multiplier")
+    assert m1 == pytest.approx(1.0)
+    assert 0 < m2 - m1*m1 < (p.high-p.low)**2/12
 
 
 def test_distless_row_still_uniform_moments():

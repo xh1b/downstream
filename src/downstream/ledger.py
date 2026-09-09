@@ -62,13 +62,11 @@ class Ledger:
 
     def _step(self, kind: str, p: Parameter) -> Step:
         if kind == LEVEL:
-            v = (self.point * p.point, self.low * p.low, self.high * p.high)
+            corners = [x * y for x in (self.low, self.high) for y in (p.low, p.high)]
+            v = (self.point * p.point, min(corners), max(corners))
         elif kind == GAP:
-            v = (
-                1 - p.point * (1 - self.point),
-                1 - p.high * (1 - self.low),
-                1 - p.low * (1 - self.high),
-            )
+            corners = [1 - t * (1 - x) for x in (self.low, self.high) for t in (p.low, p.high)]
+            v = (1 - p.point * (1 - self.point), min(corners), max(corners))
         elif kind == DIRECT:
             v = (p.point, p.low, p.high)
         elif kind == RATE:
@@ -105,11 +103,49 @@ def start(label: str, unit: str, value: float = 1.0) -> Ledger:
     return Ledger(label=label, unit=unit, point=value, low=value, high=value, steps=())
 
 
-def chain(params, links: list[str], label: str, unit: str, kinds: list[str]) -> Ledger:
+# Only these links have a defensible in-ledger composition.  Most parameter
+# rows are boundary coefficients (rates, elasticities, or counts) and must be
+# applied by their named boundary adapter, not invited into an arbitrary chain.
+CHAIN_KINDS = {
+    "displacement->worker_earnings": DIRECT,
+    "displacement->child_earnings": DIRECT,
+    "child_earnings->grandchild_earnings": GAP,
+    "grandchild_earnings->greatgrandchild_earnings": GAP,
+}
+
+
+def validate_chain(params, links: list[str], kinds: list[str], nodes: dict) -> None:
+    """Refuse links that lack an explicit, context-safe chain operation."""
+    if len(links) != len(kinds):
+        raise ValueError("links and kinds must be the same length")
+    previous = None
+    for link, kind in zip(links, kinds):
+        parameter = params.by_link(link)
+        expected = CHAIN_KINDS.get(link)
+        if expected is None:
+            raise ValueError(
+                f"chain link {link!r} is boundary-applied and cannot be used in an arbitrary chain"
+            )
+        if expected != kind:
+            raise ValueError(
+                f"chain link {link!r} requires {expected!r} composition from its units, not {kind!r}"
+            )
+        if previous is not None and previous.to_node != parameter.from_node:
+            raise ValueError(
+                f"disconnected chain: {previous.link!r} ends at {previous.to_node!r}, "
+                f"but {link!r} starts at {parameter.from_node!r}"
+            )
+        previous = parameter
+
+
+def chain(params, links: list[str], label: str, unit: str, kinds: list[str], nodes: dict | None = None,
+          base: float = 1.0) -> Ledger:
     """Apply named links with an explicit composition kind per link."""
     if len(links) != len(kinds):
         raise ValueError("links and kinds must be the same length")
-    ledger = start(label, unit)
+    if nodes is not None:
+        validate_chain(params, links, kinds, nodes)
+    ledger = start(label, unit, value=base)
     for link, kind in zip(links, kinds):
         ledger = ledger.apply(kind, params.by_link(link), label=link.split("->")[-1])
     return ledger

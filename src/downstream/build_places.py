@@ -34,6 +34,7 @@ Run: downstream build-places
 from __future__ import annotations
 
 import csv
+import math
 from pathlib import Path
 
 from .params import default_dir
@@ -83,29 +84,57 @@ def build_places(params_dir: str | Path | None = None) -> dict:
     validation = d.parent / "validation"
 
     atlas = _read_csv(validation / ATLAS_FILE)
-    names = {
-        f"{int(r['countyfips']):05d}": (r["countyname"], r["stateabbrev"])
-        for r in _read_csv(validation / GEOMAP_FILE)
-        if (r["countyfips"] or "").strip().isdigit()
-    }
+    names = {}
+    for row_number, r in enumerate(_read_csv(validation / GEOMAP_FILE), start=2):
+        raw_fips = (r.get("countyfips") or "").strip()
+        if not raw_fips.isdigit():
+            continue
+        fips = f"{int(raw_fips):05d}"
+        if fips in names:
+            raise ValueError(f"duplicate countyfips {fips} in {GEOMAP_FILE} row {row_number}")
+        names[fips] = (r.get("countyname", ""), r.get("stateabbrev", ""))
 
     rows: list[str] = []
     total_n = 0.0
     weighted_sum = 0.0
     skipped = 0
-    for r in atlas:
+    seen_fips = set()
+    for row_number, r in enumerate(atlas, start=2):
         kfr = (r.get(KFR_COL) or "").strip()
         count_raw = (r.get(COUNT_COL) or "").strip()
-        count = float(count_raw) if count_raw else 0.0
-        if not kfr or count <= 0.0:
+        if not kfr or not count_raw:
             skipped += 1
             continue
-        state_fips = f"{int(r['state']):02d}"
+        try:
+            count = float(count_raw)
+            percentile_fraction = float(kfr)
+        except ValueError as exc:
+            raise ValueError(f"malformed Atlas numeric value at row {row_number}") from exc
+        if not math.isfinite(count) or not math.isfinite(percentile_fraction):
+            raise ValueError(f"non-finite Atlas numeric value at row {row_number}")
+        if count < 0:
+            raise ValueError(f"negative Atlas child count at row {row_number}")
+        if not 0 <= percentile_fraction <= 1:
+            raise ValueError(f"Atlas income rank must be in [0, 1] at row {row_number}")
+        if count == 0:
+            skipped += 1
+            continue
+        try:
+            state = int(r["state"])
+            county = int(r["county"])
+        except (KeyError, TypeError, ValueError) as exc:
+            raise ValueError(f"malformed Atlas FIPS at row {row_number}") from exc
+        if not 1 <= state <= 78 or not 1 <= county <= 999:
+            raise ValueError(f"out-of-range Atlas FIPS at row {row_number}")
+        state_fips = f"{state:02d}"
         if state_fips in NONSTATE_FIPS:
             skipped += 1
             continue
-        pct = float(kfr) * 100.0
-        fips = f"{int(r['state']):02d}{int(r['county']):03d}"
+        pct = percentile_fraction * 100.0
+        fips = f"{state:02d}{county:03d}"
+        if fips in seen_fips:
+            raise ValueError(f"duplicate Atlas county FIPS {fips}")
+        seen_fips.add(fips)
         cname, sabb = names.get(fips, ("", ""))
         name = f"{cname} County, {sabb}" if cname else f"county FIPS {fips}"
         rows.append(

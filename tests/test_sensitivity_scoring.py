@@ -4,9 +4,9 @@ import random
 
 import pytest
 
-from downstream.params import Parameter, ParameterSet, load, default_dir, load_nodes
+from downstream.params import Correlation, Parameter, ParameterSet, load, default_dir, load_nodes
 from downstream.scoring import calibration_table, coverage, crps_sample, pit
-from downstream.sensitivity import sobol_indices
+from downstream.sensitivity import correlated_block_sobol, sobol_indices
 
 NODES = load_nodes(default_dir() / "nodes.csv")
 
@@ -79,6 +79,17 @@ def test_sobol_runs_on_the_real_child_line():
     # the IGE transmission step must be among the leading drivers
     top3 = {r["link"] for r in out["indices"][:3]}
     assert "child_earnings->grandchild_earnings" in top3
+
+
+def test_correlated_inputs_are_attributed_as_one_block():
+    params = _fake_params([(0.0, 1.0), (0.0, 1.0), (0.0, 1.0)])
+    correlations = [Correlation("x0->y", "x1->y", .5, "declared test coupling")]
+    out = correlated_block_sobol(
+        params, lambda ps: sum(p.point for p in ps.parameters), NODES,
+        correlations, base=64, seed=7,
+    )
+    assert out["correlations_applied"] == 1
+    assert {tuple(r["links"]) for r in out["blocks"]} == {("x0->y", "x1->y"), ("x2->y",)}
 
 
 def test_crps_of_point_forecast_is_absolute_error():

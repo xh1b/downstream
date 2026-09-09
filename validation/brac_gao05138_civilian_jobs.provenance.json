@@ -1,0 +1,12 @@
+{
+  "source": "https://www.gao.gov/assets/a245059.html",
+  "table": "Appendix II, Table 3",
+  "as_of": "2003-10-31",
+  "source_sha256": "32d6971967b4ba4d266065fcf3e3adae5c98f13458ff981598da6b6110d581c8",
+  "capture": "saved accessible-text excerpt",
+  "rows": 73,
+  "civilian_jobs_lost": 129649,
+  "redevelopment_jobs_created": 92921,
+  "limitation": "Base civilian jobs only. Not a measured causal community spillover.",
+  "validation_status": "exposure inventory only; geography/window alignment and causal measured side still required"
+}

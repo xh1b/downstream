@@ -1,15 +1,16 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2026 John Larue
-#
-# Build the paper: `make` produces downstream.pdf from downstream.tex.
-
+PYTHON ?= $(if $(wildcard ../.venv/bin/python),../.venv/bin/python,python3)
 LATEXMK := latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error
 
-.PHONY: all view clean distclean
-
+.PHONY: all data view clean distclean
 all: downstream.pdf
 
-downstream.pdf: downstream.tex
+# Always ask the deterministic generator to check its inputs. It preserves
+# unchanged mtimes, so latexmk skips compilation when content is unchanged.
+data:
+	$(PYTHON) build_tables.py
+
+downstream.pdf: downstream.tex build_tables.py data
 	$(LATEXMK) downstream.tex
 
 view: downstream.pdf

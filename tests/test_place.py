@@ -101,7 +101,7 @@ def _places(philly: Place | None = None) -> dict[str, Place]:
 
 
 def test_version_is_v129():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.33"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.34"
 
 
 # --- loader -------------------------------------------------------
@@ -388,13 +388,13 @@ def test_modifier_parameter_blocked_when_places_absent():
     assert out["modifier"]["applied"] is False
 
 
-def test_child_line_multiplier_composes_multiplicatively():
+def test_legacy_child_line_repeats_multiplier():
     from downstream.children import CHILD_DIRECT, GRANDCHILD, child_line
     from downstream.place import modifier_parameter
 
     base = child_line(PARAMS)
     mp = modifier_parameter(PARAMS, _places(_philly()), "42101")
-    line = child_line(PARAMS, place_modifier=mp["parameter"])
+    line = child_line(PARAMS, place_modifier=mp["parameter"], place_application="legacy_repeated")
     m = mp["modifier"]["multiplier"]
     direct = PARAMS.by_link(CHILD_DIRECT).point
     ige = PARAMS.by_link(GRANDCHILD).point
@@ -456,14 +456,14 @@ def test_vignette_unknown_place_key_fails_loudly():
         standard_family(PARAMS, places=_places(_philly()), place_key="99999")
 
 
-def test_scenario_uses_shrunk_mortality_baseline():
+def test_legacy_scenario_uses_shrunk_mortality_baseline():
     from downstream.scenario import ScenarioInput, compute_counts
 
     base = compute_counts(
-        PARAMS, _baseline_dict(), ScenarioInput(displaced_workers=1000)
+        PARAMS, _baseline_dict(), ScenarioInput(displaced_workers=1000, mortality_method="legacy_additive")
     )
     out = compute_counts(
-        PARAMS, _baseline_dict(), ScenarioInput(displaced_workers=1000),
+        PARAMS, _baseline_dict(), ScenarioInput(displaced_workers=1000, mortality_method="legacy_additive"),
         places=_places(_philly()), place_key="42101",
     )
     # the county rate replaces the national one in the SAME unit

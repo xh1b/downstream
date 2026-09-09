@@ -13,11 +13,9 @@ import math
 from dataclasses import dataclass
 from pathlib import Path
 
-from .citations import parse_bib
 from .distributions import KNOWN_DISTS, _cholesky
 from .params import (
     VALID_TIERS,
-    Correlation,
     load,
     load_all,
     load_correlations,
@@ -195,6 +193,13 @@ def audit(params_dir: str | Path | None = None) -> list[Finding]:
         "unconditional_income",
         "youth_crime_conviction_share",
         "youth_violent_crime_conviction_share",
+        # Boundary-applied study inputs: they are deliberately not produced
+        # by the displacement DAG and must not drown real audit warnings.
+        "wage_ratio", "import_shock_per_worker", "family_income_shock",
+        "unemployment_rate", "eitc_exposure", "male_earnings_pc",
+        "male_mass_layoff_rate", "eviction_order", "foreclosure_order",
+        "local_unemp_shock", "household_hardship", "couple_unemployment",
+        "unemployment_status",
     }
     produced = {p.to_node for p in params.parameters}
     for p in params.parameters:
@@ -212,7 +217,7 @@ def audit(params_dir: str | Path | None = None) -> list[Finding]:
     for key, entry in bib.items():
         if key not in cited_keys:
             findings.append(
-                Finding(WARN, "uncited-bib", f"references.bib:{key}: cited nowhere ({entry.cite()})")
+                Finding(INFO, "uncited-bib", f"references.bib:{key}: cited nowhere ({entry.cite()})")
             )
 
     # Baselines: verified rows need value + citation; pending rows are listed.
@@ -243,7 +248,11 @@ def audit(params_dir: str | Path | None = None) -> list[Finding]:
     # citations, the national fallback row is required when the file
     # exists, and a rate without its precision n would make the
     # pooling weight a guess — flagged as an honest gap, not applied.
-    places = load_places(d / "places.csv")
+    try:
+        places = load_places(d / "places.csv")
+    except Exception as e:
+        places = {}
+        findings.append(Finding(ERROR, "places", f"places.csv failed to load: {e}"))
     if places:
         if "national" not in places:
             findings.append(

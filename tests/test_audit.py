@@ -39,8 +39,10 @@ def test_clean_shipped_set_has_zero_errors():
     findings = audit(REAL_PARAMS)
     s = summary(findings)
     assert s["errors"] == 0, [f for f in findings if f.severity == ERROR]
-    # honest-gaps warnings are expected (queued extractions, uncited bib)
-    assert s["warnings"] > 0
+    # Cross-check bibliography is informational; the shipped graph has no
+    # unexplained producer gaps.
+    assert s["warnings"] == 0
+    assert s["info"] > 0
 
 
 def test_trap_inverted_band(params_dir):
@@ -48,7 +50,7 @@ def test_trap_inverted_band(params_dir):
     rows[0]["low"], rows[0]["high"] = "0.9", "0.5"
     _write_rows(params_dir, rows, fields)
     findings = audit(params_dir)
-    assert any(f.check == "band" and f.severity == ERROR for f in findings)
+    assert any(f.check == "dag" and f.severity == ERROR and "outside its band" in f.message for f in findings)
 
 
 def test_trap_point_outside_band(params_dir):
@@ -56,7 +58,7 @@ def test_trap_point_outside_band(params_dir):
     rows[0]["point"] = "2.0"
     _write_rows(params_dir, rows, fields)
     findings = audit(params_dir)
-    assert any(f.check == "band" and f.severity == ERROR for f in findings)
+    assert any(f.check == "dag" and f.severity == ERROR and "outside its band" in f.message for f in findings)
 
 
 def test_trap_unresolvable_citation_key(params_dir):
@@ -106,7 +108,7 @@ def test_trap_moretti_shape_level_ratio_below_one(params_dir):
             r["point"] = "0.8"  # the v0 bug shape
     _write_rows(params_dir, rows, fields)
     findings = audit(params_dir)
-    assert any(f.check == "level-ratio-shape" and f.severity == ERROR for f in findings)
+    assert any(f.check == "dag" and f.severity == ERROR and "outside its band" in f.message for f in findings)
 
 
 def test_trap_duplicate_link(params_dir):
@@ -115,7 +117,7 @@ def test_trap_duplicate_link(params_dir):
     rows.append(dup)
     _write_rows(params_dir, rows, fields)
     findings = audit(params_dir)
-    assert any(f.check == "duplicate-link" and f.severity == ERROR for f in findings)
+    assert any(f.check == "dag" and f.severity == ERROR and "duplicate" in f.message for f in findings)
 
 
 def test_trap_unknown_node(params_dir):
@@ -126,12 +128,10 @@ def test_trap_unknown_node(params_dir):
     assert any(f.check == "node" and "unicorn_node" in f.message for f in findings)
 
 
-def test_orphan_upstream_warns_not_errors(params_dir):
-    # the real set already has household_ipv orphaned (aizer2010 queued)
+def test_boundary_inputs_are_declared_not_orphaned(params_dir):
     findings = audit(REAL_PARAMS)
     orphans = [f for f in findings if f.check == "orphan"]
-    assert orphans, "expected the IPV orphan to warn"
-    assert all(f.severity == WARN for f in orphans)
+    assert orphans == []
 
 
 def test_verified_baseline_needs_value(params_dir):
@@ -176,3 +176,24 @@ def test_audit_cli_exit_code():
     out = json.loads(r.stdout)
     assert out["summary"]["errors"] == 0
     assert r.returncode == 0
+
+
+def test_audit_reports_missing_version_and_invalid_place_metadata(params_dir):
+    (params_dir / "VERSION").unlink()
+    with (params_dir / "places.csv").open(newline="", encoding="utf-8") as handle:
+        reader = csv.DictReader(line for line in handle if not line.startswith("#"))
+        rows = list(reader)
+        fields = reader.fieldnames
+    # Remove the required national fallback, then make the first retained row
+    # visibly unsuitable for a pooling calculation.
+    rows = [row for row in rows if row["key"] != "national"]
+    rows[0]["level"] = "planet"
+    rows[0]["citation"] = ""
+    with (params_dir / "places.csv").open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fields)
+        writer.writeheader()
+        writer.writerows(rows)
+    findings = audit(params_dir)
+    assert any(f.check == "version" and f.severity == WARN for f in findings)
+    assert any(f.check == "places" and "failed to load" in f.message for f in findings)
+    assert any(f.check == "places" and "unknown level" in f.message for f in findings)

@@ -46,7 +46,7 @@ import math
 import random
 from typing import Callable
 
-from .distributions import LOGUNIFORM, dist_for, plan, sample_unit_interval
+from .distributions import LOGUNIFORM, dist_for, materialize_parameter_set, plan, sample_unit_interval
 from .params import Parameter, ParameterSet
 
 Z95 = 1.959963984540054
@@ -83,25 +83,51 @@ def _loguniform_moments(lo: float, hi: float) -> tuple[float, float, float]:
 def param_moments(p: Parameter, node_unit: str | None) -> tuple[float, float, float]:
     """First three raw moments of a parameter under its sampling dist.
 
-    Declared-normal rows are REFUSED, loudly: the sampler truncates a
-    normal to the band (distributions.sample_unit_interval), and this
-    algebra has no truncated-normal moment rule. Treating such a row
-    as uniform would make the analytic layer silently disagree with
-    the MC — the fail-soft bug class this repo bans. When a normal
-    row is cited into the set, add the truncated-normal moments here
-    (both tails at ±1.96 SE) and unpin the matching trap.
+    Normal and lognormal moments include the sampler's endpoint atoms
+    from clamping. Independent-step composition refuses reused random
+    parameters; use Monte Carlo when that independence assumption fails.
     """
     lo, hi = sorted((p.low, p.high))
     d = dist_for(p, node_unit)
     if d == LOGUNIFORM:
         return _loguniform_moments(lo, hi)
-    if d == "normal":
-        raise NotImplementedError(
-            f"parameter {p.link!r} declares a normal sampling dist; the "
-            f"analytic moment rules cover uniform and log-uniform only. "
-            f"Refusing rather than silently treating it as uniform."
-        )
+    if d in {"normal", "lognormal"}:
+        return _clamped_moments(p, logarithmic=d == "lognormal")
+    if d != "uniform":
+        raise NotImplementedError(f"unsupported analytic distribution {d!r}")
     return _uniform_moments(lo, hi)
+
+
+def _clamped_moments(p, logarithmic=False):
+    """Exact moments of the sampler's clamped normal-family marginal."""
+    lo, hi = sorted((p.low, p.high))
+    if lo == hi:
+        return lo, lo**2, lo**3
+    if logarithmic and lo <= 0:
+        raise ValueError('lognormal bands must be positive')
+    lower, upper = (math.log(lo), math.log(hi)) if logarithmic else (lo, hi)
+    mu = math.log(p.point) if logarithmic else p.point
+    sigma = (upper - lower) / 3.92
+    a = max(-1.96, (lower - mu) / sigma) if logarithmic else (lower - mu) / sigma
+    b = min(1.96, (upper - mu) / sigma) if logarithmic else (upper - mu) / sigma
+    def cdf(z):
+        return 0.5 * math.erfc(-z / math.sqrt(2))
+
+    def pdf(z):
+        return math.exp(-z*z/2) / math.sqrt(2*math.pi)
+    if a > b:
+        raise ValueError('parameter center must lie within its band')
+    low_value, high_value = mu + sigma*a, mu + sigma*b
+    if logarithmic:
+        return tuple(math.exp(k*low_value)*cdf(a) + math.exp(k*high_value)*cdf(-b)
+                     + math.exp(k*mu + (k*sigma)**2/2) * (cdf(b-k*sigma)-cdf(a-k*sigma))
+                     for k in (1, 2, 3))
+    integrals = [cdf(b)-cdf(a), pdf(a)-pdf(b),
+                 cdf(b)-cdf(a)+a*pdf(a)-b*pdf(b),
+                 (a*a+2)*pdf(a)-(b*b+2)*pdf(b)]
+    return tuple(low_value**k*cdf(a) + high_value**k*cdf(-b) +
+                 sum(math.comb(k,j)*mu**(k-j)*sigma**j*integrals[j] for j in range(k+1))
+                 for k in (1, 2, 3))
 
 
 # ------------------------------------------------------- chain propagation
@@ -139,7 +165,13 @@ def analytic_chain(
     m2 = m1 * m1 if base_m2 is None else float(base_m2)
     m3 = m1**3 if base_m3 is None else float(base_m3)
     steps = []
+    active_links = set()
     for link, kind in zip(links, kinds):
+        if kind == "direct":
+            active_links.clear()
+        elif link in active_links:
+            raise ValueError(f"reused parameter {link!r} violates independent-step moments; use Monte Carlo")
+        active_links.add(link)
         p = params.by_link(link)  # KeyError names a typo'd link
         node = nodes.get(p.to_node)
         t1, t2, t3 = param_moments(p, node.unit if node else None)
@@ -197,6 +229,7 @@ def analytic_chain(
             "The MC remains the referee: CF that drifts from MC quantiles "
             "is rejected, not excused."
         ),
+        "assumes_independent_parameters": True,
     }
 
 
@@ -259,7 +292,7 @@ def logspace_variance_shares(
         kinds = ["level"] * len(links)
     if len(links) != len(kinds):
         raise ValueError("links and kinds must be the same length")
-    bad = [(l, k) for l, k in zip(links, kinds) if k != "level"]
+    bad = [(link, kind) for link, kind in zip(links, kinds) if kind != "level"]
     if bad:
         raise ValueError(
             f"logspace shares are exact for multiplicative (level) chains "
@@ -272,6 +305,11 @@ def logspace_variance_shares(
         p = params.by_link(link)
         node = nodes.get(p.to_node)
         d = dist_for(p, node.unit if node else None)
+        if d not in {"uniform", LOGUNIFORM}:
+            raise ValueError(
+                f"logspace shares are exact only for uniform/loguniform marginals; "
+                f"{link!r} declares {d!r}. Use sampled sensitivity instead."
+            )
         lo, hi = sorted((p.low, p.high))
         if hi == lo:
             rows.append({"link": link, "var_log": 0.0, "share": 0.0})
@@ -294,6 +332,7 @@ def logspace_variance_shares(
             "the Sobol indices of log Y (first-order = total). Compare "
             "against the Saltelli estimator as a machinery cross-check."
         ),
+        "assumes_independent_parameters": True,
     }
 
 
@@ -308,16 +347,10 @@ def _draw_samples(
     seed: int,
 ) -> list[float]:
     """The mc.simulate sampler, exposed as raw samples."""
-    rows = list(params.parameters)
     dp = plan(params, nodes, draws, seed)
     out = []
     for k in range(draws):
-        ps = params
-        for j, p in enumerate(rows):
-            lo, hi = sorted((p.low, p.high))
-            v = sample_unit_interval(dp.dists[j], dp.u[k][j], lo, hi)
-            ps = ps.with_param(p.link, v)
-        out.append(compute(ps))
+        out.append(compute(materialize_parameter_set(params, nodes, dp.u[k], dp.dists)))
     return out
 
 
@@ -355,8 +388,6 @@ def closure_coverage(
     90% bands behave like 90% bands. An attacker who rejects them is
     arguing with the literature, not the arithmetic.
     """
-    rows = list(params.parameters)
-    band_rng = random.Random(seed)
     truth_rng = random.Random(seed + 1)
     covered = {lv: 0 for lv in levels}
 
@@ -367,12 +398,12 @@ def closure_coverage(
 
     for _ in range(trials):
         ps = params
-        for p in rows:
+        for p in params.parameters:
             lo, hi = sorted((p.low, p.high))
             u = truth_rng.random()
             node = nodes.get(p.to_node)
             d = dist_for(p, node.unit if node else None)
-            ps = ps.with_param(p.link, sample_unit_interval(d, u, lo, hi))
+            ps = ps.with_param(p.link, sample_unit_interval(d, u, lo, hi, point=p.point))
         truth = compute(ps)
         for lv in levels:
             lo_b, hi_b = bands[lv]
@@ -399,9 +430,10 @@ def closure_coverage(
         "pass": all(r["within_2se"] for r in out),
         "note": (
             "Coverage of MC bands over truths redrawn from the declared "
-            "bands. Machinery self-test only — the economics is tested by "
-            "V1 retrodiction, not here."
+            "bands under an independent-input estimand. Machinery self-test "
+            "only — the economics is tested by V1 retrodiction, not here."
         ),
+        "assumes_independent_parameters": True,
     }
 
 
@@ -437,10 +469,9 @@ def correlation_stress(
 ) -> dict:
     """How much does the independence assumption cost?
 
-    The declared correlation matrix ships EMPTY (SPEC §7): no
-    correlation is citable yet, so every published band assumes
-    parameter independence. This stress test bounds the exposure to
-    that assumption BEFORE a citation exists:
+    The production run may already contain declared correlations. This
+    stress test retains them and changes only the requested block, bounding
+    the incremental exposure to a correlation assumption:
 
     - induce Spearman rank correlation `rho` among `block_links`
       (Iman-Conover; marginals preserved exactly);
@@ -459,24 +490,35 @@ def correlation_stress(
     """
     rows = list(params.parameters)
     idx = {p.link: i for i, p in enumerate(rows)}
-    unknown = [l for l in block_links if l not in idx]
+    unknown = [link for link in block_links if link not in idx]
     if unknown:
         raise KeyError(f"unknown links in stress block: {unknown}")
-    block = [idx[l] for l in block_links]
-    spearman = _stress_matrix(len(rows), block, rho)
+    block = [idx[link] for link in block_links]
+    # Start from the production declared matrix, then replace just the
+    # requested stress block.  This prevents a stress run from silently
+    # dropping unrelated declared correlations.
+    from .params import default_dir, load_correlations, spearman_matrix
+    try:
+        declared = load_correlations(default_dir() / "correlations.csv")
+        base_spearman = spearman_matrix(params, declared)
+    except OSError:
+        declared, base_spearman = [], None
+    base_spearman = base_spearman or _stress_matrix(len(rows), [], 0.0)
+    spearman = [row[:] for row in base_spearman]
+    for i in block:
+        for j in block:
+            if i != j:
+                spearman[i][j] = rho
 
     def correlated_samples(n: int, sd_seed: int, with_stress: bool) -> list[float]:
-        dp = plan(params, nodes, n, sd_seed, spearman=spearman if with_stress else None)
+        dp = plan(params, nodes, n, sd_seed, spearman=spearman if with_stress else base_spearman)
         out = []
         for k in range(n):
-            ps = params
-            for j, p in enumerate(rows):
-                lo, hi = sorted((p.low, p.high))
-                v = sample_unit_interval(dp.dists[j], dp.u[k][j], lo, hi)
-                ps = ps.with_param(p.link, v)
-            out.append(compute(ps))
+            out.append(compute(materialize_parameter_set(params, nodes, dp.u[k], dp.dists)))
         return out
 
+    # "independent" below means no *additional stress*, not an erasure of
+    # the production's declared correlations.
     base_samples = correlated_samples(draws, seed + 2, with_stress=False)
     base_lo, base_hi = _normal_quantile_band(base_samples[:], level)
     width_ind = base_hi - base_lo
@@ -503,6 +545,7 @@ def correlation_stress(
         "draws": draws,
         "trials": trials,
         "seed": seed,
+        "declared_correlations_retained": len(declared),
         "note": (
             "Iman-Conover rank correlation among the block links only; "
             "marginals unchanged. Width move is the published exposure to "
@@ -552,4 +595,5 @@ def analytic_vs_mc(
             "mean_diff_in_se > 3 is a sampler bug (exact vs sampled mean). "
             "p05/p95 gaps are skewness, not error — publish them."
         ),
+        "assumes_independent_parameters": True,
     }

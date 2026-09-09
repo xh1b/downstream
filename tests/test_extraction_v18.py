@@ -11,7 +11,6 @@ Each trap names the defect it hunts:
 
 from __future__ import annotations
 
-import pytest
 
 from downstream.distributions import dist_for
 from downstream.params import load_all

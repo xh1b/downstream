@@ -19,7 +19,7 @@ import re
 from dataclasses import dataclass
 from pathlib import Path
 
-from .citations import BibEntry, parse_bib
+from .citations import BibEntry
 from .params import default_dir
 
 
@@ -90,15 +90,17 @@ def collect(bib: dict[str, BibEntry], params_dir: Path | None = None) -> dict:
             if key not in r.entries:
                 r.entries.append(key)
 
-    role = lambda k: (
-        "parameter" if k in parameter_keys
-        else "baseline" if k in baseline_keys
-        else "methodology" if k in {
+    def role(key: str) -> str:
+        if key in parameter_keys:
+            return "parameter"
+        if key in baseline_keys:
+            return "baseline"
+        if key in {
             "mckay1979", "iman1982", "saltelli2002", "sobol2001",
             "hersbach2000", "gneiting2007", "gigerenzer2002",
-        }
-        else "context"
-    )
+        }:
+            return "methodology"
+        return "context"
 
     years = [int(e.year) for e in bib.values() if e.year.isdigit()]
 

@@ -1,3 +1,10 @@
+## v1.34 — 2026-09-09
+
+Correct mortality node metadata from rate ratio to odds ratio, matching
+Sullivan and von Wachter's extracted log-odds coefficients. No empirical
+coefficient or band changes. Engine 0.2.0 performs exact odds-to-risk
+conversion and finite-horizon survival; legacy counts remain selectable.
+
 ## v1.33 — 2026-09-09 — #24 Damm & Dustmann neighborhood conviction-share exposure landed
 
 - #24 LANDED (damm2014, AER 104(6):1806-1832, read via the open Aarhus

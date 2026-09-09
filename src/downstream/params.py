@@ -8,11 +8,12 @@ The DAG check rejects cycles before any compute.
 from __future__ import annotations
 
 import csv
+import math
 from dataclasses import dataclass, replace
 from pathlib import Path
 
 from . import units
-from .citations import BibEntry, parse_bib
+from .citations import parse_bib
 
 VALID_TIERS = {"EXACT", "EXACT-abstract", "EXACT-results", "canonical"}
 
@@ -133,10 +134,10 @@ def load(path: str | Path, version: str | None = None) -> ParameterSet:
         vfile = path.parent / "VERSION"
         version = vfile.read_text().strip() if vfile.exists() else "unversioned"
     rows: list[Parameter] = []
+    seen: set[str] = set()
     with open(path, newline="", encoding="utf-8") as f:
         for row in csv.DictReader(f):
-            rows.append(
-                Parameter(
+            p = Parameter(
                     link=row["link"],
                     from_node=row["from_node"],
                     to_node=row["to_node"],
@@ -149,13 +150,21 @@ def load(path: str | Path, version: str | None = None) -> ParameterSet:
                     notes=row.get("notes", ""),
                     dist=row.get("dist", ""),
                 )
-            )
+            if not p.link or p.link in seen:
+                raise ValueError(f"duplicate or empty parameter link {p.link!r}")
+            if not all(math.isfinite(v) for v in (p.point, p.low, p.high)):
+                raise ValueError(f"parameter {p.link!r} has non-finite values")
+            if not p.low <= p.point <= p.high:
+                raise ValueError(f"parameter {p.link!r} point lies outside its band")
+            seen.add(p.link)
+            rows.append(p)
     _check_dag(rows)
     return ParameterSet(version=version, parameters=tuple(rows))
 
 
 def load_nodes(path: str | Path) -> dict[str, units.Node]:
     nodes: dict[str, units.Node] = {}
+    known_units = {value for name, value in vars(units).items() if name.isupper() and isinstance(value, str)}
     with open(path, newline="", encoding="utf-8") as f:
         for row in csv.DictReader(f):
             node = units.Node(
@@ -163,6 +172,10 @@ def load_nodes(path: str | Path) -> dict[str, units.Node]:
                 unit=row["unit"],
                 description=row.get("description", ""),
             )
+            if not node.name or node.name in nodes:
+                raise ValueError(f"duplicate or empty node {node.name!r}")
+            if node.unit not in known_units:
+                raise ValueError(f"node {node.name!r} has unknown unit {node.unit!r}")
             nodes[node.name] = node
     return nodes
 
@@ -184,6 +197,10 @@ def load_baselines(path: str | Path) -> dict[str, Baseline]:
                 status=row["status"].strip(),
                 notes=row.get("notes", ""),
             )
+            if not base.outcome or base.outcome in out:
+                raise ValueError(f"duplicate or empty baseline outcome {base.outcome!r}")
+            if base.value is not None and not math.isfinite(base.value):
+                raise ValueError(f"baseline {base.outcome!r} has non-finite value")
             out[base.outcome] = base
     return out
 

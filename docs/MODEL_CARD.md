@@ -1,24 +1,36 @@
-# MODEL CARD — downstream v1.2
+# MODEL CARD — downstream engine 0.2.0 / parameters v1.34
 
 Model card practice per Mitchell et al. 2019, "Model Cards for Model
 Reporting". This card travels with the model.
 
 ## Model details
 
-- Deterministic, citation-locked microsimulation of downstream
-  consequences of worker displacement, with Monte Carlo uncertainty
-  propagation (LHS + log-space ratio sampling + optional declared
-  rank correlation).
-- Parameter set v1.2: 13 active links, each with point, band,
+- Current implementation: deterministic, citation-locked microsimulation of
+  downstream consequences of worker displacement, with Monte Carlo uncertainty
+  propagation (LHS + log-space ratio sampling + optional declared rank
+  correlation).
+- Project direction: a versioned, evidence-locked causal consequence graph.
+  Worker displacement is the first seed event. The graph will represent
+  published causal links between life events and states across people, families,
+  and communities, including null, beneficial, harmful, and conflicting
+  evidence. See `docs/CAUSAL_GRAPH_PLAN.md`.
+- Scenario headline counts (local jobs, excess deaths, and child-dollar
+  loss) additionally carry jointly sampled central 90% intervals for
+  **parameter uncertainty only**. Their support envelopes are retained
+  and explicitly not presented as confidence intervals.
+- Parameter set v1.34: 42 parameter rows, each with point, band,
   precision tier, bib keys, and population scope.
 - Version stamping: params/VERSION; every output carries the version
   it used; sampled outputs mark `-sampled`.
 
 ## Intended use
 
-- Population-level, place-resolved modeling of displacement
-  consequences for transparent public reporting: workers, children
-  (three generations), family stability, local economies.
+- Present: population-level, place-resolved modeling of displacement
+  consequences for transparent public reporting: workers, children (three
+  generations), family stability, and local economies.
+- Intended direction: graph-based simulation of downstream consequences from
+  a documented initiating event or altered state. Results must be distributions
+  with scientific receipts and an error budget, not asserted personal futures.
 - Explanation-first surfaces: every claim ships with its derivation,
   drivers, falsifiers, and receipts.
 
@@ -26,6 +38,8 @@ Reporting". This card travels with the model.
 
 - NOT a person-level predictor. Vignettes describe modeled ranges for
   family TYPES; the model never assigns outcomes to an individual.
+- NOT an agenda engine. The evidence graph must preserve nulls, benefits,
+  harms, and disagreements; an unsupported or incompatible path is refused.
 - NOT a forecasting system until V3 prospective validation runs.
 - NOT an immigration effects model per se: it models DISPLACEMENT
   events and their documented consequences. It refuses links the
@@ -54,8 +68,8 @@ Reporting". This card travels with the model.
   EXACT, county level; declared 18-year dose) over 3,134 county
   mobility rows from the Opportunity Atlas. County mortality + divorce
   plugs still pending.
-- V3: designed, not built.
-- Unit tests: 438; adversarial traps for the known bug classes
+- V3: immutable local registration and scoring tools built; no real event registered.
+- Unit tests cover the known bug classes
   (level-vs-gap composition, level-ratio misuse, naked estimates,
   band inversion, pre-registration drift, fabricated scorecards,
   place-swap unit bugs, pooling-weight fabrication).
@@ -72,7 +86,7 @@ Reporting". This card travels with the model.
 
 ## Caveats
 
-- Linear propagation inside a draw. Per-parameter distributions: rows
+- Nonlinear gap and survival propagation inside a draw. Per-parameter distributions: rows
   whose band is a reported 95% CI declare the CI shape (normal, or
   lognormal for exp-CI multiplier rows); rows with declared bands
   (rounding bands, cross-study spreads, evidence-widened bands) sample
@@ -85,3 +99,7 @@ Reporting". This card travels with the model.
   model; its output carries that statement.
 - Pending baselines block absolute counts on purpose: no baseline, no
   counts, no exceptions.
+- Count intervals hold documented exposure, baseline estimates, county
+  measurements/pooling weights, and structural assumptions fixed. Those
+  sources of uncertainty are not yet quantified jointly, and are listed
+  as excluded rather than claimed to be covered by the parameter band.

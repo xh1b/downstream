@@ -41,3 +41,9 @@ def test_family_verb_runs():
 def test_knobs_verb_still_runs_after_import_fix():
     r = _cli("knobs", "--action", "voi", "--draws", "200")
     assert r.returncode == 0, r.stderr[-500:]
+
+
+def test_arbitrary_chain_refuses_invalid_boundary_composition():
+    r = _cli("simulate", "--links", "earnings_shock->mortality_peak", "--kinds", "level")
+    assert r.returncode == 2
+    assert "boundary-applied" in r.stderr

@@ -1,230 +1,570 @@
 % SPDX-License-Identifier: MIT
 % Copyright (c) 2026 John Larue
-%
-% downstream — the paper. The methods paper for the citation-calibrated
-% microsimulation; the design doc in the parent repository remains the
-% source of truth wherever the two disagree.
-% Style: short active sentences. One term per concept. No number that
-% the parameter set does not state.
-%
-% OUTLINE STATUS: this file is the complete section plan. Sections
-% marked [FILLED] carry prose. Sections marked [FROM <source>] fill
-% mechanically from the named repo artifact. Nothing is hand-typed
-% twice; the parameter set is the only home of a number.
 \documentclass[10pt]{article}
-
-\usepackage[letterpaper, margin=1.05in]{geometry}
+\usepackage[letterpaper,margin=1.05in]{geometry}
 \usepackage{lmodern}
 \usepackage[T1]{fontenc}
-\usepackage{microtype}
-\usepackage{amsmath, amssymb, amsthm}
-\usepackage{booktabs}
-\usepackage{graphicx}
-\usepackage{enumitem}
-\usepackage[colorlinks=true, citecolor=blue, urlcolor=blue, linkcolor=blue]{hyperref}
-
-\title{A Citation-Calibrated Microsimulation of the\\
-Downstream Consequences of Worker Displacement}
-\author{John Larue\\ \small xh1b.org}
-\date{September 2026}
-
+\usepackage{microtype,amsmath,amssymb,booktabs,longtable,array}
+\usepackage[colorlinks=true,citecolor=blue,urlcolor=blue,linkcolor=blue]{hyperref}
+\usepackage{xurl}
+\hypersetup{pdftitle={Downstream: methods and validation},pdfauthor={John Larue}}
+\setlength{\emergencystretch}{2em}
+\makeatletter
+\newcommand{\tableinput}[1]{\@@input #1 }
+\makeatother
+\input{generated/macros}
+\title{A Citation-Calibrated Model of the\\Downstream Consequences of Worker Displacement}
+\author{John Larue\\\small xh1b.org}
+\date{September 2026\\\small Parameter set \ParameterVersion}
 \begin{document}
 \maketitle
-
 \begin{abstract}
-[FILLED — revise after V1 lands. Current draft:]
-We present \texttt{downstream}, an open-source microsimulation that
-propagates the measured consequences of worker displacement through
-workers, children, families, and communities across three generations.
-Every transition parameter carries its published study, its effect
-size, and an evidence precision tier; the model refuses to compute
-what its citations do not license, and refuses to publish a number it
-cannot walk back to a study. Uncertainty is propagated by Latin
-Hypercube sampling in the correct space for each unit, decomposed by
-Sobol indices, and reduced by a value-of-information ranking that
-tells the bibliography where the next full-text extraction buys the
-most precision. We validate by retrodiction against measured outcomes
-of China-shock commuting zones, by out-of-sample back-tests on
-independent natural experiments, and by pre-registered prospective
-forecasts graded with proper scoring rules. Calibration curves and
-misses are published with the model.
+We present \texttt{downstream}, an open-source model that propagates
+worker-displacement exposure through a ledger of published effects.
+It distinguishes earnings gaps, direct effects, relative risks, and
+jobs-per-job multipliers. Each parameter retains its citation, evidence
+precision tier, population scope, and uncertainty band. Scenario counts
+require verified baselines. Parameter sampling, exact moment calculations,
+sensitivity analysis, and named structural variants expose uncertainty
+in both estimates and composition choices. Current China-shock
+retrodictions show mixed results: family-status contrasts are covered,
+while male mortality variants overpredict and lower-quartile earnings
+losses remain underpredicted after a wage-spillover channel is added.
+Independent event back-tests remain blocked on data, and prospective
+forecasts have not yet been registered. We report those limits alongside
+the implemented methods. Outputs are conditional population-average
+estimates, not predictions about individuals or proof that an exposure
+was caused by a particular filing or employer. A current mathematical
+review identifies unresolved mortality-profile extraction and
+place-counterfactual problems; numerical consistency alone does not
+establish causal validity.
 \end{abstract}
 
 \section{Introduction}
-% [FROM internal/research/displacement-downstream/MODEL_REPO_DESIGN.md
-%  motivation + PRIOR_ATTEMPTS.md] Write after V1 lands. Arc:
-%  1. Displacement is measured as a labor-supply event; its family and
-%     community consequences are measured in scattered literatures that
-%     never meet. No public instrument composes them.
-%  2. The composition problem is not estimation but custody: each step
-%     must carry its study, its unit, and its scope, or the product is
-%     numerology. The v0 failure (Moretti's level ratio multiplied
-%     through an earnings chain; IGE levels compounded 9x) motivates
-%     the typed ledger.
-%  3. Contribution list (one paragraph, five claims):
-%     (a) typed composition ledger with unit-decided application rules;
-%     (b) citation-calibrated parameter set with precision tiers;
-%     (c) honesty architecture — fail-loud baselines, published misses;
-%     (d) uncertainty machinery: LHS/log-space/Iman-Conover, Sobol,
-%         value-of-information queue ranking;
-%     (e) validation program V0-V3 with proper scoring rules.
-%  4. Close on the retrodiction result (or the honest miss).
+Worker displacement has consequences beyond a worker's immediate earnings.
+The underlying studies measure different outcomes in different populations:
+worker earnings, mortality, and children's later earnings are prominent
+examples \cite{jacobson1993,sullivan2009,oreopoulos2008}.
+A combined model must state how those estimates can be used together.
+A citation alone does not justify multiplication: a jobs-per-job multiplier
+and an intergenerational earnings elasticity act on different quantities.
 
-\section{Related work}
-% [FROM docs/PRIOR_ATTEMPTS.md — the four traditions and what this
-%  model takes and refuses from each; keep the refuses.]
-\subsection{Dynamic microsimulation}
-Orcutt (1957) founded microsimulation. DYNASIM, CORSIM, and MINT age
-synthetic populations for policy analysis. None couples causal
-labor-economics parameters to a displacement exposure layer with
-public citations.
-% Add: the coupling direction. Those models forecast totals; this
-% model composes measured causal links. One paragraph, then stop.
+This model makes those distinctions explicit. It provides a typed ledger,
+a versioned parameter set, reproducible uncertainty calculations, and
+validation results that retain misses. Its present implementation is a
+conditional propagation model with population aggregation. It does not
+simulate individual labor-market matching, migration, or behavioral
+interactions. The term microsimulation describes the intended family-level
+use; it should not imply that the code currently advances a representative
+synthetic population through an annual life cycle.
 
-\subsection{Agent-based models}
-Sugarscape founded artificial societies. The COVID simulation episode
-showed that unvalidated models driving policy are destroyed in
-public. Covasim showed the fix: open source, calibrated to data
-streams.
+\section{Relation to other modeling approaches}
+Our design separates three tasks often combined in larger models:
+estimating an exposure, propagating its consequences, and evaluating the
+result. The exposure is supplied by the caller. A dynamic population model
+would additionally need entry, exit, and transition processes that this
+implementation does not estimate. An interacting-agent model would need
+behavioral rules and a network; neither is present here.
 
-\subsection{Validation}
-Fagiolo, Moneta and Windrum (2007) systematized agent-based model
-validation. We adopt proper scoring rules (Gneiting and Raftery
-2007) and pre-registration.
+Regional multipliers enter as a separate count boundary, following the
+local-employment literature \cite{moretti2010}. They are not passed through
+an earnings chain. Evidence synthesis enters through published individual
+studies and meta-analyses \cite{paul2009,evans2008}. We compose selected
+links under declared assumptions rather than pool unlike estimands into a
+single effect. The model is therefore an auditable synthesis of conditional
+responses, not a newly identified causal estimate of the entire system.
 
-\subsection{Meta-analysis and evidence synthesis}
-% NEW subsection. The model is a mechanistic meta-analysis: where
-% Cochrane-style synthesis pools effect sizes, we COMPOSE them under
-% unit constraints. Cite the survey entries the parameter set already
-% carries in references.bib.
+\section{Model and evidence}
+\subsection{Exposure and outcomes}
+A scenario supplies displaced-worker exposure $N$, children per exposed
+worker $C$, a tradable-job share $s$, and a mortality window $Y$.
+The worker module reports earnings and mortality responses. The child
+module reports earnings across three descendant generations. Family and
+community modules expose additional pathways, but their availability in
+a module does not imply that the scenario count interface reports them.
+The current count interface returns local service jobs, excess deaths,
+and child lifetime earnings losses, subject to the required baselines.
 
-\section{Model}
-% [FROM SPEC.md — nearly verbatim; SPEC is public by design]
-\subsection{Exposure and streams}
-% The four streams table (SPEC §1). What an exposure is. What is
-% deliberately not computed (individual claims; the immigration-crime
-% link refusal, SPEC §13 — the refusal is a result, print it).
-\subsection{Units and the typed ledger}
-% The unit table (SPEC §2) and the six step kinds (SPEC §4). The v0
-% bug classes as design constraints: level-ratio chaining (rejected by
-% audit), IGE level-compounding (rejected by gap arithmetic). One
-% worked line: the standard family, father shocked to 0.80, three
-% generations (SPEC §4 worked example).
-\subsection{The parameter set}
-% [FROM params/parameters.csv verbatim as a booktabs table — generated,
-% not hand-typed. Add a make target if needed.] Tiers per CITING.md.
-% The active-set table plus tier definition.
+The entity adapter accepts either a documented exposure or a warehouse
+aggregate with a stored total and components. The warehouse mapping checks
+agreement between the headline and breakdown totals. It checks that the
+worker-equivalent base, wage-depression, and applicable WARN components
+reconcile within the upstream rounding tolerance. It preserves the total;
+it does not re-estimate a wage-gap formula or add a notice count to a
+worker count. Source and method references accompany the result. Person
+subjects use the same population-average impact framing as employers.
+This interface does not establish a causal link between filings and
+worker displacement.
+
+\subsection{Typed composition}
+Let $v$ be a counterfactual-relative earnings level, with no loss represented
+by $v=1$. Let $p$ be a parameter and $t$ an intergenerational transmission
+coefficient. The ledger distinguishes
+\begin{align}
+ \text{level:}\quad &v'=vp,\\
+ \text{direct:}\quad &v'=p,\\
+ \text{gap:}\quad &v'=1-t(1-v).
+\end{align}
+A rate step records a relative effect for later conversion against a
+baseline. A level ratio multiplies a count outside the chain. An
+elasticity converts an input percentage change into an outcome percentage
+change. These distinctions prevent a transmission coefficient from being
+mistaken for a relative earnings level.
+
+For the current parameter points, the direct child level is
+\ChildPoint{}, the grandchild level is \GrandchildPoint{}, and the
+ great-grandchild level is \GreatgrandchildPoint{}.
+These values come from the same code used by the CLI; the first is the
+direct child estimate and the later values propagate its gap
+\cite{oreopoulos2008,solon1992,corak2013,chetty2014,lindahl2015,adermon2018}.
+The father's earnings shock is not multiplied into the directly estimated
+child effect. Repeated transmission beyond the identified generations
+remains a modeling assumption.
+
+Even the first transmission requires an extra causal assumption: a
+between-family income association need not equal the response to a
+displacement intervention. If $t$ is instead interpreted literally as
+a constant log--log elasticity, the finite-change mapping is $v'=v^t$.
+The implemented gap rule is its first-order expansion about $v=1$,
+$v^t=1+t(v-1)+O((v-1)^2)$. Thus it is an explicit linear approximation,
+not an exact conversion of a log elasticity. A future structural variant
+should compare these mappings without treating either as independently
+identified transmission of a displacement effect.
+
+Parallel divorce and family-size pathways are not silently added to the
+displacement pathway. The same affected children may appear in several
+studies, and summation can double-count their losses. A named structural
+variant exposes gap-additive composition as an experiment rather than
+making it the default.
+
+\subsection{Parameter custody}
+This build contains \ParameterCount{} parameter rows in set
+\ParameterVersion{}. Appendix~\ref{app:parameters} is generated directly
+from the parameter file. Precision tiers describe how the number was
+extracted: \texttt{EXACT} denotes a pinned table or full-text estimate;
+abstract/results variants identify the narrower source read;
+\texttt{canonical} marks an established value with remaining extraction
+work. Precision of extraction is distinct from strength of causal
+identification. Associational conversion factors and parallel evidence
+must retain their limitations even when transcribed exactly.
+
+Each row also stores population scope and notes on its band. Bands can
+represent reported uncertainty, a range across specifications or studies,
+or an explicitly declared approximation. They are not interchangeable
+confidence intervals. The audit checks citation resolution, units, and
+parameter structure. It cannot prove that a source has been interpreted
+correctly. Full notes and evidence classes remain in the CSV and
+bibliography rather than being replaced by the compact appendix.
+
 \subsection{Count conversion}
-% Relative-to-absolute only against verified baselines (SPEC §6).
-% The five baselines with their sources and pin dates. The blocked
-% semantics: missing baseline = blocked outcome, never a guess.
-\subsection{Composition semantics we refuse}
-% Side-by-side parallel streams; no silent additivity; contested
-% literatures as named alternate bands, never averaged (SPEC §13).
+With annual mortality baseline $m$, sustained and peak ratios $r_s,r_p$,
+and lifetime earnings baseline $L$, the current scenario implements
+\begin{align}
+ q(r) &= \frac{rm}{1-m+rm},\\
+ D &= N\{(1-m)^Y-[1-q(r_p)]^a(1-m)^u[1-q(r_s)]^b\},\\
+ E &= NC(1-g_c)L,\\
+ J &= Ns\ell,
+\end{align}
+where $a=\min(Y,1)$, $u=\min\{\max(Y-1,0),4\}$,
+$b=\max(Y-5,0)$, $g_c$ is the child earnings
+level, and $\ell$ is the service-job multiplier. Engine 0.2 converts the
+stored odds ratios to risks and accounts for survival depletion. The
+follow-up includes the initial peak year. The default option, historically
+named \texttt{source\_aligned}, holds follow-up years 2--5 at baseline and
+starts the stored sustained coefficient in follow-up year 6. This is an
+incomplete implementation of the source profile, not evidence of no early
+effect. The source working paper's Table 5\footnote{Sullivan and von
+Wachter, NBER Working Paper 13626, PDF page 54:
+\url{https://www.nber.org/system/files/working_papers/w13626/w13626.pdf}.}
+reports displacement-year
+offsets +1, +2--3, and +4--5, as well as +6 and later. Under the convention
+that displacement occupies follow-up year 1, offset +6 starts follow-up
+year 7. The current timing therefore also starts persistence one year early.
 
-\section{Uncertainty and sensitivity}
-% [FROM SPEC §7-8 + src/downstream/{mc,distributions,sensitivity,knobs}.py]
-\subsection{Sampling}
-% LHS; log-space for ratios; declared normals from SEs; Iman-Conover
-% rank correlation with an EMPTY declared matrix — correlations need
-% citations like everything else.
-\subsection{Sobol decomposition}
-% Saltelli estimator; S_first vs S_total; the child-line result:
-% the direct child-earnings band drives ~91\% of grandchild output
-% variance. Design noise via seed-replicate spread (sobol_ci).
-\subsection{Exact moment propagation}
-% NEW — inference.py. Because every step is a product or affine in
-% each argument, E, E2, and E3 propagate in closed form under
-% parameter independence (level: products; gap: bilinear identities —
-% state all three). Show the grandchild line: exact mean 0.9550 vs MC
-% 0.95499 (0.07 SE apart), sds equal to 4 decimals. Exact skewness
-% feeds Cornish-Fisher quantile corrections; CF reduces to normal at
-% zero skew, and on a skewed synthetic product chain it sits strictly
-% closer to the MC quantile (trap-pinned). The MC remains the
-% referee.
+Source verification further finds that the stored peak log coefficient
+0.983 is in column 2, whereas the sustained 0.127 is in column 3;
+the CSV incorrectly locates both in column 2. Re-extraction from a single
+specification and explicit offset indexing are required before describing
+this timing as source faithful. Numerical parameters remain unchanged in
+this review. The optional \texttt{immediate\_sustained} timing sets $u=0$
+and $b=\max(Y-1,0)$ as a sensitivity assumption. The historical additive
+formula remains available as \texttt{legacy\_additive}. Current V1 and
+scoreable V2 mortality calculations use the production survival kernel,
+including its present timing limitation.
 
-\subsection{Correlation stress: pricing the independence assumption}
-% NEW — correlation_stress. The declared correlation matrix ships
-% EMPTY (no correlation is citable yet), so every band assumes
-% independence. Bound the exposure: induce Spearman rho among a block
-% via Iman-Conover, rebuild the band, redraw truths under the same
-% dependence, publish the width move. Key result to feature: on the
-% grandchild line at rho=+0.5 (direct child effect x IGE), the band
-% NARROWS 18% — the gap step couples opposite-sign gradients, so
-% independence is conservative against positive correlation of this
-% pair. Coverage stays nominal under declared dependence: machinery
-% tracks what it is told; only a citation makes dependence real.
-% This subsection is the answer to "what if your parameters are
-% correlated" before any correlation exists to cite.
+Only verified baseline values enter a count. A missing baseline produces
+a named blocked outcome, or raises an exception in strict mode. The
+baseline file records source, population, units, and derivation. Table~1
+lists its current values; some support modules beyond the count interface.
+\begin{table}[htbp]
+\centering\small
+\caption{Stored baselines. Units and source qualifications are discussed below.}
+\begin{tabular}{>{\raggedright\arraybackslash}p{2.3in}r>{\raggedright\arraybackslash}p{2.0in}}
+\toprule Baseline & Value & Population \\ \midrule
+\tableinput{generated/baselines.tex}
+\bottomrule
+\end{tabular}
+\end{table}
+Mortality uses CDC WONDER deaths per person-year as an approximation to
+the annual probability $m$. A person-time rate is not itself a cohort
+probability \cite{cdcRiskMeasures}; under a constant hazard $\lambda$,
+that probability would be $1-e^{-\lambda}$. The current implementation
+does not perform this conversion or advance age-specific baselines.
+Divorce uses the Census
+SIPP five-year marriage-survival complement, which is not a pure divorce
+incidence measure. The NCVS IPV rate counts incidents rather than unique
+victims. The youth-crime baseline counts arrests per young man rather
+than unique offenders. Lifetime earnings are in 2024 dollars, derived
+from SSA age-band earnings and BLS inflation data; summing cross-sectional
+medians approximates, rather than equals, the median lifetime total.
+Exact source tables, windows, and arithmetic are retained in
+\nolinkurl{params/baselines.csv}.
 
-\subsection{Coverage: what a 90\% band earns its label}
-% NEW — the closure test. Frequentist protocol: truths redrawn from
-% the declared bands; bands built from independent samples; coverage
-% counts. Results (600 trials): 0.498/0.802/0.902/0.945 vs nominal
-% 0.50/0.80/0.90/0.95, all within 2 binomial SE. Scope this honestly:
-% it validates the interval MACHINERY under the model's assumptions;
-% V1 validates the assumptions against reality. A sabotaged band
-% fails the check (trap-pinned), so the test has teeth. This
-% subsection is the answer to "how do you know your bands mean
-% anything" before any retrodiction lands.
+\subsection{Place resolution}
+Where measured place values exist in compatible units, baseline pooling
+uses $b_*=(1-w)b_{national}+wb_{local}$ with $w=n/(n+k)$. The precision
+count $n$ comes from the input data; the prior precision $k$ is a declared
+modeling choice. Missing local information keeps the national baseline
+and reports the reason.
 
-\subsection{Value of information}
-% NEW — the knobs layer. Narrowing a parameter's band by half removes
-% a computable share of the output band (paired seed). This ranks the
-% extraction queue in output units: the next full-text extraction is
-% the knob with the largest width reduction per unit effort. Show the
-% voi table for the grandchild outcome.
+The mobility layer derives a multiplier
+$M=1+18\gamma(q-q_0)/100$, where $q$ is the county's permanent-resident
+income-rank percentile and $q_0$ is the national reference. The exposure
+coefficient $\gamma$ comes from Chetty and Hendren
+\cite{chettyhendren2018}. Applying an income-rank exposure effect as a
+multiplicative adjustment to an earnings-displacement chain is an
+additional assumption, not the estimand of that study. The child modifier
+is applied once before transmission. Descendants inherit that adjusted
+gap. The historical repeated application is available as an explicit
+structural alternative, not the default. Place-aware sampling recomputes $M$ for each parameter draw,
+while county measurements and pooling weights remain fixed.
 
-\section{Validation program}
-% [FROM validate.py + scoring.py; results land per TODO plan #2/#6/#10]
-\subsection{V0 — internal consistency}
-% The direct child estimate must overlap the IGE-composed path.
-% Divergence means a literature is misread. Report the current overlap.
-\subsection{V1 — China-shock retrodiction}
-% THE credibility test. Exposure only, no tuning. FIRST UNIT-LEVEL
-% SCORECARD (2026-09-07): bridge = ADH T1 col10 (1pp shock displaces
-% 2.52pp of working-age adults from mfg); mortality stream scored
-% against ADH T5. Model 9.0 [5.1, 14.5] excess deaths per 100k adults
-% vs measured 4.27 (SE 3.54) — honest miss on the level (measured CI
-% covers the model point; model band overshoots), with three scope
-% caveats published. Non-mortality outcomes: named refusals (ADH is
-% their only source — circular). The trap suite pins the miss so it
-% cannot be flipped by code, only by evidence. Panel-level per-CZ
-% scoring (CRPS/coverage/PIT) fills this slot when CZ exposure data
-% lands. State the miss and its candidate explanations in the prose:
-% differential-vs-level measurement, age-scope mismatch, window
-% semantics.
-\subsection{V2 — back-tests}
-% NAFTA, 2008-09 auto crisis, BRAC. Same protocol, one scorecard each.
-\subsection{V3 — pre-registered forecasts}
-% 2-3 forecastable exposure events; forecasts published before
-% outcomes exist; graded with the same scoring rules.
+There is a consequential counterfactual mismatch in this optional layer.
+For an unmodified child level $g$, the count interface uses $1-Mg$ as the
+loss. At $g=1$ this equals $1-M$, so a null displacement effect can still
+produce a reported gain or loss. If $M$ changes the earnings baseline in
+both exposure arms, their level difference would instead be $M(1-g)$;
+if it changes susceptibility to displacement, an independently supported
+effect modifier is needed. The present output mixes a place-level shift
+with a displacement contrast. Place-specific child dollar losses should
+therefore be treated as exploratory until that estimand is resolved.
 
-\section{Knob experiments}
-% NEW — the experiment layer as a first-class methods contribution.
-% [FROM knobs.py + CLI transcripts]
-%  1. Sweeps: pin one parameter across its cited band; the scenario
-%     table shows local behavior. The sweep cannot leave the band.
-%  2. Value-of-information: which knob is worth turning (§5.3).
-%  3. Structural variants (planned): named alternate composition
-%     assumptions run as a declared ensemble; the spread publishes.
-% Framing: a model whose readers cannot turn its knobs is a black
-% box with footnotes. Every knob is declared, versioned (-knob
-% marker), and inside the evidence band.
+\section{Uncertainty and experiments}
+\subsection{Parameter sampling}
+Latin hypercube sampling stratifies each parameter marginal
+\cite{mckay1979}. Positive ratio units default to log-uniform sampling;
+other undeclared marginals default to uniform bands. Rows can explicitly
+select normal or lognormal shapes. The current normal-family sampler
+clamps draws at the stated band limits. This is a bounded approximation
+with endpoint mass, not sampling from a renormalized truncated-normal
+density. The point is retained as the declared center when applicable.
+
+Declared rank correlations can be imposed through an Iman--Conover
+reordering \cite{iman1982}. The shipped table contains \CorrelationCount{} declared pairs linking
+worker earnings with peak and sustained mortality. Their direction is
+motivated by the shared recession context, but their moderate negative
+magnitude is a declared assumption, not an extracted sampling covariance.
+Monte Carlo applies these pairs by default; analytic chains and standard
+Sobol experiments retain their independence assumptions. Each Monte Carlo output records the seed, draw count, sampler,
+and parameter version. Sample quantiles describe uncertainty conditional
+on the specified distributions; they do not include all model error.
+
+Scenario output separates three objects: endpoint support envelopes,
+central 90\% parameter-only intervals, and simulated realized mortality
+counts. For an integer cohort, let $S_0=(1-m)^Y$ and let $S_1$ be the
+exposed survival product above. Conditional on each parameter draw,
+\begin{equation}
+ K_0\sim\operatorname{Binomial}(N,1-S_0),\qquad
+ K_1\sim\operatorname{Binomial}(N,1-S_1),\qquad K_0\perp K_1.
+\end{equation}
+Then $E[K_1-K_0\mid\theta]=N(S_0-S_1)$. Both cohorts use the same
+resolved county or national baseline. Their independent difference is a
+reference-cohort contrast, not a paired individual causal effect.
+Fractional worker equivalents and the legacy additive mortality method
+do not receive this count simulation. Although the API calls it
+``posterior-predictive,'' heterogeneous elicited parameter bands are not
+a fitted joint Bayesian posterior; this is conditional predictive
+simulation under the declared input distributions.
+
+\subsection{Analytic moments and coverage}
+For an independent level multiplier $X$, raw moments obey
+$E[(VX)^k]=E[V^k]E[X^k]$. A direct step replaces the moments. For a gap
+step with independent $T$ and $V$,
+\begin{align}
+ E[V'] &= 1-E[T]+E[T]E[V],\\
+ E[(V')^2] &= 1-2E[T]+E[T^2]
+ +2(E[T]-E[T^2])E[V]+E[T^2]E[V^2].
+\end{align}
+The implementation also propagates third moments for supported
+marginals. It uses them for skewness and Cornish--Fisher quantile
+approximations. Exact moments do not make those approximate quantiles
+exact. Unsupported distribution cases are refused. The identities also
+require that each new multiplier be independent of the accumulated
+quantity; reuse of a parameter can violate that condition.
+
+Monte Carlo comparisons check the analytic calculations. Coverage closure
+experiments draw synthetic truths under the declared model and measure
+whether independently built intervals cover them. These tests assess
+interval machinery under its own assumptions. They cannot establish
+coverage for real-world events. Correlation stress experiments similarly
+price a hypothetical dependence choice without treating it as evidence.
+
+\subsection{Sensitivity, sweeps, and structural variants}
+The sensitivity interface estimates first-order and total Sobol indices
+using a Saltelli-style design \cite{sobol2001,saltelli2002}. Seed replicates
+report design variation; that spread is not a confidence interval on the
+true index. Standard variance attribution assumes independent inputs.
+A place adjustment can make the mobility coefficient contribute to
+child-line sensitivity even though it has no effect at the national
+reference.
+
+A separate correlated-block option groups all connected dependent
+parameters and swaps each joint block between independently seeded
+designs. It estimates attribution to independent blocks, not to
+individual dependent coefficients. Reusing a fixed copula rank template
+across the two designs invalidates that experiment; the current repair
+tests it against an additive model with known block variance shares.
+
+A sweep pins one parameter inside its cited band and recomputes scenario
+counts. A value-of-information experiment narrows each parameter band
+around its point and compares output-band widths on a common seed.
+This is a precision-priority heuristic, not an expected utility
+calculation or a prediction of what a new study will find. Experiments
+carry a version marker and do not overwrite the published parameter set.
+Structural ensembles report named alternatives for gap additivity,
+transmission decay, and closure selection. Their spread represents
+selected assumptions, not a probability distribution over all possible
+models.
+
+The policy comparator subtracts caller-supplied exposure scenarios.
+It reports a conservative difference of support envelopes, with exact
+cancellation for identical cases. Shared-draw paired contrasts are a
+future improvement; the current envelope is not a probabilistic policy
+effect interval and does not identify a policy-to-exposure bridge.
+
+\subsection{Evidence synthesis and county likelihoods}
+The optional synthesis module implements DerSimonian--Laird heterogeneity
+estimation and inverse-variance random-effects pooling on an identical
+declared link and scale. Its intervals use a plug-in normal approximation;
+uncertainty in the estimated between-study variance is not propagated.
+Few-study prediction intervals can be unreliable \cite{cochraneMeta}.
+Matching scale strings alone does not enforce compatible follow-up,
+population, design, or independent samples. Metadata review remains
+necessary, and these outputs are not automatically admitted as parameters.
+
+The standalone county module currently uses
+$\alpha=km_0+D$ and $\beta=k(1-m_0)+T-D$ for a beta posterior,
+where $T$ is person-years. This is only a binomial likelihood if the
+denominator represents compatible independent Bernoulli trials. General
+person-time, including fractional follow-up, does not provide that
+denominator. For rate data, a candidate model is
+$D\mid\lambda\sim\operatorname{Poisson}(T\lambda)$ with a gamma prior,
+followed by an explicit rate-to-risk conversion. The county module is
+not integrated into scenario baseline uncertainty; its current result
+should not be presented as an exact person-time posterior.
+
+\section{Validation results}
+\subsection{V0: internal consistency}
+The direct child estimate is \VzeroDirect{}, while the worker-shock path
+composed with intergenerational transmission is \VzeroComposed{}.
+Their bands overlap. This checks compatibility between two modeled paths;
+it does not provide an independent validation of their causal claims.
+
+\subsection{V1: China-shock unit scorecard}
+The unit scorecard uses the exposure bridge and measured coefficients
+transcribed from Autor, Dorn, and Hanson \cite{autor2019}. The bridge
+maps an import shock into manufacturing displacement. The downstream
+mortality path uses a separate study \cite{sullivan2009}, but comparing
+it with a commuting-zone male--female mortality differential requires
+strong population and outcome-transfer assumptions.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Mortality per 100,000 adults per unit shock. Coverage asks whether
+ the measured point lies in the modeled band.}
+\begin{tabular}{lrrc}
+\toprule Variant & Model point [band] & Measured & Covered? \\ \midrule
+\tableinput{generated/mortality.tex}
+\bottomrule
+\end{tabular}
+\end{table}
+The pooled-adult row covers the observed point with its current band.
+Both male variants overpredict and exclude that point. A measured
+confidence interval and a modeled parameter band answer different
+questions; overlap is not proof of validity. The full JSON scorecard
+also reports whether the modeled point lies inside the measured interval.
+Age matching does not remove the distinction between an absolute
+mortality level and a sex differential, nor the transfer from
+high-seniority displaced workers to a broader exposed population.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Unit divorce-path predictions in percentage points of women,
+compared with the measured family-status stock change.}
+\begin{tabular}{rrr}
+\toprule Window (years) & Model point [band] & Measured \\ \midrule
+\tableinput{generated/divorce.tex}
+\bottomrule
+\end{tabular}
+\end{table}
+The divorce path uses independent displacement studies
+\cite{rege2007,charles2004} and a marriage baseline. Its point estimates
+undershoot the observed family-status stock change at both windows.
+That stock includes widowhood and separation; divorce incidence alone
+cannot reproduce all its margins. Remarriage is a candidate missing
+mechanism, not an extracted explanation. Several additional target
+outcomes are withheld because the implemented evidence path would reuse
+the target coefficient rather than provide an independent comparison.
+
+\subsection{V1: commuting-zone contrasts and scoring}
+The deposited panel extract contains \PanelCount{} commuting-zone-period
+rows. Comparisons demean exposure and outcomes within period before
+contrasting high- and low-shock terciles. Pooling without that adjustment
+confounds period differences and changes the sign of the family-status
+comparison. The tests retain this failure mode.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Within-period-demeaned panel contrasts. Coverage uses the
+measured contrast as a point target.}
+\begin{tabular}{lrrc}
+\toprule Outcome & Model point [band] & Measured & Covered? \\ \midrule
+\tableinput{generated/panel.tex}
+\bottomrule
+\end{tabular}
+\end{table}
+The family-status contrasts are covered. Direct worker earnings losses
+alone substantially underpredict the observed lower-quartile earnings
+change. Adding the non-displaced wage response \cite{adh2013} reduces
+that gap but does not eliminate it. The earlier direct-only miss remains
+beside the composed result. The spillover extension was motivated by
+the observed miss; it is a diagnostic revision, not a fresh held-out
+success. Shared China-shock evidence further limits independence.
+
+\input{generated/slope}
+CRPS summarizes distance between a predictive distribution and an observed
+point; PIT locates that point within the distribution
+\cite{hersbach2000}. Scoring against a published coefficient treats its
+point estimate as the target and does not integrate its measurement
+uncertainty. The upper-tail PIT and earnings residual show why selected
+tercile coverage should not be described as overall model validation.
+
+\subsection{V2 and V3: incomplete validation}
+Independent-event protocols exist for NAFTA, the auto crisis, and BRAC.
+Their scorecards are blocked on event-specific exposure bridges or
+measured outcome inputs. A tariff change cannot inherit an
+import-penetration displacement bridge merely because both concern
+trade. Descriptive employment loss does not supply a quasi-experimental
+measured outcome. No completed V2 event score is claimed here.
+
+Prospective registration and scoring checks are implemented, but no
+real event has yet been registered. It requires forecasts fixed
+before outcomes are available, a declared exposure and time horizon,
+and a scoring rule fixed before evaluation. No prospective result is
+reported. Unit and panel V1 results are the current external checks.
 
 \section{Limitations}
-% [FROM SPEC §14 verbatim — registered, not hidden. Add: design-noise
-% vs true-index distinction for Sobol CIs; band-derived distributions
-% not yet study-fitted; empty correlation matrix.]
+The model conditions on displacement and does not identify who was
+displaced or why. An upstream employer exposure can therefore be more
+uncertain than the downstream parameter band suggests. The entity
+adapter checks arithmetic and provenance fields, not the factual or
+causal validity of the supplied records.
+
+Studies differ in country, age, sex, tenure, and measurement window.
+Transporting them across populations is a substantive assumption.
+Mortality uses a constant baseline and the incomplete three-phase
+approximation described above. It does not advance age or reproduce the
+available early-year coefficient profile. Lifetime earnings conversion uses a synthetic
+cross-sectional profile. Local employment multipliers omit migration
+and equilibrium adjustment. These choices can affect magnitudes even
+when arithmetic and citations are correct.
+
+Transmission across distant generations is weakly identified. Parallel
+family pathways may overlap, place adjustments transfer a rank effect to
+an earnings scale, and repeated place steps can magnify the adjustment.
+None of these is resolved by collecting more Monte Carlo draws.
+
+The current bands use heterogeneous evidence conventions and simplified
+marginal shapes. Only the declared correlation pairs enter Monte Carlo; other dependencies
+remain unmodeled. Place measurements and baseline estimates are generally
+fixed. Structural ensembles cover only
+selected alternatives. Internal coverage tests therefore validate
+machinery, while V1 exposes economic and measurement discrepancies.
+There is no basis for treating the output as a complete uncertainty
+interval for an individual, employer, or community.
+
+The repository also records refused and contested links. It does not
+encode a positive immigration-to-crime effect from a pooled literature
+that does not support one \cite{ousey2018,butcher1998}. Observational
+findings may supply cross-checks without setting a causal point.
+Named competing specifications must remain visible rather than being
+averaged into a preferred headline.
+
+\section{Prioritized development}
+The next release should first repair the estimands already used in count
+headlines. Re-extract a coherent mortality specification, encode elapsed
+time from displacement explicitly, and distinguish rates from annual
+probabilities. Resolve the place counterfactual before adding further
+place-driven descendants. Require edge metadata for effect scale,
+intervention, mediator versus total effect, source population, and time
+window; compatible units alone do not establish causal composability.
+
+Next, fit likelihoods to actual study estimates and county denominators,
+with overlap and window checks, explicit baseline uncertainty, and
+small-sample sensitivity for synthesis. Preserve null, protective, and
+conflicting effects. Add age/sex/tenure strata only where source estimates
+support them. For local jobs, separate manufacturing and high-tech
+multipliers and test the assumption that expansion effects transfer
+symmetrically to displacement.
+
+Validation should prioritize one completed independent event before
+expanding the graph: freeze a matched exposure bridge, geography,
+population, outcome window, and observation model, then report every
+scored outcome. Register one prospective forecast with an independent
+timestamp. Numerical tests should include null-intervention invariance,
+same-place counterfactual cancellation, independently seeded sampling
+designs, and known analytic variance shares. These checks complement
+the existing property tests; passing code tests cannot repair an
+unidentified causal bridge.
 
 \section{Reproducibility and availability}
-% Versioned parameter set; seeds recorded in every output; the
-% explanation contract (claim -> steps -> citations -> falsifiers);
-% the credits engine (81 studies, 166 researchers, computed not
-% asserted); MIT license; the repository IS the appendix.
+The model and paper source are provided under the repository's MIT
+license. Run the tests, \texttt{downstream audit}, and
+\texttt{downstream validate} to inspect implementation and evidence
+checks. Sampling commands record their seeds and draw counts. Parameter
+exports carry a version; the paper also records a content digest because
+parameter version alone does not identify engine code changes. The
+September 10 review repaired county predictive-baseline consistency,
+disconnected custom chains, ignored chain starting values, and the
+fixed copula seed used in sensitivity designs. Correlated Monte Carlo
+results can consequently change at the same historical user seed.
 
-\section*{Data and code availability}
-The model, parameter set, and paper build from this repository. The
-exposure layer derives from public disclosure records.
+Running \texttt{make -C paper} regenerates tables, builds the PDF, and
+writes \nolinkurl{paper/generated/results.json}. This JSON contains the
+full validation output and the source SHA-256. The generated appendix
+preserves parameter points, bands, tiers, and citation keys. Population
+scope, distribution declarations, and extraction notes remain in the
+underlying CSV files. Source content digest for this build begins
+\texttt{\SourceDigest}. Generated numerical results are not manually
+copied into the prose.
 
+\appendix
+\section{Current parameter set}\label{app:parameters}
+The table is an inventory, not a claim that every row belongs to one
+composable causal chain. Values use each destination node's declared
+unit in \nolinkurl{params/nodes.csv}. Different rows cannot be compared
+as if their numbers shared a scale. Parameter values below are rounded to
+four decimal places; the source CSV retains full precision.
+\begingroup\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{longtable}{>{\raggedright\arraybackslash}p{2.65in}>{\raggedright\arraybackslash}p{1.35in}>{\raggedright\arraybackslash}p{0.75in}>{\raggedright\arraybackslash}p{0.9in}}
+\caption{Generated parameter inventory, \ParameterVersion.}\\
+\toprule Link & Point [band] & Tier & Sources \\ \midrule\endfirsthead
+\toprule Link & Point [band] & Tier & Sources \\ \midrule\endhead
+\bottomrule\endfoot
+\tableinput{generated/parameters.tex}
+\end{longtable}
+\endgroup
+\bibliographystyle{plain}
+\bibliography{generated/references,review_references}
 \end{document}

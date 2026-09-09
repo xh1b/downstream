@@ -3,7 +3,7 @@
 import pytest
 
 from downstream.citations import parse_bib
-from downstream.credits import attribution_sentences, collect, parse_authors
+from downstream.credits import attribution_sentences, collect, parse_authors, write_credits_md
 from downstream.params import default_dir
 
 
@@ -46,3 +46,12 @@ def test_roles_partition(data):
 def test_year_span_is_sane(data):
     assert data["year_min"] >= 1950
     assert data["year_max"] <= 2030
+
+
+def test_generated_credits_is_a_complete_renderable_attribution(data, tmp_path):
+    output = tmp_path / "CREDITS.md"
+    text = write_credits_md(data, output)
+    assert output.read_text(encoding="utf-8") == text
+    assert "## The researchers" in text
+    assert "| key | authors | year | venue | role | evidence | doi |" in text
+    assert "parameter-source study" in text

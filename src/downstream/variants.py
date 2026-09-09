@@ -19,8 +19,8 @@ Variants (v1):
                         then composed with the direct child gap —
                         the additivity assumption the literature does
                         not license (SPEC §4), priced here
-- ige_decay_half        grandchild transmission decays: t2 = t^0.5
-- ige_decay_power       grandchild transmission strengthens: t2 = t^1.5
+- ige_decay_half        grandchild transmission strengthens: t2 = t^0.5
+- ige_decay_power       grandchild transmission decays: t2 = t^1.5
   (both decay shapes are geometric re-parameterizations of the SAME
   cited IGE band — declared assumption alternates, not new evidence)
 - closure_selection_contrast (v1.19) the direct child anchor
@@ -77,8 +77,8 @@ def _parallel_additive_child(params: ParameterSet) -> dict:
     direct = params.by_link(CHILD_DIRECT)
     # gap-additive: child gap = direct gap + parallel gaps, floored at 0
     point = max(0.0, 1 - ((1 - direct.point) + (1 - parallel.point)))
-    low = max(0.0, 1 - ((1 - direct.high) + (1 - parallel.low)))
-    high = max(0.0, 1 - ((1 - direct.low) + (1 - parallel.high)))
+    low = max(0.0, 1 - ((1 - direct.low) + (1 - parallel.low)))
+    high = max(0.0, 1 - ((1 - direct.high) + (1 - parallel.high)))
     child = start("child_earnings", "gap_multiplier")
     child = replace(child, point=round(point, 4), low=round(low, 4), high=round(high, 4))
     grand = child.apply(GAP, params.by_link(GRANDCHILD), label="grandchild")
@@ -138,8 +138,8 @@ def run_ensemble(params: ParameterSet) -> dict:
     )
 
     for name, expo, desc in (
-        ("ige_decay_half", 0.5, "grandchild transmission t^0.5 (persistence decays)"),
-        ("ige_decay_power", 1.5, "grandchild transmission t^1.5 (persistence strengthens)"),
+        ("ige_decay_half", 0.5, "grandchild transmission t^0.5 (persistence strengthens)"),
+        ("ige_decay_power", 1.5, "grandchild transmission t^1.5 (persistence decays)"),
     ):
         v = _with_transmission(params, GRANDCHILD, expo)
         line = child_line(v)
@@ -158,6 +158,20 @@ def run_ensemble(params: ParameterSet) -> dict:
 
     child_pts = [r["child_gap"]["point"] for r in rows]
     grand_pts = [r["grandchild_gap"]["point"] for r in rows]
+    # A robust (credal) statement deliberately assigns no subjective
+    # probabilities to competing structural assumptions.  It distinguishes
+    # conclusions that survive every declared structure from values that do
+    # not; this is safer than an unearned model average.
+    robust = {
+        "method": "unweighted structural robustness / credal envelope",
+        "child_loss_under_every_variant_support_band": all(r["child_gap"]["high"] < 1 for r in rows),
+        "grandchild_loss_under_every_variant_support_band": all(r["grandchild_gap"]["high"] < 1 for r in rows),
+        "interpretation": (
+            "True means every listed structural variant remains below the "
+            "counterfactual even at its favorable support endpoint. It does "
+            "not attach posterior probabilities to variants."
+        ),
+    }
     return {
         "experiment": "structural_variant_ensemble",
         "parameter_set_version": params.version,
@@ -168,6 +182,7 @@ def run_ensemble(params: ParameterSet) -> dict:
             "grandchild_point_min": round(min(grand_pts), 4),
             "grandchild_point_max": round(max(grand_pts), 4),
         },
+        "robust_conclusions": robust,
         "note": (
             "Composition-assumption alternates, declared and priced. The "
             "baseline row equals the shipped model. No variant is ever "

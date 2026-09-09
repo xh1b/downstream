@@ -11,11 +11,10 @@ always reproducible.
 
 from __future__ import annotations
 
-import random
 from pathlib import Path
 from typing import Callable
 
-from .distributions import dist_for, plan, sample_unit_interval
+from .distributions import materialize_parameter_set, plan
 from .params import ParameterSet, load_correlations, spearman_matrix
 
 
@@ -58,7 +57,6 @@ def simulate(
     sampler stamps `lhs+iman-conover`. Pass `spearman` explicitly to
     override; pass `use_declared_correlations=False` for raw LHS.
     """
-    rows = list(params.parameters)
     if nodes is None:
         from .params import default_dir, load_nodes
 
@@ -81,12 +79,7 @@ def simulate(
     dp = plan(params, nodes, draws, seed, spearman=spearman)
     samples: list[float] = []
     for k in range(draws):
-        ps = params
-        for j, p in enumerate(rows):
-            lo, hi = sorted((p.low, p.high))
-            v = sample_unit_interval(dp.dists[j], dp.u[k][j], lo, hi, point=p.point)
-            ps = ps.with_param(p.link, v)
-        samples.append(compute(ps))
+        samples.append(compute(materialize_parameter_set(params, nodes, dp.u[k], dp.dists)))
     samples.sort()
 
     def pct(p: float) -> float:
@@ -105,6 +98,72 @@ def simulate(
     }
 
 
+def simulate_many(
+    params: ParameterSet,
+    compute: Callable[[ParameterSet], dict[str, float]],
+    draws: int = 10_000,
+    seed: int = 1901,
+    nodes: dict | None = None,
+    spearman: list[list[float]] | None = None,
+    use_declared_correlations: bool = True,
+    params_dir=None,
+    include_samples: bool = False,
+) -> dict:
+    """Sample several related scalar outcomes on the *same* parameter draws.
+
+    This is deliberately separate from :func:`simulate`: scenarios need
+    count intervals for mortality and dollar losses that retain their joint
+    parameter dependence. Running one independent simulation per headline
+    would make their intervals individually valid but destroy that useful
+    dependence for downstream consumers.
+    """
+    if nodes is None:
+        from .params import default_dir, load_nodes
+
+        try:
+            nodes = load_nodes(default_dir() / "nodes.csv")
+        except OSError:
+            nodes = {}
+    n_pairs = 0
+    if spearman is None and use_declared_correlations:
+        spearman, n_pairs = _declared_spearman(params, params_dir)
+    if spearman is not None and n_pairs == 0:
+        n_pairs = sum(1 for i in range(len(spearman)) for j in range(i + 1, len(spearman))
+                      if spearman[i][j] != 0)
+    dp = plan(params, nodes, draws, seed, spearman=spearman)
+    samples: dict[str, list[float]] = {}
+    for k in range(draws):
+        values = compute(materialize_parameter_set(params, nodes, dp.u[k], dp.dists))
+        for name, value in values.items():
+            if not isinstance(value, (int, float)):
+                raise TypeError(f"sampled outcome {name!r} must be numeric")
+            samples.setdefault(name, []).append(float(value))
+
+    raw_samples = {name: values[:] for name, values in samples.items()} if include_samples else None
+
+    def summary(values: list[float]) -> dict:
+        values.sort()
+        n = len(values)
+        def pct(percentile):
+            return values[min(int(percentile * (n - 1)), n - 1)]
+        return {"p05": round(pct(.05), 4), "p50": round(pct(.50), 4),
+                "p95": round(pct(.95), 4), "mean": round(sum(values) / n, 4)}
+
+    out = {
+        "draws": draws,
+        "seed": seed,
+        "sampler": "lhs+iman-conover" if spearman is not None else "lhs",
+        "correlations_applied": n_pairs if spearman is not None else 0,
+        "parameter_set_version": f"{params.version.split('-sampled')[0]}-sampled",
+        "outcomes": {name: summary(values) for name, values in samples.items()},
+    }
+    if raw_samples is not None:
+        # Internal caller hook for posterior-predictive layers.  Kept opt-in
+        # so ordinary public MC responses remain compact and JSON-stable.
+        out["_raw_samples"] = raw_samples
+    return out
+
+
 def simulate_chain(
     params: ParameterSet,
     links: list[str],
@@ -113,25 +172,33 @@ def simulate_chain(
     draws: int = 10_000,
     seed: int = 1901,
     kinds: list[str] | None = None,
+    nodes: dict | None = None,
     use_declared_correlations: bool = True,
 ) -> dict:
     """Convenience wrapper: sample a named chain of links.
 
-    kinds defaults to all-level composition; pass e.g.
-    ["direct","gap"] for the child line.
+    Kinds are required: arbitrary links have no safe default composition.
     """
-    from .ledger import LEVEL, chain
+    from .ledger import chain
 
-    kinds = kinds or [LEVEL] * len(links)
+    if kinds is None:
+        raise ValueError("arbitrary chains require explicit composition kinds")
+    if nodes is None:
+        from .params import default_dir, load_nodes
+        nodes = load_nodes(default_dir() / "nodes.csv")
+    from .ledger import validate_chain
+    validate_chain(params, links, kinds, nodes)
 
     def compute(ps: ParameterSet) -> float:
-        return chain(ps, links, label=label, unit="gap_multiplier", kinds=kinds).point
+        return chain(ps, links, label=label, unit="gap_multiplier", kinds=kinds, nodes=nodes,
+                     base=base).point
 
     out = simulate(
         params,
         compute,
         draws=draws,
         seed=seed,
+        nodes=nodes,
         use_declared_correlations=use_declared_correlations,
     )
     out["label"] = label

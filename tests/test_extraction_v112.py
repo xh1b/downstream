@@ -6,14 +6,13 @@ notes field). These traps pin the EXACT numbers so a re-extraction
 cannot silently drift them, and pin the boundary-application rule:
 per-$1k coefficients apply at a baseline boundary, never in a chain.
 """
-from pathlib import Path
 
 import pytest
 
 from downstream import units
 from downstream.audit import ERROR, audit
 from downstream.ledger import RATE, start
-from downstream.params import default_dir, load, load_all, load_nodes
+from downstream.params import default_dir, load, load_nodes
 
 PARAMS_DIR = default_dir()
 PARAMS = load(PARAMS_DIR / "parameters.csv")
@@ -89,7 +88,7 @@ def test_new_nodes_exist_with_declared_units():
 
 def test_version_bumped_and_audit_clean():
     version = (PARAMS_DIR / "VERSION").read_text().strip()
-    assert version == "v1.33"
+    assert version == "v1.34"
     out = audit(PARAMS_DIR)
     errors = [f for f in out if f.severity == ERROR]
     assert errors == []
