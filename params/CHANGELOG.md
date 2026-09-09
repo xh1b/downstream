@@ -1,3 +1,35 @@
+## v1.30 — 2026-09-09 — #23 + #30: Chetty-Hendren modifier landed + places.csv plug built
+
+- #23 LANDED: `neighborhood_exposure->child_outcomes_modifier` =
+  gamma 0.037 [0.031, 0.043] EXACT (Chetty & Hendren 2018 QJE 133(3),
+  Appendix Table V col 1 — the COUNTY-level estimate, N=595,244;
+  Table II col 1 CZ baseline 0.040 SE 0.002 recorded beside). Unit
+  quoted verbatim: the increase in a child's adult income rank per
+  ADDITIONAL YEAR of childhood in a county where children of
+  permanent residents rank 1 percentile higher at a given parental
+  income. dist=normal (reported CI = 1.96 SE). Robustness beside:
+  family FE 0.033 (0.011), time-varying 0.032 (0.011), age-orthogonal
+  0.036 (0.005); exposure linear to age 23, flat after.
+- place.py formula refined BEFORE the row landed (the freeze rule
+  guards against post-data drift): multiplier = 1 + (DOSE_YEARS/100) *
+  gamma * (place_pct - national_pct), reference = the places.csv
+  NATIONAL row (count-weighted mean kfr = 40.7679), never a hard-coded
+  50. DOSE_YEARS = 18 declared (the model's child window; the paper's
+  window runs to age 23 — difference declared). Traps caught a
+  double-counted gamma in the band arithmetic during the rewrite.
+- #30 LANDED: build_places.py (CLI `downstream build-places`) derives
+  params/places.csv from the Opportunity Atlas county_outcomes_simple
+  (3,134 US counties + DC; skips missing-kfr/zero-count/territories,
+  reported). Raw sources committed under validation/. mobility_
+  percentile = kfr_pooled_pooled_p25 x 100 — the exposure effect's own
+  treatment scale, NOT the county's rank among counties.
+- #31 (county WONDER mortality) stays a parent-repo scraper task —
+  handoff recorded.
+- The modifier composes MULTIPLICATIVELY with the child-earnings
+  chain (declared modeling assumption, on the row and in place.py);
+  integration into vignette/scenario surfaces is the next slice.
+- 393 tests green; audit 0 errors; export v1.30 = 37 params.
+
 ## v1.29 — 2026-09-09 — #7: place-resolved layer (shrinkage + mobility modifier, plugs pending)
 
 - place.py: the engine's place-resolved layer. County baselines swap

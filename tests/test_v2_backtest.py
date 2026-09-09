@@ -30,7 +30,7 @@ PARAMS = load(PARAMS_DIR / "parameters.csv")
 
 
 def test_version_is_v127():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.29"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.30"
 
 
 def test_registry_has_exactly_the_three_events():

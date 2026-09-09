@@ -67,7 +67,7 @@ def _baseline_dict() -> dict[str, Baseline]:
 def _national_row() -> Place:
     return Place(
         key="national", name="United States", level="national",
-        mobility_percentile=None, mobility_n=None,
+        mobility_percentile=50.0, mobility_n=None,
         mortality_rate=None, mortality_n=None,
         divorce_rate=None, divorce_n=None,
         citation="national sources",
@@ -92,7 +92,7 @@ def _places(philly: Place | None = None) -> dict[str, Place]:
 
 
 def test_version_is_v129():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.29"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.30"
 
 
 # --- loader -------------------------------------------------------
@@ -229,60 +229,78 @@ def test_place_json_is_cli_round_trip():
 
 # --- mobility modifier ---------------------------------------------
 
-def test_modifier_blocked_until_parameter_lands():
+def test_modifier_landed_row_applies_with_citation():
     m = mobility_modifier(PARAMS, _places(_philly()), "42101")
-    assert m["applied"] is False and m["blocked"] is True
-    assert MOBILITY_MODIFIER_LINK in m["reason"]
-    assert "Chetty" in m["reason"]
+    assert m["applied"] is True and m["blocked"] is False
+    assert m["citation"] == "chettyhendren2018"
 
 
-def test_modifier_math_with_synthetic_row():
+def _synthetic_ps(point: float = 0.001) -> ParameterSet:
     p = Parameter(
         link=MOBILITY_MODIFIER_LINK,
         from_node="neighborhood_exposure",
         to_node="child_outcomes_modifier",
-        point=0.001, low=0.0005, high=0.002,
+        point=point, low=point / 2, high=point * 2,
         tier="canonical", citation="chettymclaren2018",
         population_scope="children of displaced workers",
     )
-    ps = load(PARAMS_DIR / "parameters.csv")
-    ps = ParameterSet(version=ps.version, parameters=ps.parameters + (p,))
-    m = mobility_modifier(ps, _places(_philly()), "42101")
+    # REPLACE the real row (by_link returns the first match — an
+    # appended synthetic row would be shadowed by the landed one)
+    rows = [p if r.link == MOBILITY_MODIFIER_LINK else r for r in PARAMS.parameters]
+    return ParameterSet(version=PARAMS.version, parameters=tuple(rows))
+
+
+def test_modifier_math_with_synthetic_row():
+    m = mobility_modifier(_synthetic_ps(), _places(_philly()), "42101")
     assert m["applied"] is True
-    # gap = 12 - 50 = -38; scale = -0.38
-    assert m["multiplier"]["point"] == pytest.approx(1 + (-0.38) * 0.001)
+    # gap = 12 - 50 = -38; scale = 18/100
+    assert m["multiplier"]["point"] == pytest.approx(1 + 0.18 * 0.001 * (-38))
     # negative gap: the LOW band comes from the HIGH parameter side
-    assert m["multiplier"]["low"] == pytest.approx(1 + (-0.38) * 0.002)
-    assert m["multiplier"]["high"] == pytest.approx(1 + (-0.38) * 0.0005)
+    assert m["multiplier"]["low"] == pytest.approx(1 + 0.18 * 0.002 * (-38))
+    assert m["multiplier"]["high"] == pytest.approx(1 + 0.18 * 0.0005 * (-38))
+    # band brackets the point
+    assert m["multiplier"]["low"] <= m["multiplier"]["point"] <= m["multiplier"]["high"]
 
 
-def test_modifier_at_median_is_exactly_one():
-    p = Parameter(
-        link=MOBILITY_MODIFIER_LINK,
-        from_node="neighborhood_exposure",
-        to_node="child_outcomes_modifier",
-        point=0.001, low=0.0005, high=0.002,
-        tier="canonical", citation="chettymclaren2018",
-        population_scope="children",
-    )
-    ps = load(PARAMS_DIR / "parameters.csv")
-    ps = ParameterSet(version=ps.version, parameters=ps.parameters + (p,))
-    m = mobility_modifier(ps, _places(_philly()), "42101")  # pct 12
-    assert m["multiplier"]["point"] < 1.0  # below-median mobility hurts
+def test_modifier_at_national_reference_is_exactly_one():
+    m = mobility_modifier(_synthetic_ps(), _places(_philly()), "national")
+    assert m["applied"] is True
+    assert m["multiplier"]["point"] == pytest.approx(1.0)
+    assert m["multiplier"]["low"] == pytest.approx(1.0)
+    assert m["multiplier"]["high"] == pytest.approx(1.0)
 
 
-def test_modifier_blocked_without_percentile():
-    ps = load(PARAMS_DIR / "parameters.csv")
-    row = _national_row()
+def test_modifier_below_reference_uses_the_real_row():
+    ps = _synthetic_ps()
+    m = mobility_modifier(ps, _places(_philly()), "42101")  # pct 12 vs national 50
+    assert m["multiplier"]["point"] < 1.0  # below-national mobility hurts
+
+
+def test_modifier_blocked_without_county_percentile():
+    ps = _synthetic_ps()
     place = Place(
-        key=row.key, name=row.name, level=row.level,
+        key="01001", name="No Percentile County", level="county",
         mobility_percentile=None, mobility_n=None,
         mortality_rate=None, mortality_n=None,
-        divorce_rate=None, divorce_n=None, citation=row.citation,
+        divorce_rate=None, divorce_n=None, citation="x",
     )
-    # even with the link present, a missing percentile blocks honestly
-    m = mobility_modifier(ps, {"national": place}, "national")
+    # even with the link present, a missing county percentile blocks honestly
+    m = mobility_modifier(ps, _places(place), "01001")
     assert m["applied"] is False
+    assert "no mobility_percentile for '01001'" in m["reason"]
+
+
+def test_modifier_blocked_without_national_percentile():
+    ps = _synthetic_ps()
+    nat = Place(
+        key="national", name="United States", level="national",
+        mobility_percentile=None, mobility_n=None,
+        mortality_rate=None, mortality_n=None,
+        divorce_rate=None, divorce_n=None, citation="x",
+    )
+    m = mobility_modifier(ps, {"national": nat}, "national")
+    assert m["applied"] is False
+    assert "national row has no mobility_percentile" in m["reason"]
 
 
 # --- vignette unchanged ---------------------------------------------

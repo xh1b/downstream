@@ -23,6 +23,7 @@ LIFE_YEARS = "life_years"      # life-expectancy change in years
 LOG_ELASTICITY = "log_elasticity"  # elasticity of ln(outcome); signed, samples linear
 USD = "usd"
 PROB = "probability"
+PERCENTILE = "percentile"      # a rank in 0-100 (Chetty-Hendren kfr scale)
 
 
 @dataclass(frozen=True)
@@ -68,6 +69,10 @@ COMPOSITION = {
                                        # coefficient: multiplier per unit of the shock (doubling = 2.0),
                                        # never chained
     (USD, USD): "rate",             # EITC $1k exposure -> adult annual earnings (bastian2018)
+    (PERCENTILE, GAP): "level",     # neighborhood exposure -> child-outcomes modifier
+                                    # (place multiplier 1 + dose*gamma*gap/100; boundary
+                                    # coefficient like the others: applies a county gap
+                                    # vs the national row, never chained from a node level)
 }
 
 

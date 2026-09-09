@@ -11,7 +11,8 @@ Plan of record: owner-approved top 10 (2026-09-06). Every number cites
 
 ## Engine
 
-- **[P2] #7 plugs: land `params/places.csv`** — #23 Chetty-Hendren extraction, #30 Opportunity Atlas county rows, #31 county WONDER (parent-repo scraper task).
+- **[P2] #7 integration: apply the landed place modifier + shrunk baselines in the vignette/scenario surfaces** (engine + plug LANDED v1.30; the caller wiring is the remaining slice).
+- **[P2] #31: county WONDER mortality** — PARENT-REPO scraper task (handoff recorded; wonder-mortality CLI is national-only).
 - **[P2] #8: fill the paper prose** — methods, V1 scorecard, limitations; `make` builds clean.
 - **[P3] #10: pre-registered prospective forecasts** — 2-3 events scored before outcomes.
 - **[P2] Employer scenario shape** — documented-conduct inputs (LCA gap totals, WARN events) -> same `compute_counts` surface. Persons ARE included (owner
@@ -23,5 +24,5 @@ Plan of record: owner-approved top 10 (2026-09-06). Every number cites
 Tracked in `docs/QUEUED_EXTRACTIONS.md` — the queue's status column is the
 truth; do not duplicate rows here.
 
-- **[P2] Remaining** — engine-level work: #7 place plugs, #8 paper prose, employer scenario shape, P3s. (#7 engine LANDED v1.29 — shrinkage + frozen modifier formula, plugs queued; #5 distributions + correlations LANDED v1.27; #6 V2 framework pre-registered v1.28 — scoring blocked on per-event displacement bridges: BRAC needs GAO app. II transcription + w6941 OCR; NAFTA needs a tariff-unit displacement bridge that no published source provides; auto crisis has no quasi-experimental measured side.)
+- **[P2] Remaining** — engine-level work: #7 integration slice, #8 paper prose, employer scenario shape, P3s. (#7 engine + modifier plug LANDED v1.30; #5 distributions + correlations LANDED v1.27; #6 V2 framework pre-registered v1.28 — scoring blocked on per-event displacement bridges: BRAC needs GAO app. II transcription + w6941 OCR; NAFTA needs a tariff-unit displacement bridge that no published source provides; auto crisis has no quasi-experimental measured side.)
 - Also: remarriage-margin candidate from the V1 divorce row.

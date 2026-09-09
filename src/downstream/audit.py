@@ -186,7 +186,13 @@ def audit(params_dir: str | Path | None = None) -> list[Finding]:
                     )
 
     # Orphan detection: from_node that is neither an entry point nor produced.
-    entry_nodes = {"displacement_event", "family_size", "school_spending", "youth_wages"}
+    entry_nodes = {
+        "displacement_event",
+        "family_size",
+        "school_spending",
+        "youth_wages",
+        "neighborhood_exposure",
+    }
     produced = {p.to_node for p in params.parameters}
     for p in params.parameters:
         if p.from_node not in produced and p.from_node not in entry_nodes:

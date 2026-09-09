@@ -51,7 +51,7 @@ NODES = load_nodes(PARAMS_DIR / "nodes.csv")
 
 
 def test_version_is_v127():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.29"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.30"
 
 
 # --- declared per-parameter distributions -------------------------------
@@ -219,7 +219,7 @@ def test_simulate_stamps_iman_conover_and_is_reproducible():
     assert a == b
     assert a["sampler"] == "lhs+iman-conover"
     assert a["correlations_applied"] == 2
-    assert a["parameter_set_version"] == "v1.29-sampled"
+    assert a["parameter_set_version"] == "v1.30-sampled"
 
 
 def test_simulate_can_opt_out_of_declared_correlations():
@@ -277,11 +277,11 @@ def test_induced_negative_coupling_moves_the_two_mortality_rows_together():
 def test_marginals_survive_induction_on_the_landed_matrix():
     rows = load_correlations(PARAMS_DIR / "correlations.csv")
     rng = random.Random(13)
-    u = lhs_matrix(36, 500, rng)
+    u = lhs_matrix(37, 500, rng)
     mat = spearman_matrix(PARAMS, rows)
     assert mat is not None
     out = apply_rank_correlation(u, mat)
-    for j in range(36):
+    for j in range(37):
         assert sorted(row[j] for row in out) == sorted(row[j] for row in u)
 
 
@@ -310,7 +310,7 @@ def test_audit_rejects_unknown_dist_token():
             (d / name).write_text(open(PARAMS_DIR / name).read())
         except OSError:
             pass
-    (d / "VERSION").write_text("v1.29")
+    (d / "VERSION").write_text("v1.30")
     findings = audit(d)
     errors = [f.message for f in findings if f.severity == "ERROR" and f.check == "dist"]
     assert any("truncated-beta" in m for m in errors), errors
@@ -339,7 +339,7 @@ def test_audit_warns_on_an_assembled_band_claiming_a_ci_shape():
             (d / name).write_text(open(PARAMS_DIR / name).read())
         except OSError:
             pass
-    (d / "VERSION").write_text("v1.29")
+    (d / "VERSION").write_text("v1.30")
     findings = audit(d)
     warns = [f.message for f in findings if f.severity == "WARN" and f.check == "dist"]
     assert any("local_unemp_shock->household_ipv" in m for m in warns), warns

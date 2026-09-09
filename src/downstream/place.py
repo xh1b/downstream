@@ -52,11 +52,20 @@ PLACE_COLUMNS = (
 PLACE_LEVELS = ("national", "state", "county")
 
 # The Chetty-Hendren modifier parameter lands as this link. The row's
-# declared unit: effect on adult outcomes per 1 percentile point of
-# county intergenerational mobility, for a complete childhood in that
-# county (ages 0-18). Conversions from the paper's native units must
-# be declared in the row's notes, not silently done here.
+# declared unit: EXACT annual exposure effect gamma (Appendix Table V
+# col 1, county level, Table II col 1 CZ baseline): the increase in a
+# child's adult income rank per additional year of childhood spent in
+# a county where children of permanent residents rank 1 percentile
+# higher, at a given level of parental income. The engine applies the
+# dose: DOSE_YEARS years of exposure to the county.
 MOBILITY_MODIFIER_LINK = "neighborhood_exposure->child_outcomes_modifier"
+
+# Declared exposure dose: a complete childhood in the county (0-18),
+# matching the model's child window. The paper's exposure effect is
+# linear in exposure years to age 23 and flat after (Figure IV a);
+# the model's dose uses ITS OWN child window, and the difference is
+# declared here, not hidden.
+DOSE_YEARS = 18.0
 
 # Declared prior sample sizes k for the shrinkage weight w = n/(n+k).
 # Mortality: county deaths are Poisson; k = 2,000 deaths is roughly the
@@ -296,13 +305,14 @@ def mobility_modifier(
 ) -> dict:
     """The Chetty-Hendren mobility multiplier for one place.
 
-    multiplier = 1 + (mobility_percentile - 50)/100 * p.point, with the
-    parameter row declared per 1 mobility percentile (see the link
-    docstring). Band direction follows the gap sign: a positive gap
-    scales like the parameter (low band from p.low), a negative gap
-    inverts. Missing percentile, missing parameter, or an unextracted
-    link reports `blocked` with the exact missing input — never a
-    number without a citation.
+    multiplier = 1 + DOSE_YEARS * gamma * (place_pct - national_pct)/100:
+    the county's permanent-resident income-rank percentile gap vs the
+    national row (NOT a hard-coded 50), scaled by the annual exposure
+    effect gamma over a declared 18-year childhood. Band direction
+    follows the gap sign. Missing percentile, missing national
+    reference, missing parameter, or an unextracted link reports
+    `blocked` with the exact missing input — never a number without a
+    citation.
     """
     if not places:
         return {
@@ -331,6 +341,17 @@ def mobility_modifier(
                 "effect estimate; the formula is frozen, the number is not"
             ),
         }
+    nat = national(places)
+    if nat.mobility_percentile is None:
+        return {
+            "place": key,
+            "applied": False,
+            "blocked": True,
+            "reason": (
+                "the national row has no mobility_percentile — the "
+                "modifier's reference gap has no basis; rebuild places.csv"
+            ),
+        }
     if place.mobility_percentile is None:
         return {
             "place": key,
@@ -341,8 +362,8 @@ def mobility_modifier(
                 "the Opportunity Atlas county plug is the source"
             ),
         }
-    gap = place.mobility_percentile - 50.0
-    scale = gap / 100.0
+    gap = place.mobility_percentile - nat.mobility_percentile
+    scale = DOSE_YEARS / 100.0
     lo_part, hi_part = (p.low, p.high) if gap >= 0 else (p.high, p.low)
     return {
         "place": place.key,
@@ -350,16 +371,19 @@ def mobility_modifier(
         "blocked": False,
         "parameter": MOBILITY_MODIFIER_LINK,
         "mobility_percentile": place.mobility_percentile,
-        "gap_vs_median": gap,
+        "national_percentile": nat.mobility_percentile,
+        "gap_vs_national": gap,
+        "dose_years": DOSE_YEARS,
         "multiplier": {
-            "point": 1.0 + scale * p.point,
-            "low": 1.0 + scale * lo_part,
-            "high": 1.0 + scale * hi_part,
+            "point": 1.0 + scale * p.point * gap,
+            "low": 1.0 + scale * lo_part * gap,
+            "high": 1.0 + scale * hi_part * gap,
         },
         "declared_unit": (
-            "effect on adult outcomes per 1 mobility percentile, complete "
-            "childhood (0-18) in the county; unit conversions must be "
-            "declared in the parameter row's notes"
+            "annual exposure effect gamma (increase in adult income rank "
+            "per year of childhood per 1 percentile of county permanent-"
+            "resident income rank); dose = 18y complete childhood in the "
+            "county, declared"
         ),
         "citation": p.citation,
     }
