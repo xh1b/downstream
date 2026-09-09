@@ -51,6 +51,8 @@ PLACE_COLUMNS = (
 )
 PLACE_LEVELS = ("national", "state", "county")
 
+MODIFIER_TO_NODE = "child_outcomes_modifier"
+
 # The Chetty-Hendren modifier parameter lands as this link. The row's
 # declared unit: EXACT annual exposure effect gamma (Appendix Table V
 # col 1, county level, Table II col 1 CZ baseline): the increase in a
@@ -386,4 +388,50 @@ def mobility_modifier(
             "county, declared"
         ),
         "citation": p.citation,
+    }
+
+
+def modifier_parameter(
+    params: ParameterSet,
+    places: dict[str, Place],
+    key: str,
+) -> dict:
+    """The mobility modifier as an apply-able ledger step.
+
+    Returns {"modifier": <mobility_modifier dict>, "parameter":
+    <Parameter | None>}. The parameter is a DERIVED value — the landed
+    gamma row evaluated at this place's gap — never a new estimate.
+    Composition with the child-earnings chain is MULTIPLICATIVE: a
+    declared modeling assumption (the paper estimates the exposure
+    effect on adult ranks, not a multiplier on a displacement shock),
+    recorded on the parameter and in every consuming surface.
+    """
+    mod = mobility_modifier(params, places, key)
+    if not mod.get("applied"):
+        return {"modifier": mod, "parameter": None}
+    m = mod["multiplier"]
+    from .params import Parameter
+
+    return {
+        "modifier": mod,
+        "parameter": Parameter(
+            link=f"place:{key}->{MODIFIER_TO_NODE}",
+            from_node=f"place:{key}",
+            to_node=MODIFIER_TO_NODE,
+            point=m["point"],
+            low=m["low"],
+            high=m["high"],
+            tier="derived",
+            citation=mod["citation"],
+            population_scope="children of displaced workers",
+            notes=(
+                f"place-resolved mobility multiplier for {key}: pct "
+                f"{mod['mobility_percentile']} vs national "
+                f"{mod['national_percentile']} (gap "
+                f"{mod['gap_vs_national']:+.4f}), dose {DOSE_YEARS}y; "
+                "derived from the landed gamma row, not a new estimate; "
+                "MULTIPLICATIVE composition with the child-earnings "
+                "chain is a declared modeling assumption"
+            ),
+        ),
     }

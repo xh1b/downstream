@@ -49,14 +49,44 @@ def compute_counts(
     baselines: dict[str, Baseline],
     scenario: ScenarioInput,
     strict: bool = False,
+    places: dict | None = None,
+    place_key: str | None = None,
 ) -> dict:
     """Modeled counts for a displacement scenario.
 
     strict=True raises on the first missing baseline. Default mode
     returns computed outcomes plus an explicit blocked list.
+
+    places + place_key (optional): the place-resolved layer. The
+    baseline dict is swapped for the shrunk county baselines (same
+    unit/population — no conversion) and the Chetty-Hendren mobility
+    modifier composes multiplicatively with the child-earnings chain
+    (declared modeling assumption). Provenance lands in the "place"
+    block; absent/blocked modifiers leave the computation unchanged.
     """
+    place_block: dict | None = None
+    modifier = None
+    if places and place_key:
+        from .place import modifier_parameter, place_baselines
+
+        pb = place_baselines(places, baselines, place_key)
+        baselines = pb["baselines"]
+        mp = modifier_parameter(params, places, place_key)
+        modifier = mp["parameter"]
+        place_block = {
+            "key": place_key,
+            "baselines_applied": pb["provenance"].get("applied", True),
+            "baseline_overrides": pb["provenance"].get("overrides"),
+            "modifier_applied": modifier is not None,
+            "modifier_reason": mp["modifier"].get("reason"),
+            "mobility_percentile": mp["modifier"].get("mobility_percentile"),
+            "national_percentile": mp["modifier"].get("national_percentile"),
+        }
+        if pb["provenance"].get("reason"):
+            place_block["baselines_reason"] = pb["provenance"]["reason"]
+
     worker = worker_outcomes(params, wage_multiplier=scenario.wage_multiplier)
-    line = child_line(params)
+    line = child_line(params, place_modifier=modifier)
     jobs = service_jobs_lost(params, scenario.displaced_workers * scenario.tradable_share)
 
     computed: dict = {
@@ -70,6 +100,7 @@ def compute_counts(
         },
         "modeled": {},
         "blocked": [],
+        "place": place_block,
     }
 
     # Local service jobs: a level ratio — no baseline needed.
@@ -78,7 +109,7 @@ def compute_counts(
     # Mortality counts: needs the cited baseline rate.
     try:
         b = require_baseline(baselines, "all_cause_mortality_annual")
-        rate = b.value  # type: ignore[operator]
+        rate = b.value or 0.0
         sustained = worker["mortality_sustained"].point
         peak = worker["mortality_peak"].point
         excess_sustained = (
@@ -109,7 +140,7 @@ def compute_counts(
     # Earnings conversion: needs cited lifetime earnings.
     try:
         b = require_baseline(baselines, "median_male_lifetime_earnings")
-        v = b.value  # type: ignore[operator]
+        v = b.value or 0.0
         child = line["child"]
         computed["modeled"]["child_lifetime_earnings_lost_usd"] = {
             "point": round(scenario.displaced_workers * scenario.n_children * (1 - child.point) * v, 2),

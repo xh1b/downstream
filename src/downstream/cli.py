@@ -47,6 +47,8 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
     p.add_argument("--wage-multiplier", type=float, default=0.80)
     p.add_argument("--children", type=int, default=3)
+    p.add_argument("--place", default=None, metavar="KEY",
+                   help="places.csv key — applies shrunk baselines + the mobility modifier")
 
     p = sub.add_parser("scenario", help="modeled counts for a displacement exposure")
     p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
@@ -56,6 +58,8 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--wage-multiplier", type=float, default=None)
     p.add_argument("--exposure-years", type=float, default=20.0)
     p.add_argument("--strict", action="store_true", help="fail on missing baselines")
+    p.add_argument("--place", default=None, metavar="KEY",
+                   help="places.csv key — applies shrunk baselines + the mobility modifier")
 
     p = sub.add_parser("explain", help="walk a claim from headline to citations")
     p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
@@ -139,10 +143,27 @@ def main(argv: list[str] | None = None) -> int:
     params = parts["params"]
 
     if args.cmd == "family":
-        _dump(standard_family(params, wage_multiplier=args.wage_multiplier, n_children=args.children))
+        places = None
+        if args.place:
+            from .place import load_places
+
+            places = load_places(Path(args.params) / "places.csv")
+            if not places:
+                raise SystemExit(f"places.csv absent under {args.params} — cannot resolve --place {args.place!r}")
+        _dump(standard_family(
+            params, wage_multiplier=args.wage_multiplier, n_children=args.children,
+            places=places, place_key=args.place,
+        ))
         return 0
 
     if args.cmd == "scenario":
+        places = None
+        if args.place:
+            from .place import load_places
+
+            places = load_places(Path(args.params) / "places.csv")
+            if not places:
+                raise SystemExit(f"places.csv absent under {args.params} — cannot resolve --place {args.place!r}")
         out = compute_counts(
             params,
             parts["baselines"],
@@ -154,6 +175,8 @@ def main(argv: list[str] | None = None) -> int:
                 exposure_years=args.exposure_years,
             ),
             strict=args.strict,
+            places=places,
+            place_key=args.place,
         )
         _dump(out)
         return 0

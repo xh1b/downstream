@@ -9,8 +9,8 @@ weakest-identification honesty statement.
 
 from __future__ import annotations
 
-from .ledger import DIRECT, GAP, Ledger, start
-from .params import ParameterSet
+from .ledger import DIRECT, GAP, LEVEL, Ledger, start
+from .params import Parameter, ParameterSet
 
 CHILD_DIRECT = "displacement->child_earnings"
 GRANDCHILD = "child_earnings->grandchild_earnings"
@@ -29,11 +29,24 @@ def greatgrandchild_earnings(grandchild: Ledger, params: ParameterSet) -> Ledger
     return grandchild.apply(GAP, params.by_link(GREATGRANDCHILD))
 
 
-def child_line(params: ParameterSet) -> dict:
-    """The full three-generation line with the honest-weakness marker."""
+def child_line(params: ParameterSet, place_modifier: Parameter | None = None) -> dict:
+    """The full three-generation line with the honest-weakness marker.
+
+    place_modifier (optional): the place-resolved Chetty-Hendren
+    mobility multiplier (built by place.modifier_parameter). It composes
+    MULTIPLICATIVELY with the chain — a declared modeling assumption,
+    recorded as an extra level step on every generation so the audit
+    trail shows exactly where it was applied. None = the national
+    median-county baseline (multiplier 1.0), the shipped framing.
+    """
     child = child_earnings(params)
+    if place_modifier is not None:
+        child = child.apply(LEVEL, place_modifier)
     grandchild = grandchild_earnings(child, params)
     greatgrandchild = greatgrandchild_earnings(grandchild, params)
+    if place_modifier is not None:
+        grandchild = grandchild.apply(LEVEL, place_modifier)
+        greatgrandchild = greatgrandchild.apply(LEVEL, place_modifier)
     return {
         "child": child,
         "grandchild": grandchild,

@@ -55,7 +55,7 @@ Reporting". This card travels with the model.
   mobility rows from the Opportunity Atlas. County mortality + divorce
   plugs still pending.
 - V3: designed, not built.
-- Unit tests: 393; adversarial traps for the known bug classes
+- Unit tests: 401; adversarial traps for the known bug classes
   (level-vs-gap composition, level-ratio misuse, naked estimates,
   band inversion, pre-registration drift, fabricated scorecards,
   place-swap unit bugs, pooling-weight fabrication).

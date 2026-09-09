@@ -15,6 +15,8 @@ daughter_violence_odds,odds_ratio,"adult partner-violence odds for exposed daugh
 local_service_jobs,level_ratio,"local non-traded service jobs per displaced tradable job (a level, NEVER a multiplier)"
 school_spending,gap_multiplier,"per-pupil spending multiplier vs baseline"
 youth_wages,gap_multiplier,"local youth-relevant wage level vs baseline"
+neighborhood_exposure,percentile,"mean adult income-rank percentile of children of permanent residents in the county (kfr), at pooled parental income p25 — the Chetty-Hendren exposure effect's treatment scale"
+child_outcomes_modifier,gap_multiplier,"place multiplier on child adult-outcome parameters (1.0 = national exposure)"
 youth_crime_rate,percent_delta,"percent change in youth crime participation (applied via elasticity)"
 import_shock_per_worker,usd,"decadal change in Chinese import exposure per worker, in $1,000s (ADH 2013 exposure measure)"
 local_wage_response,percent_delta,"percent change in local nonmanufacturing (non-displaced) wages per $1k/worker import exposure; boundary-applied vs a baseline wage"

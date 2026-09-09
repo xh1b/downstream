@@ -32,16 +32,32 @@ def standard_family(
     params: ParameterSet,
     wage_multiplier: float = 0.80,
     n_children: int = DEFAULT_CHILDREN,
+    places: dict | None = None,
+    place_key: str | None = None,
 ) -> dict:
     worker = worker_outcomes(params, wage_multiplier=wage_multiplier)
-    line = child_line(params)
+    modifier = None
+    place_block: dict | None = None
+    if places and place_key:
+        from .place import modifier_parameter
+
+        mp = modifier_parameter(params, places, place_key)
+        modifier = mp["parameter"]
+        place_block = {
+            "key": place_key,
+            "applied": modifier is not None,
+            "reason": mp["modifier"].get("reason"),
+            "mobility_percentile": mp["modifier"].get("mobility_percentile"),
+            "national_percentile": mp["modifier"].get("national_percentile"),
+        }
+    line = child_line(params, place_modifier=modifier)
 
     divorce = divorce_hazard(params)
     fam_penalty = family_size_penalty(params, n_children)
     daughter = daughter_violence_odds(params)
     jobs = service_jobs_lost(params, displaced_tradable=1)
 
-    return {
+    out = {
         "vignette": {
             "family": "standard family",
             "definition": (
@@ -55,6 +71,7 @@ def standard_family(
                 "deterministic claim about a specific person"
             ),
         },
+        "place": place_block,
         "parameter_set_version": params.version,
         "worker_stream": {
             "earnings": _ledger_dict(worker["worker_earnings"]),
@@ -88,6 +105,12 @@ def standard_family(
             "great-grandchild layer carries the weakest-identification honesty statement",
         ],
     }
+    if place_block is not None:
+        out["composition_notes"].append(
+            "place modifier composes MULTIPLICATIVELY with the "
+            "child-earnings chain — declared modeling assumption"
+        )
+    return out
 
 
 # Back-compat wrapper for the original v0 surface.

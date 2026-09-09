@@ -1,3 +1,25 @@
+## v1.31 — 2026-09-09 — #7 integration: place layer wired into the vignette + scenario surfaces
+
+- `vignette standard_family` and `scenario compute_counts` accept
+  `places` + `place_key`: the baseline dict swaps for the SHRUNK
+  county baselines (same unit/population — no conversion) and the
+  Chetty-Hendren mobility modifier composes with the child-earnings
+  chain as a derived, tier="derived" parameter built per place
+  (never a new estimate).
+- COMPOSITION SEMANTICS declared: the modifier applies at EACH
+  generation's adult outcome (each generation grows up in the same
+  county), so it composes AROUND the IGE steps, not once at the end.
+- TRAP FIRED on the loss-share arithmetic: the scenario child-dollar
+  count uses the LOSS share (1 - child_gap), so a below-mobility
+  county SHRINKS the retained share and AMPLIFIES the dollar loss
+  ((1 - m*gap)/(1 - gap) — 3.49x for the synthetic Philly trap; the
+  naive "count x multiplier" expectation was wrong and is now pinned
+  as the regression trap with the derivation in the comment).
+- Blocked/absent modifiers leave every number unchanged (back-compat
+  pinned); unknown place keys fail loudly; CLI `family`/`scenario`
+  gained `--place KEY` (SystemExit when places.csv is absent).
+- 401 tests green; audit 0 errors; export v1.31 = 37 params.
+
 ## v1.30 — 2026-09-09 — #23 + #30: Chetty-Hendren modifier landed + places.csv plug built
 
 - #23 LANDED: `neighborhood_exposure->child_outcomes_modifier` =

@@ -61,6 +61,15 @@ def _baseline_dict() -> dict[str, Baseline]:
             source="us_census_sipp",
             status="verified",
         ),
+        "median_male_lifetime_earnings": Baseline(
+            outcome="median_male_lifetime_earnings",
+            unit="usd_2024",
+            population="US men",
+            value=2591418.0,
+            citation="SSA CWHS Table 4.B6",
+            source="ssa",
+            status="verified",
+        ),
     }
 
 
@@ -92,7 +101,7 @@ def _places(philly: Place | None = None) -> dict[str, Place]:
 
 
 def test_version_is_v129():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.30"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.31"
 
 
 # --- loader -------------------------------------------------------
@@ -349,3 +358,180 @@ def test_audit_flags_county_rate_without_n(tmp_path):
     assert any(
         f.severity == "WARN" and "mortality_n" in f.message for f in findings
     )
+
+
+# --- v1.31 integration: the modifier + shrunk baselines in the
+# --- vignette and scenario surfaces ----------------------------------
+
+def test_modifier_parameter_is_derived_not_new():
+    from downstream.place import modifier_parameter
+
+    out = modifier_parameter(PARAMS, _places(_philly()), "42101")
+    p = out["parameter"]
+    mod = out["modifier"]
+    assert p is not None
+    assert p.link == "place:42101->child_outcomes_modifier"
+    assert p.tier == "derived"
+    assert p.citation == mod["citation"] == "chettyhendren2018"
+    # the derived values ARE the modifier's multiplier — no new estimate
+    assert p.point == mod["multiplier"]["point"]
+    assert (p.low, p.high) == (mod["multiplier"]["low"], mod["multiplier"]["high"])
+    # the declared assumption travels with the row
+    assert "MULTIPLICATIVE" in p.notes and "declared modeling assumption" in p.notes
+
+
+def test_modifier_parameter_blocked_when_places_absent():
+    from downstream.place import modifier_parameter
+
+    out = modifier_parameter(PARAMS, {}, "42101")
+    assert out["parameter"] is None
+    assert out["modifier"]["applied"] is False
+
+
+def test_child_line_multiplier_composes_multiplicatively():
+    from downstream.children import CHILD_DIRECT, GRANDCHILD, child_line
+    from downstream.place import modifier_parameter
+
+    base = child_line(PARAMS)
+    mp = modifier_parameter(PARAMS, _places(_philly()), "42101")
+    line = child_line(PARAMS, place_modifier=mp["parameter"])
+    m = mp["modifier"]["multiplier"]
+    direct = PARAMS.by_link(CHILD_DIRECT).point
+    ige = PARAMS.by_link(GRANDCHILD).point
+    # child: the multiplier hits the direct gap ratio
+    assert line["child"].point == pytest.approx(direct * m["point"])
+    # grandchild: the modifier hits each generation's own adult outcome,
+    # so it composes AROUND the IGE step — mult * (1 - IGE*(1 - child))
+    expected_gc = m["point"] * (1 - ige * (1 - direct * m["point"]))
+    assert line["grandchild"].point == pytest.approx(expected_gc, rel=1e-9)
+    # every generation carries the step with its citation trail
+    for gen in ("child", "grandchild", "greatgrandchild"):
+        assert any(s.link == mp["parameter"].link for s in line[gen].steps)
+        assert base[gen].point != line[gen].point
+
+
+def test_child_line_without_modifier_is_unchanged():
+    from downstream.children import child_line
+
+    base = child_line(PARAMS)
+    line = child_line(PARAMS, place_modifier=None)
+    assert line["child"].point == base["child"].point
+    assert len(line["child"].steps) == len(base["child"].steps)
+
+
+def test_vignette_place_block_and_scaled_children():
+    from downstream.vignette import standard_family
+
+    base = standard_family(PARAMS)
+    out = standard_family(PARAMS, places=_places(_philly()), place_key="42101")
+    assert out["place"]["applied"] is True and out["place"]["key"] == "42101"
+    assert out["place"]["mobility_percentile"] == 12.0
+    ratio = out["children_stream"]["child"]["point"] / base["children_stream"]["child"]["point"]
+    # ledger dicts round to 4 places — loose enough to survive rounding
+    assert ratio == pytest.approx(modifier_for_place()["multiplier"]["point"], abs=1e-3)
+    assert any("MULTIPLICATIVELY" in n for n in out["composition_notes"])
+
+
+def modifier_for_place():
+    from downstream.place import modifier_parameter
+
+    return modifier_parameter(PARAMS, _places(_philly()), "42101")["modifier"]
+
+
+def test_vignette_without_place_is_back_compat():
+    from downstream.vignette import standard_family
+
+    out = standard_family(PARAMS)
+    assert out["place"] is None
+    # the worker/child numbers must be byte-identical to the old surface
+    out2 = standard_family(PARAMS, places=_places(_philly()))  # no key: no-op
+    assert out2["place"] is None
+    assert out2["children_stream"]["child"]["point"] == out["children_stream"]["child"]["point"]
+
+
+def test_vignette_unknown_place_key_fails_loudly():
+    from downstream.vignette import standard_family
+
+    with pytest.raises(KeyError):
+        standard_family(PARAMS, places=_places(_philly()), place_key="99999")
+
+
+def test_scenario_uses_shrunk_mortality_baseline():
+    from downstream.scenario import ScenarioInput, compute_counts
+
+    base = compute_counts(
+        PARAMS, _baseline_dict(), ScenarioInput(displaced_workers=1000)
+    )
+    out = compute_counts(
+        PARAMS, _baseline_dict(), ScenarioInput(displaced_workers=1000),
+        places=_places(_philly()), place_key="42101",
+    )
+    # the county rate replaces the national one in the SAME unit
+    assert out["modeled"]["excess_deaths"]["baseline"]["value"] != NAT_RATE
+    expected = _philly_expected_rate()
+    assert out["modeled"]["excess_deaths"]["baseline"]["value"] == pytest.approx(expected, rel=1e-6)
+    # deaths scale with the swapped rate (multiplier unchanged)
+    ratio = out["modeled"]["excess_deaths"]["point"] / base["modeled"]["excess_deaths"]["point"]
+    assert ratio == pytest.approx(expected / NAT_RATE, rel=1e-3)
+    # provenance records the pooling arithmetic
+    ov = out["place"]["baseline_overrides"]["all_cause_mortality_annual"]
+    assert ov["applied"] is True and ov["county_n"] == 2864.0
+    assert ov["weight"] < 1.0
+
+
+def _philly_expected_rate() -> float:
+    k = PRIOR_N["all_cause_mortality_annual"]
+    w = 2864.0 / (2864.0 + k)
+    return (1 - w) * NAT_RATE + w * 0.006200
+
+
+def test_scenario_child_earnings_carry_the_modifier():
+    from downstream.children import CHILD_DIRECT
+    from downstream.scenario import ScenarioInput, compute_counts
+
+    base = compute_counts(
+        PARAMS, _baseline_dict(), ScenarioInput(displaced_workers=1000)
+    )
+    out = compute_counts(
+        PARAMS, _baseline_dict(), ScenarioInput(displaced_workers=1000),
+        places=_places(_philly()), place_key="42101",
+    )
+    m = modifier_for_place()["multiplier"]["point"]
+    direct = PARAMS.by_link(CHILD_DIRECT).point
+    # TRAP (fired on the naive expectation, 2026-09-09): the count uses
+    # the LOSS share (1 - child_gap), so the place multiplier scales the
+    # gap, not the count one-for-one. A below-mobility county SHRINKS
+    # the retained share and therefore AMPLIFIES the dollar loss.
+    expected_ratio = (1 - direct * m) / (1 - direct)
+    pc = out["modeled"]["child_lifetime_earnings_lost_usd"]["point"] / base["modeled"]["child_lifetime_earnings_lost_usd"]["point"]
+    assert pc == pytest.approx(expected_ratio, rel=1e-3)
+    assert pc > 1.0  # low-mobility county: bigger modeled loss
+    assert out["place"]["modifier_applied"] is True
+
+
+def test_scenario_place_untouched_without_key():
+    from downstream.scenario import ScenarioInput, compute_counts
+
+    base = compute_counts(PARAMS, _baseline_dict(), ScenarioInput(displaced_workers=1000))
+    assert base["place"] is None
+
+
+def test_cli_place_smoke():
+    import subprocess
+    import sys
+
+    r = subprocess.run(
+        [sys.executable, "-m", "downstream.cli", "family", "--place", "42101"],
+        capture_output=True, text=True,
+        env={**__import__("os").environ, "PYTHONPATH": "src"},
+    )
+    assert r.returncode == 0, r.stderr[-400:]
+    out = json.loads(r.stdout)
+    assert out["place"]["applied"] is True
+    r2 = subprocess.run(
+        [sys.executable, "-m", "downstream.cli", "scenario", "--workers", "500", "--place", "42101"],
+        capture_output=True, text=True,
+        env={**__import__("os").environ, "PYTHONPATH": "src"},
+    )
+    assert r2.returncode == 0, r2.stderr[-400:]
+    assert json.loads(r2.stdout)["place"]["modifier_applied"] is True

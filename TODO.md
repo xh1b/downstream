@@ -11,13 +11,13 @@ Plan of record: owner-approved top 10 (2026-09-06). Every number cites
 
 ## Engine
 
-- **[P2] #7 integration: apply the landed place modifier + shrunk baselines in the vignette/scenario surfaces** (engine + plug LANDED v1.30; the caller wiring is the remaining slice).
 - **[P2] #31: county WONDER mortality** — PARENT-REPO scraper task (handoff recorded; wonder-mortality CLI is national-only).
 - **[P2] #8: fill the paper prose** — methods, V1 scorecard, limitations; `make` builds clean.
-- **[P3] #10: pre-registered prospective forecasts** — 2-3 events scored before outcomes.
 - **[P2] Employer scenario shape** — documented-conduct inputs (LCA gap totals, WARN events) -> same `compute_counts` surface. Persons ARE included (owner
   decision 2026-09-08 — DOWNSTREAM_LEDGER_SPEC §8 revised; impact framing, never individual prediction).
+- **[P3] #10: pre-registered prospective forecasts** — 2-3 events scored before outcomes.
 - **[P3] Combined child-gap view; housing contagion chain; explanation surface design.**
+- **[P3] Place layer into the MC/knobs/sensitivity surfaces** (v1.31 wired vignette + scenario + CLI; the sampling surfaces still sample national-only).
 
 ## Extraction queue
 
