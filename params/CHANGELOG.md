@@ -1,3 +1,28 @@
+## v1.32 — 2026-09-09 — #25 Akee casino quasi-experiment landed + #9 Duncan refusal
+
+- #25 LANDED (akee2010, AEJ:Applied 2(1):86-115, read via PMC2891175
+  author manuscript): THREE EXACT rows on the casino-transfer
+  quasi-experiment (Eastern Band of Cherokee, ~$4k/yr per adult,
+  Great Smoky Mountains Study children) - education years at age 21
+  +1.127 [0.247, 2.007] (T4 col 1, PREVIOUSLY-POOR households; the
+  full-sample 0.379 ns and never-poor nulls recorded, so no surface
+  quotes the pooled number), any-crime 16-17 -0.224 [-0.377, -0.071]
+  (T6 col 1) and ever-minor by 21 -0.179 [-0.353, -0.005] (T6 col 4).
+  Age-window discipline (minors-only; 18+ nulls), entry-not-count
+  discipline (crime counts n.s.), mother-receipt driver, and the
+  income-not-employment mechanism (parental labor participation
+  null, supervision/activities significant) all declared on the rows.
+- #9 REFUSED: Duncan, Ziol-Guest & Kalil 2010 is observational OLS on
+  PSID - barred from a parameter point by CITING SS1 (the thornton1980
+  precedent). Bib'd with the verified zg2012 companion magnitudes
+  (Prenatal-2 income +$10k/y among <$25k families -> ln adult earnings
+  +0.63 (SE 0.21), recorded as the cross-check note on the akee2010
+  education row); SPEC SS13 carries the refusal. The causal slot is
+  filled by akee2010.
+- Units: EDU_YEARS token + (USD, EDU_YEARS)/(USD, PROB) boundary
+  'rate' compositions; unconditional_income is an entry node.
+- 419 tests green; audit 0 errors; export v1.32 = 40 params.
+
 ## v1.31 — 2026-09-09 — #7 integration: place layer wired into the vignette + scenario surfaces
 
 - `vignette standard_family` and `scenario compute_counts` accept

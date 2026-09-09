@@ -192,6 +192,7 @@ def audit(params_dir: str | Path | None = None) -> list[Finding]:
         "school_spending",
         "youth_wages",
         "neighborhood_exposure",
+        "unconditional_income",
     }
     produced = {p.to_node for p in params.parameters}
     for p in params.parameters:

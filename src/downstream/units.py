@@ -24,6 +24,7 @@ LOG_ELASTICITY = "log_elasticity"  # elasticity of ln(outcome); signed, samples 
 USD = "usd"
 PROB = "probability"
 PERCENTILE = "percentile"      # a rank in 0-100 (Chetty-Hendren kfr scale)
+EDU_YEARS = "edu_years"        # additional years of educational attainment (akee2010)
 
 
 @dataclass(frozen=True)
@@ -73,6 +74,12 @@ COMPOSITION = {
                                     # (place multiplier 1 + dose*gamma*gap/100; boundary
                                     # coefficient like the others: applies a county gap
                                     # vs the national row, never chained from a node level)
+    (USD, EDU_YEARS): "rate",       # unconditional income -> education years (akee2010) -
+                                    # per-treatment boundary coefficient: the paper's dose is
+                                    # four years of ~$4k/y transfer, never a per-dollar chain
+    (USD, PROB): "rate",            # unconditional income -> crime entry (akee2010) - the
+                                    # probit marginal effects are exposure contrasts, boundary
+                                    # applied like the rest
 }
 
 

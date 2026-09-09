@@ -426,6 +426,14 @@ substituted — the spread IS the result. CLI: `downstream ensemble`.
   literature (ousey2018; butcher1998) is null-to-negative — the model
   refuses to encode a positive link, and this refusal is itself a
   published result.
+- Excluded by source-class rule (queue-9): Duncan, Ziol-Guest &
+  Kalil 2010 (Child Development 81:306-325) — the early-poverty →
+  adult-attainment anchor the queue named — is observational OLS on
+  PSID cohorts, barred from setting a parameter point by CITING §1
+  (the thornton1980 precedent). Its long-run magnitudes survive only
+  as a cross-check note (zg2012 Table S5 col 1, recorded on the
+  akee2010 education row); the causal slot for unconditional early
+  income is filled by the akee2010 quasi-experiment instead.
 - Contested literature (native-wage effects: borjas2003 vs
   ottaviano2012; Mariel: card1990 vs the re-analysis war) is not
   encoded as a parameter. When a headline needs it, both positions are

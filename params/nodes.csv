@@ -48,3 +48,7 @@ couple_unemployment,rate_ratio,"relative incidence of couple unemployment (mothe
 unemployment_status,rate_ratio,"relative incidence of involuntary unemployment vs employment (entry node; person-level status contrast, NOT the area unemployment rate whose level is a schneider2016 level-null)"
 mental_health_sd,sd_delta,"mental-health distress vs employed comparison, Cohen's d SD units (exposure contrast carried by the boundary rule, never chained)"
 radical_right_vote_share,percent_delta,"change in the vote share of radical-right parties, in percentage points, per $1k/worker import exposure (colantone2018; mirrors the gop_win_probability node convention)"
+unconditional_income,usd,"annual unconditional household income, in 2010 dollars (akee2010: the Eastern Band of Cherokee casino transfer, ~$4,000/yr per adult member; a dose node, never chained)"
+child_education_years,edu_years,"additional years of educational attainment at age 21 (akee2010; a DIRECT treatment effect carried by the per-treatment boundary rule)"
+youth_any_crime,probability,"probability of committing any crime (arrest data) in the stated age window (akee2010 marginal probit effects, exposure contrast carried by the boundary rule)"
+youth_minor_crime_ever,probability,"probability of EVER committing a minor offense by age 21 (disorderly conduct, trespassing, shoplifting)"
