@@ -11,6 +11,13 @@ This plan acquires papers and their machine-readable receipts. It does not
 automatically turn a paper into a parameter: extraction and the rules in
 `docs/CITING.md` remain the gate for every numerical edge.
 
+Acquisition priorities now follow
+[LIFE_COURSE_RESEARCH_PLAN.md](LIFE_COURSE_RESEARCH_PLAN.md): source corrections,
+baseline household dynamics, a five-year displacement contrast, and independent
+evaluation precede long multigenerational chains. Track dataset documentation
+and baseline-transition estimates separately from causal intervention studies.
+The former cannot silently become causal edges.
+
 ## Acquisition rules
 
 1. Prefer the version of record, its DOI, and a legal open-access copy.
@@ -20,8 +27,9 @@ automatically turn a paper into a parameter: extraction and the rules in
 4. Capture study population, treatment, comparison, outcome, time horizon,
    causal design, DOI, and open-access URL before full-text extraction.
 5. Never use an abstract-only number as an `EXACT` parameter.
-6. Start with bridge papers: a study that connects two populated graph regions
-   has priority over another isolated terminal outcome.
+6. Prioritize evidence needed for the current scenario and its evaluation.
+   Among otherwise comparable candidates, a compatible bridge can be more
+   useful than an isolated endpoint; graph connectivity alone is not priority.
 
 ## Sources and retrieval order
 

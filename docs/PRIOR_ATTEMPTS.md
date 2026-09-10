@@ -1,124 +1,142 @@
-# PRIOR ATTEMPTS — models like this one, and what we take from each
+# Related work: life-course simulation and causal scenarios
 
-The downstream model is not the first attempt to simulate population
-consequences from economic shocks. Four traditions matter. Each is
-summarized with what we adopt and what we refuse. Nothing here is
-proprietary; these are all publicly documented modeling programs.
+Updated September 10, 2026. This is a selective comparison based on primary
+project documentation and research papers, not a systematic review or a
+ranking of scientific quality. “Prior attempts” includes active research
+programs with substantial achievements.
 
-## 1. The Orcutt lineage — dynamic microsimulation
+The ambition to simulate consequences for people and families has close
+predecessors. Useful search terms are **dynamic microsimulation**, **life-course
+simulation**, **causal policy simulation**, and **population health
+microsimulation**. Their existence gives downstream foundations to learn from
+and a clearer standard against which to evaluate its contribution.
 
-**What it is.** Guy Orcutt's 1957 "microanalytic model" idea: simulate
-a synthetic population of persons forward year by year, applying
-transition probabilities (marriage, birth, work, death), and aggregate
-the micro ledger to answer policy questions. The US program family:
+## Closest precedents
 
-- **DYNASIM** (Urban Institute, 1970s-, DYNASIM3/DYNASIM4) — long-run
-  Social Security and retirement-income projection.
-- **CORSIM** (Cornell, Caldwell) — 1960-2050 US synthetic population,
-  the longest-running dynamic model.
-- **SSA's MINT** (Modeling Income in the Near Term) — Census SIPP
-  panels projected to retirement; the Social Security
-  Administration's workhorse for distributional solvency analysis.
+| Project | Documented focus | Relevance to downstream |
+|---|---|---|
+| SimPaths | Individual and household careers, relationships, health, and finances | Life-course state, feedback, modularity, and household context |
+| LifeSim | Developmental, economic, social, and health outcomes across an English birth cohort's lifespan | Childhood-to-adulthood integration and long-horizon assumptions |
+| DYNASIM | Demographic and economic transitions for individuals and families | Baseline trajectories, family structure, and population accounting |
+| Future Elderly Model | Health and economic scenario analysis | Cross-domain consequences and an empirical research program |
 
-**What we adopt.** The core ledger idea: consequences attach to
-persons/families and aggregate to populations by summation, never by
-re-scaling a national coefficient. Their alignment discipline
-(calibrating transitions to known aggregates so the synthetic
-population tracks history — Li & O'Donoghue 2013 survey the methods)
-is the same instinct as our V1 retrodiction.
+### SimPaths
 
-**What we refuse.** Decade-scale synthetic populations need hundreds
-of unmeasured transition rates estimated by smoothing and judgment;
-errors compound silently for 50 simulated years. Our scope is one
-exposure propagating through ~30 cited links over 1-3 generations.
-Every one of our numbers names a study; we refuse uncited transitions,
-which is why the model stops where it stops.
+SimPaths is an open-source framework for individual and household life-course
+analysis. Its methods paper describes interconnected domains and validation
+against observed data. Its documented scope makes it a close architectural
+reference; downstream should not claim that open, multi-domain life-course
+modeling is new. [Bronka et al. (2025), methods paper](https://www.microsimulation.pub/articles/00318),
+[project documentation](https://simpaths.org/).
 
-## 2. Agent-based epidemic/behavior models — the CovidSim lesson
+**What to investigate:** how baseline transitions, household relationships,
+scenario assumptions, and validation are separated. Compare the user-facing
+interpretation of an event with the mechanisms actually being changed.
 
-**What it is.** Individual-level simulation with behavioral rules and
-interaction networks. The cautionary case: **CovidSim** (Ferguson et
-al., Imperial College) drove March 2020 lockdown decisions on
-parameters that were, in the team's own postmortem, "not estimated
-from actual Covid data" — a codebase with 19 years of accretion and
-no settled way to reproduce a run (the 2020 code audit, publicly
-documented, found thousands of code paths and non-deterministic
-output).
+**Boundary of the comparison:** country-specific assumptions and data cannot
+be transferred to a US displacement question simply by adopting the design.
 
-**What we adopt.** Nothing mechanically; we stay deterministic
-inside a draw, seeded, versioned, and reproducible.
+### LifeSim
 
-**What we refuse.** Policy-grade influence from a model whose
-parameters outran its evidence. The CovidSim episode is the standing
-argument for our honesty architecture: an uncited parameter is a bug,
-a non-reproducible output is a bug, and influence must wait for the
-validation program, not the other way around.
+LifeSim models developmental, social, economic, and health outcomes from
+birth to death for an English birth cohort. This is directly relevant to
+the goal of following consequences across life domains and stages.
+[Skarda, Asaria, and Cookson (2021), methods paper](https://microsimulation.pub/articles/00228).
 
-## 3. Regional input-output models — REMI / IMPLAN
+**What to investigate:** how source estimates and baseline targets enter the
+model, how timing is represented, and how simulated outcomes are checked
+against external data. Inspect the assumptions that connect childhood
+conditions with later outcomes before extending downstream's generations.
 
-**What it is.** Multiplier tables for local economies: a job lost in
-industry i propagates through inter-industry flows to a total local
-effect. REMI adds dynamics; IMPLAN is the standard commercial
-implementation used in every "economic impact study."
+**Boundary of the comparison:** a birth-cohort policy model and a calculator
+initialized at an arbitrary adult age solve different initialization problems.
 
-**What we adopt.** The multiplier layer as ONE component: our
-community stream (Moretti's local multipliers, school-spending
-pass-through) is the honest version of this tradition.
+### DYNASIM
 
-**What we refuse.** Impact-study practice: pick a multiplier, multiply
-by the press-release number, publish. Multipliers are the model's
-least-cited numbers in practice — ours are cited (moretti2010, with
-its own manufacturing-to-high-tech spread as the band), and they are
-never the whole answer.
+Urban Institute's DYNASIM advances individuals and families through demographic
+and economic events, including births, deaths, marriage, divorce, employment,
+earnings, disability, and retirement. It provides a concrete precedent for
+simulating lives within family context.
+[Urban Institute, model summary (2015)](https://www.urban.org/sites/default/files/2022-04/dynasim_summary_march_23_2015_0.pdf).
 
-## 4. Forecast verification — the discipline we join
+**What to investigate:** household resource accounting, life histories, and
+consistency between individual transitions and population totals. Separate
+alignment to known totals from independent evaluation of event effects.
 
-**What it is.** The weather/scoring tradition (Gneiting & Raftery
-2007; Gneiting & Katzfuss 2014): probabilistic forecasts are scored
-with proper scoring rules (CRPS), calibration is checked against
-realized frequencies, and sharpness (narrow bands) only counts when
-calibration holds.
+**Boundary of the comparison:** its retirement and aging applications do not
+establish that arbitrary life shocks can be causally evaluated from any profile.
 
-**What we adopt.** The whole V3 stage: pre-registration, proper
-scores, calibration curves, published misses. A modeled band that
-misses 40% of the time is a wrong model no matter how plausible its
-citations are.
+### Future Elderly Model
 
-**What we refuse.** The social-science habit of "validation by
-citation" — treating published support for each link as validation of
-the composition. Composed models fail in their own ways; that is why
-V1/V2 exist and why the direct-vs-IGE cross-check (V0) runs on every
-validate call.
+USC's Future Elderly Model connects health and economic outcomes to examine
+alternative health and policy scenarios. It is an example of a sustained
+research program built around a simulation model.
+[USC Schaeffer, project documentation](https://schaeffer.usc.edu/data/future-elderly-model/).
 
-## 5. Where this sits among them
+**What to investigate:** how alternative scenarios alter trajectories and
+how health consequences connect to economic and public-resource outcomes.
 
-| | DYNASIM/CORSIM/MINT | CovidSim-class ABM | REMI/IMPLAN | downstream |
-|:--|:--|:--|:--|:--|
-| unit of compute | synthetic person | agent | region | cited ledger step |
-| parameter source | estimated + judgment | mixture | tables | citation-locked |
-| uncertainty | some (stochastic sims) | rarely | none | bands + MC, mandatory |
-| validation | alignment to aggregates | post-hoc | rarely | V0-V3 program |
-| reproducibility | partial (code age) | failed publicly | proprietary | seeded + versioned |
-| scope honesty | acknowledged drift | overreach | narrow but oversold | fail-loud on missing inputs |
+**Boundary of the comparison:** evidence and baseline dynamics for an older
+population cannot be assumed to apply to working-age parents or children.
 
-The niche: nothing in the four traditions binds every simulated step
-to a published effect size with a precision tier and publishes its
-own misses. That is the experiment this repo runs.
+## Other relevant traditions
 
-## Key public sources
+Dynamic microsimulation has a longer lineage, including Orcutt's work,
+CORSIM, Statistics Canada's LifePaths, and SSA's MINT. A later systematic
+comparison should examine their documented versions and applications rather
+than assign blanket labels for openness, uncertainty, or validation. The
+[SimPaths review](https://www.microsimulation.pub/articles/00318) is a useful
+starting bibliography, not a substitute for reading each model's sources.
 
-- Orcutt 1957, "A New Type of Socio-Economic System," REStat 39:108.
-- Li & O'Donoghue 2013, "A survey of the microsimulation alignment
-  method," IMA Journal of Management Mathematics 24:173.
-- Zaidi & Rake 2001, "Dynamic microsimulation models: a review and
-  some directions for further development," STICERD research note.
-- Gneiting & Raftery 2007, "Strictly Proper Scoring Rules,
-  Prediction, and Estimation," JASA 102:359.
-- Imperial College CovidSim: the code went public on GitHub in 2020
-  and an independent review documented its structure and
-  non-determinism; the team's own published responses acknowledged the
-  Covid parameters were judgment-based rather than estimated from
-  Covid outcome data.
-- Moretti 2010, "Local Multipliers," AER 100:373.
-- Miller et al. (SSA), MINT documentation; Urban Institute DYNASIM3
-  documentation; CORSIM documentation (Cornell).
+Agent-based models are relevant when consequences depend on interactions
+between people, firms, or neighborhoods. Reproducibility, behavioral
+assumptions, and calibration should be evaluated for each implementation.
+The previous version of this document used broad, insufficiently sourced
+claims about CovidSim; those claims are removed. There is no scientific gain
+in presenting a different modeling tradition as uniformly unreliable.
+
+Regional economic models address inter-industry and local spillovers. Their
+scale differs from a person's life history. Downstream currently uses a
+local-employment multiplier at a count boundary; it does not reproduce a
+regional equilibrium model. A future comparison of REMI and IMPLAN should
+examine their actual specifications, geography, and scenario definitions.
+
+Forecast verification contributes proper scoring rules and calibration
+checks. A cited path is not validated merely because each constituent study
+exists. Likewise, matching a historical population total is not evidence
+that an intervention effect transports correctly. Keep baseline validation,
+causal event validation, and numerical verification separate.
+
+## Positioning the contribution
+
+Downstream currently propagates published response coefficients conditional
+on an externally supplied exposure. It lacks a complete baseline life-course
+model. Its prospective contribution is the combination of inspectable
+provenance, evidence applicability, restrictions on causal composition,
+explicit unknowns, and accessible scenario comparison.
+
+Those are design goals to demonstrate empirically. No claim is made that
+other models lack provenance, uncertainty analysis, or published validation.
+No “first” or “only” claim follows from this selective review.
+
+A useful research question is: **When can estimates from separate studies be
+combined into reliable life-course scenario predictions, and when should the
+model refuse that composition?** Evaluate whether the restrictions improve
+out-of-sample performance or make unsupported extrapolation easier to detect.
+
+## Comparative research tasks
+
+1. Reproduce one documented example from SimPaths and LifeSim, subject to data
+   access and licensing, and record the actual assumptions and outputs.
+2. Compare a common narrow question across downstream, a simple direct-effect
+   baseline, and an appropriate documented comparator where compatible inputs
+   and estimands are available. Do not force unlike outputs into one score.
+3. Record initialization data, transition estimation, causal identification,
+   household links, place treatment, uncertainty, validation, and user-facing
+   explanations in a versioned evidence matrix.
+4. Identify reusable methods before building equivalents. Source access and
+   integration feasibility are separate questions from conceptual usefulness.
+5. Expand the comparison before making a novelty or superiority claim.
+
+The forward research goals are in [LIFE_COURSE_RESEARCH_PLAN.md](LIFE_COURSE_RESEARCH_PLAN.md).
+The calculator design is in [WEBSITE_EXPERIENCE_PLAN.md](WEBSITE_EXPERIENCE_PLAN.md).

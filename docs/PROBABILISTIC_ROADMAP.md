@@ -4,13 +4,18 @@ This document distinguishes implemented probability machinery from research
 work that requires new data. It prevents a convenient sampler from being
 mistaken for evidence about a causal bridge.
 
+This is a methods backlog supporting
+[LIFE_COURSE_RESEARCH_PLAN.md](LIFE_COURSE_RESEARCH_PLAN.md). Research milestone
+order is defined there; the user-facing treatment of uncertainty is planned
+in [WEBSITE_EXPERIENCE_PLAN.md](WEBSITE_EXPERIENCE_PLAN.md).
+
 ## Landed in the current engine
 
-- **Incomplete mortality timing (`source_aligned` option).** The peak is
-  applied in follow-up year 1; years 2--5 stay at baseline despite available
-  unextracted source estimates. Offset +6 starts in year 6, one year early.
-  See `REVIEW_2026-09-10.md` for the required source/profile correction.
-  `immediate_sustained` is a named sensitivity assumption, never the default.
+- **Source-offset mortality timing.** `source_profile` is the default and
+  uses the extracted Table 5 column 3 offsets: displacement, +1, +2--3,
+  +4--5, and +6+. Displacement is follow-up year 1, so +6 begins in year 7.
+  The former `source_aligned` behavior is retained only for historical
+  reproduction; `immediate_sustained` is a named sensitivity assumption.
 - **Expected versus realized counts.** Scenario output retains parameter-only
   intervals for expected effects. For integer worker cohorts it additionally
   reports a posterior-predictive binomial simulation for observed mortality in
@@ -26,9 +31,12 @@ mistaken for evidence about a causal bridge.
   variant and every listed support endpoint. Variants receive no subjective
   posterior weights.
 - **County count-likelihood foundation.** `county-posterior` accepts only
-  event counts plus compatible person-years and produces a Beta-binomial
-  posterior against a declared national-strength prior. It deliberately does
-  not reinterpret the current generic county precision field as a denominator.
+  event counts plus compatible person-years and produces a Gamma--Poisson
+  rate posterior against a national rate prior with matching outcome,
+  population, and window metadata. It reports the constant-hazard risk
+  conversion separately and does not reinterpret generic precision as trials.
+  Scenario place resolution refuses generic county mortality rates until this
+  contract is supplied through a validated integration bridge.
 - **Evidence-admission gate.** `synthesize --compare-params` can compare a
   compatible log-ratio synthesis to a shipped parameter, but produces a
   manual-review report only. Templates live in `params/study_estimates.template.csv`

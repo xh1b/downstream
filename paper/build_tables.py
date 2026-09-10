@@ -8,9 +8,10 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'src'))
-from downstream.params import load_all, load_correlations
-from downstream.validate import run
-from downstream.children import child_line
+# Standalone paper builds resolve the local source tree before these imports.
+from downstream.params import load_all, load_correlations  # noqa: E402
+from downstream.validate import run  # noqa: E402
+from downstream.children import child_line  # noqa: E402
 
 OUT = Path(__file__).resolve().parent / 'generated'
 
@@ -38,6 +39,16 @@ def write(name, text):
         path.write_text(text, encoding='utf-8')
 
 
+def plot_data(name, rows):
+    """Keep plot coordinates unrounded and in the same units as the scorecard."""
+    lines = ['row point low high measured']
+    for index, (modeled, measured) in enumerate(rows):
+        lines.append(' '.join(str(v) for v in
+                              (index, modeled['point'], modeled['low'],
+                               modeled['high'], measured)))
+    write(name, '\n'.join(lines) + '\n')
+
+
 def main():
     OUT.mkdir(exist_ok=True)
     parts = load_all(ROOT / 'params')
@@ -50,7 +61,7 @@ def main():
                                              or p.name == 'VERSION'))
     # Include the manuscript, generator, and build configuration; generated
     # output is excluded to avoid a self-referential content hash.
-    source_files = sorted(set(source_files) | {
+    source_files = sorted(set(source_files) | set((ROOT / 'paper/figures').glob('*.tex')) | {
         ROOT / 'paper/downstream.tex', ROOT / 'paper/build_tables.py',
         ROOT / 'paper/review_references.bib', ROOT / 'paper/Makefile',
         ROOT / 'pyproject.toml', ROOT / 'uv.lock',
@@ -100,6 +111,17 @@ def main():
                     n(r[f'measured_gap_{unit}']) + ' & ' +
                     ('yes' if r['measured_inside_modeled_band'] else 'no') + r' \\')
     write('panel.tex', '\n'.join(rows) + '\n')
+    plot_data('mortality_plot.dat', [
+        (r['modeled_excess_deaths_per100k'], r['measured_differential_per100k']['point'])
+        for r in validation['v1_retrodict']['scored']])
+    plot_data('divorce_plot.dat', [
+        (r['modeled_pp_women'], r['measured_pp_women']['point'])
+        for r in validation['v1_retrodict']['scored_divorce']['windows']])
+    panel = validation['v1_panel']['tercile_tests']
+    plot_data('panel_divorce_plot.dat', [
+        (r['modeled_gap_pp'], r['measured_gap_pp']) for r in panel[:2]])
+    plot_data('panel_earnings_plot.dat', [
+        (r['modeled_gap_usd'], r['measured_gap_usd']) for r in panel[2:]])
     rows = []
     for r in validation['v1_retrodict']['scored_divorce']['windows']:
         rows.append(n(r['window_years']) + ' & ' + band(r['modeled_pp_women']) + ' & ' +

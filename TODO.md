@@ -6,13 +6,38 @@ website surfaces) live in the parent repo's `internal/TODO.md` under
 "Downstream integration". Design for that side:
 `internal/docs/ENTITY_ANALYSIS.md` (parent repo).
 
-Plan of record: owner-approved top 10 (2026-09-06). Every number cites
-(CITING.md); misses publish; website work gated.
+Research plan of record: `docs/LIFE_COURSE_RESEARCH_PLAN.md` (2026-09-10),
+with model design in `docs/CAUSAL_GRAPH_PLAN.md`. The earlier top-10 work
+remains recorded below. Every numerical claim retains provenance; misses publish.
 
 ## Current scope
 
-Owner direction: improve this project first. XH1B implementation is deferred.
+Owner direction: improve this project and plan an eventual public calculator.
+The experience plan is `docs/WEBSITE_EXPERIENCE_PLAN.md`; website implementation
+and XH1B integration remain future work.
 See `docs/MATH_REVIEW.md` for reviewed arithmetic and remaining assumptions.
+
+## Forward goals
+
+- **[R0-R1] Correct and classify:** resolve current review findings; distinguish
+  baseline transitions, causal effects, and structural assumptions in evidence records.
+- **[R2] Baseline household trajectories:** select suitable longitudinal data,
+  represent linked members/resources, and evaluate held-out ordinary transitions.
+- **[R3] First full comparison:** a five-year involuntary-displacement scenario
+  versus a stated reference, limited to supported employment, earnings, and
+  household-resource outcomes. Current long-run coefficients are not annual paths.
+- **[R4-R5] Independent validation and applicability:** freeze a matched event
+  evaluation, compare with simple models, and report subgroup and uncertainty limits.
+- **[W0-W3] Calculator design:** research useful questions, write the explanation
+  first, compare two visual directions, and test comprehension with fictional
+  or explicitly limited examples before scientific release readiness.
+- **[R6 / W4-W5] Evaluated public experience:** expose only eligible scenarios
+  after the scientific, comprehension, and accessibility criteria are met.
+- **[R7-R8] Expand with evidence:** add protective interventions and supported
+  combinations before longer horizons and descendants.
+- **[DONE 2026-09-10] Research positioning and product plan:** cited related work
+  added to the paper; prior-attempts comparison rewritten fairly; life-course
+  and website experience plans documented. These are plans, not shipped capabilities.
 
 ## Engine
 
@@ -42,15 +67,22 @@ truth; do not duplicate rows here.
 
 - **[P2] Remaining** — remaining integration and research work: #7 production integration, county mortality, and P3s. Paper prose and employer/person engine mapping are complete. (#7 engine + modifier plug LANDED v1.30; #5 distributions + correlations LANDED v1.27; #6 V2 framework pre-registered v1.28 — scoring blocked on per-event displacement bridges: BRAC needs county/window alignment + w6941 OCR; NAFTA needs a tariff-unit displacement bridge that no published source provides; auto crisis has no quasi-experimental measured side.)
 - Also: remarriage-margin candidate from the V1 divorce row.
-# Review priorities — 2026-09-10
+## Review priorities — 2026-09-10
 
-- **[P1] Mortality profile:** reconcile source versions and columns, extract
-  early-year estimates, and index offset +6 correctly. Current
-  `source_aligned` behavior is an incomplete approximation.
+- **[P1] Mortality profile:** source offsets, early effects, and the +6
+  boundary are fixed in the default working-paper profile. Published QJE
+  Table 4 uses a different additive parameterization whose phase-total
+  covariance is unavailable; a published-profile variant remains blocked.
+  See `docs/MORTALITY_SOURCE_RECONCILIATION_2026-09-10.md`.
+- **[P1] Mortality applicability:** demographic profile selection now refuses
+  sex/age mismatch with the male 45--54 causal response. Adding other strata
+  requires separately admitted effect estimates, not only new baseline rates.
 - **[P1] Place counterfactual:** resolve `1-M*g` versus a same-place exposure
   contrast; a null displacement effect currently produces a county effect.
-- **[P1 before integration] County likelihood:** distinguish person-time rates
-  from binomial trials and validate national-prior population/window metadata.
+- **[P1] County likelihood:** Gamma--Poisson estimation and strict
+  national-prior metadata are implemented; generic `places.csv` mortality
+  rates are refused in production. Integrate only a validated county export
+  with compatible outcome/population/window metadata and a declared bridge.
 - **[P2] Synthesis and transmission:** enforce estimand/window/overlap checks;
   add small-study interval sensitivity and a log-elasticity structural variant.
 - **[DONE 2026-09-10] Numerical review repairs:** independent copula designs,

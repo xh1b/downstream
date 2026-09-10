@@ -1,0 +1,21 @@
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+  \foreach \y/\rowtitle/\question/\explanation in {
+    0/{Support envelope}/{What do the endpoint calculations span?}/{A bound under the stated calculation; no probability content.},
+    -1.25/{Parameter interval}/{How do outputs vary across parameter draws?}/{Central 90\% under declared distributions; excludes unmodeled error.},
+    -2.5/{Realized\\mortality counts}/{How might counts vary between simulated cohorts?}/{Conditional binomial variation; not one person's paired causal effect.},
+    -3.75/{Structural\\alternatives}/{How do selected composition choices change results?}/{Named model variants; no probability distribution over all models.}} {
+    \node[fbox,fill=acc!9,anchor=west,text width=3.05cm,minimum height=1.02cm]
+      at (0,\y) {\textbf{\rowtitle}};
+    \node[anchor=west,align=left,text width=10.6cm,font=\footnotesize,text=ink]
+      at (3.8,\y+0.19) {\question};
+    \node[anchor=west,align=left,text width=10.6cm,font=\scriptsize,text=mut]
+      at (3.8,\y-0.25) {\explanation};
+  }
+\end{tikzpicture}
+\caption{Four distinct uncertainty summaries. They are not interchangeable
+intervals. Uncertain exposure, baseline estimation, study transport, and missing
+mechanisms are not all captured by the current parameter draws.}
+\label{fig:uncertainty}
+\end{figure}

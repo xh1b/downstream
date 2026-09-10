@@ -32,7 +32,13 @@ its own misses.
 
 - `SPEC.md` — the algorithm: graph primitives, composition, uncertainty, and
   what is computed from which citations
-- `docs/CAUSAL_GRAPH_PLAN.md` — the graph-first plan of record and milestones
+- `docs/LIFE_COURSE_RESEARCH_PLAN.md` — research goals for a person-and-place
+  simulator, beginning with baseline household trajectories and a validated
+  five-year event comparison
+- `docs/CAUSAL_GRAPH_PLAN.md` — model records and composition rules supporting
+  the research milestones
+- `docs/WEBSITE_EXPERIENCE_PLAN.md` — the future calculator's user journey,
+  explanations, visual direction, usability evaluation, and release criteria
 - `docs/LITERATURE_ACQUISITION_PLAN.md` — reproducible corpus-building plan
   and initial DOI/open-access acquisition batch
 - `params/` — the parameter set (versioned), node units, baselines, references.bib
@@ -44,8 +50,8 @@ its own misses.
 - `docs/ATTRIBUTION.md` — how credit is given and kept exact
 - `docs/QUEUED_EXTRACTIONS.md` — modeled links awaiting their number, with
   the exact extraction target named
-- `docs/PRIOR_ATTEMPTS.md` — the four prior modeling traditions and what
-  this model takes and refuses from each
+- `docs/PRIOR_ATTEMPTS.md` — related work, including SimPaths, LifeSim,
+  DYNASIM, and the Future Elderly Model; similarities and lessons to investigate
 - `paper/` — `make` builds `downstream.pdf` (methods paper)
 - `tests/` — the compute checks (`pytest tests/`)
 
@@ -65,7 +71,7 @@ downstream knobs --action voi --outcome grandchild   # which knob is worth pinni
 downstream infer --outcome grandchild    # exact moments + normal band (no seed)
 downstream ensemble     # structural-variant spread (composition assumptions priced)
 downstream synthesize --input studies.csv  # same-scale random-effects evidence synthesis (not parameter admission)
-downstream county-posterior --input county_counts.csv --key 01001 --outcome mortality --time-window 2015-19 --national-rate .004944 --prior-person-years 2000
+downstream county-posterior --input county_counts.csv --key 01001 --outcome mortality --time-window 2015-19 --national-rate .004944 --national-population-scope "US prime-age men 45-54" --national-citation cdc_wonder --prior-person-years 2000
 downstream county-wonder-posterior --export counties.tsv --metadata query.json --key 01001 --national-rate .004944 --prior-person-years 2000
 downstream infer --outcome grandchild --action closure   # do the 90% bands cover 90%?
 downstream audit         # parameter/citation/DAG/unit checks
@@ -92,12 +98,11 @@ variation in deaths for new exposed and counterfactual reference cohorts.
 That contrast is not a paired individual-level causal-outcome distribution.
 Fractional worker-equivalent aggregates retain expected effects only.
 
-Mortality defaults to the historical `source_aligned` option, an incomplete
-source profile: it holds follow-up years 2–5 at baseline despite available
-source estimates, then applies the offset +6 coefficient from follow-up year
-6 (one year early when displacement is year 1). Re-extraction and timing
-correction are priorities; see [the September 10 review](docs/REVIEW_2026-09-10.md).
-`--mortality-timing immediate_sustained` remains a sensitivity assumption.
+Mortality defaults to `source_profile`: the extracted displacement, offset 1,
+offsets 2–3, offsets 4–5, and offset 6+ profile from Sullivan--von Wachter Table 5 column 3.
+With displacement occupying follow-up year 1, +6 begins in year 7.
+`source_aligned` is retained only to reproduce the former incomplete timing;
+`immediate_sustained` remains a sensitivity assumption.
 
 Companion project: xh1b.org. Integration into its employer, county,
 state, and family surfaces is in progress. This repo contains only the model,
@@ -161,23 +166,27 @@ and do not enter the exposure calculation. The database runner and its
 record-selection rules belong to the companion project.
 
 Build the methods paper with `make -C paper`. The build regenerates its
-parameter inventory and V1 scorecard from the engine, then compiles
+parameter inventory, V1 scorecard, and chart coordinates from the engine, then compiles
 `paper/downstream.pdf`. `paper/generated/results.json` contains the full
 validation output and a source-content hash. Generated files are ignored
-by git; `paper/build_tables.py` is the reproducible source.
+by git; `paper/build_tables.py` generates the numerical data. Vector diagrams
+and chart layouts live in `paper/figures/`. The PDF uses TikZ and PGFPlots,
+with the numerical scorecard tables retained in an appendix.
 
 
 Engine 0.2.0 corrects mortality odds-to-risk conversion and survival timing,
-applies place adjustments once before descendant transmission, and fixes
+uses a source-offset mortality profile, scales optional place effects as a
+same-place displacement-loss contrast, and fixes
 signed uncertainty envelopes and normal/lognormal analytic moments. See
 `docs/MATH_REVIEW.md` for the findings and remaining assumptions.
 Historical scenario arithmetic is available through
 `--mortality-method legacy_additive --place-application legacy_repeated`.
 
 The September 10 review additionally repairs independent copula designs,
-custom-chain connectivity and starting values, and county predictive
-baselines. It documents unresolved mortality-source, place-counterfactual,
-and county-likelihood issues in `docs/REVIEW_2026-09-10.md` and the paper.
+custom-chain connectivity and starting values, county predictive baselines,
+and rate-likelihood semantics. Generic county mortality values are not used
+by scenarios; county results remain experimental until their matching
+population/window metadata enter through a validated integration bridge.
 Correlated Monte Carlo results change at historical seeds after the copula
 repair. Legacy additive mortality retains expected counts only.
 

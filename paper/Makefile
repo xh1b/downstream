@@ -10,7 +10,7 @@ all: downstream.pdf
 data:
 	$(PYTHON) build_tables.py
 
-downstream.pdf: downstream.tex build_tables.py data
+downstream.pdf: downstream.tex $(wildcard figures/*.tex) build_tables.py data
 	$(LATEXMK) downstream.tex
 
 view: downstream.pdf

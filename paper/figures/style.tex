@@ -1,0 +1,43 @@
+% Vector figure language adapted from the companion egg paper.
+\tikzset{
+  >=Stealth,
+  font=\footnotesize,
+  fbox/.style={draw=ink!65, rounded corners=2.5pt, fill=white,
+    align=center, inner sep=6pt, text=ink},
+  flow/.style={->, thick, ink!75},
+  planned/.style={fbox, dashed, draw=acc, fill=acc!5},
+}
+\pgfplotsset{score/.style={
+  width=10.4cm, height=4.0cm, scale only axis,
+  axis x line*=bottom, axis y line*=left,
+  y axis line style={draw=none}, ytick style={draw=none},
+  axis line style={ink!45}, tick style={ink!35},
+  xmajorgrids=true, grid style={ink!10},
+  y dir=reverse, ymin=-0.55,
+  yticklabel style={font=\footnotesize, text=ink, align=right},
+  xticklabel style={font=\scriptsize, text=mut},
+  xlabel style={font=\footnotesize, text=mut},
+  scaled x ticks=false, /pgf/number format/1000 sep={},
+  /pgf/number format/fixed,
+  clip=false,
+}}
+\newcommand{\scoreplot}[1]{%
+  \addplot[only marks, mark=*, mark size=2.4pt, color=acc,
+    mark options={fill=acc,draw=acc},
+    error bars/.cd, x dir=both, x explicit,
+    error bar style={line width=1.2pt}, error mark options={line width=0.9pt}]
+    table[x=point, y=row, x error minus expr=\thisrow{point}-\thisrow{low},
+      x error plus expr=\thisrow{high}-\thisrow{point}] {#1};
+  \addplot[only marks, mark=diamond*, mark size=3pt, color=amb,
+    mark options={fill=amb,draw=amb}]
+    table[x=measured,y=row] {#1};
+}
+\newcommand{\scorelegend}{%
+  \begin{tikzpicture}[font=\scriptsize]
+    \draw[acc, line width=1.2pt] (0,0)--(0.65,0);
+    \fill[acc] (0.325,0) circle (2.4pt);
+    \node[anchor=west,text=ink] at (0.8,0) {Model point and band};
+    \node[diamond,fill=amb,inner sep=2pt] at (5,0) {};
+    \node[anchor=west,text=ink] at (5.25,0) {Measured point};
+  \end{tikzpicture}%
+}

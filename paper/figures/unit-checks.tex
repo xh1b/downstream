@@ -1,0 +1,28 @@
+\begin{figure}[t]
+\centering
+\scorelegend\par\medskip
+\textbf{A. Mortality: male variants exceed the measured point}\par\smallskip
+\begin{tikzpicture}[trim axis left,trim axis right]
+  \begin{axis}[score, height=3.0cm, xmin=0, xmax=27, ymax=2.55,
+    xtick={0,5,10,15,20,25}, ytick={0,1,2},
+    yticklabels={All adults,All male,{All male, age matched}},
+    xlabel={Excess deaths per 100,000 adults per unit shock}]
+    \scoreplot{generated/mortality_plot.dat}
+  \end{axis}
+\end{tikzpicture}\par\bigskip
+\textbf{B. Divorce path: both windows fall short of the stock change}\par\smallskip
+\begin{tikzpicture}[trim axis left,trim axis right]
+  \begin{axis}[score, height=2.4cm, xmin=0, xmax=0.32, ymax=1.55,
+    xtick={0,0.1,0.2,0.3}, ytick={0,1}, yticklabels={5-year window,10-year window},
+    xlabel={Percentage points of women per unit shock}]
+    \scoreplot{generated/divorce_plot.dat}
+  \end{axis}
+\end{tikzpicture}
+\caption{China-shock unit checks generated from the current engine.
+Blue lines are model bands, not a common confidence level; amber diamonds
+are measured point targets without their sampling intervals. Panel A compares
+modeled mortality with a male--female differential; panel B compares divorce
+with a broader family-status stock change. These target mismatches limit both
+comparisons. Numerical values appear in Appendix~\ref{app:scorecards}.}
+\label{fig:unit-checks}
+\end{figure}

@@ -1,0 +1,34 @@
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+  \node[anchor=west,font=\scriptsize\bfseries,text=acc] at (0,1.05)
+    {PROPOSED / NOT IMPLEMENTED LIFE-COURSE CAPABILITIES};
+  \node[planned,text width=3.1cm,minimum height=1.25cm] (profile) at (1.75,-1.0)
+    {\textbf{Supported profile}\\Person, family, place\\Starting circumstances};
+  \node[planned,text width=4.05cm,minimum height=1.15cm] (reference) at (7.4,0)
+    {\textbf{Reference scenario}\\Baseline transitions\\Five-year horizon};
+  \node[planned,text width=4.05cm,minimum height=1.15cm] (event) at (7.4,-2.0)
+    {\textbf{Event scenario}\\Displacement and timing\\Five-year horizon};
+  \node[planned,text width=3.15cm,minimum height=1.4cm] (compare) at (13.2,-1.0)
+    {\textbf{Compare outcomes}\\Employment, earnings\\Household resources};
+  \draw[flow,dashed] (profile.east) -- ++(0.55,0) |- (reference.west);
+  \draw[flow,dashed] (profile.east) -- ++(0.55,0) |- (event.west);
+  \draw[flow,dashed] (reference.east) -- ++(0.5,0) |- (compare.west);
+  \draw[flow,dashed] (event.east) -- ++(0.5,0) |- (compare.west);
+  \node[anchor=west,font=\scriptsize\bfseries,text=mut] at (0,-3.3)
+    {RESEARCH GATES BEFORE PUBLIC USE};
+  \foreach \x/\num/\heading/\detail in {
+    1.75/1/{Repair}/{Estimands and scope\\Event timing},
+    5.55/2/{Fit baseline}/{Life-course transitions\\Linked households},
+    9.35/3/{Validate}/{Independent outcomes\\Simple benchmarks},
+    13.15/4/{Evaluate use}/{Scope and uncertainty\\User comprehension}} {
+    \node[fbox,fill=black!2,text width=3.05cm,minimum height=1.5cm] at (\x,-4.55)
+      {\textcolor{acc}{\textbf{\num\quad\heading}}\\[3pt]\detail};
+  }
+\end{tikzpicture}
+\caption{The proposed first life-course demonstration and its release gates.
+Both scenarios start from the same supported profile. The diagram specifies
+comparisons, not predicted trajectories. Further events, community feedback,
+and longer horizons require additional evidence and validation.}
+\label{fig:future}
+\end{figure}

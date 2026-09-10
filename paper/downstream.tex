@@ -5,8 +5,18 @@
 \usepackage{lmodern}
 \usepackage[T1]{fontenc}
 \usepackage{microtype,amsmath,amssymb,booktabs,longtable,array}
-\usepackage[colorlinks=true,citecolor=blue,urlcolor=blue,linkcolor=blue]{hyperref}
+\usepackage{xcolor,tikz,pgfplots,float,flafter,placeins}
+\usetikzlibrary{arrows.meta,positioning,calc,shapes.geometric}
+\pgfplotsset{compat=1.18}
+\definecolor{ink}{HTML}{1F2430}
+\definecolor{mut}{HTML}{5B6675}
+\definecolor{navy}{HTML}{27476E}
+\definecolor{acc}{HTML}{3E6B9E}
+\definecolor{amb}{HTML}{B45309}
+\definecolor{grn}{HTML}{1F7A57}
+\usepackage[colorlinks=true,citecolor=navy,urlcolor=navy,linkcolor=navy]{hyperref}
 \usepackage{xurl}
+\input{figures/style}
 \hypersetup{pdftitle={Downstream: methods and validation},pdfauthor={John Larue}}
 \setlength{\emergencystretch}{2em}
 \makeatletter
@@ -59,6 +69,36 @@ use; it should not imply that the code currently advances a representative
 synthetic population through an annual life cycle.
 
 \section{Relation to other modeling approaches}
+\subsection{Life-course and household microsimulation}
+The intended person-and-place simulator belongs to an established research
+tradition. SimPaths projects individual and household histories across
+work, family relationships, health, and finances in an open-source
+framework \cite{bronka2025simpaths}. It is a close architectural
+reference for dynamic feedback and household context. LifeSim combines
+developmental, economic, social, and health outcomes across an English
+birth cohort's lifespan \cite{skarda2021lifesim}. It is especially relevant
+to linking childhood circumstances with later outcomes. Neither project
+should be reduced to a collection of isolated outcome multipliers.
+
+Urban Institute's DYNASIM ages individuals and families through demographic
+and economic transitions, including marriage, divorce, work, earnings,
+disability, and retirement \cite{urban2015dynasim}. The Future Elderly
+Model connects health and economic outcomes to evaluate alternative
+health and policy scenarios \cite{uscFEM}. These programs provide useful
+precedents for baseline trajectories, family structure, scenario analysis,
+and empirical evaluation. Their domains and target populations differ;
+this comparison is selective, not a systematic ranking of model quality.
+
+Downstream currently has a narrower implementation: cited response
+coefficients and count conversions conditional on an externally supplied
+exposure. Its proposed contribution is an inspectable connection between
+evidence applicability, composition restrictions, uncertainty, and
+accessible scenario comparison. Openness, simulation of multiple domains,
+and citation of evidence alone do not establish novelty. Whether its
+composition rules improve out-of-sample performance remains a research
+question, not a demonstrated advantage over these predecessors.
+
+\subsection{Causal composition and population consequences}
 Our design separates three tasks often combined in larger models:
 estimating an exposure, propagating its consequences, and evaluating the
 result. The exposure is supplied by the caller. A dynamic population model
@@ -75,6 +115,11 @@ single effect. The model is therefore an auditable synthesis of conditional
 responses, not a newly identified causal estimate of the entire system.
 
 \section{Model and evidence}
+Figure~\ref{fig:model} separates supplied inputs, model operations, and
+reported outputs. Its arrows describe computation; they do not establish
+that a causal pathway is identified.
+\input{figures/model}
+
 \subsection{Exposure and outcomes}
 A scenario supplies displaced-worker exposure $N$, children per exposed
 worker $C$, a tradable-job share $s$, and a mortality window $Y$.
@@ -196,6 +241,7 @@ Only verified baseline values enter a count. A missing baseline produces
 a named blocked outcome, or raises an exception in strict mode. The
 baseline file records source, population, units, and derivation. Table~1
 lists its current values; some support modules beyond the count interface.
+
 \begin{table}[htbp]
 \centering\small
 \caption{Stored baselines. Units and source qualifications are discussed below.}
@@ -205,6 +251,7 @@ lists its current values; some support modules beyond the count interface.
 \bottomrule
 \end{tabular}
 \end{table}
+
 Mortality uses CDC WONDER deaths per person-year as an approximation to
 the annual probability $m$. A person-time rate is not itself a cohort
 probability \cite{cdcRiskMeasures}; under a constant hazard $\lambda$,
@@ -232,24 +279,27 @@ $M=1+18\gamma(q-q_0)/100$, where $q$ is the county's permanent-resident
 income-rank percentile and $q_0$ is the national reference. The exposure
 coefficient $\gamma$ comes from Chetty and Hendren
 \cite{chettyhendren2018}. Applying an income-rank exposure effect as a
-multiplicative adjustment to an earnings-displacement chain is an
-additional assumption, not the estimand of that study. The child modifier
-is applied once before transmission. Descendants inherit that adjusted
-gap. The historical repeated application is available as an explicit
-structural alternative, not the default. Place-aware sampling recomputes $M$ for each parameter draw,
+modifier of a displacement loss is an additional assumption, not the
+estimand of that study. The count interface uses the same-place contrast
+$M(1-g)$, equivalently a child multiplier $1-M(1-g)$, so a null displacement
+effect ($g=1$) remains null at every place. The child modifier is applied
+once before transmission. Descendants inherit that adjusted gap. The
+historical repeated application is available as an explicit structural
+alternative, not the default. Place-aware sampling recomputes $M$ for each parameter draw,
 while county measurements and pooling weights remain fixed.
 
-There is a consequential counterfactual mismatch in this optional layer.
-For an unmodified child level $g$, the count interface uses $1-Mg$ as the
-loss. At $g=1$ this equals $1-M$, so a null displacement effect can still
-produce a reported gain or loss. If $M$ changes the earnings baseline in
-both exposure arms, their level difference would instead be $M(1-g)$;
-if it changes susceptibility to displacement, an independently supported
-effect modifier is needed. The present output mixes a place-level shift
-with a displacement contrast. Place-specific child dollar losses should
-therefore be treated as exploratory until that estimand is resolved.
+This null-safe formulation does not identify a displacement-by-place
+interaction. If $M$ changes the earnings baseline in both exposure arms,
+their level difference would be $M(1-g)$; if it changes susceptibility to
+displacement, an independently supported effect modifier is needed.
+Place-specific child dollar losses remain exploratory and the national
+child-dollar result is the reference.
 
 \section{Uncertainty and experiments}
+Figure~\ref{fig:uncertainty} distinguishes the uncertainty objects used
+below. Each answers a different question.
+\input{figures/uncertainty}
+
 \subsection{Parameter sampling}
 Latin hypercube sampling stratifies each parameter marginal
 \cite{mckay1979}. Positive ratio units default to log-uniform sampling;
@@ -344,24 +394,22 @@ effect interval and does not identify a policy-to-exposure bridge.
 
 \subsection{Evidence synthesis and county likelihoods}
 The optional synthesis module implements DerSimonian--Laird heterogeneity
-estimation and inverse-variance random-effects pooling on an identical
-declared link and scale. Its intervals use a plug-in normal approximation;
+estimation and inverse-variance random-effects pooling only after exact
+link, scale, population, and horizon checks, with declared treatment,
+comparison, outcome, and overlap metadata retained for review. Its intervals use a plug-in normal approximation;
 uncertainty in the estimated between-study variance is not propagated.
 Few-study prediction intervals can be unreliable \cite{cochraneMeta}.
 Matching scale strings alone does not enforce compatible follow-up,
 population, design, or independent samples. Metadata review remains
 necessary, and these outputs are not automatically admitted as parameters.
 
-The standalone county module currently uses
-$\alpha=km_0+D$ and $\beta=k(1-m_0)+T-D$ for a beta posterior,
-where $T$ is person-years. This is only a binomial likelihood if the
-denominator represents compatible independent Bernoulli trials. General
-person-time, including fractional follow-up, does not provide that
-denominator. For rate data, a candidate model is
+The standalone county module uses
 $D\mid\lambda\sim\operatorname{Poisson}(T\lambda)$ with a gamma prior,
-followed by an explicit rate-to-risk conversion. The county module is
-not integrated into scenario baseline uncertainty; its current result
-should not be presented as an exact person-time posterior.
+where $T$ is compatible person-time, and reports the constant-hazard
+conversion $1-\exp(-\lambda)$ separately from the rate likelihood. It
+requires national-prior outcome, population, and window metadata to match
+the county observation. The county module is not integrated into scenario
+baseline uncertainty.
 
 \section{Validation results}
 \subsection{V0: internal consistency}
@@ -371,6 +419,8 @@ Their bands overlap. This checks compatibility between two modeled paths;
 it does not provide an independent validation of their causal claims.
 
 \subsection{V1: China-shock unit scorecard}
+Figure~\ref{fig:unit-checks} plots the unit comparisons. Exact values are
+retained in Appendix~\ref{app:scorecards}.
 The unit scorecard uses the exposure bridge and measured coefficients
 transcribed from Autor, Dorn, and Hanson \cite{autor2019}. The bridge
 maps an import shock into manufacturing displacement. The downstream
@@ -378,16 +428,9 @@ mortality path uses a separate study \cite{sullivan2009}, but comparing
 it with a commuting-zone male--female mortality differential requires
 strong population and outcome-transfer assumptions.
 
-\begin{table}[htbp]
-\centering\small
-\caption{Mortality per 100,000 adults per unit shock. Coverage asks whether
- the measured point lies in the modeled band.}
-\begin{tabular}{lrrc}
-\toprule Variant & Model point [band] & Measured & Covered? \\ \midrule
-\tableinput{generated/mortality.tex}
-\bottomrule
-\end{tabular}
-\end{table}
+
+\input{figures/unit-checks}
+
 The pooled-adult row covers the observed point with its current band.
 Both male variants overpredict and exclude that point. A measured
 confidence interval and a modeled parameter band answer different
@@ -397,16 +440,9 @@ Age matching does not remove the distinction between an absolute
 mortality level and a sex differential, nor the transfer from
 high-seniority displaced workers to a broader exposed population.
 
-\begin{table}[htbp]
-\centering\small
-\caption{Unit divorce-path predictions in percentage points of women,
-compared with the measured family-status stock change.}
-\begin{tabular}{rrr}
-\toprule Window (years) & Model point [band] & Measured \\ \midrule
-\tableinput{generated/divorce.tex}
-\bottomrule
-\end{tabular}
-\end{table}
+
+
+
 The divorce path uses independent displacement studies
 \cite{rege2007,charles2004} and a marriage baseline. Its point estimates
 undershoot the observed family-status stock change at both windows.
@@ -417,22 +453,17 @@ outcomes are withheld because the implemented evidence path would reuse
 the target coefficient rather than provide an independent comparison.
 
 \subsection{V1: commuting-zone contrasts and scoring}
+Figure~\ref{fig:panel-checks} plots the panel contrasts on separate axes
+for family status and earnings.
 The deposited panel extract contains \PanelCount{} commuting-zone-period
 rows. Comparisons demean exposure and outcomes within period before
 contrasting high- and low-shock terciles. Pooling without that adjustment
 confounds period differences and changes the sign of the family-status
 comparison. The tests retain this failure mode.
 
-\begin{table}[htbp]
-\centering\small
-\caption{Within-period-demeaned panel contrasts. Coverage uses the
-measured contrast as a point target.}
-\begin{tabular}{lrrc}
-\toprule Outcome & Model point [band] & Measured & Covered? \\ \midrule
-\tableinput{generated/panel.tex}
-\bottomrule
-\end{tabular}
-\end{table}
+
+\input{figures/panel-checks}
+
 The family-status contrasts are covered. Direct worker earnings losses
 alone substantially underpredict the observed lower-quartile earnings
 change. Adding the non-displaced wage response \cite{adh2013} reduces
@@ -463,6 +494,7 @@ before outcomes are available, a declared exposure and time horizon,
 and a scoring rule fixed before evaluation. No prospective result is
 reported. Unit and panel V1 results are the current external checks.
 
+\FloatBarrier
 \section{Limitations}
 The model conditions on displacement and does not identify who was
 displaced or why. An upstream employer exposure can therefore be more
@@ -527,6 +559,61 @@ designs, and known analytic variance shares. These checks complement
 the existing property tests; passing code tests cannot repair an
 unidentified causal bridge.
 
+\subsection{A person-and-place research program}
+Figure~\ref{fig:future} summarizes the proposed comparison and the
+research gates that precede public use.
+\input{figures/future}
+
+The longer-term target is a distribution of possible outcomes conditional
+on a supplied profile and specified event, with an explicit reference
+scenario. It requires a baseline model of how employment, income, health,
+household relationships, and location evolve without that event. Baseline
+transitions may be estimated from documented longitudinal data; their
+predictive associations must be distinguished from identified causal
+intervention effects and from declared structural assumptions.
+
+Personalization should distinguish characteristics that change baseline
+risks from those supported as effect modifiers. A location field does not
+establish a county-specific treatment effect. Linked household members,
+children's ages, shared resources, and event histories are necessary for
+family consequences. Community spillovers require an appropriate
+population model; summing person-level effects does not identify every
+regional response. Event definitions must include onset, duration, dose,
+comparison condition, and ordering. Unsupported interactions remain
+unresolved even when each event has an individual effect estimate.
+
+The next substantial demonstration should compare a synthetic household's
+five-year employment, earnings, and resource trajectories with and without
+involuntary displacement, restricted to supported outcomes. A protective
+intervention can follow when independently justified. Baseline validation,
+event-effect validation, and comparisons with simple models should precede
+long multigenerational chains. Shared random draws can improve comparison
+precision; they do not identify the joint distribution of one person's
+potential outcomes. These future capabilities are not claimed for the
+current engine. Milestones and acceptance criteria are recorded in
+\nolinkurl{docs/LIFE_COURSE_RESEARCH_PLAN.md}.
+
+\subsection{Public calculator as a research interface}
+An eventual website should make the profile, event, comparison, outcome
+unit, time horizon, and evidence applicability visible together. It should
+show absolute outcomes and scenario differences, distinguish uncertainty
+about the model from variation among simulated lives, and separate missing
+evidence from a supported null effect. Information should unfold from a
+short comparison to trajectories, assumptions, and study receipts, without
+requiring the visitor to understand a graph before using the calculator.
+Neutral scenario colors, legible charts, accessible controls, and clear
+unsupported-result states are part of scientific communication.
+
+Initial public use should be restricted to evaluated scenarios and supported
+profiles. A synthetic example can demonstrate interaction before those
+capabilities are ready, but must be labeled as illustrative. Usability
+evaluation should measure whether visitors understand the comparison and
+its limits, rather than treating visual polish or expressed trust as
+evidence of comprehension. The separate product plan,
+\nolinkurl{docs/WEBSITE_EXPERIENCE_PLAN.md}, specifies the intended journey,
+visual direction, explanation patterns, and release criteria; it is a
+design proposal, not a description of a deployed service.
+
 \section{Reproducibility and availability}
 The model and paper source are provided under the repository's MIT
 license. Run the tests, \texttt{downstream audit}, and
@@ -539,16 +626,61 @@ disconnected custom chains, ignored chain starting values, and the
 fixed copula seed used in sensitivity designs. Correlated Monte Carlo
 results can consequently change at the same historical user seed.
 
-Running \texttt{make -C paper} regenerates tables, builds the PDF, and
+Running \texttt{make -C paper} regenerates tables and chart data, builds the PDF, and
 writes \nolinkurl{paper/generated/results.json}. This JSON contains the
 full validation output and the source SHA-256. The generated appendix
 preserves parameter points, bands, tiers, and citation keys. Population
 scope, distribution declarations, and extraction notes remain in the
 underlying CSV files. Source content digest for this build begins
 \texttt{\SourceDigest}. Generated numerical results are not manually
-copied into the prose.
+copied into the prose. Vector diagrams and charts use the same restrained
+palette throughout. Model bands and measured points differ in both color
+and marker shape. Chart coordinates retain the engine's unrounded values;
+the tables provide compact rounded readings.
 
+\clearpage
 \appendix
+\section{Numerical validation scorecards}\label{app:scorecards}
+These tables retain the exact comparison structure behind
+Figures~\ref{fig:unit-checks} and~\ref{fig:panel-checks}.
+Values are rounded to four decimal places; chart coordinates use the
+unrounded engine output. ``Covered'' means only that the measured point
+lies in the model band, not that the model is causally validated.
+
+\begin{table}[H]
+\centering\small
+\caption{Mortality per 100,000 adults per unit shock. Coverage asks whether
+ the measured point lies in the modeled band.}
+\begin{tabular}{lrrc}
+\toprule Variant & Model point [band] & Measured & Covered? \\ \midrule
+\tableinput{generated/mortality.tex}
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering\small
+\caption{Unit divorce-path predictions in percentage points of women,
+compared with the measured family-status stock change.}
+\begin{tabular}{rrr}
+\toprule Window (years) & Model point [band] & Measured \\ \midrule
+\tableinput{generated/divorce.tex}
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering\small
+\caption{Within-period-demeaned panel contrasts. Coverage uses the
+measured contrast as a point target.}
+\begin{tabular}{lrrc}
+\toprule Outcome & Model point [band] & Measured & Covered? \\ \midrule
+\tableinput{generated/panel.tex}
+\bottomrule
+\end{tabular}
+\end{table}
+
+\clearpage
 \section{Current parameter set}\label{app:parameters}
 The table is an inventory, not a claim that every row belongs to one
 composable causal chain. Values use each destination node's declared

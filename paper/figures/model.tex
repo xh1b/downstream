@@ -1,0 +1,33 @@
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+  \node[anchor=west,font=\scriptsize\bfseries,text=mut] at (0,1.0)
+    {CURRENT ENGINE / CONDITIONAL ON SUPPLIED EXPOSURE};
+  \node[fbox,fill=acc!10,text width=3.25cm,minimum height=1.7cm] (input) at (1.8,-0.2)
+    {\textbf{Scenario inputs}\\Exposure and scale\\Place and horizon};
+  \node[fbox,fill=acc!10,text width=3.25cm,minimum height=1.7cm] (ledger) at (7.5,-0.2)
+    {\textbf{Typed effect ledger}\\Level, direct, gap, rate,\\elasticity, jobs per job};
+  \node[fbox,text width=3.25cm,minimum height=1.7cm] (evidence) at (13.2,-0.2)
+    {\textbf{Published evidence}\\Parameters and bands\\Scope and sources};
+  \node[fbox,text width=3.25cm,minimum height=1.7cm] (baseline) at (1.8,-2.7)
+    {\textbf{Verified baselines}\\Mortality risk\\Lifetime earnings};
+  \node[fbox,fill=acc!10,text width=3.25cm,minimum height=1.7cm] (convert) at (7.5,-2.7)
+    {\textbf{Count conversion}\\Exposure and baselines\\Units and horizon};
+  \node[fbox,text width=3.25cm,minimum height=1.7cm] (output) at (13.2,-2.7)
+    {\textbf{Scenario outputs}\\Service jobs; excess deaths\\Child earnings loss};
+  \draw[flow] (input)--(ledger);
+  \draw[flow] (evidence)--(ledger);
+  \draw[flow] (ledger)--(convert)
+    node[midway,right,font=\scriptsize,text=mut] {relative effects};
+  \draw[flow] (baseline)--(convert);
+  \draw[flow] (convert)--(output);
+  \draw[ink!25] (0,-3.7)--(15,-3.7);
+  \node[anchor=north west,align=left,font=\scriptsize,text=mut,text width=14.5cm] at (0,-3.85)
+    {Sampling and structural variants repeat the computation under declared assumptions.
+     Validation compares selected outputs with external observations.};
+\end{tikzpicture}
+\caption{The current calculation boundary. Exposure is supplied, not inferred.
+The ledger separates effect types before count conversion. A citation records
+provenance; it does not by itself establish transportability or causal composition.}
+\label{fig:model}
+\end{figure}
