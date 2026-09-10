@@ -103,6 +103,7 @@ def test_scenario_counts_with_verified_baselines():
     # v1.10 table-pinned S&vW: sustained 1.135, peak 2.672
     # 100 * 0.004 * (0.135*20 + 1.672) = 1.7488
     assert deaths["point"] == pytest.approx(1.7488, abs=0.005)  # output rounded to 2dp
+    assert not out["projection_eligibility"]["grandchild"]["eligible_for_validated_direct_contrast"]
     child = out["modeled"]["child_lifetime_earnings_lost_usd"]
     # 100 workers x 2 children x 9% x $1M
     assert child["point"] == pytest.approx(18_480_000.0, abs=1.0)  # v1.11: 1-0.9076=0.0924 gap

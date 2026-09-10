@@ -1,5 +1,5 @@
 # Source-extracted estimates only. One row per independent study estimate.
 # `scale` must be identical before pooling (for example: log_odds_ratio).
 # This file is a template and is never loaded as model evidence.
-link,study_id,point,standard_error,scale,population_scope,design,time_horizon,citation,source_url
-earnings_shock->mortality_sustained,example_study,0.127,0.048,log_odds_ratio,"target population and inclusion rules","identification design","year_6_onward",author2026,https://example.org/source
+link,study_id,point,standard_error,scale,population_scope,design,time_horizon,citation,source_url,treatment,comparison,outcome_definition,overlap_group
+earnings_shock->mortality_sustained,example_study,0.127,0.048,log_odds_ratio,"target population and inclusion rules","identification design","year_6_onward",author2026,https://example.org/source,"defined displacement event","defined unexposed reference","all-cause mortality log odds",

@@ -13,7 +13,7 @@ import math
 import random
 
 from . import __version__
-from .mortality import excess_deaths
+from .mortality import excess_deaths, excess_deaths_profile, rate_to_risk
 
 from .children import child_line
 from .community import service_jobs_lost
@@ -34,7 +34,9 @@ class ScenarioInput:
     exposure_years: float = 20.0           # total follow-up, including initial peak year
     label: str = "scenario"
     mortality_method: str = "odds_survival"
-    mortality_timing: str = "source_aligned"
+    mortality_timing: str = "source_profile"
+    mortality_profile: str | None = None
+    mortality_mix: dict[str, float] | None = None
     place_application: str = "initial_only"
 
     def __post_init__(self):
@@ -51,8 +53,14 @@ class ScenarioInput:
             raise ValueError('wage_multiplier must be finite and positive')
         if self.mortality_method not in {'odds_survival', 'legacy_additive'}:
             raise ValueError('unknown mortality_method')
-        if self.mortality_timing not in {'source_aligned', 'immediate_sustained'}:
+        if self.mortality_timing not in {'source_profile', 'source_aligned', 'immediate_sustained'}:
             raise ValueError('unknown mortality_timing')
+        if self.mortality_profile is not None and (not isinstance(self.mortality_profile, str) or not self.mortality_profile):
+            raise ValueError('mortality_profile must be a nonempty string when supplied')
+        if self.mortality_mix is not None and not isinstance(self.mortality_mix, dict):
+            raise ValueError('mortality_mix must be an object when supplied')
+        if self.mortality_profile is not None and self.mortality_mix is not None:
+            raise ValueError('mortality_profile and mortality_mix are mutually exclusive')
         if self.place_application not in {'initial_only', 'legacy_repeated'}:
             raise ValueError('unknown place_application')
 
@@ -79,6 +87,7 @@ def compute_counts(
     strict: bool = False,
     places: dict | None = None,
     place_key: str | None = None,
+    mortality_profiles: dict | None = None,
     _raw: bool = False,
 ) -> dict:
     """Modeled counts for a displacement scenario.
@@ -89,8 +98,8 @@ def compute_counts(
     places + place_key (optional): the place-resolved layer. The
     baseline dict is swapped for the shrunk county baselines (same
     unit/population — no conversion) and the Chetty-Hendren mobility
-    modifier composes multiplicatively with the child-earnings chain
-    (declared modeling assumption). Provenance lands in the "place"
+    modifier scales the direct child loss in a same-place contrast
+    (exploratory structural assumption). Provenance lands in the "place"
     block; absent/blocked modifiers leave the computation unchanged.
     """
     place_block: dict | None = None
@@ -130,15 +139,21 @@ def compute_counts(
         "assumptions": {
             "mortality_method": scenario.mortality_method,
             "mortality_timing": (
-                "incomplete source profile (source_aligned option): displacement-year peak; "
-                "follow-up years 2–5 held at baseline despite available unextracted source estimates; "
-                "offset +6 odds ratio applied from follow-up year 6 (one year early); re-extraction required"
+                "source-offset profile: displacement, +1, +2–3, +4–5, and +6+; "
+                "with displacement in follow-up year 1, offset +6 begins in follow-up year 7"
+                if scenario.mortality_method == "odds_survival" and scenario.mortality_timing == "source_profile"
+                else "legacy incomplete profile: years 2–5 at baseline and offset +6 applied from follow-up year 6"
                 if scenario.mortality_method == "odds_survival" and scenario.mortality_timing == "source_aligned"
                 else "sensitivity assumption: displacement-year peak followed immediately by the year-6+ odds ratio"
                 if scenario.mortality_method == "odds_survival"
                 else "legacy peak plus Y sustained years, linear rate approximation"
             ),
             "place_application": scenario.place_application,
+            "place_counterfactual": (
+                "county child-dollar contrasts use a same-place loss scaling "
+                "and are exploratory; the national result is the reference"
+                if modifier is not None else "national child-dollar result is the reference"
+            ),
         },
         "exposure": {
             "displaced_workers": scenario.displaced_workers,
@@ -157,22 +172,82 @@ def compute_counts(
     # Local service jobs: a level ratio — no baseline needed.
     computed["modeled"]["local_service_jobs_lost"] = jobs
 
-    # Mortality counts: needs the cited baseline rate.
+    # Mortality counts: needs either the historical cited baseline or a
+    # verified demographic profile / declared profile mixture.
     try:
-        b = require_baseline(baselines, "all_cause_mortality_annual")
-        rate = b.value or 0.0
         peak = worker["mortality_peak"]
         sustained = worker["mortality_sustained"]
-        values = [excess_deaths(scenario.displaced_workers, rate,
-                  getattr(peak, attr), getattr(sustained, attr),
-                  scenario.exposure_years, scenario.mortality_method,
-                  timing=scenario.mortality_timing)
-                  for attr in ('point', 'low', 'high')]
+        selected = scenario.mortality_profile is not None or scenario.mortality_mix is not None
+        if selected:
+            if mortality_profiles is None:
+                raise BaselineMissing("mortality profile requested but no mortality profile registry was supplied")
+            from .mortality_profiles import resolve_mix, validate_sullivan_von_wachter_applicability
+            resolved = resolve_mix(mortality_profiles, scenario.mortality_profile, scenario.mortality_mix)
+            applicability = validate_sullivan_von_wachter_applicability(resolved)
+            component_values = []
+            for profile_row, weight in resolved:
+                probability = rate_to_risk(profile_row.annual_rate or 0.0)
+                if scenario.mortality_method == "odds_survival" and scenario.mortality_timing == "source_profile":
+                    from .worker import mortality_profile
+                    causal_profile = mortality_profile(params)
+                    component_values.append([weight * excess_deaths_profile(
+                        scenario.displaced_workers, probability,
+                        {phase: getattr(parameter, attr) for phase, parameter in causal_profile.items()},
+                        scenario.exposure_years,
+                    ) for attr in ("point", "low", "high")])
+                else:
+                    baseline = profile_row.annual_rate if scenario.mortality_method == "legacy_additive" else probability
+                    component_values.append([weight * excess_deaths(
+                        scenario.displaced_workers, baseline, getattr(peak, attr), getattr(sustained, attr),
+                        scenario.exposure_years, scenario.mortality_method, timing=scenario.mortality_timing,
+                    ) for attr in ("point", "low", "high")])
+            values = [sum(component[index] for component in component_values) for index in range(3)]
+            baseline_info = {"profiles": [{"id": row.profile_id, "weight": weight, "annual_rate": row.annual_rate,
+                                             "population": row.population_scope, "citation": row.citation}
+                                            for row, weight in resolved],
+                             "effect_applicability": applicability}
+            rate = sum((row.annual_rate or 0.0) * weight for row, weight in resolved)
+            baseline_probability = sum(rate_to_risk(row.annual_rate or 0.0) * weight for row, weight in resolved)
+        else:
+            b = require_baseline(baselines, "all_cause_mortality_annual")
+            if b.unit == "deaths_per_person_year":
+                rate = b.value or 0.0
+                baseline_probability = rate_to_risk(rate)
+            elif b.unit in {"prob_per_person_year", "probability"}:
+                rate = b.value or 0.0
+                baseline_probability = rate
+            else:
+                raise BaselineMissing(f"mortality baseline unit {b.unit!r} is not an annual rate or probability")
+            if scenario.mortality_method == "odds_survival" and scenario.mortality_timing == "source_profile":
+                from .worker import mortality_profile
+                causal_profile = mortality_profile(params)
+                values = [excess_deaths_profile(
+                    scenario.displaced_workers, baseline_probability,
+                    {phase: getattr(parameter, attr) for phase, parameter in causal_profile.items()},
+                    scenario.exposure_years,
+                ) for attr in ("point", "low", "high")]
+            else:
+                legacy_baseline = rate if scenario.mortality_method == "legacy_additive" else baseline_probability
+                values = [excess_deaths(
+                    scenario.displaced_workers, legacy_baseline,
+                    getattr(peak, attr), getattr(sustained, attr), scenario.exposure_years,
+                    scenario.mortality_method, timing=scenario.mortality_timing,
+                ) for attr in ("point", "low", "high")]
+            baseline_info = {"value": rate, "annual_probability": baseline_probability,
+                             "unit": b.unit, "citation": b.citation, "population": b.population}
+        if scenario.mortality_method == "odds_survival" and scenario.mortality_timing == "source_profile":
+            from .worker import mortality_profile
+            profile = mortality_profile(params)
+            mortality_steps = [{"link": p.link, "phase": phase, "point": p.point,
+                                "low": p.low, "high": p.high, "citation": p.citation}
+                               for phase, p in profile.items()]
+        else:
+            mortality_steps = [step.as_dict() for led in (peak, sustained) for step in led.steps]
         computed["modeled"]["excess_deaths"] = {
             "point": rounded(values[0], 2), "low": rounded(min(values), 2), "high": rounded(max(values), 2),
             "unit": "deaths",
-            "baseline": {"value": rate, "citation": b.citation, "population": b.population},
-            "steps": [step.as_dict() for led in (peak, sustained) for step in led.steps],
+            "baseline": baseline_info,
+            "steps": mortality_steps,
             "components": {"follow_up_years": scenario.exposure_years,
                            "method": scenario.mortality_method,
                            "timing": scenario.mortality_timing},
@@ -210,6 +285,7 @@ def compute_counts(
         "grandchild_earnings": _pt(line["grandchild"]),
         "greatgrandchild_earnings": _pt(line["greatgrandchild"]),
     }
+    computed["projection_eligibility"] = line["evidence_status"]
     return computed
 
 
@@ -223,6 +299,7 @@ def sample_counts(
     strict: bool = False,
     places: dict | None = None,
     place_key: str | None = None,
+    mortality_profiles: dict | None = None,
     nodes: dict | None = None,
     params_dir=None,
 ) -> dict:
@@ -237,12 +314,14 @@ def sample_counts(
     from .mc import simulate_many
 
     result = compute_counts(params, baselines, scenario, strict=strict,
-                            places=places, place_key=place_key)
+                            places=places, place_key=place_key,
+                            mortality_profiles=mortality_profiles)
     names = tuple(result["modeled"])
 
     def outcomes(sampled: ParameterSet) -> dict[str, float]:
         sampled_result = compute_counts(sampled, baselines, scenario, strict=strict,
-                                         places=places, place_key=place_key, _raw=True)
+                                         places=places, place_key=place_key,
+                                         mortality_profiles=mortality_profiles, _raw=True)
         return {name: sampled_result["modeled"][name]["point"] for name in names}
 
     sampling = simulate_many(params, outcomes, draws=draws, seed=seed, nodes=nodes,
@@ -264,8 +343,10 @@ def sample_counts(
     if place_key is not None:
         from .place import place_baselines
         predictive_baselines = place_baselines(places, baselines, place_key)["baselines"]
-    result["predictive_uncertainty"] = _predictive_mortality(
-        raw_samples.get("excess_deaths", []), predictive_baselines, scenario, seed
+    result["predictive_uncertainty"] = (
+        {"available": False, "reason": "predictive mortality for demographic mixtures requires stratum-level cohort counts; expected effects are reported"}
+        if scenario.mortality_profile is not None or scenario.mortality_mix is not None
+        else _predictive_mortality(raw_samples.get("excess_deaths", []), predictive_baselines, scenario, seed)
     )
     return result
 
@@ -297,8 +378,14 @@ def _predictive_mortality(expected_excess: list[float], baselines: dict[str, Bas
         return {"available": False, "reason": "no verified mortality baseline"}
     if not expected_excess:
         return {"available": False, "reason": "mortality outcome was blocked"}
+    if baseline.unit == "deaths_per_person_year":
+        annual_probability = rate_to_risk(baseline.value)
+    elif baseline.unit in {"prob_per_person_year", "probability"}:
+        annual_probability = baseline.value
+    else:
+        return {"available": False, "reason": f"unsupported mortality baseline unit {baseline.unit!r}"}
     cohort = int(round(n))
-    p0 = 1 - (1 - baseline.value) ** scenario.exposure_years
+    p0 = 1 - (1 - annual_probability) ** scenario.exposure_years
     rng = random.Random(seed + 104729)
     exposed: list[float] = []
     counterfactual: list[float] = []
@@ -323,7 +410,8 @@ def _predictive_mortality(expected_excess: list[float], baselines: dict[str, Bas
         "scope": "realized all-cause deaths in a new integer-sized cohort, conditional on the model's fixed baseline and timing assumptions",
         "counterfactual_design": "independent exposed and counterfactual reference cohorts; their difference is not an observable paired individual causal contrast",
         "cohort_workers": cohort,
-        "baseline_annual_probability": baseline.value,
+        "baseline_annual_probability": annual_probability,
+        "baseline_annual_rate": baseline.value if baseline.unit == "deaths_per_person_year" else None,
         "counterfactual_death_probability": p0,
         "exposed_deaths": summary(exposed),
         "counterfactual_deaths": summary(counterfactual),

@@ -27,6 +27,16 @@ class CountyRateObservation:
     citation: str
 
 
+@dataclass(frozen=True)
+class NationalRatePrior:
+    """A national event/person-time rate with compatibility metadata."""
+    outcome: str
+    rate: float
+    population_scope: str
+    time_window: str
+    citation: str
+
+
 REQUIRED_COLUMNS = ("key", "outcome", "events", "person_years", "population_scope", "time_window", "citation")
 
 
@@ -47,8 +57,8 @@ def load_county_rates(path: str | Path) -> tuple[CountyRateObservation, ...]:
                                         raw["population_scope"].strip(), raw["time_window"].strip(), raw["citation"].strip())
             if not row.key or not row.outcome or not row.population_scope or not row.time_window or not row.citation:
                 raise ValueError("county-rate metadata fields may not be empty")
-            if row.events < 0 or not math.isfinite(row.person_years) or row.person_years <= 0 or row.events > row.person_years:
-                raise ValueError(f"county rate {row.key!r} needs 0 <= events <= person_years")
+            if row.events < 0 or not math.isfinite(row.person_years) or row.person_years <= 0:
+                raise ValueError(f"county rate {row.key!r} needs nonnegative events and positive finite person-years")
             out.append(row)
     keys = [(r.key, r.outcome, r.time_window) for r in out]
     if len(keys) != len(set(keys)):
@@ -56,37 +66,64 @@ def load_county_rates(path: str | Path) -> tuple[CountyRateObservation, ...]:
     return tuple(out)
 
 
-def beta_binomial_posterior(observation: CountyRateObservation, national_rate: float,
+def poisson_gamma_posterior(observation: CountyRateObservation, prior: NationalRatePrior,
                             prior_person_years: float, draws: int = 10_000,
                             seed: int = 1901) -> dict:
-    """Posterior for a crude annual event probability with a national prior.
+    """Gamma--Poisson posterior for an event/person-time mortality rate.
 
-    The prior is Beta(national_rate * strength, (1-rate) * strength), where
-    ``strength`` is declared in compatible person-years.  This is intentionally
-    inapplicable to age-standardized rates or mismatched windows.
+    This accepts fractional person-time and event counts exceeding one per
+    person-year. A constant-hazard annual risk is reported as ``1-exp(-rate)``
+    but is not substituted into a fixed-window binomial likelihood.
     """
-    if not 0 < national_rate < 1 or not math.isfinite(national_rate):
-        raise ValueError("national_rate must be a finite probability strictly between 0 and 1")
+    if (observation.outcome != prior.outcome or observation.population_scope != prior.population_scope
+            or observation.time_window != prior.time_window):
+        raise ValueError("county observation and national prior must have identical outcome, population_scope, and time_window")
+    if not prior.citation:
+        raise ValueError("national prior needs a citation")
+    if not prior.rate > 0 or not math.isfinite(prior.rate):
+        raise ValueError("national rate must be finite and positive")
     if not math.isfinite(prior_person_years) or prior_person_years <= 0:
         raise ValueError("prior_person_years must be finite and positive")
     if isinstance(draws, bool) or not isinstance(draws, int) or draws < 2:
         raise ValueError("draws must be an integer of at least 2")
-    alpha = national_rate * prior_person_years + observation.events
-    beta = (1 - national_rate) * prior_person_years + observation.person_years - observation.events
+    alpha = prior.rate * prior_person_years + observation.events
+    beta = prior_person_years + observation.person_years
     rng = random.Random(seed)
-    values = sorted(rng.betavariate(alpha, beta) for _ in range(draws))
+    values = sorted(rng.gammavariate(alpha, 1 / beta) for _ in range(draws))
     last = draws - 1
     return {
         "key": observation.key,
         "outcome": observation.outcome,
         "posterior": {
-            "mean": alpha / (alpha + beta),
+            "mean": alpha / beta,  # compatibility alias; this is a RATE, not a probability
+            "mean_rate": alpha / beta,
+            "mean_annual_risk_constant_hazard": 1 - math.exp(-alpha / beta),
             "p05": values[int(.05 * last)], "p50": values[int(.50 * last)], "p95": values[int(.95 * last)],
         },
-        "prior": {"mean": national_rate, "equivalent_person_years": prior_person_years},
+        "prior": {"mean_rate": prior.rate, "equivalent_person_years": prior_person_years,
+                  "outcome": prior.outcome, "population_scope": prior.population_scope,
+                  "time_window": prior.time_window, "citation": prior.citation},
         "observation": {"events": observation.events, "person_years": observation.person_years,
                         "population_scope": observation.population_scope, "time_window": observation.time_window,
                         "citation": observation.citation},
-        "method": "Beta-binomial count likelihood; no spatial dependence assumed",
+        "method": "Gamma-Poisson event/person-time likelihood; no spatial dependence assumed",
         "integration_status": "not wired into places.csv until its county counts match the national baseline population and window",
     }
+
+
+def beta_binomial_posterior(observation: CountyRateObservation, national_rate: float,
+                            prior_person_years: float, draws: int = 10_000,
+                            seed: int = 1901) -> dict:
+    """Deprecated compatibility wrapper; use :func:`poisson_gamma_posterior`.
+
+    It cannot establish metadata compatibility because its legacy signature
+    lacks national population/window fields, so it is explicitly unsuitable
+    for production place integration.
+    """
+    prior = NationalRatePrior(observation.outcome, national_rate,
+                              observation.population_scope, observation.time_window,
+                              "legacy caller supplied no national-prior locator")
+    out = poisson_gamma_posterior(observation, prior, prior_person_years, draws, seed)
+    out["integration_status"] = "legacy wrapper: metadata compatibility is unverified; never wire this output into places.csv"
+    out["deprecated_api"] = "beta_binomial_posterior is retained for callers; it now uses Gamma-Poisson rather than a binomial likelihood"
+    return out

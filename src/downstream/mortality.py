@@ -1,12 +1,4 @@
-"""Odds-to-risk conversion and time-phased survival at the count boundary.
-
-The historical ``source_aligned`` option is an incomplete source profile:
-it holds follow-up years 2--5 at baseline, although the working paper has
-early-year estimates that have not been extracted into this parameter set.
-It also starts offset +6 one year early when displacement is follow-up
-year 1. See docs/REVIEW_2026-09-10.md before interpreting that option name
-as source fidelity. Numerical timing is retained pending re-extraction.
-"""
+"""Odds-to-risk conversion and explicitly timed survival at the count boundary."""
 from __future__ import annotations
 import math
 
@@ -19,7 +11,63 @@ def odds_risk(baseline: float, odds_ratio: float) -> float:
     return odds_ratio * baseline / (1 - baseline + odds_ratio * baseline)
 
 
+def rate_to_risk(rate: float) -> float:
+    """Convert a constant event/person-time hazard to one-year death risk."""
+    if isinstance(rate, bool) or not isinstance(rate, (int, float)) or not math.isfinite(rate) or rate < 0:
+        raise ValueError("annual mortality rate must be finite and nonnegative")
+    return 1 - math.exp(-rate)
+
+
 MORTALITY_TIMINGS = {"source_aligned", "immediate_sustained"}
+
+# Offsets in Sullivan--von Wachter Table 5 are relative to displacement.
+# If displacement occupies follow-up year one, offset +6 starts follow-up
+# year seven.  Keep the historical two-coefficient API below for notebooks;
+# production scenarios use ``excess_deaths_profile`` with all five phases.
+SOURCE_PROFILE_PHASES = (
+    ("displacement", 1.0),
+    ("offset_1", 1.0),
+    ("offsets_2_3", 2.0),
+    ("offsets_4_5", 2.0),
+    ("offset_6_plus", math.inf),
+)
+
+
+def source_profile_phase_years(years: float) -> dict[str, float]:
+    """Durations for displacement, offsets +1, +2--3, +4--5, and +6+.
+
+    ``years`` counts follow-up years with displacement as year one.  The
+    returned keys deliberately mirror source offsets, preventing the former
+    off-by-one relabeling of offset +6 as follow-up year six.
+    """
+    if isinstance(years, bool) or not isinstance(years, (int, float)) or not math.isfinite(years) or years < 0:
+        raise ValueError("years must be finite and nonnegative")
+    remaining = years
+    out: dict[str, float] = {}
+    for name, duration in SOURCE_PROFILE_PHASES:
+        take = remaining if math.isinf(duration) else min(remaining, duration)
+        out[name] = take
+        remaining -= take
+    return out
+
+
+def excess_deaths_profile(workers: float, baseline: float, odds_by_phase: dict[str, float],
+                          years: float) -> float:
+    """Survival contrast for a complete, source-offset mortality profile."""
+    for name, value in (("workers", workers), ("years", years)):
+        if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value) or value < 0:
+            raise ValueError(f"{name} must be finite and nonnegative")
+    expected = {name for name, _ in SOURCE_PROFILE_PHASES}
+    if set(odds_by_phase) != expected:
+        raise ValueError(f"mortality profile needs exactly phases {sorted(expected)}")
+    phases = source_profile_phase_years(years)
+    if workers == 0 or years == 0:
+        return 0.0
+    exposed_survival = 1.0
+    for name, duration in phases.items():
+        exposed_survival *= (1 - odds_risk(baseline, odds_by_phase[name])) ** duration
+    result = workers * ((1 - baseline) ** years - exposed_survival)
+    return min(workers, max(-workers, result))
 
 
 def mortality_phase_years(years: float, timing: str = "source_aligned") -> dict[str, float]:

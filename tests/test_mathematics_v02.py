@@ -6,7 +6,7 @@ from downstream.children import child_line
 from downstream.distributions import sample_unit_interval
 from downstream.inference import analytic_chain, param_moments
 from downstream.ledger import start, GAP
-from downstream.mortality import excess_deaths, mortality_phase_years, odds_risk
+from downstream.mortality import excess_deaths, mortality_phase_years, odds_risk, source_profile_phase_years
 from downstream.params import load_all
 from downstream.place import load_places, modifier_parameter
 from downstream.scenario import ScenarioInput, compute_counts
@@ -52,6 +52,23 @@ def test_year_six_estimate_is_not_backfilled_into_unidentified_years():
                                timing="immediate_sustained")
     assert aligned < immediate
     assert aligned == pytest.approx(16.37, abs=.01)
+
+
+def test_source_profile_preserves_offsets_and_year_seven_boundary():
+    assert source_profile_phase_years(7) == {
+        "displacement": 1.0, "offset_1": 1.0, "offsets_2_3": 2.0,
+        "offsets_4_5": 2.0, "offset_6_plus": 1.0,
+    }
+
+
+@pytest.mark.parametrize("years,expected", [
+    (1, {"displacement": 1, "offset_1": 0, "offsets_2_3": 0, "offsets_4_5": 0, "offset_6_plus": 0}),
+    (2, {"displacement": 1, "offset_1": 1, "offsets_2_3": 0, "offsets_4_5": 0, "offset_6_plus": 0}),
+    (4, {"displacement": 1, "offset_1": 1, "offsets_2_3": 2, "offsets_4_5": 0, "offset_6_plus": 0}),
+    (6, {"displacement": 1, "offset_1": 1, "offsets_2_3": 2, "offsets_4_5": 2, "offset_6_plus": 0}),
+])
+def test_source_profile_phase_boundaries(years, expected):
+    assert source_profile_phase_years(years) == expected
 
 
 @pytest.mark.parametrize("baseline", [-0.01, float("nan"), float("inf"), True])

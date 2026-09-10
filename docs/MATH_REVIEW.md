@@ -16,21 +16,21 @@ and 66 warnings, chiefly evidence and graph-boundary warnings.
 | The additive structural variant had reversed bound combinations | Add lower endpoints together and upper endpoints together | Every reported variant contains its point |
 | Count and policy outputs obscured uncertainty sources | Report parameter-support and exposure envelopes separately with exclusions | Identical cases cancel; exposure bands widen results; provenance is required |
 
-No empirical coefficient or band changes in v1.34. That version corrects
-the mortality node's unit metadata. Engine 0.2.0 changes the arithmetic.
+The current pinned parameter file extracts a coherent Table 5 column 3 mortality profile,
+including early offsets and the correct +6 boundary. It is still a
+historical high-seniority male Pennsylvania mass-layoff estimand, not a
+general displacement effect. Engine 0.2.0 changes the arithmetic.
 Historical V1 scorecards retain their original additive mortality formula;
 they are not presented as validation of the corrected survival model.
 
 ## Assumptions still needing evaluation
 
-- Years 2--5 after displacement have no landed mortality coefficient and are
-  held at the baseline hazard. The year-6+ estimate is extrapolated only from
-  year 6 onward. This is safer than backfilling it, but it is not a measured
-  year-by-year hazard profile. The baseline stays constant and has no aging
-  or competing-risk process.
-- A county income-rank exposure effect is used as an earnings multiplier.
-  That transfer is an assumption. Removing repeated application does not
-  establish the validity of the initial transfer.
+- The mortality profile has grouped offsets, not a full annual aging or
+  competing-risk model. The +6 estimate is extrapolated beyond the observed
+  horizon and the baseline stays constant.
+- A county income-rank exposure effect scales a same-place displacement loss.
+  This passes the null-displacement check but is still an unvalidated
+  structural bridge, not an identified interaction.
 - Independent analytic moments do not incorporate the two declared
   earnings/mortality correlations. Monte Carlo uses those pairs, whose
   magnitudes are judgment rather than extracted covariance estimates.

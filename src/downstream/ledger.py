@@ -21,6 +21,7 @@ from .params import Parameter
 
 LEVEL = "level"
 GAP = "gap"
+GAP_SCALE = "gap_scale"
 DIRECT = "direct"
 RATE = "rate"
 
@@ -33,6 +34,7 @@ class Step:
     tier: str
     param: tuple[float, float, float]  # point, low, high
     value: tuple[float, float, float]  # point, low, high AFTER the step
+    causal_role: str = "unspecified"
 
     def as_dict(self) -> dict:
         return {
@@ -46,6 +48,7 @@ class Step:
             "value_point": self.value[0],
             "value_low": self.value[1],
             "value_high": self.value[2],
+            "causal_role": self.causal_role,
         }
 
 
@@ -60,12 +63,20 @@ class Ledger:
     high: float
     steps: tuple[Step, ...]
 
-    def _step(self, kind: str, p: Parameter) -> Step:
+    def _step(self, kind: str, p: Parameter, causal_role: str = "unspecified") -> Step:
         if kind == LEVEL:
             corners = [x * y for x in (self.low, self.high) for y in (p.low, p.high)]
             v = (self.point * p.point, min(corners), max(corners))
         elif kind == GAP:
             corners = [1 - t * (1 - x) for x in (self.low, self.high) for t in (p.low, p.high)]
+            v = (1 - p.point * (1 - self.point), min(corners), max(corners))
+        elif kind == GAP_SCALE:
+            # A same-place contrast can scale the *loss* from a direct
+            # displacement effect while leaving a null displacement effect
+            # at its counterfactual value.  This is deliberately distinct
+            # from GAP: it is not an intergenerational transmission claim.
+            corners = [1 - m * (1 - x) for x in (self.low, self.high)
+                       for m in (p.low, p.high)]
             v = (1 - p.point * (1 - self.point), min(corners), max(corners))
         elif kind == DIRECT:
             v = (p.point, p.low, p.high)
@@ -82,10 +93,11 @@ class Ledger:
             tier=p.tier,
             param=(p.point, p.low, p.high),
             value=v,
+            causal_role=causal_role,
         )
 
-    def apply(self, kind: str, param: Parameter, label: str = "") -> "Ledger":
-        step = self._step(kind, param)
+    def apply(self, kind: str, param: Parameter, label: str = "", causal_role: str = "unspecified") -> "Ledger":
+        step = self._step(kind, param, causal_role)
         point, low, high = step.value
         if low > high:  # bands only widen; ordering is an invariant
             low, high = high, low
@@ -111,6 +123,16 @@ CHAIN_KINDS = {
     "displacement->child_earnings": DIRECT,
     "child_earnings->grandchild_earnings": GAP,
     "grandchild_earnings->greatgrandchild_earnings": GAP,
+}
+
+# Composition has a different epistemic status from its arithmetic. These
+# roles travel with public ledgers so clients cannot relabel a persistence
+# coefficient as a separately identified intervention response.
+CHAIN_CAUSAL_ROLES = {
+    "displacement->worker_earnings": "direct_displacement_estimate",
+    "displacement->child_earnings": "direct_displacement_estimate",
+    "child_earnings->grandchild_earnings": "structural_transmission_assumption",
+    "grandchild_earnings->greatgrandchild_earnings": "structural_transmission_assumption",
 }
 
 
@@ -147,7 +169,12 @@ def chain(params, links: list[str], label: str, unit: str, kinds: list[str], nod
         validate_chain(params, links, kinds, nodes)
     ledger = start(label, unit, value=base)
     for link, kind in zip(links, kinds):
-        ledger = ledger.apply(kind, params.by_link(link), label=link.split("->")[-1])
+        ledger = ledger.apply(kind, params.by_link(link), label=link.split("->")[-1],
+                              # Generic callers can use this arithmetic helper
+                              # without claiming that their synthetic links are
+                              # part of the shipped causal graph.  Production
+                              # chains pass nodes and are validated above.
+                              causal_role=CHAIN_CAUSAL_ROLES.get(link, "unspecified"))
     return ledger
 
 

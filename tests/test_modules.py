@@ -19,7 +19,7 @@ def test_worker_stream_jls_band_and_split_mortality():
     assert (e.point, e.low, e.high) == (0.80, 0.75, 0.85)
     # sustained vs peak are SEPARATE outcomes, never conflated into one row
     assert w["mortality_sustained"].point == 1.135
-    assert w["mortality_peak"].point == 2.672
+    assert w["mortality_peak"].point == 2.6696
 
 
 def test_worker_pinned_multiplier_scales_band_not_point():
@@ -36,6 +36,8 @@ def test_child_line_gap_space_and_weakest_layer_flagged():
     assert line["greatgrandchild"].point == pytest.approx(0.972049, abs=1e-6)
     assert line["weakest_identified"] == "greatgrandchild"
     assert "weakest" in line["honesty"]
+    assert line["evidence_status"]["child"]["eligible_for_validated_direct_contrast"]
+    assert not line["evidence_status"]["grandchild"]["eligible_for_validated_direct_contrast"]
 
 
 def test_divorce_parameter_is_the_corrected_dp514_value():

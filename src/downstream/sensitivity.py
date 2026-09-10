@@ -76,7 +76,11 @@ def sobol_indices(
         # Saltelli estimators:
         #   S_j  = sum_i fB_i * (f_AB_i - fA_i) / (base * Var)
         #   T_j  = sum_i (fA_i - f_AB_i)^2 / (2 * base * Var)
-        s_first = sum(fB[i] * (fj[i] - fA[i]) for i in range(base)) / (base * total_var)
+        # The covariance identity is invariant to an additive output shift.
+        # Centering each independently sampled section avoids cancellation
+        # when the outcome mean is much larger than its variation.
+        mean_b = sum(fB) / base
+        s_first = sum((fB[i] - mean_b) * ((fj[i] - fA[i])) for i in range(base)) / (base * total_var)
         t_total = 0.5 * sum((fA[i] - fj[i]) ** 2 for i in range(base)) / (base * total_var)
         out.append(
             {
@@ -169,7 +173,8 @@ def correlated_block_sobol(
             for j in block:
                 row[j] = b_plan.u[i][j]
             f_ab.append(run(row))
-        first = sum(f_b[i] * (f_ab[i] - f_a[i]) for i in range(base)) / (base * total_var)
+        mean_b = sum(f_b) / base
+        first = sum((f_b[i] - mean_b) * (f_ab[i] - f_a[i]) for i in range(base)) / (base * total_var)
         total = .5 * sum((f_a[i] - f_ab[i]) ** 2 for i in range(base)) / (base * total_var)
         effects.append({
             "links": [rows[j].link for j in block],

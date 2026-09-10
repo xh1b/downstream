@@ -17,6 +17,9 @@ def test_random_effects_reports_heterogeneity_and_prediction_not_transport():
     assert out["studies"] == 2
     assert out["random_effects"]["ci95"][0] < out["random_effects"]["mean"]
     assert "not a transported" in out["transport_note"]
+    hk = out["random_effects"]["hartung_knapp_sensitivity"]
+    assert hk["degrees_of_freedom"] == 1
+    assert hk["critical_value"] == pytest.approx(12.706)
 
 
 def test_synthesis_blocks_singletons_and_mixed_scales():
@@ -40,3 +43,19 @@ def test_ratio_synthesis_comparison_is_read_only_manual_review():
     assert out["automatic_admission"] is False
     assert out["compatible_scale"] is True
     assert out["review_status"].startswith("manual")
+    assert not out["metadata_complete"]
+    assert out["admission_blockers"]
+
+
+def test_complete_synthesis_metadata_removes_metadata_blocker_not_manual_review():
+    parts = load_all()
+    report = random_effects([
+        StudyEstimate("earnings_shock->mortality_sustained", "a", .10, .03, "log_odds_ratio", "US", "design", "year 6+", "sourcea",
+                      treatment="mass layoff", comparison="unexposed", outcome_definition="all-cause mortality", overlap_group="a"),
+        StudyEstimate("earnings_shock->mortality_sustained", "b", .14, .03, "log_odds_ratio", "US", "design", "year 6+", "sourceb",
+                      treatment="mass layoff", comparison="unexposed", outcome_definition="all-cause mortality", overlap_group="b"),
+    ])
+    out = compare_synthesis_to_parameter(parts["params"], report, parts["nodes"])
+    assert out["metadata_complete"]
+    assert out["admission_blockers"] == []
+    assert out["automatic_admission"] is False

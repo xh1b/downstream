@@ -72,6 +72,11 @@ def test_file_backed_cli_verbs_route_and_emit_contracts(tmp_path, monkeypatch, c
     assert main(["entity", "--input", str(entity)]) == 0
     assert json.loads(capsys.readouterr().out)["subject"]["id"] == "fixture"
 
+    assert main(["entity", "--input", str(entity),
+                 "--mortality-profile", "male_45_54_2015_2019"]) == 0
+    mortality = json.loads(capsys.readouterr().out)["modeled"]["excess_deaths"]
+    assert mortality["baseline"]["profiles"][0]["id"] == "male_45_54_2015_2019"
+
     proposal = _write_json(tmp_path / "proposal.json", {
         "event_id": "fixture", "event_source": "fixture", "population": "fixture",
         "outcome": "fixture", "unit": "units", "measurement_source": "fixture",

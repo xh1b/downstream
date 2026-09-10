@@ -1,161 +1,136 @@
-# Causal Graph Plan
+# Causal graph and life-course model plan
+
+Updated September 10, 2026. This is the model-design companion to
+[LIFE_COURSE_RESEARCH_PLAN.md](LIFE_COURSE_RESEARCH_PLAN.md), which defines the
+research milestones and their order. The calculator experience is planned in
+[WEBSITE_EXPERIENCE_PLAN.md](WEBSITE_EXPERIENCE_PLAN.md).
+
+The revised sequence prioritizes corrected estimands, baseline household
+trajectories, and independent validation before a distant multigenerational
+chain. The previously proposed grandchild birth-weight chain is retained as
+a later research candidate, not the next release target.
 
 ## Objective
 
-Build `downstream` into a versioned, evidence-locked causal consequence graph.
-Starting from an event or state, it must discover every supported downstream
-path, compose compatible effects over time, and report the result with a full
-uncertainty and provenance trail.
+Build an inspectable, versioned model that compares distributions of future
+outcomes for a supplied person-and-place profile under specified events and
+reference conditions. A time-indexed evidence graph describes supported
+relationships; a state-transition model represents how lives evolve.
+Graph reachability alone does not establish that a path can be evaluated.
 
-The model is descriptive. It encodes published estimates, nulls, conflicting
-results, scope limits, and uncertainty; it does not contain outcome-specific
-or political conclusions.
-
-The first executable target is one synthetic person and their family after a
-job displacement. The first scientific target is one long, auditable chain
-whose distant endpoint cannot be reached by a single paper alone.
+The model retains harmful, beneficial, null, and conflicting findings. Every
+reported consequence must be traceable to an appropriate evidential record
+and an explicit scenario definition. Unknown pathways remain unknown.
 
 ## Non-negotiable rules
 
-1. Every computed effect is graph-derived from cited evidence.
-2. Every estimate has a distribution or a declared reason it cannot support a
-   probabilistic result. Point estimates alone never become final outputs.
-3. Every output separates parameter uncertainty, simulated-life randomness,
-   baseline uncertainty, and structural uncertainty.
-4. Effects, nulls, beneficial effects, and contradictory results are all
-   represented. No path is selected because of its narrative appeal.
-5. Total effects and mediated paths are mutually exclusive within a structural
-   variant. The engine must not double-count a total-effect estimate and its
-   constituent routes.
-6. A missing bridge blocks that route visibly; it is never inferred from
-   intuition.
+1. Separate baseline transitions, causal intervention estimates, and declared
+   structural assumptions. Each has provenance appropriate to its role.
+2. Predictive associations in baseline models do not become causal effects.
+   A causal coefficient cannot be overlaid on a transition that already
+   contains the same effect without an explicit reconciliation.
+3. Require compatible treatment, comparison, outcome scale, population,
+   dose, and timing before composing effects. Units alone are insufficient.
+4. A total-effect estimate and its constituent mediator paths cannot both
+   contribute to the same outcome in one structural variant.
+5. Separate uncertainty about parameters and baselines from stochastic
+   variation among lives and from alternative structural specifications.
+6. An unsupported bridge or interaction blocks that claim rather than being
+   supplied by narrative plausibility. Null evidence is not missing evidence.
+7. Every exposed profile and scenario must have an applicability decision.
+   Geography and personal detail do not automatically confer identification.
 
-## Graph primitives
+## Model records
 
-### Nodes
+### State and identity
 
-Nodes are observable events, states, or outcomes, not moral labels. Examples:
+A person has an identifier, age, supported economic and health states,
+location, event history, and household membership. Households have linked
+members and shared resource accounting. Children's ages and exposure windows
+are explicit. Communities have a defined population and event scale rather
+than being a universal multiplier attached to one person's trajectory.
 
-`job_displacement`, `earnings`, `parental_divorce`, `childhood_place_exposure`,
-`birth_weight`, `adult_earnings`, `incarceration`, and `mortality`.
+A baseline state may be a distribution consistent with incomplete inputs.
+Document data sources and initialization weights. Preserve missingness;
+do not make a synthetic profile more precise than its inputs support.
 
-Every node has a unit, time semantics, population scope, and an optional
-baseline distribution.
+### Baseline transitions
 
-### Edges
+Record source dataset and version, population, predictors, time resolution,
+outcome distribution, estimation method, validation, and uncertainty.
+Transitions may be estimated from observational longitudinal data without
+claiming intervention identification. Published causal-effect admission rules
+continue to apply separately to the current parameter library.
 
-An edge is a study-backed change from one node to another. It records:
+### Causal edges
 
-- treatment and comparison;
-- outcome and unit;
-- point estimate and uncertainty distribution;
-- onset, duration, and persistence;
-- studied population and transfer limits;
-- causal design and evidence tier;
-- estimand role: `total`, `direct`, `mediated`, `null`, or `context_only`;
-- citations and extraction receipt.
+Record treatment and comparison; source and destination; effect scale;
+estimand role (total, direct, or mediated); outcome window; onset and duration;
+dose; studied population; causal design; assumptions; null or conflicting
+findings; covariance and sample-overlap provenance; citation and extraction
+receipt; and applicability to the target profile.
+
+Time is measured explicitly relative to the initiating event. A coefficient
+for offset +6 cannot be relabeled as follow-up year 6 when displacement is
+follow-up year 1. Repeated events require a defined response model.
 
 ### Structural variants
 
-A variant is an explicit, testable view of a pathway where the literature does
-not identify one unique composition. It can select a total-effect edge or a
-set of mediator edges, but never both. Outputs report the variant spread.
+A variant states which causal edges and transitions are used together and
+why. Alternatives may change timing, effect transport, or the representation
+of transmission. Do not assign probabilities to structural alternatives
+without a defensible basis. Document shared populations and overlapping
+outcomes before attributing additive contributions.
 
-## Computation
+## Comparison semantics
 
-The graph is unrolled by time. A simulation draw first samples a coherent
-scientific world (edge parameters and their declared dependencies), then a
-stochastic life within that world. This separates what is unknown about an
-effect from variation in what happens to a simulated person.
+Initialize compatible reference and event scenarios from the same profile.
+The reference evolves under ordinary life transitions; it is not a frozen
+state. The event changes specified mechanisms at a stated time and dose.
+Background conditions remain matched unless they are part of the scenario.
 
-For every reported result, emit:
+Use coherent parameter draws across both arms. Separate model uncertainty
+from simulated-life randomness. Common random numbers can reduce estimation
+noise but do not identify the joint counterfactual outcomes of one individual.
+Distinguish arm-specific distributions, expected contrasts, and any stronger
+claims about the distribution of individual treatment effects.
 
-- point, interval, and distribution summary;
-- all contributing paths and their signed contribution;
-- error budget by edge, baseline, stochastic outcome, and structural variant;
-- blocked paths and the missing scientific bridge;
-- parameter-set and graph version.
+For every result expose the comparison, unit, horizon, applicable population,
+evidence path, uncertainty scope, alternatives, unsupported pathways, and
+version. Produce an attribution breakdown only where its mathematics and
+causal interpretation are defensible.
 
-## Work plan
+## Work sequence
 
-### Phase 1 — Convert the existing library into a graph
+| Stage | Model work | Research dependency and exit test |
+|---|---|---|
+| Correct | Repair mortality timing, place counterfactual, and county likelihood contracts | R0: independent mathematical checks and refreshed scorecards |
+| Describe | Classify existing coefficients and baseline records; define composition contracts | R1: incompatible and overlapping paths refused; corrected current results remain reproducible |
+| Initialize | Define linked household state and estimate narrow baseline transitions | R2: resource accounting and held-out baseline evaluation |
+| Intervene | Implement one timed displacement scenario and explicit reference process | R3: five-year supported employment, earnings, and household-resource contrasts |
+| Evaluate | Compare with independent event evidence and simple alternatives | R4-R5: frozen scorecard, applicability, interval scope, and sensitivity assessment |
+| Explain | Make the validated comparison understandable in the calculator | R6: comprehension and product release criteria |
+| Expand | Add supported protective events, interactions, and wider domains | R7: each new causal contract reviewed independently |
+| Extend | Study longer horizons and descendants | R8: compatible bridges and endpoint evaluation justify the extension |
 
-1. Promote current nodes and parameter rows to graph nodes and edges without
-   changing numerical behavior.
-2. Add timing, estimand role, and uncertainty metadata to every active edge.
-3. Encode existing parallel streams as graph branches rather than renderer
-   folders.
-4. Preserve current CLI output and tests as backward-compatibility fixtures.
+Testing and validation begin with the first stage and continue throughout;
+they are not a final task after graph expansion.
 
-**Exit test:** every current result can be produced by graph traversal and has
-the same citations, point, and interval semantics as before.
+## Later candidate pathways
 
-### Phase 2 — Uncertainty-native engine
+Retain the proposed chain `job displacement -> child adult conditions ->
+child pregnancy conditions -> grandchild birth weight` as an evidence question.
+It requires compatible intermediate estimands, populations, timing, and an
+independent endpoint check. A long sequence of citations is not sufficient.
 
-1. Replace generic low/high handling with unit-appropriate distributions.
-2. Add baseline and outcome-process uncertainty alongside parameter sampling.
-3. Add declared dependence groups and reject undeclared correlation claims.
-4. Produce a per-result error budget and structural-variant spread.
+Other domains include health shocks and disability; housing instability and
+relocation; family formation and bereavement; childhood health and education;
+crime and victimization; environment and disasters; and protective income,
+health, school, and housing interventions. Prioritize additions by usefulness
+for a defined scenario, evidence quality, evaluability, and reduction of
+uncertainty in existing results, rather than graph size alone.
 
-**Exit test:** a one-edge result, a two-edge mediated result, and a competing
-total-effect variant have analytically or simulation-verified uncertainty.
-
-### Phase 3 — First long chain
-
-Build and validate a first distant consequence chain:
-
-`job displacement → child adult conditions → child pregnancy conditions →
-grandchild birth weight`
-
-This chain only ships when every bridge is supported by an extracted study,
-timing is compatible, and its output identifies which bridge dominates error.
-
-**Exit test:** `downstream` can explain the distant birth-weight result from
-the initiating event through every cited edge, including uncertainty.
-
-### Phase 4 — Systematic evidence expansion
-
-Expand by graph bridges, not by topical anecdotes. Initial research domains:
-
-1. health shock, disability, earnings, debt, and bankruptcy;
-2. housing instability, eviction, relocation, and place exposure;
-3. family formation, divorce, bereavement, parenting, and fertility;
-4. childhood health, birth conditions, education, and adult outcomes;
-5. crime, victimization, incarceration, and family spillovers;
-6. mental health, substance use, work, and child outcomes;
-7. environment, disaster, migration, health, and labor outcomes;
-8. protective interventions: income supports, health care, schools, and
-   neighborhood improvements.
-
-Each new study is triaged by causal quality, composability, time resolution,
-number of bridges unlocked, and expected reduction in output uncertainty.
-
-### Phase 5 — Single-person causal trace
-
-Model one synthetic person, their household, children, and marginal community
-contribution as a time-indexed graph state. This is not person-level
-prediction; repeated draws produce the population distribution conditional on
-the specified initial state and event.
-
-**Exit test:** a trace shows what happened in one draw, while the aggregate
-result reports the distribution across draws and its evidence receipts.
-
-### Phase 6 — Validation and falsification
-
-1. Keep internal algebra and unit tests.
-2. Add held-out event studies for graph subpaths and full chains.
-3. Register prospective graph forecasts before outcome windows.
-4. Publish misses, failed transfers, and blocked paths.
-
-## Immediate next actions
-
-1. Inventory every existing parameter as a graph edge and classify its role.
-2. Define the graph edge and uncertainty data model in code.
-3. Create a literature queue organized around missing bridges to the first
-   long-chain target, beginning with adult socioeconomic conditions to
-   pregnancy and birth outcomes.
-4. Implement graph traversal for the existing displacement graph before
-   adding new numerical claims.
-
-The acquisition workflow and first DOI/open-access batch live in
-`docs/LITERATURE_ACQUISITION_PLAN.md`.
+Extraction mechanics remain in
+[LITERATURE_ACQUISITION_PLAN.md](LITERATURE_ACQUISITION_PLAN.md). Research status
+and milestone completion belong in the life-course plan and the top-level
+TODO, avoiding multiple conflicting schedules.

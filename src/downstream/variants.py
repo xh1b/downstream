@@ -22,7 +22,9 @@ Variants (v1):
 - ige_decay_half        grandchild transmission strengthens: t2 = t^0.5
 - ige_decay_power       grandchild transmission decays: t2 = t^1.5
   (both decay shapes are geometric re-parameterizations of the SAME
-  cited IGE band — declared assumption alternates, not new evidence)
+   cited IGE band — declared assumption alternates, not new evidence)
+- log_elasticity_transmission finite-change mapping ``v**t`` instead of
+  the shipped first-order gap approximation ``1-t(1-v)``
 - closure_selection_contrast (v1.19) the direct child anchor
   (oreopoulos2008, a firm-closure design) set aside and the children
   line stood on the JLS father-shock path composed through the SAME
@@ -44,6 +46,7 @@ VARIANT_IDS = (
     "parallel_gap_additive",
     "ige_decay_half",
     "ige_decay_power",
+    "log_elasticity_transmission",
     "closure_selection_contrast",
 )
 
@@ -108,6 +111,24 @@ def _closure_contrast_child(params: ParameterSet) -> dict:
     return {"child": child, "grandchild": grand}
 
 
+def _log_elasticity_child(params: ParameterSet) -> dict:
+    """Finite-change log-elasticity transmission structural alternate.
+
+    An intergenerational elasticity ``t`` implies ``v**t`` for a finite
+    multiplier v. The shipped gap rule is its first-order approximation
+    around v=1; neither expression identifies an intervention response.
+    """
+    direct = params.by_link(CHILD_DIRECT)
+    transmission = params.by_link(GRANDCHILD)
+    corners = [v ** t for v in (direct.low, direct.high)
+               for t in (transmission.low, transmission.high)]
+    child = start("child_earnings", "gap_multiplier").apply(DIRECT, direct)
+    grand = replace(start("grandchild_earnings", "gap_multiplier"),
+                    point=direct.point ** transmission.point,
+                    low=min(corners), high=max(corners))
+    return {"child": child, "grandchild": grand}
+
+
 def run_ensemble(params: ParameterSet) -> dict:
     """All named variants side by side, with the spread published."""
     rows = []
@@ -144,6 +165,13 @@ def run_ensemble(params: ParameterSet) -> dict:
         v = _with_transmission(params, GRANDCHILD, expo)
         line = child_line(v)
         _row(name, f"{desc}; declared assumption alternate, not new evidence", line["child"], line["grandchild"])
+
+    le = _log_elasticity_child(params)
+    _row(
+        "log_elasticity_transmission",
+        "finite-change v**t mapping for a constant log elasticity; declared structural alternate, not an identified intervention response",
+        le["child"], le["grandchild"],
+    )
 
     cc = _closure_contrast_child(params)
     _row(

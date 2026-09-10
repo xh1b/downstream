@@ -54,6 +54,13 @@ def test_sobol_is_seeded_and_deterministic():
     assert a == b
 
 
+def test_sobol_first_order_is_invariant_to_a_constant_output_shift():
+    params = _fake_params([(0.0, 1.0), (0.0, 1.0)])
+    raw = sobol_indices(params, lambda ps: sum(p.point for p in ps.parameters), NODES, base=128, seed=4)
+    shifted = sobol_indices(params, lambda ps: 1_000_000 + sum(p.point for p in ps.parameters), NODES, base=128, seed=4)
+    assert raw["indices"] == shifted["indices"]
+
+
 def test_sobol_noise_stays_bounded():
     params = _fake_params([(0.5, 1.5), (1.0, 3.0), (0.0, 2.0), (2.0, 2.5)])
 

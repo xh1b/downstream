@@ -71,9 +71,10 @@ MOBILITY_MODIFIER_LINK = "neighborhood_exposure->child_outcomes_modifier"
 DOSE_YEARS = 18.0
 
 # Declared prior sample sizes k for the shrinkage weight w = n/(n+k).
-# Mortality: county deaths are Poisson; k = 2,000 deaths is roughly the
-# national prime-age rate accumulated over 1M person-years — counties
-# below that precision move materially toward the national mean.
+# Mortality is deliberately excluded from this generic place table. Its
+# ``mortality_n`` field is a precision label, not a binomial denominator;
+# production pooling requires the strict CountyRateObservation contract in
+# county_rates.py (events, person-time, and matching national metadata).
 # Divorce: county-level 5y-cumulative divorce rates are not published
 # at all (the plug stays empty and the national value is used); k is
 # declared for when a survey-backed county plug lands, set at the
@@ -92,6 +93,8 @@ _N_COLUMNS = {
     "mortality_rate": "mortality_n",
     "divorce_rate": "divorce_n",
 }
+
+_EXPERIMENTAL_RATE_OUTCOMES = {"all_cause_mortality_annual"}
 
 
 @dataclass(frozen=True)
@@ -234,6 +237,16 @@ def place_baselines(
         county_value = getattr(place, col)
         county_n = getattr(place, _N_COLUMNS[col])
         base = baselines.get(outcome)
+        if outcome in _EXPERIMENTAL_RATE_OUTCOMES:
+            overrides[outcome] = {
+                "applied": False,
+                "reason": (
+                    "county mortality stays national: places.csv has only a rate and generic precision; "
+                    "use the experimental Gamma-Poisson county-rate contract with matching "
+                    "outcome, population, and time-window metadata before integration"
+                ),
+            }
+            continue
         if base is None or base.status != "verified" or base.value is None:
             overrides[outcome] = {
                 "applied": False,
@@ -324,7 +337,7 @@ def mobility_modifier(
     places: dict[str, Place],
     key: str,
 ) -> dict:
-    """The Chetty-Hendren mobility multiplier for one place.
+    """The Chetty-Hendren mobility loss modifier for one place.
 
     multiplier = 1 + DOSE_YEARS * gamma * (place_pct - national_pct)/100:
     the county's permanent-resident income-rank percentile gap vs the
@@ -420,10 +433,10 @@ def modifier_parameter(
     Returns {"modifier": <mobility_modifier dict>, "parameter":
     <Parameter | None>}. The parameter is a DERIVED value — the landed
     gamma row evaluated at this place's gap — never a new estimate.
-    Composition with the child-earnings chain is MULTIPLICATIVE: a
-    declared modeling assumption (the paper estimates the exposure
-    effect on adult ranks, not a multiplier on a displacement shock),
-    recorded on the parameter and in every consuming surface.
+    Composition scales a displacement loss in a same-place contrast:
+    ``1 - multiplier * (1 - direct_effect)``. This passes the required
+    null-displacement invariant but remains an exploratory structural
+    assumption: Chetty--Hendren does not identify this interaction.
     """
     mod = mobility_modifier(params, places, key)
     if not mod.get("applied"):
@@ -449,8 +462,9 @@ def modifier_parameter(
                 f"{mod['national_percentile']} (gap "
                 f"{mod['gap_vs_national']:+.4f}), dose {DOSE_YEARS}y; "
                 "derived from the landed gamma row, not a new estimate; "
-                "MULTIPLICATIVE composition with the child-earnings "
-                "chain is a declared modeling assumption"
+                "scales the direct displacement loss in a same-place "
+                "contrast; this is exploratory and not an identified "
+                "displacement-by-place interaction"
             ),
         ),
     }

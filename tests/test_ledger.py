@@ -62,6 +62,15 @@ def test_direct_step_replaces_value_and_carries_citation():
     assert led.steps[0].tier == "EXACT"
 
 
+def test_public_child_line_labels_direct_and_structural_roles():
+    from downstream.children import child_line
+
+    line = child_line(load(PARAMS))
+    assert line["child"].steps[-1].causal_role == "direct_displacement_estimate"
+    assert line["grandchild"].steps[-1].causal_role == "structural_transmission_assumption"
+    assert line["grandchild"].steps[-1].as_dict()["causal_role"] == "structural_transmission_assumption"
+
+
 def test_rate_step_records_without_chaining():
     params = load(PARAMS)
     led = start("m", "rate_ratio").apply(RATE, params.by_link("earnings_shock->mortality_sustained"))

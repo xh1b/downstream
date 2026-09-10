@@ -17,8 +17,10 @@ def test_suppression_and_pooled_denominator(tmp_path):
     assert (observation.key, observation.events, observation.person_years) == ("01001", 20, 10000)
     assert observation.time_window == "2015-2019"
     assert out['suppressed_count'] == 2
-    with pytest.raises(ValueError, match="sex"):
-        parse_export(path, metadata={**metadata, 'sex': 'All'})
+    all_sex = parse_export(path, metadata={**metadata, 'sex': 'All'})
+    assert all_sex["query"]["profile"]["sex"] == "All"
+    with pytest.raises(ValueError, match="group_by"):
+        parse_export(path, metadata={**metadata, 'group_by': ['County', 'Age']})
     path.write_text(path.read_text() + '"01001"\t"30"\t"10000"\n')
     with pytest.raises(ValueError, match="duplicate"):
         parse_export(path, metadata=metadata)

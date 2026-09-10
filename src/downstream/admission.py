@@ -30,6 +30,8 @@ def compare_synthesis_to_parameter(params: ParameterSet, report: dict, nodes: di
     parameter = params.by_link(link)
     unit = nodes[parameter.to_node].unit
     expected_scale = _EXPECTED_LOG_SCALE.get(unit)
+    compatibility = report.get("compatibility", {})
+    missing = list(compatibility.get("missing_metadata", []))
     output = {
         "link": link,
         "parameter": {"point": parameter.point, "low": parameter.low, "high": parameter.high,
@@ -37,7 +39,13 @@ def compare_synthesis_to_parameter(params: ParameterSet, report: dict, nodes: di
         "synthesis": {"scale": report["scale"], "studies": report["studies"],
                       "random_effects": report["random_effects"]},
         "automatic_admission": False,
+        # Keep this available on every return path so callers do not have to
+        # infer whether an early scale rejection also had missing metadata.
+        "metadata_complete": not missing,
     }
+    output["admission_blockers"] = [
+        f"missing required synthesis metadata: {name}" for name in missing
+    ]
     if expected_scale is None:
         output.update({
             "compatible_scale": False,
@@ -61,7 +69,10 @@ def compare_synthesis_to_parameter(params: ParameterSet, report: dict, nodes: di
     descriptive_z = delta / math.sqrt(se**2 + pooled["standard_error"]**2)
     output.update({
         "compatible_scale": True,
-        "review_status": "manual: estimand, timing, target population, and study-overlap review required",
+        "review_status": (
+            "manual: complete treatment/comparison/outcome metadata before estimand, timing, target-population, and overlap review"
+            if missing else "manual: estimand, timing, target population, and study-overlap review required"
+        ),
         "parameter_log_scale": {"point": point, "approx_standard_error": se},
         "pooled_minus_parameter_log_scale": delta,
         "descriptive_standardized_difference": descriptive_z,

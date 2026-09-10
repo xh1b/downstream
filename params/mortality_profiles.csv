@@ -1,0 +1,3 @@
+profile_id,sex,age,years,cause,geography,annual_rate,population_scope,citation,status,notes
+male_45_54_2015_2019,Male,45-54 years,2015-2019,All causes,US,0.004944,US prime-age men (45-54),"CDC WONDER D76, male 45-54, 2015-2019; same source as baselines.csv:all_cause_mortality_annual",verified,"Compatibility default for the Sullivan-von Wachter cohort; rate is event/person-year."
+all_ages_1999_2020_context,All,All ages,1999-2020,All causes,US counties,,US county residents all ages,"validation/cdc_wonder_county_all_ages_1999_2020.provenance.json",context_only,"Raw context export; selection metadata cannot be independently reconstructed, so it is never a scenario baseline."

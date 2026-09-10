@@ -6,7 +6,7 @@ import pytest
 from downstream.distributions import plan
 from downstream.ledger import validate_chain
 from downstream.mc import simulate_chain
-from downstream.mortality import odds_risk
+from downstream.mortality import odds_risk, rate_to_risk
 from downstream.params import Correlation, Parameter, ParameterSet, load_all
 from downstream.place import Place, PRIOR_N
 from downstream.scenario import ScenarioInput, sample_counts
@@ -69,7 +69,7 @@ def test_mc_chain_honors_nonunit_start():
     assert result["p05"] == result["p95"] == .9
 
 
-def test_predictive_cohorts_use_same_pooled_baseline_as_expected_counts(monkeypatch):
+def test_predictive_cohorts_refuse_generic_county_mortality_pooling(monkeypatch):
     parts = load_all()
     national = parts["baselines"]["all_cause_mortality_annual"].value
     local = .04
@@ -89,7 +89,7 @@ def test_predictive_cohorts_use_same_pooled_baseline_as_expected_counts(monkeypa
                                          for p in parts["params"].parameters))
     result = sample_counts(params, parts["baselines"], ScenarioInput(100, exposure_years=1),
                            places=places, place_key="county", nodes=parts["nodes"], draws=8)
-    pooled = (local + national) / 2
+    pooled = rate_to_risk(national)
     exposed = odds_risk(pooled, params.by_link("earnings_shock->mortality_peak").point)
     assert calls[::2] == pytest.approx([exposed] * 8)
     assert calls[1::2] == pytest.approx([pooled] * 8)

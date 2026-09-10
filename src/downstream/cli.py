@@ -56,8 +56,12 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--wage-multiplier", type=float, default=None)
     p.add_argument("--exposure-years", type=float, default=20.0)
     p.add_argument("--mortality-method", choices=["odds_survival", "legacy_additive"], default="odds_survival")
-    p.add_argument("--mortality-timing", choices=["source_aligned", "immediate_sustained"], default="source_aligned",
-                   help="source_aligned holds years 2–5 at baseline; immediate_sustained is a sensitivity assumption")
+    p.add_argument("--mortality-timing", choices=["source_profile", "source_aligned", "immediate_sustained"], default="source_profile",
+                   help="source_profile follows extracted source offsets; other choices are legacy/sensitivity assumptions")
+    p.add_argument("--mortality-profile", default=None,
+                   help="verified demographic mortality profile id from mortality_profiles.csv")
+    p.add_argument("--mortality-mix", default=None, metavar="PROFILE:WEIGHT,...",
+                   help="declared demographic mix; weights must sum to one")
     p.add_argument("--place-application", choices=["initial_only", "legacy_repeated"], default="initial_only")
     p.add_argument("--draws", type=int, default=2_000,
                    help="parameter-only Monte Carlo draws for count intervals (minimum 2)")
@@ -85,13 +89,17 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--compare-params", action="store_true",
                    help="add a read-only manual-review comparison to the shipped parameter row")
 
-    p = sub.add_parser("county-posterior", help="Beta-binomial county-rate posterior from count-compatible source data")
+    p = sub.add_parser("county-posterior", help="Gamma-Poisson county event/person-time rate posterior")
     p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
     p.add_argument("--input", required=True, help="CSV with county event counts and person-years")
     p.add_argument("--key", required=True)
     p.add_argument("--outcome", required=True)
     p.add_argument("--time-window", required=True)
     p.add_argument("--national-rate", required=True, type=float)
+    p.add_argument("--national-population-scope", required=True,
+                   help="must exactly match the county input's population_scope")
+    p.add_argument("--national-citation", required=True,
+                   help="locator for the national rate and matching window")
     p.add_argument("--prior-person-years", required=True, type=float)
     p.add_argument("--draws", default=10_000, type=int)
     p.add_argument("--seed", default=1901, type=int)
@@ -121,6 +129,10 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--children", type=int, default=2)
     p.add_argument("--exposure-years", type=float, default=20.0)
     p.add_argument("--tradable-share", type=float, default=1.0)
+    p.add_argument("--mortality-profile", default=None,
+                   help="verified demographic mortality profile id from mortality_profiles.csv")
+    p.add_argument("--mortality-mix", default=None, metavar="PROFILE:WEIGHT,...",
+                   help="declared demographic mix; weights must sum to one")
     p.add_argument("--place", default=None)
 
     p = sub.add_parser("explain", help="walk a claim from headline to citations")
@@ -271,19 +283,22 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     if args.cmd == "county-posterior":
-        from .county_rates import beta_binomial_posterior, load_county_rates
+        from .county_rates import NationalRatePrior, load_county_rates, poisson_gamma_posterior
 
         matches = [r for r in load_county_rates(args.input)
                    if (r.key, r.outcome, r.time_window) == (args.key, args.outcome, args.time_window)]
         if not matches:
             parser.error("no county observation matches --key, --outcome, and --time-window")
-        _dump(beta_binomial_posterior(matches[0], args.national_rate, args.prior_person_years,
+        prior = NationalRatePrior(args.outcome, args.national_rate,
+                                  args.national_population_scope, args.time_window,
+                                  args.national_citation)
+        _dump(poisson_gamma_posterior(matches[0], prior, args.prior_person_years,
                                       draws=args.draws, seed=args.seed))
         return 0
 
     if args.cmd == "county-wonder-posterior":
         from .county_mortality import count_observations, parse_export
-        from .county_rates import beta_binomial_posterior
+        from .county_rates import NationalRatePrior, poisson_gamma_posterior
 
         try:
             metadata = json.loads(Path(args.metadata).read_text(encoding="utf-8"))
@@ -293,7 +308,10 @@ def main(argv: list[str] | None = None) -> int:
         matches = [r for r in count_observations(parsed) if r.key == args.key]
         if not matches:
             parser.error("county was absent or suppressed in the validated WONDER export")
-        out = beta_binomial_posterior(matches[0], args.national_rate, args.prior_person_years,
+        prior = NationalRatePrior(matches[0].outcome, args.national_rate,
+                                  matches[0].population_scope, matches[0].time_window,
+                                  parsed["query"].get("citation") or parsed["query"]["source_url"])
+        out = poisson_gamma_posterior(matches[0], prior, args.prior_person_years,
                                       draws=args.draws, seed=args.seed)
         out["wonder_export"] = {"source_sha256": parsed["source_sha256"],
                                  "suppressed_count": parsed["suppressed_count"],
@@ -310,6 +328,17 @@ def main(argv: list[str] | None = None) -> int:
             if not places:
                 raise SystemExit(f"places.csv absent under {args.params} — cannot resolve --place {args.place!r}")
         from .scenario import sample_counts
+        mortality_profiles = None
+        mortality_mix = None
+        if args.mortality_mix:
+            try:
+                mortality_mix = {item.split(":", 1)[0]: float(item.split(":", 1)[1])
+                                 for item in args.mortality_mix.split(",")}
+            except (IndexError, ValueError) as exc:
+                parser.error(f"invalid --mortality-mix; use profile:weight,... ({exc})")
+        if args.mortality_profile or mortality_mix:
+            from .mortality_profiles import load_profiles
+            mortality_profiles = load_profiles(Path(args.params) / "mortality_profiles.csv")
         out = sample_counts(
             params,
             parts["baselines"],
@@ -321,11 +350,14 @@ def main(argv: list[str] | None = None) -> int:
                 exposure_years=args.exposure_years,
                 mortality_method=args.mortality_method,
                 mortality_timing=args.mortality_timing,
+                mortality_profile=args.mortality_profile,
+                mortality_mix=mortality_mix,
                 place_application=args.place_application,
             ),
             strict=args.strict,
             places=places,
             place_key=args.place,
+            mortality_profiles=mortality_profiles,
             draws=args.draws,
             seed=args.seed,
             nodes=parts["nodes"],
@@ -362,12 +394,26 @@ def main(argv: list[str] | None = None) -> int:
         places = load_places(Path(args.params) / "places.csv") if args.place else None
         if args.place and (not places or args.place not in places):
             parser.error(f"cannot resolve place {args.place!r}")
+        mortality_profiles = None
+        mortality_mix = None
+        if args.mortality_mix:
+            try:
+                mortality_mix = {item.split(":", 1)[0]: float(item.split(":", 1)[1])
+                                 for item in args.mortality_mix.split(",")}
+            except (IndexError, ValueError) as exc:
+                parser.error(f"invalid --mortality-mix; use profile:weight,... ({exc})")
+        if args.mortality_profile or mortality_mix:
+            from .mortality_profiles import load_profiles
+            mortality_profiles = load_profiles(Path(args.params) / "mortality_profiles.csv")
         try:
             result = compute_entity_counts(
                 params, parts["baselines"], exposure,
                 ScenarioInput(0, n_children=args.children, exposure_years=args.exposure_years,
-                              tradable_share=args.tradable_share),
+                              tradable_share=args.tradable_share,
+                              mortality_profile=args.mortality_profile,
+                              mortality_mix=mortality_mix),
                 places=places, place_key=args.place,
+                mortality_profiles=mortality_profiles,
             )
         except (ValueError, TypeError) as exc:
             parser.error(str(exc))

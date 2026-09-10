@@ -107,8 +107,8 @@ def standard_family(
     }
     if place_block is not None:
         out["composition_notes"].append(
-            "place modifier composes MULTIPLICATIVELY with the "
-            "child-earnings chain — declared modeling assumption"
+            "place modifier scales the direct displacement loss in a same-place "
+            "contrast — exploratory structural assumption, not an identified interaction"
         )
     return out
 

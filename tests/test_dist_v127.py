@@ -276,11 +276,11 @@ def test_induced_negative_coupling_moves_the_two_mortality_rows_together():
 def test_marginals_survive_induction_on_the_landed_matrix():
     rows = load_correlations(PARAMS_DIR / "correlations.csv")
     rng = random.Random(13)
-    u = lhs_matrix(42, 500, rng)
+    u = lhs_matrix(len(PARAMS.parameters), 500, rng)
     mat = spearman_matrix(PARAMS, rows)
     assert mat is not None
     out = apply_rank_correlation(u, mat)
-    for j in range(40):
+    for j in range(len(PARAMS.parameters)):
         assert sorted(row[j] for row in out) == sorted(row[j] for row in u)
 
 

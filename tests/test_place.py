@@ -179,26 +179,20 @@ def test_prior_n_declared_per_outcome():
 
 # --- place_baselines ----------------------------------------------
 
-def test_place_baselines_swaps_mortality_and_records_pooling():
+def test_place_baselines_refuses_generic_mortality_pooling():
     out = place_baselines(_places(_philly()), _baseline_dict(), "42101")
     o = out["provenance"]["overrides"]["all_cause_mortality_annual"]
-    assert o["applied"] is True
-    assert o["county_value"] == 0.006200
-    assert o["national_value"] == NAT_RATE
+    assert o["applied"] is False
+    assert "Gamma-Poisson" in o["reason"]
     b = out["baselines"]["all_cause_mortality_annual"]
-    assert b.value == pytest.approx(o["shrunk_value"])
-    # unit honesty: the swapped row carries the NATIONAL unit and
-    # population, and the note declares no conversion
-    assert b.unit == "deaths_per_person_year"
-    assert "same unit and population as the national baseline" in b.notes
-    assert "no conversion applied" in b.notes
+    assert b.value == NAT_RATE
 
 
 def test_place_baselines_without_n_stays_national():
     out = place_baselines(_places(_philly(deaths_n=None)), _baseline_dict(), "42101")
     o = out["provenance"]["overrides"]["all_cause_mortality_annual"]
     assert o["applied"] is False
-    assert "precision n missing" in o["reason"]
+    assert "Gamma-Poisson" in o["reason"]
     assert out["baselines"]["all_cause_mortality_annual"].value == NAT_RATE
 
 
@@ -377,7 +371,7 @@ def test_modifier_parameter_is_derived_not_new():
     assert p.point == mod["multiplier"]["point"]
     assert (p.low, p.high) == (mod["multiplier"]["low"], mod["multiplier"]["high"])
     # the declared assumption travels with the row
-    assert "MULTIPLICATIVE" in p.notes and "declared modeling assumption" in p.notes
+    assert "same-place contrast" in p.notes and "exploratory" in p.notes
 
 
 def test_modifier_parameter_blocked_when_places_absent():
@@ -398,11 +392,11 @@ def test_legacy_child_line_repeats_multiplier():
     m = mp["modifier"]["multiplier"]
     direct = PARAMS.by_link(CHILD_DIRECT).point
     ige = PARAMS.by_link(GRANDCHILD).point
-    # child: the multiplier hits the direct gap ratio
-    assert line["child"].point == pytest.approx(direct * m["point"])
-    # grandchild: the modifier hits each generation's own adult outcome,
-    # so it composes AROUND the IGE step — mult * (1 - IGE*(1 - child))
-    expected_gc = m["point"] * (1 - ige * (1 - direct * m["point"]))
+    # child: the modifier scales the direct displacement loss, so a null
+    # displacement effect would remain 1 at every place.
+    assert line["child"].point == pytest.approx(1 - m["point"] * (1 - direct))
+    # Grandchild: repeated loss scaling wraps the IGE propagation.
+    expected_gc = 1 - m["point"] * ige * m["point"] * (1 - direct)
     assert line["grandchild"].point == pytest.approx(expected_gc, rel=1e-9)
     # every generation carries the step with its citation trail
     for gen in ("child", "grandchild", "greatgrandchild"):
@@ -422,14 +416,14 @@ def test_child_line_without_modifier_is_unchanged():
 def test_vignette_place_block_and_scaled_children():
     from downstream.vignette import standard_family
 
-    base = standard_family(PARAMS)
     out = standard_family(PARAMS, places=_places(_philly()), place_key="42101")
     assert out["place"]["applied"] is True and out["place"]["key"] == "42101"
     assert out["place"]["mobility_percentile"] == 12.0
-    ratio = out["children_stream"]["child"]["point"] / base["children_stream"]["child"]["point"]
     # ledger dicts round to 4 places — loose enough to survive rounding
-    assert ratio == pytest.approx(modifier_for_place()["multiplier"]["point"], abs=1e-3)
-    assert any("MULTIPLICATIVELY" in n for n in out["composition_notes"])
+    direct = PARAMS.by_link("displacement->child_earnings").point
+    expected = 1 - modifier_for_place()["multiplier"]["point"] * (1 - direct)
+    assert out["children_stream"]["child"]["point"] == pytest.approx(expected, abs=1e-3)
+    assert any("same-place" in n and "exploratory" in n for n in out["composition_notes"])
 
 
 def modifier_for_place():
@@ -456,7 +450,7 @@ def test_vignette_unknown_place_key_fails_loudly():
         standard_family(PARAMS, places=_places(_philly()), place_key="99999")
 
 
-def test_legacy_scenario_uses_shrunk_mortality_baseline():
+def test_legacy_scenario_refuses_generic_county_mortality_baseline():
     from downstream.scenario import ScenarioInput, compute_counts
 
     base = compute_counts(
@@ -466,23 +460,13 @@ def test_legacy_scenario_uses_shrunk_mortality_baseline():
         PARAMS, _baseline_dict(), ScenarioInput(displaced_workers=1000, mortality_method="legacy_additive"),
         places=_places(_philly()), place_key="42101",
     )
-    # the county rate replaces the national one in the SAME unit
-    assert out["modeled"]["excess_deaths"]["baseline"]["value"] != NAT_RATE
-    expected = _philly_expected_rate()
-    assert out["modeled"]["excess_deaths"]["baseline"]["value"] == pytest.approx(expected, rel=1e-6)
-    # deaths scale with the swapped rate (multiplier unchanged)
+    # Generic county precision is not a likelihood denominator, so the
+    # production scenario remains on the compatible national rate.
+    assert out["modeled"]["excess_deaths"]["baseline"]["value"] == NAT_RATE
     ratio = out["modeled"]["excess_deaths"]["point"] / base["modeled"]["excess_deaths"]["point"]
-    assert ratio == pytest.approx(expected / NAT_RATE, rel=1e-3)
-    # provenance records the pooling arithmetic
+    assert ratio == pytest.approx(1.0)
     ov = out["place"]["baseline_overrides"]["all_cause_mortality_annual"]
-    assert ov["applied"] is True and ov["county_n"] == 2864.0
-    assert ov["weight"] < 1.0
-
-
-def _philly_expected_rate() -> float:
-    k = PRIOR_N["all_cause_mortality_annual"]
-    w = 2864.0 / (2864.0 + k)
-    return (1 - w) * NAT_RATE + w * 0.006200
+    assert ov["applied"] is False
 
 
 def test_scenario_child_earnings_carry_the_modifier():
@@ -497,16 +481,24 @@ def test_scenario_child_earnings_carry_the_modifier():
         places=_places(_philly()), place_key="42101",
     )
     m = modifier_for_place()["multiplier"]["point"]
-    direct = PARAMS.by_link(CHILD_DIRECT).point
-    # TRAP (fired on the naive expectation, 2026-09-09): the count uses
-    # the LOSS share (1 - child_gap), so the place multiplier scales the
-    # gap, not the count one-for-one. A below-mobility county SHRINKS
-    # the retained share and therefore AMPLIFIES the dollar loss.
-    expected_ratio = (1 - direct * m) / (1 - direct)
+    # Same-place contrast: place M scales the displacement loss itself.
+    expected_ratio = m
     pc = out["modeled"]["child_lifetime_earnings_lost_usd"]["point"] / base["modeled"]["child_lifetime_earnings_lost_usd"]["point"]
     assert pc == pytest.approx(expected_ratio, rel=1e-3)
-    assert pc > 1.0  # low-mobility county: bigger modeled loss
     assert out["place"]["modifier_applied"] is True
+
+
+def test_same_place_modifier_has_zero_response_to_null_displacement():
+    from dataclasses import replace
+    from downstream.children import CHILD_DIRECT, child_line
+    from downstream.place import modifier_parameter
+
+    null_params = type(PARAMS)(PARAMS.version, tuple(
+        replace(p, point=1.0, low=1.0, high=1.0) if p.link == CHILD_DIRECT else p
+        for p in PARAMS.parameters
+    ))
+    modifier = modifier_parameter(null_params, _places(_philly()), "42101")["parameter"]
+    assert child_line(null_params, place_modifier=modifier)["child"].point == 1.0
 
 
 def test_scenario_place_untouched_without_key():
