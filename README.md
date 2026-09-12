@@ -104,9 +104,9 @@ With displacement occupying follow-up year 1, +6 begins in year 7.
 `source_aligned` is retained only to reproduce the former incomplete timing;
 `immediate_sustained` remains a sensitivity assumption.
 
-Companion project: xh1b.org. Integration into its employer, county,
-state, and family surfaces is in progress. This repo contains only the model,
-the parameters, and the paper — no confidential material.
+Companion project: [xh1b.org/downstream](https://xh1b.org/downstream). Integration
+into its employer, county, state, and family surfaces is in progress. This repo
+contains only the model, the parameters, and the paper — no confidential material.
 
 Place experiments accept a `places.csv` key through `--place` on
 `simulate --outcome child|grandchild`, `sensitivity` (including `--ci`),
