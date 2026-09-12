@@ -173,6 +173,10 @@ by git; `paper/build_tables.py` generates the numerical data. Vector diagrams
 and chart layouts live in `paper/figures/`. The PDF uses TikZ and PGFPlots,
 with the numerical scorecard tables retained in an appendix.
 
+The PDF is not checked into Git. Tag a reviewed paper release as
+`paper-v*` to rebuild it in GitHub Actions and attach the canonical PDF to
+the release. A manual workflow run stores the same PDF as a CI artifact.
+
 
 Engine 0.2.0 corrects mortality odds-to-risk conversion and survival timing,
 uses a source-offset mortality profile, scales optional place effects as a
