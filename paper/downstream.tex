@@ -45,8 +45,8 @@ forecasts have not yet been registered. We report those limits alongside
 the implemented methods. Outputs are conditional population-average
 estimates, not predictions about individuals or proof that an exposure
 was caused by a particular filing or employer. A current mathematical
-review identifies unresolved mortality-profile extraction and
-place-counterfactual problems; numerical consistency alone does not
+review identifies mortality transport, baseline, and place-counterfactual
+limits; numerical consistency alone does not
 establish causal validity.
 \end{abstract}
 
@@ -202,40 +202,35 @@ correctly. Full notes and evidence classes remain in the CSV and
 bibliography rather than being replaced by the compact appendix.
 
 \subsection{Count conversion}
-With annual mortality baseline $m$, sustained and peak ratios $r_s,r_p$,
+With annual mortality baseline $m$, source-offset odds ratios $r_j$,
 and lifetime earnings baseline $L$, the current scenario implements
 \begin{align}
  q(r) &= \frac{rm}{1-m+rm},\\
- D &= N\{(1-m)^Y-[1-q(r_p)]^a(1-m)^u[1-q(r_s)]^b\},\\
+ D &= N\left\{(1-m)^Y-\prod_{j\in\mathcal P}[1-q(r_j)]^{d_j}\right\},\\
  E &= NC(1-g_c)L,\\
  J &= Ns\ell,
 \end{align}
-where $a=\min(Y,1)$, $u=\min\{\max(Y-1,0),4\}$,
-$b=\max(Y-5,0)$, $g_c$ is the child earnings
-level, and $\ell$ is the service-job multiplier. Engine 0.2 converts the
-stored odds ratios to risks and accounts for survival depletion. The
-follow-up includes the initial peak year. The default option, historically
-named \texttt{source\_aligned}, holds follow-up years 2--5 at baseline and
-starts the stored sustained coefficient in follow-up year 6. This is an
-incomplete implementation of the source profile, not evidence of no early
-effect. The source working paper's Table 5\footnote{Sullivan and von
+where $\mathcal P=\{0,1,2{:}3,4{:}5,6+\}$ indexes the displacement-year
+and source-offset phases, and their durations are
+$d_0=\min(Y,1)$, $d_1=\min\{\max(Y-1,0),1\}$,
+$d_{2{:}3}=\min\{\max(Y-2,0),2\}$,
+$d_{4{:}5}=\min\{\max(Y-4,0),2\}$, and
+$d_{6+}=\max(Y-6,0)$. Here $g_c$ is the child earnings level and $\ell$
+is the service-job multiplier. Engine 0.2 converts the stored odds ratios
+to risks and accounts for survival depletion. The follow-up includes the
+displacement year as year 1. The default \texttt{source\_profile} uses all
+five source-offset phases. The source working paper's Table 5\footnote{Sullivan and von
 Wachter, NBER Working Paper 13626, PDF page 54:
 \url{https://www.nber.org/system/files/working_papers/w13626/w13626.pdf}.}
-reports displacement-year
-offsets +1, +2--3, and +4--5, as well as +6 and later. Under the convention
-that displacement occupies follow-up year 1, offset +6 starts follow-up
-year 7. The current timing therefore also starts persistence one year early.
-
-Source verification further finds that the stored peak log coefficient
-0.983 is in column 2, whereas the sustained 0.127 is in column 3;
-the CSV incorrectly locates both in column 2. Re-extraction from a single
-specification and explicit offset indexing are required before describing
-this timing as source faithful. Numerical parameters remain unchanged in
-this review. The optional \texttt{immediate\_sustained} timing sets $u=0$
-and $b=\max(Y-1,0)$ as a sensitivity assumption. The historical additive
+reports the displacement year, offsets +1, +2--3, and +4--5, and +6 and
+later. Under this convention, the +6 coefficient begins in follow-up year
+7. The historical \texttt{source\_aligned} option preserves the former
+incomplete three-phase approximation for reproducibility only. The optional
+\texttt{immediate\_sustained} timing applies the +6 coefficient after the
+displacement year as a sensitivity assumption. The historical additive
 formula remains available as \texttt{legacy\_additive}. Current V1 and
-scoreable V2 mortality calculations use the production survival kernel,
-including its present timing limitation.
+scoreable V2 mortality calculations use the production survival kernel and
+the source-offset profile by default.
 
 Only verified baseline values enter a count. A missing baseline produces
 a named blocked outcome, or raises an exception in strict mode. The
@@ -255,8 +250,9 @@ lists its current values; some support modules beyond the count interface.
 Mortality uses CDC WONDER deaths per person-year as an approximation to
 the annual probability $m$. A person-time rate is not itself a cohort
 probability \cite{cdcRiskMeasures}; under a constant hazard $\lambda$,
-that probability would be $1-e^{-\lambda}$. The current implementation
-does not perform this conversion or advance age-specific baselines.
+that probability is $1-e^{-\lambda}$. The current implementation applies
+this conversion for a compatible mortality rate, but does not advance
+age-specific baselines.
 Divorce uses the Census
 SIPP five-year marriage-survival complement, which is not a pure divorce
 incidence measure. The NCVS IPV rate counts incidents rather than unique
@@ -504,9 +500,9 @@ causal validity of the supplied records.
 
 Studies differ in country, age, sex, tenure, and measurement window.
 Transporting them across populations is a substantive assumption.
-Mortality uses a constant baseline and the incomplete three-phase
-approximation described above. It does not advance age or reproduce the
-available early-year coefficient profile. Lifetime earnings conversion uses a synthetic
+Mortality uses a constant baseline and the five-phase source-offset profile
+described above. It does not advance age, model individual risk factors, or
+resolve transport from the source study population. Lifetime earnings conversion uses a synthetic
 cross-sectional profile. Local employment multipliers omit migration
 and equilibrium adjustment. These choices can affect magnitudes even
 when arithmetic and citations are correct.
@@ -533,10 +529,10 @@ Named competing specifications must remain visible rather than being
 averaged into a preferred headline.
 
 \section{Prioritized development}
-The next release should first repair the estimands already used in count
-headlines. Re-extract a coherent mortality specification, encode elapsed
-time from displacement explicitly, and distinguish rates from annual
-probabilities. Resolve the place counterfactual before adding further
+The next release should first improve the estimands already used in count
+headlines. Add uncertainty for the mortality baseline, test transport from
+the source study population, and assess sensitivity to the constant-hazard
+conversion. Resolve the place counterfactual before adding further
 place-driven descendants. Require edge metadata for effect scale,
 intervention, mediator versus total effect, source population, and time
 window; compatible units alone do not establish causal composability.
