@@ -85,6 +85,18 @@ truth; do not duplicate rows here.
   with compatible outcome/population/window metadata and a declared bridge.
 - **[P2] Synthesis and transmission:** enforce estimand/window/overlap checks;
   add small-study interval sensitivity and a log-elasticity structural variant.
+- **[DONE 2026-09-13] Admission and provenance contract:** blank tier,
+  citation, or population_scope is refused at parameter load, and every
+  public ledger/scenario/community step publishes its studied population
+  beside the citation (`tests/test_admission_provenance.py`). Synthesis
+  loading and pooling also refuse blank population/design/horizon
+  compatibility fields instead of pooling blank-to-blank as "identical"
+  (`tests/test_synthesis.py`), and verified baseline rows must pin value,
+  citation, and population at load, with unknown statuses refused. Code
+  safeguards only — they do not
+  discharge the transport assumptions in the applicability audit, and the
+  evidence blocks above (published-QJE profile, county integration,
+  V2/prospective validation) remain unresolved.
 - **[DONE 2026-09-10] Numerical review repairs:** independent copula designs,
   connected custom chains, chain starting values, county predictive baselines,
   and refusal of legacy additive predictive probabilities. Full findings and
