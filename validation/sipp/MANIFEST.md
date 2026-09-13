@@ -12,9 +12,11 @@ recorded URLs and verify every hash. Terms: free download, no
 registration, redistributable
 (`docs/SIPP_BASELINE_DATA_ASSESSMENT_2026-09-13.md`).
 
-Pending as of 2026-09-13: `validation/sipp/2022/pu2022_schema.json`
-(the raw pu2022.csv.gz is downloaded and hashed; census.gov throttled
-the small schema fetch — re-fetch and regenerate the manifest).
+Pending: none — `validation/sipp/2022/pu2022_schema.json` had been
+throttled on 2026-09-13 and was fetched 2026-09-14. The 2023-release
+metadata (`lgtwgt2023_dictionary.txt`, `lgtrw2023yr2_schema.json`) and
+the 2021 content schema + data-dictionary PDF were added to the
+manifest on 2026-09-14.
 
 ## What the files are (verified by inspection 2026-09-13)
 
@@ -35,6 +37,15 @@ the small schema fetch — re-fetch and regenerate the manifest).
   initial_year/final_year eligibility spans and LGTWTTYP.
 - `lgtwgt<YEAR>yr<N>.csv.gz` — the plain longitudinal weight per person
   per span (SSUID, PNUM, SPANEL, finyr<N>): 31,726 rows.
+- 2023 release (`datasets/2023/`) — ships files only inside
+  `<name>_csv.zip` bundles; the plain `.csv.gz` paths 404.
+  `lgtwgt2023yr2.csv` (unpacked from `lgtwgt2023yr2_csv.zip`) is the
+  **span weight used by the R2 artifact**: 23,878 persons
+  (SPANEL 2022: 13,016; 2020: 5,916; 2021: 4,946), all with FINYR2 > 0,
+  a lowercase pipe-delimited header
+  (`ssuid|pnum|spanel|finyr2`), covering the January 2021 – December
+  2022 span; weights sum to 328.6M ≈ the US resident population, with
+  the overlapping panels each carrying a slice of that control total.
 
 ## Structural finding recorded for the estimation phase
 
