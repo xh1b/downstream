@@ -13,8 +13,6 @@ What this file hunts:
 - the real modifier: national = exactly 1.0, Philly below 1, bands
   bracket points, magnitudes match the declared 18-year dose
 """
-import csv
-
 import pytest
 
 from downstream.build_places import build_places
@@ -79,23 +77,7 @@ def test_build_places_report_is_json_safe():
 
 
 def test_build_places_skips_and_weighted_mean():
-    atlas = list(
-        csv.DictReader(
-            open(
-                PARAMS_DIR.parent / "validation"
-                / "opportunity_atlas_county_outcomes_simple.csv",
-                newline="",
-            )
-        )
-    )
     rep = build_places(PARAMS_DIR)
-    total_count = sum(
-        float(r["pooled_pooled_count"])
-        for r in atlas
-        if r["kfr_pooled_pooled_p25"].strip()
-        and r["pooled_pooled_count"].strip()
-        and float(r["pooled_pooled_count"]) > 0
-    )
     assert f"{rep['national_percentile']:.4f}" == "40.7679"
     assert rep["counties"] == 3134
 

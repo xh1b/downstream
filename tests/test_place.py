@@ -596,10 +596,7 @@ def test_place_mortality_applies_strict_posterior_contract():
 def test_place_mortality_refuses_broken_prior_chain():
     import dataclasses
 
-    from downstream.params import load_baselines
-
     places = load_places(PARAMS_DIR / "places.csv")
-    baselines = load_baselines(PARAMS_DIR / "baselines.csv")
     table = _county_mortality_table()
     row = dataclasses.replace(table["01001"], prior_rate=0.005)
     out = place_baselines(places, _baseline_dict(), "01001",

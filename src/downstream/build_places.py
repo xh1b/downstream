@@ -79,7 +79,6 @@ GEOMAP_FILE = "geoids_county.csv"
 WONDER_FILE = "cdc_wonder_county_male_45_54_2015_2019.csv"
 
 KFR_COL = "kfr_pooled_pooled_p25"
-KFR_SE_COL = "kfr_pooled_pooled_p25_se"
 COUNT_COL = "pooled_pooled_count"
 
 # The verified national baseline (baselines.csv:all_cause_mortality_annual):
