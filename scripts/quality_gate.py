@@ -5,8 +5,8 @@ import json
 from pathlib import Path
 import sys
 
-MIN_LINE = 80.0
-MIN_BRANCH = 70.0
+MIN_LINE = 95.0
+MIN_BRANCH = 90.0
 
 
 def main(argv: list[str] | None = None) -> int:

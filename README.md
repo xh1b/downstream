@@ -225,13 +225,17 @@ python -m coverage json -o coverage.json
 python scripts/quality_gate.py coverage.json
 ```
 
-The gate requires at least 80% statement coverage and 70% branch coverage. The
-suite includes Hypothesis property tests for ledger envelopes, mortality
-survival bounds, and county-pooling convexity; deterministic fixtures remain
-for citations, published coefficients, and regression examples.
+The gate requires at least 95% statement coverage and 90% branch coverage
+(measured: 97.3% / 94.0% on the current parameter set). The suite includes
+Hypothesis property tests for ledger envelopes, mortality survival bounds,
+and county-pooling convexity; deterministic fixtures remain for citations,
+published coefficients, and regression examples.
 
-Ruff runs as a blocking CI check for production code and scripts. Run it
-locally with `python -m ruff check src scripts`.
+Ruff and vulture run as blocking CI checks for production code and scripts:
+`python -m ruff check src scripts` for correctness linting, `python -m
+vulture` for dead code (unused functions, classes, and attributes fail the
+build; intentionally-unwired API surface is reviewed, with reasons, in
+`scripts/vulture_whitelist.py`).
 
 Run the local numerical microbenchmarks with `python scripts/benchmark.py`.
 They are comparison baselines, not a flaky performance gate; see

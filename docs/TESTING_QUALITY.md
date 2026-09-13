@@ -3,11 +3,13 @@
 ## Current gate
 
 The repository now uses branch-aware Coverage.py and Hypothesis. The measured
-baseline is **89.6% statement coverage** and **70.3% branch coverage** from a
-clean 565-test run on 2026-09-10. `scripts/quality_gate.py` fails below 80%
-statements or 70% branches. The full coverage run took roughly four minutes on
-the local arm64 development machine; use focused tests for rapid iteration and
-the complete run in CI or a scheduled quality job.
+baseline is **97.3% statement coverage** and **94.0% branch coverage** from a
+clean 827-passing run on 2026-09-13 (two transient failures belonged to an
+in-flight parameter-set landing by another worker, not to code defects).
+`scripts/quality_gate.py` fails below 95% statements or 90% branches. The
+full coverage run took about fifteen minutes on the local arm64 development
+machine; use focused tests for rapid iteration and the complete run in CI
+or a scheduled quality job.
 
 Hypothesis complements rather than replaces the evidence fixtures:
 
@@ -22,7 +24,9 @@ Hypothesis complements rather than replaces the evidence fixtures:
 ## What is strong
 
 - Ruff blocks Python correctness linting (`E4`, `E7`, `E9`, and `F`) over the
-  engine and supporting scripts before the test jobs run.
+  engine and supporting scripts before the test jobs run, and the vulture
+  dead-code scan fails the same job on unused functions, classes, and
+  attributes (see the dead code policy below).
 - Core numerical kernel: distribution materialization, ledger algebra,
   parameters, child-line propagation, and place handling have high line
   coverage and adversarial invariant tests.
