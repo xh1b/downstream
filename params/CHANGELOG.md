@@ -1,3 +1,22 @@
+## v1.35 — 2026-09-13 — profile-specific verified mortality rates from a reproducible D76 pull
+
+- ONE live CDC WONDER D76 XML-API pull (2026-09-13, request parameters
+  identical to the live-validated 2026-09-06 warehouse query) saved as
+  validation/cdc_wonder_d76_national_year_age_sex_1999_2020.xml +
+  .provenance.json (sha256 24134d7f…). Reproduces the male 45-54 pooled
+  2015-2019 pin EXACTLY (514314 / 104024440 = 494.4 per 100k).
+- SEVEN new verified baseline-rate profile rows in
+  params/mortality_profiles.csv: female 45-54 (0.003080) plus male/female
+  25-34, 35-44, and 55-64 (0.001751/0.000781, 0.002453/0.001397,
+  0.011119/0.006696), each with its exact deaths/person-years pool in the
+  citation. These are RATE rows only: the shipped Sullivan-von Wachter
+  response is admitted for Male 45-54 alone, so the applicability gate
+  continues to refuse causal mortality contrasts on every other stratum
+  until separately admitted effect profiles exist.
+- The all-ages county export stays context_only: the D76 API cannot group
+  by county (queued extraction #31 requires the public web export), and
+  its unreproducible filters are still the reason it is never a baseline.
+
 ## v1.34 — 2026-09-09
 
 Correct mortality node metadata from rate ratio to odds ratio, matching

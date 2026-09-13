@@ -47,12 +47,15 @@ single demographic proxy:
 ```
 
 Weights must sum to one, each profile may appear at most once, and every
-selected profile must be `verified`. The shipped displacement response is an
-*all-cause* mortality response for male workers aged 45--54, so scenario and
-entity computations also refuse profiles with another cause, sex, or age band
-until a separately admitted effect profile exists. The program reports
-expected mortality for a mixture but intentionally withholds the
-predictive-count interval until stratum-specific cohort counts are supplied.
+selected profile must be `verified`. Verified rate rows now exist for both
+sexes in the 25-34, 35-44, 45-54, and 55-64 bands (pooled 2015-2019,
+`validation/cdc_wonder_d76_national_year_age_sex_1999_2020.xml`), but the
+shipped displacement response is an *all-cause* mortality response for male
+workers aged 45--54 only: a mixture computation refuses any profile with
+another sex, age band, or cause until a separately admitted effect profile
+exists. The program reports expected mortality for an admitted mixture and
+intentionally withholds the predictive-count interval until
+stratum-specific cohort counts are supplied.
 
 The existing `cdc_wonder_county_all_ages_1999_2020.csv` remains context only:
 its exported parameter block does not reproduce the filters, so it is not a

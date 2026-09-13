@@ -24,7 +24,7 @@ PARAMS = load(PARAMS_DIR / "parameters.csv")
 
 
 def test_version_is_v133():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.34"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.35"
 
 
 OVERALL = "youth_crime_conviction_share->youth_crime_convicted"
