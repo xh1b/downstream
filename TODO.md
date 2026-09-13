@@ -43,6 +43,41 @@ See `docs/MATH_REVIEW.md` for reviewed arithmetic and remaining assumptions.
   after the scientific, comprehension, and accessibility criteria are met.
 - **[R7-R8] Expand with evidence:** add protective interventions and supported
   combinations before longer horizons and descendants.
+- **[DECIDED 2026-09-14] County-mortality prior strength:** the DECLARED
+  k = 2000 prior person-years stays the shipped pooling strength. The
+  method-of-moments empirical-Bayes yardstick (k ≈ 822 on the male 45-54
+  export; Poisson noise ≈ 11% of the county spread; Gamma shape ≈ 4.1) is
+  recorded and reproducible (`build_county_mortality.py --estimate-prior-k`,
+  `tests/test_county_eb_prior.py`) but is NOT adopted: it is the less
+  conservative direction, it assumes iid Gamma county effects (no spatial
+  correlation), and it rests on one export over one window. Revisit: rerun
+  the flag as more cause/sex/window exports land; adopting would rewrite
+  all 2,748 posteriors and the v1.41 build-places places.csv columns that
+  key off k = 2000, so it needs an explicit fresh decision.
+  (`docs/DATA_SOURCES.md` county row.)
+- **[OPEN] Sustained-mortality alternate band:** Eliason & Storrie 2009 find
+  NO long-run all-cause effect (5-8y HR 0.98, 9-12y 0.91, n.s., 12y
+  follow-up) against the SvW 1.135 sustained anchor; v1.43 records the
+  divergence as declared notes on `earnings_shock->mortality_sustained`
+  and never averages (CITING 5). Decide whether the row should additionally
+  carry a named alternate band holding the ES position, or keep the single
+  SvW anchor. User decision.
+- **[OPEN] Promote the v1.43 streams to headline claims:** fertility
+  (`annual_birth_response`), child mental health (`child_depression_
+  anxiety`), and spousal labor supply (`spouse_participation_elasticity`)
+  are wired as boundary-fenced parallel evidence — reachable, audited,
+  exported, refused in arbitrary chains by the same guard as every other
+  exposure contrast. Decide whether any should surface as explain-level
+  claims (with their nulls and transport conditions), or stay
+  consultable via export/citations/audit. User decision.
+- **[OPEN/BLOCKED] V2 prospective validation:** still blocked on an external
+  source providing BOTH a frozen-definition, event/geography/window-aligned
+  displacement bridge AND independently estimated scored outcomes
+  (`docs/V2_SOURCE_REVIEW_2026-09-09.md` reviewed BRAC/NAFTA/auto-crisis
+  candidates; none qualified). The SIPP adoption (R2) is the candidate
+  path: if its panels clear the transition validation, re-evaluate SIPP
+  as the bridge. Re-check after R2's first weighted two-wave transition
+  reproduces with held-out validation.
 - **[DONE 2026-09-10] Research positioning and product plan:** cited related work
   added to the paper; prior-attempts comparison rewritten fairly; life-course
   and website experience plans documented. These are plans, not shipped capabilities.
