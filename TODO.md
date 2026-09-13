@@ -79,10 +79,10 @@ truth; do not duplicate rows here.
   requires separately admitted effect estimates, not only new baseline rates.
 - **[P1] Place counterfactual:** resolve `1-M*g` versus a same-place exposure
   contrast; a null displacement effect currently produces a county effect.
-- **[P1] County likelihood:** Gamma--Poisson estimation and strict
-  national-prior metadata are implemented; generic `places.csv` mortality
-  rates are refused in production. Integrate only a validated county export
-  with compatible outcome/population/window metadata and a declared bridge.
+- **[DONE 2026-09-13] County likelihood:** Gamma--Poisson estimation and
+  strict national-prior metadata; v1.36 completed extraction #31 (validated
+  county export with matching outcome/population/window metadata) and wired
+  the posteriors into the place layer end to end.
 - **[P2] Synthesis and transmission:** enforce estimand/window/overlap checks;
   add small-study interval sensitivity and a log-elasticity structural variant.
 - **[DONE 2026-09-13] Admission and provenance contract:** blank tier,
@@ -94,9 +94,21 @@ truth; do not duplicate rows here.
   (`tests/test_synthesis.py`), and verified baseline rows must pin value,
   citation, and population at load, with unknown statuses refused. Code
   safeguards only — they do not
-  discharge the transport assumptions in the applicability audit, and the
-  evidence blocks above (published-QJE profile, county integration,
-  V2/prospective validation) remain unresolved.
+  discharge the transport assumptions in the applicability audit. Of the
+  evidence blocks recorded this morning, county integration was lifted the
+  same day by v1.36 (validated county export + matching metadata, wired
+  end to end); the published-QJE mortality profile and V2/prospective
+  validation remain unresolved.
+- **[DONE 2026-09-13] Evidence-role and estimand contracts:** screening
+  vocabularies frozen (unknown/blank composition or extraction status
+  refused), Moretti conversion requires a declared job class (manufacturing
+  or high_tech) instead of answering with the cross-class 1.6–5.0 span, and
+  every parameter row now carries a machine-readable `evidence_role`
+  (18 conditional / 3 structural / 28 boundary; `admitted` reserved) that
+  load refuses when missing, chains refuse when boundary, and vignette
+  streams visibly block with role-named reasons. Landing v1.39; applicability
+  conditions themselves remain explicit assumptions, and the four v1.38
+  rows still need folding into the audit document.
 - **[DONE 2026-09-10] Numerical review repairs:** independent copula designs,
   connected custom chains, chain starting values, county predictive baselines,
   and refusal of legacy additive predictive probabilities. Full findings and
