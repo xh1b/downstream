@@ -264,6 +264,12 @@ def main(argv: list[str] | None = None) -> int:
     p = sub.add_parser("citations", help="citation coverage report")
     p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
 
+    p = sub.add_parser(
+        "transmissions",
+        help="which outcomes walk to grandchildren, on whose evidence — and what is one extraction away",
+    )
+    p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
+
     p = sub.add_parser("credits", help="the computed collective behind the model")
     p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
     p.add_argument("--write", action="store_true", help="regenerate CREDITS.md")
@@ -755,6 +761,12 @@ def main(argv: list[str] | None = None) -> int:
                 "entries": rows,
             }
         )
+        return 0
+
+    if args.cmd == "transmissions":
+        from .transmissions import describe
+
+        _dump(describe(params))
         return 0
 
     if args.cmd == "credits":

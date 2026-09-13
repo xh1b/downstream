@@ -3,32 +3,21 @@
 Primary path: the DIRECT Oreopoulos estimate on children of displaced
 fathers. The IGE links then propagate the child gap into the
 grandchild and great-grandchild gaps in GAP SPACE — never as level
-products. A great-grandchild layer repeats the IGE band and carries the
-weakest-identification honesty statement.
+products. The generational walk is driven by the transmissions
+registry (one admitted parent->child relationship applied
+recursively, per-step evidence support declared alongside it), not by
+separately declared per-generation parameters.
 """
 
 from __future__ import annotations
 
-from .ledger import CHAIN_CAUSAL_ROLES, DIRECT, GAP, GAP_SCALE, Ledger, start
+from .ledger import GAP_SCALE
 from .params import Parameter, ParameterSet
+from .transmissions import EARNINGS, walk
 
 CHILD_DIRECT = "displacement->child_earnings"
 GRANDCHILD = "child_earnings->grandchild_earnings"
 GREATGRANDCHILD = "grandchild_earnings->greatgrandchild_earnings"
-
-
-def child_earnings(params: ParameterSet) -> Ledger:
-    return start("child_earnings", "gap_multiplier").apply(
-        DIRECT, params.by_link(CHILD_DIRECT), causal_role=CHAIN_CAUSAL_ROLES[CHILD_DIRECT]
-    )
-
-
-def grandchild_earnings(child: Ledger, params: ParameterSet) -> Ledger:
-    return child.apply(GAP, params.by_link(GRANDCHILD), causal_role=CHAIN_CAUSAL_ROLES[GRANDCHILD])
-
-
-def greatgrandchild_earnings(grandchild: Ledger, params: ParameterSet) -> Ledger:
-    return grandchild.apply(GAP, params.by_link(GREATGRANDCHILD), causal_role=CHAIN_CAUSAL_ROLES[GREATGRANDCHILD])
 
 
 def child_line(params: ParameterSet, place_modifier: Parameter | None = None,
@@ -45,18 +34,25 @@ def child_line(params: ParameterSet, place_modifier: Parameter | None = None,
     """
     if place_application not in {"initial_only", "legacy_repeated"}:
         raise ValueError("unknown place_application")
-    child = child_earnings(params)
-    if place_modifier is not None:
-        child = child.apply(GAP_SCALE, place_modifier, causal_role="exploratory_place_effect_modifier")
-    grandchild = grandchild_earnings(child, params)
-    greatgrandchild = greatgrandchild_earnings(grandchild, params)
+
+    # A place modifier on the child generation propagates through the
+    # walk (it rewrites the ledger before the next step composes from
+    # it); the legacy_repeated descendant modifiers are post-hoc and
+    # deliberately do NOT propagate.
+    def hook(ledger, generation: int):
+        if place_modifier is not None and generation == 1:
+            return ledger.apply(GAP_SCALE, place_modifier,
+                                causal_role="exploratory_place_effect_modifier")
+        return ledger
+
+    walked = walk(params, EARNINGS, hook=hook)
     if place_modifier is not None and place_application == "legacy_repeated":
-        grandchild = grandchild.apply(GAP_SCALE, place_modifier, causal_role="exploratory_place_effect_modifier")
-        greatgrandchild = greatgrandchild.apply(GAP_SCALE, place_modifier, causal_role="exploratory_place_effect_modifier")
+        for gen in ("grandchild", "greatgrandchild"):
+            walked[gen] = walked[gen].apply(
+                GAP_SCALE, place_modifier,
+                causal_role="exploratory_place_effect_modifier")
     return {
-        "child": child,
-        "grandchild": grandchild,
-        "greatgrandchild": greatgrandchild,
+        **walked,
         "evidence_status": {
             "child": {
                 "status": "direct_estimate",

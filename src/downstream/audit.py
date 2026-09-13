@@ -30,6 +30,7 @@ from .params import (
     spearman_matrix,
 )
 from .place import MOBILITY_MODIFIER_LINK, load_places
+from .transmissions import transmission_findings
 from . import units
 
 ERROR = "ERROR"
@@ -294,6 +295,12 @@ def audit(params_dir: str | Path | None = None) -> list[Finding]:
                     "Chetty & Hendren 2018 row lands",
                 )
             )
+
+    # Generational transmission registry: unrolled copies of one
+    # relationship must agree band-for-band, boundary roles cannot walk,
+    # and every per-step support key must exist in the bibliography.
+    for check, message in transmission_findings(params, bib):
+        findings.append(Finding(ERROR, check, message))
 
     # Declared correlations: pairs must reference real links, the matrix
     # must be a valid correlation matrix, and every row must carry a

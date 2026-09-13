@@ -215,7 +215,7 @@ def test_family_place_error_names_missing_registry(tmp_path):
 
 def test_simulate_place_errors_are_named(tmp_path, capsys):
     bare = _params_copy_without_places(tmp_path)
-    with pytest.raises(SystemExit) as exc:
+    with pytest.raises(SystemExit):
         main(["simulate", "--outcome", "child", "--draws", "2", "--place", "national",
               "--params", str(bare)])
     assert "places.csv absent" in capsys.readouterr().err

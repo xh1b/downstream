@@ -64,3 +64,9 @@ standard_family_daughter
 # The declared variant roster: surfaced through run_ensemble's output
 # keys and pinned by tests, not read by name in engine code.
 VARIANT_IDS
+
+# Name of the second unrolled IGE row (grandchild->greatgrandchild):
+# kept as a public alias for the unrolled copy of the ige_earnings
+# relationship; consumed by the transmission tests that pin the
+# row-level drift guard.
+GREATGRANDCHILD
