@@ -59,3 +59,4 @@ circulatory_mortality_hazard,rate_ratio,"relative circulatory-disease death rate
 alcohol_mortality_hazard,rate_ratio,"relative alcohol-related death rate vs matched controls (cumulative hazard ratio; boundary-applied exposure contrast, never chained)"
 external_cause_mortality_hazard,rate_ratio,"relative external-cause death rate (incl. suicide, traffic) vs matched controls (cumulative hazard ratio; boundary-applied exposure contrast, never chained)"
 spouse_mental_health_sd,sd_delta,"spouse mental-health distress vs matched controls, MCS points normalized to SD units (boundary-applied exposure contrast, never chained)"
+exam_noncompletion_hazard,rate_ratio,"relative probability of obtaining NO grade-9 exam scores or teacher assessments vs counterfactual (1.0 = unharmed); left-tail school-progress indicator, NOT test-score SDs"

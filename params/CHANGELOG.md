@@ -1,3 +1,34 @@
+## v1.40 — 2026-09-13 — Bingley–Cappellari–Ovidi (JEEA 2026) + Schaller–Stevens 2015 landed
+
+- bingley2026 (Journal of the European Economic Association, advance
+  article, DOI 10.1093/jeea/jvag048; read via IZA DP 16367, the August
+  2023 WP draft of the version of record — marcus2013/damm2014 read-via
+  precedent): two EXACT rows on Danish plant-closure children exposed at
+  ages 0-16. displacement_event->child_achievement_sd -0.0206 [-0.0402,
+  -0.0010] (grade-9 mathematics teacher grades, preferred spec, band =
+  1.96 SE; exam test scores -0.0117 n.s. beside; infancy -0.0521
+  [-0.0823, -0.0219], late childhood -0.0274 - the paper's timing
+  structure travels in notes because the model has no age-at-exposure
+  selector), and a new node exam_noncompletion_hazard:
+  displacement_event->exam_noncompletion_hazard 1.0688 [1.0014, 1.1362]
+  (derived relative on the 7.85% control mean, stevens2011 precedent;
+  infancy 1.126 beside; exposure at age >= 18 jointly zero, p = 0.986).
+  Both conditional: transport assumes Danish institutions/welfare and
+  plant-closure identification.
+- INCOME CHANNEL declared, never averaged: the achievement hit
+  concentrates in below-median-income families and breadwinner
+  displacements; the authors' mediation slope (+0.0008 SD math per
+  +1,000 DKK/yr family income) is recorded as a dahl2012 cross-check.
+- schallerstevens2015 (J Health Econ 43:190-203, read via the UC Davis
+  open PDF of the version of record): cross-check notes on
+  unemployment_status->mental_health_sd - fair/poor mental health
+  +1.39pp on a 3.4% base (+40.9% relative), depression/anxiety +1.64pp
+  on 7.3%; probability units, not SD-convertible. QUEUE CORRECTION: the
+  paper is the MEPS health-conditions/insurance study, not a PSID
+  mortality-timing paper - it estimates no mortality effects of its own.
+- Queue author corrections: Bingley et al. is Bingley, Cappellari &
+  Ovidi (not Lundborg), now peer-reviewed via the JEEA advance article.
+
 ## v1.39 — 2026-09-13 — machine-readable evidence_role on every parameter row
 
 - parameters.csv gains an evidence_role column classifying all 49 rows per

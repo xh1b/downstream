@@ -45,7 +45,7 @@ def _write_v2_inputs(directory, *, workers="100", low="50", high="150",
 
 
 def test_version_is_v127():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.39"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.40"
 
 
 def test_registry_has_exactly_the_three_events():
