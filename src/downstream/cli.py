@@ -242,6 +242,12 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
     p.add_argument("--key", required=True, help="places.csv key (e.g. 'national' or a FIPS)")
 
+    p = sub.add_parser(
+        "build-places",
+        help="regenerate params/places.csv from the committed Atlas + WONDER county inputs",
+    )
+    p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
+
     p = sub.add_parser("audit", help="parameter/citation/DAG checks")
     p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
 
@@ -707,6 +713,12 @@ def main(argv: list[str] | None = None) -> int:
 
         places = load_places(Path(args.params) / "places.csv")
         _dump(place_json(places, parts["baselines"], args.key, params))
+        return 0
+
+    if args.cmd == "build-places":
+        from .build_places import build_places
+
+        _dump(build_places(args.params))
         return 0
 
     if args.cmd == "citations":
