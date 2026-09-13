@@ -1,0 +1,26 @@
+[
+  {
+    "varnum": 1,
+    "name": "SSUID",
+    "label": "",
+    "dtype": "string"
+  },
+  {
+    "varnum": 2,
+    "name": "PNUM",
+    "label": "",
+    "dtype": "integer"
+  },
+  {
+    "varnum": 3,
+    "name": "SPANEL",
+    "label": "",
+    "dtype": "integer"
+  },
+  {
+    "varnum": 4,
+    "name": "FINYR2",
+    "label": "",
+    "dtype": "float"
+  }
+]

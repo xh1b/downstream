@@ -178,10 +178,17 @@ this.
 household-resource baselines, with the five limitations above declared in
 every derived artifact.
 
-1. **Acquire:** download the 2008 panel (fine-grained transitions) and
-   the current 2021+ panels (recency), the longitudinal weights files,
-   and the Users' Guide — all free, all redistributable into this
-   repository.
+1. **Acquire (done 2026-09-13):** the 2021- and 2022-calendar-year
+   content files (`pu2021.csv.gz`, `pu2022.csv.gz` — the two-wave pair
+   for the first transition artifact), the 2021 panel longitudinal
+   weights (`lgtwgt`/`lgtrw` yr2/yr3), schemas, validation
+   spreadsheets, and the Census input example are downloaded; hashes and
+   URLs are recorded in `validation/sipp/MANIFEST.json`, raw files in
+   gitignored `data/sipp/`. The 2008 panel (fine-grained monthly
+   transitions) remains a later acquisition. The overlapping-panel
+   structure was verified empirically: pu2021 pools SPANEL 2018, 2020,
+   and 2021 person-months, so transitions are estimated within panel
+   with the span weights.
 2. **Verify at extraction:** public geography fields actually present,
    monthly-detail structure in the redesigned panels, reference-person
    change handling, income variable naming across panels.

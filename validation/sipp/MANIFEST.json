@@ -1,0 +1,109 @@
+{
+  "dataset": "SIPP public-use files (US Census Bureau)",
+  "terms": "free download, no registration, redistributable; see docs/SIPP_BASELINE_DATA_ASSESSMENT_2026-09-13.md",
+  "downloaded": "2026-09-13",
+  "note": "raw data/ files are gitignored; metadata under validation/sipp/ is committed. Re-download from the urls and verify sha256.",
+  "pending": [
+    "validation/sipp/2022/pu2022_schema.json \u2014 census.gov throttled on 2026-09-13; re-fetch and re-run the manifest generator"
+  ],
+  "files": [
+    {
+      "path": "data/sipp/2021/pu2021.csv.gz",
+      "url": "https://www2.census.gov/programs-surveys/sipp/data/datasets/2021/pu2021.csv.gz",
+      "sha256": "f7c0192bbb0d218aed6832e34c4194b5f8c93bd8572dcab51f5b9668b4407dbb",
+      "bytes": 157173684,
+      "downloaded": "2026-09-13"
+    },
+    {
+      "path": "data/sipp/2022/pu2022.csv.gz",
+      "url": "https://www2.census.gov/programs-surveys/sipp/data/datasets/2022/pu2022.csv.gz",
+      "sha256": "5e0ec8a992f8f0a1dce6024c89c3230cb679f25f38fb2d5c6b5714ba03f08ba6",
+      "bytes": 116680931,
+      "downloaded": "2026-09-13"
+    },
+    {
+      "path": "data/sipp/2021/lgtrw2021yr2.csv.gz",
+      "url": "https://www2.census.gov/programs-surveys/sipp/data/datasets/2021/lgtrw2021yr2.csv.gz",
+      "sha256": "8e720eb504c7885adfeb2f22fd12f25d0c1acb15b31caa377dbef67396938987",
+      "bytes": 45108690,
+      "downloaded": "2026-09-13"
+    },
+    {
+      "path": "data/sipp/2021/lgtrw2021yr3.csv.gz",
+      "url": "https://www2.census.gov/programs-surveys/sipp/data/datasets/2021/lgtrw2021yr3.csv.gz",
+      "sha256": "089b64f6d1795dbc18edbde9831c57a4bd715ce95cfc2d867ea922372a92b9c0",
+      "bytes": 22727561,
+      "downloaded": "2026-09-13"
+    },
+    {
+      "path": "data/sipp/2021/lgtwgt2021yr2.csv.gz",
+      "url": "https://www2.census.gov/programs-surveys/sipp/data/datasets/2021/lgtwgt2021yr2.csv.gz",
+      "sha256": "31b6b4724b10bee394ccc08fbe58596b3ffd42a48b840adcb0f0f72e16334eca",
+      "bytes": 337794,
+      "downloaded": "2026-09-13"
+    },
+    {
+      "path": "data/sipp/2021/lgtwgt2021yr3.csv.gz",
+      "url": "https://www2.census.gov/programs-surveys/sipp/data/datasets/2021/lgtwgt2021yr3.csv.gz",
+      "sha256": "79191e89029769a149c04ba4ec005177e60425d2521ac2cd2da8afd77788c1de",
+      "bytes": 165339,
+      "downloaded": "2026-09-13"
+    },
+    {
+      "path": "validation/sipp/2021/lgtrw2021yr2_schema.json",
+      "url": "https://www2.census.gov/programs-surveys/sipp/data/datasets/2021/lgtrw2021yr2_schema.json",
+      "sha256": "c862a2bc0128a268b58410be94ae50ec17a20cba8cf0ec69337b3d8e03736d81",
+      "bytes": 22354,
+      "downloaded": "2026-09-13"
+    },
+    {
+      "path": "validation/sipp/2021/lgtrw2021yr3_schema.json",
+      "url": "https://www2.census.gov/programs-surveys/sipp/data/datasets/2021/lgtrw2021yr3_schema.json",
+      "sha256": "88a1b2e4118926aeda538942f439edb9f57c880954739b8695eaa30aebbcc875",
+      "bytes": 22354,
+      "downloaded": "2026-09-13"
+    },
+    {
+      "path": "validation/sipp/2021/lgtwgt2021yr2_schema.json",
+      "url": "https://www2.census.gov/programs-surveys/sipp/data/datasets/2021/lgtwgt2021yr2_schema.json",
+      "sha256": "5939299a50af27d43511ac8c880a4facd6d63b4d41e47cee3c1d7ab8805864e5",
+      "bytes": 349,
+      "downloaded": "2026-09-13"
+    },
+    {
+      "path": "validation/sipp/2021/lgtwgt2021yr3_schema.json",
+      "url": "https://www2.census.gov/programs-surveys/sipp/data/datasets/2021/lgtwgt2021yr3_schema.json",
+      "sha256": "5ecd7693f933a6346a4f63e0c428fe5bf2b7fc89f726178251a9d5581bfb506f",
+      "bytes": 349,
+      "downloaded": "2026-09-13"
+    },
+    {
+      "path": "validation/sipp/2021/lgtwgt2021_dictionary.txt",
+      "url": "https://www2.census.gov/programs-surveys/sipp/data/datasets/2021/lgtwgt2021_dictionary.txt",
+      "sha256": "10dfd76777ae157b14f6ff52b49f4a5ea2f812d8016cdcce3965efcb92a05d55",
+      "bytes": 1225,
+      "downloaded": "2026-09-13"
+    },
+    {
+      "path": "validation/sipp/2021/lgtrw2021yr2_validate.xlsx",
+      "url": "https://www2.census.gov/programs-surveys/sipp/data/datasets/2021/lgtrw2021yr2_validate.xlsx",
+      "sha256": "de46e673ce520efedd54c50a2fe818aca1143e0fff75c62b0b48fe57ef61c9f7",
+      "bytes": 17927,
+      "downloaded": "2026-09-13"
+    },
+    {
+      "path": "validation/sipp/2021/lgtrw2021yr3_validate.xlsx",
+      "url": "https://www2.census.gov/programs-surveys/sipp/data/datasets/2021/lgtrw2021yr3_validate.xlsx",
+      "sha256": "93ea5a81a605ed0e876b2971731bbd167534248ac147d0c861edffe573fb546b",
+      "bytes": 16798,
+      "downloaded": "2026-09-13"
+    },
+    {
+      "path": "validation/sipp/2021/sipp_2021_python_input_example.py",
+      "url": "https://www2.census.gov/programs-surveys/sipp/data/datasets/2021/sipp_2021_python_input_example.py",
+      "sha256": "0a62b5977af11c4856cc5bfe4e0aa72fe8565b4c6850eb75a411674f40e09421",
+      "bytes": 4724,
+      "downloaded": "2026-09-13"
+    }
+  ]
+}

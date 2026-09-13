@@ -296,6 +296,57 @@ same checklist.
    PDF was not machine-readable here). All are first-week verification
    items once the extract exists.
 
+## Why we would have preferred PSID, and why we cannot use it
+
+This section is the record a future reader will look for: the case for
+the dataset we set aside, stated fairly, and the reason the set-aside is
+final.
+
+**The case for PSID.** It is the strongest available source for the
+household dynamics R2 models, and not by a small margin. Fifty-seven
+years of annual-then-biennial interviews on the same families (1968–
+2023) give the long baseline horizons no other US panel matches; the
+"PSID gene" follows descendants to a seventh generation, with FIMS
+cross-generation link maps and thousands of parent-child and
+grandparent-grandchild pairs — exactly the structure behind the graph's
+intergenerational layer; wave-to-wave retention runs ~94% with
+longitudinal weights to correct the low-income skew; public files carry
+state of residence and a rural-urban code; head and spouse/partner
+earnings, weeks worked, and total income are measured throughout; and
+access is free. Had terms permitted, PSID would have been the choice.
+
+**Why we cannot use it.** Two independent terms failures, either alone
+sufficient:
+
+1. *No redistribution.* The [conditions of
+   use](https://simba.isr.umich.edu/u/conduse.aspx) (clause 4) forbid
+   transferring downloaded PSID data — including user-created extracts —
+   to any third party, outside the sanctioned ICPSR-PSID Public Data
+   Extract Repository. An open-source repository cannot ship the data,
+   and every reproducer must register on the ICPSR platform and accept
+   the same conditions. Reproducibility degrades from "clone the repo"
+   to "re-acquire the inputs under contract," and the eventual public
+   calculator could never carry its own inputs.
+2. *No LLM processing.* The [ICPSR Policy on the Use of Large Language
+   Models](https://www.icpsr.umich.edu/sites/icpsr/about/policies/large-language-models-and-ai)
+   (approved December 11, 2024) classifies cloud LLMs that retain
+   user-provided data ("e.g., GPT, Llama") as Type 1, and its rule for
+   sharing ICPSR data with Type 1 LLMs is "None: this counts as
+   redistributing the data to the company operating the LLM, so it is
+   not permitted." This repository is built, debugged, and operated by
+   exactly such agents. Under the policy, no PSID row may ever enter
+   this workspace: no reading, no extraction scripts run against real
+   data, no agent-assisted estimation. The permitted paths — an
+   institutionally licensed no-retention deployment or an air-gapped
+   setup, each with prior ICPSR permission — are unavailable to this
+   project.
+
+PSID remains citable as literature: published PSID-based aggregate
+estimates (intergenerational persistence, mobility decompositions) flow
+through the ordinary extraction pipeline like any other study. Only the
+microdata — the thing R2 needs — is barred. That is why the dataset is
+SIPP: weaker panels, but terms that let the actual work happen.
+
 ## Decision and next steps
 
 **Decision (revised 2026-09-13 after the license review): PSID is ruled

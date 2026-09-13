@@ -16,3 +16,6 @@ paper/generated/
 paper/*.bbl
 paper/*.blg
 internal/
+
+# SIPP raw downloads: large redistributable Census files; schemas + manifest live in validation/sipp/
+data/
