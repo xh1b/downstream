@@ -1,3 +1,31 @@
+## v1.41 — 2026-09-13 — shrunk county mortality baselines in places.csv
+
+- `downstream build-places` (new CLI verb) fills the generated places.csv
+  mortality columns in the same pass as mobility, from the committed CDC
+  WONDER county export (male 45-54, pooled 2015-2019) via
+  county_mortality.parse_export + count_observations and the Gamma-Poisson
+  posterior toward the verified national pin 0.004944 with 2000 prior
+  person-years: 2,748 county rows at the closed-form posterior mean per
+  person-year — the exact unit and population of
+  baselines.csv:all_cause_mortality_annual, no conversion anywhere; draws
+  are seed-fixed and unused by the plug.
+- mortality_n = the county person-years: the precision label whose
+  w = n/(n+k) with k = the 2000 prior person-years reproduces the
+  posterior's pooling weight; explicitly NOT a binomial denominator (the
+  header and every row citation record the choice). The national row
+  carries the pin 0.004944 and the export Total person-years (104,024,440);
+  the build refuses if the Total misses the pin at its 6-decimal precision.
+- Honesty rules kept: the 388 Atlas counties absent from or suppressed in
+  the export keep empty mortality columns and fall back to national — never
+  reconstructed; the two 2015 FIPS renames outside the Atlas (Kusilvak
+  02270, Oglala Lakota 46113) are reported, not forced in; the citation
+  header names the WONDER export alongside the Opportunity Atlas; the
+  female export stays out (the shipped displacement response is male
+  45-54 only).
+- The place layer's APPLY path is unchanged: mortality swaps in only via
+  the strict params/county_mortality.csv posterior contract (v1.36);
+  places.csv now carries the same posterior means as the plug's values.
+
 ## v1.40 — 2026-09-13 — Bingley–Cappellari–Ovidi (JEEA 2026) + Schaller–Stevens 2015 landed
 
 - bingley2026 (Journal of the European Economic Association, advance

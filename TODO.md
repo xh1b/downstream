@@ -52,7 +52,7 @@ See `docs/MATH_REVIEW.md` for reviewed arithmetic and remaining assumptions.
 - **[DONE 2026-09-09] Reproducible bundle export** — engine, data, place inputs, correlations, assumptions, and content hashes. Standalone execution and tampering checks pass.
 - **[DONE 2026-09-09] BRAC exposure inventory** — 73 GAO Table 3 records reconcile to published totals. County/window alignment and the causal measured side remain pending.
 
-- **[P2] #31: county WONDER mortality** — PARENT-REPO scraper task (handoff recorded; wonder-mortality CLI is national-only).
+- **[DONE 2026-09-13] #31: county WONDER mortality** — export landed via `scripts/fetch_wonder.py county` (web-UI session; the machine XML API is national-only); v1.36 wired the strict Gamma–Poisson posteriors into the place layer, and v1.41 fills the generated places.csv plug columns (shrunk posterior mean + person-years precision label) in the same build-places pass.
 - **[DONE 2026-09-09] #8: methods paper** — prose, generated parameter inventory and current V1 scorecards, limitations, references; `make -C paper` builds the PDF. V2/V3 are explicitly incomplete.
 - **[DONE 2026-09-09] Employer scenario shape (engine)** — `DocumentedExposure.from_warehouse` validates existing employer/person LCA and WARN aggregates, preserves the upstream total and method, and feeds `compute_entity_counts`. CLI: `entity --input-format warehouse`. Synthetic integration fixtures cover both subjects, rounding, missing fields, and invalid inputs. Production runner/cache wiring remains in XH1B.
 - **[P3] #10: prospective validation** — registration and scoring tools are built. Select 2-3 real events, freeze forecasts before outcome windows, obtain independent timestamps, then score after outcomes.
@@ -65,7 +65,7 @@ See `docs/MATH_REVIEW.md` for reviewed arithmetic and remaining assumptions.
 Tracked in `docs/QUEUED_EXTRACTIONS.md` — the queue's status column is the
 truth; do not duplicate rows here.
 
-- **[P2] Remaining** — remaining integration and research work: #7 production integration, county mortality, and P3s. Paper prose and employer/person engine mapping are complete. (#7 engine + modifier plug LANDED v1.30; #5 distributions + correlations LANDED v1.27; #6 V2 framework pre-registered v1.28 — scoring blocked on per-event displacement bridges: BRAC needs county/window alignment + w6941 OCR; NAFTA needs a tariff-unit displacement bridge that no published source provides; auto crisis has no quasi-experimental measured side.)
+- **[P2] Remaining** — remaining integration and research work: #7 production integration and P3s (county mortality completed v1.36 + v1.41). Paper prose and employer/person engine mapping are complete. (#7 engine + modifier plug LANDED v1.30; #5 distributions + correlations LANDED v1.27; #6 V2 framework pre-registered v1.28 — scoring blocked on per-event displacement bridges: BRAC needs county/window alignment + w6941 OCR; NAFTA needs a tariff-unit displacement bridge that no published source provides; auto crisis has no quasi-experimental measured side.)
 - Also: remarriage-margin candidate from the V1 divorce row.
 ## Review priorities — 2026-09-10
 
@@ -82,7 +82,10 @@ truth; do not duplicate rows here.
 - **[DONE 2026-09-13] County likelihood:** Gamma--Poisson estimation and
   strict national-prior metadata; v1.36 completed extraction #31 (validated
   county export with matching outcome/population/window metadata) and wired
-  the posteriors into the place layer end to end.
+  the posteriors into the place layer end to end; v1.41 also fills the
+  generated places.csv mortality_rate/mortality_n columns (posterior mean +
+  person-years precision label) in the same build-places pass, keeping
+  suppressed/absent counties on the national fallback.
 - **[P2] Synthesis and transmission:** enforce estimand/window/overlap checks;
   add small-study interval sensitivity and a log-elasticity structural variant.
 - **[DONE 2026-09-13] Admission and provenance contract:** blank tier,

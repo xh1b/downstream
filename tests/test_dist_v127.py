@@ -50,7 +50,7 @@ NODES = load_nodes(PARAMS_DIR / "nodes.csv")
 
 
 def test_version_is_v127():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.40"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.41"
 
 
 # --- declared per-parameter distributions -------------------------------
@@ -218,7 +218,7 @@ def test_simulate_stamps_iman_conover_and_is_reproducible():
     assert a == b
     assert a["sampler"] == "lhs+iman-conover"
     assert a["correlations_applied"] == 2
-    assert a["parameter_set_version"] == "v1.40-sampled"
+    assert a["parameter_set_version"] == "v1.41-sampled"
 
 
 def test_simulate_can_opt_out_of_declared_correlations():

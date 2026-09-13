@@ -1,4 +1,4 @@
-"""v1.40 pins: Bingley-Cappellari-Ovidi (JEEA 2026) + Schaller-Stevens 2015.
+"""v1.41 pins: Bingley-Cappellari-Ovidi (JEEA 2026) + Schaller-Stevens 2015.
 
 What this file pins:
 - two EXACT conditional rows from Bingley, Cappellari & Ovidi (JEEA,
@@ -70,4 +70,4 @@ def test_bib_entries_with_evidence_fields():
 def test_audit_clean_and_version_current():
     s = summary(audit(PARAMS_DIR))
     assert s["pass"], [f.as_dict() for f in audit(PARAMS_DIR) if f.severity.value == "error"]
-    assert PARAMS.version == "v1.40"
+    assert PARAMS.version == "v1.41"
