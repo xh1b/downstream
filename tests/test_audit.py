@@ -9,7 +9,7 @@ from pathlib import Path
 
 import pytest
 
-from downstream.audit import ERROR, WARN, audit, summary
+from downstream.audit import ERROR, INFO, WARN, audit, summary
 
 REAL_PARAMS = Path(__file__).resolve().parent.parent / "params"
 
@@ -201,3 +201,254 @@ def test_audit_reports_missing_version_and_invalid_place_metadata(params_dir):
     assert any(f.check == "version" and f.severity == WARN for f in findings)
     assert any(f.check == "places" and "failed to load" in f.message for f in findings)
     assert any(f.check == "places" and "unknown level" in f.message for f in findings)
+
+
+def _baseline_rows(d):
+    with open(d / "baselines.csv", newline="") as f:
+        r = csv.DictReader(f)
+        return list(r), list(r.fieldnames)
+
+
+def _write_baseline_rows(d, rows, fields):
+    with open(d / "baselines.csv", "w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=fields)
+        w.writeheader()
+        w.writerows(rows)
+
+
+def _place_rows(d):
+    with open(d / "places.csv", newline="") as f:
+        r = csv.DictReader(line for line in f if not line.startswith("#"))
+        return list(r), list(r.fieldnames)
+
+
+def _write_place_rows(d, rows, fields):
+    with open(d / "places.csv", "w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=fields)
+        w.writeheader()
+        w.writerows(rows)
+
+
+def _write_correlations(d, rows):
+    with open(d / "correlations.csv", "w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=["from_param", "to_param", "spearman", "justification"])
+        w.writeheader()
+        w.writerows(rows)
+
+
+def test_input_load_failure_is_reported_not_raised(params_dir):
+    rows, fields = _baseline_rows(params_dir)
+    rows[0]["status"] = "archived"  # load() passes; load_all refuses
+    _write_baseline_rows(params_dir, rows, fields)
+    findings = audit(params_dir)
+    assert any(f.check == "inputs" and "failed to load" in f.message for f in findings)
+
+
+def test_unit_composition_gap_is_reported(params_dir):
+    with open(params_dir / "nodes.csv", newline="") as f:
+        r = csv.DictReader(f)
+        nodes, node_fields = list(r), list(r.fieldnames)
+    for n in nodes:
+        if n["node"] == "worker_earnings":
+            n["unit"] = "count"  # known unit, but persons -> count has no rule
+    with open(params_dir / "nodes.csv", "w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=node_fields)
+        w.writeheader()
+        w.writerows(nodes)
+    findings = audit(params_dir)
+    assert any(f.check == "units" and "no composition rule" in f.message for f in findings)
+
+
+def test_level_ratio_below_one_with_widened_band_is_flagged(params_dir):
+    rows, fields = _rows(params_dir)
+    for r in rows:
+        if r["link"] == "displacement->local_service_jobs":
+            r["low"], r["point"], r["high"] = "0.8", "0.9", "5.0"
+    _write_rows(params_dir, rows, fields)
+    findings = audit(params_dir)
+    assert any(f.check == "level-ratio-shape" and f.severity == ERROR for f in findings)
+
+
+def test_exact_abstract_tier_needs_abstract_evidence(params_dir):
+    rows, fields = _rows(params_dir)
+    rows[0]["citation"] = "solon1992"  # canonical evidence, not abstract/results/fulltext
+    rows[0]["tier"] = "EXACT-abstract"
+    _write_rows(params_dir, rows, fields)
+    findings = audit(params_dir)
+    assert any(f.check == "tier-evidence" and "EXACT-abstract" in f.message for f in findings)
+
+
+def test_lognormal_with_nonpositive_edges_is_flagged(params_dir):
+    rows, fields = _rows(params_dir)
+    rows[0]["dist"] = "lognormal"
+    rows[0]["low"] = "0"
+    _write_rows(params_dir, rows, fields)
+    findings = audit(params_dir)
+    assert any(f.check == "dist" and "positive band edges" in f.message for f in findings)
+
+
+def test_lognormal_point_off_geometric_mean_warns(params_dir):
+    rows, fields = _rows(params_dir)
+    rows[0]["dist"] = "lognormal"
+    rows[0]["low"], rows[0]["point"], rows[0]["high"] = "1.0", "3.0", "5.0"
+    _write_rows(params_dir, rows, fields)
+    findings = audit(params_dir)
+    assert any(f.check == "dist" and f.severity == WARN and "geometric mean" in f.message
+               for f in findings)
+
+
+def test_pending_baseline_is_reported_as_info(params_dir):
+    rows, fields = _baseline_rows(params_dir)
+    rows[0]["status"] = "pending"
+    _write_baseline_rows(params_dir, rows, fields)
+    findings = audit(params_dir)
+    assert any(f.check == "baseline" and f.severity == INFO and "pending" in f.message
+               for f in findings)
+
+
+def test_place_row_without_citation_is_flagged(params_dir):
+    rows, fields = _place_rows(params_dir)
+    target = next(r for r in rows if r["key"] != "national")
+    target["citation"] = ""
+    _write_place_rows(params_dir, rows, fields)
+    findings = audit(params_dir)
+    assert any(f.check == "places" and "no citation" in f.message for f in findings)
+
+
+def test_divorce_rate_without_precision_n_warns(params_dir):
+    rows, fields = _place_rows(params_dir)
+    target = next(r for r in rows if r["key"] != "national")
+    target["divorce_rate"] = "0.11"
+    target["divorce_n"] = ""
+    _write_place_rows(params_dir, rows, fields)
+    findings = audit(params_dir)
+    assert any(f.check == "places" and f.severity == WARN and "divorce_rate without divorce_n" in f.message
+               for f in findings)
+
+
+def test_missing_mobility_modifier_warns_when_places_present(params_dir):
+    rows, fields = _rows(params_dir)
+    mobility = "neighborhood_exposure->child_outcomes_modifier"
+    assert any(r["link"] == mobility for r in rows)
+    _write_rows(params_dir, [r for r in rows if r["link"] != mobility], fields)
+    findings = audit(params_dir)
+    assert any(f.check == "places" and f.severity == WARN and "mobility modifier" in f.message
+               for f in findings)
+
+
+def test_correlations_load_failure_is_reported(params_dir):
+    _write_correlations(params_dir, [
+        {"from_param": "displacement->worker_earnings",
+         "to_param": "earnings_shock->mortality_peak",
+         "spearman": "strong", "justification": "declared"},
+    ])
+    findings = audit(params_dir)
+    assert any(f.check == "correlation" and "failed to load" in f.message for f in findings)
+
+
+def test_correlation_unknown_link_is_reported(params_dir):
+    _write_correlations(params_dir, [
+        {"from_param": "ghost->link", "to_param": "displacement->worker_earnings",
+         "spearman": "0.5", "justification": "declared"},
+    ])
+    findings = audit(params_dir)
+    assert any(f.check == "correlation" and "unknown link" in f.message for f in findings)
+
+
+def test_correlation_spearman_outside_unit_interval_is_reported(params_dir):
+    _write_correlations(params_dir, [
+        {"from_param": "displacement->worker_earnings",
+         "to_param": "earnings_shock->mortality_peak",
+         "spearman": "1.5", "justification": "declared"},
+    ])
+    findings = audit(params_dir)
+    assert any(f.check == "correlation" and "outside (-1, 1)" in f.message for f in findings)
+
+
+def test_correlation_blank_justification_is_reported(params_dir):
+    _write_correlations(params_dir, [
+        {"from_param": "displacement->worker_earnings",
+         "to_param": "earnings_shock->mortality_peak",
+         "spearman": "0.5", "justification": ""},
+    ])
+    findings = audit(params_dir)
+    assert any(f.check == "correlation" and "no justification" in f.message for f in findings)
+
+
+def test_correlation_justification_without_basis_is_reported(params_dir):
+    _write_correlations(params_dir, [
+        {"from_param": "displacement->worker_earnings",
+         "to_param": "earnings_shock->mortality_peak",
+         "spearman": "0.5", "justification": "trust me"},
+    ])
+    findings = audit(params_dir)
+    assert any(f.check == "correlation" and "must name a citable basis" in f.message
+               for f in findings)
+
+
+def test_correlation_non_psd_matrix_is_reported(params_dir):
+    # 0.9 / 0.9 / -0.9 over three real links is not positive semidefinite.
+    _write_correlations(params_dir, [
+        {"from_param": "displacement->worker_earnings",
+         "to_param": "earnings_shock->mortality_peak",
+         "spearman": "0.9", "justification": "declared"},
+        {"from_param": "displacement->worker_earnings",
+         "to_param": "earnings_shock->mortality_sustained",
+         "spearman": "0.9", "justification": "declared"},
+        {"from_param": "earnings_shock->mortality_peak",
+         "to_param": "earnings_shock->mortality_sustained",
+         "spearman": "-0.9", "justification": "declared"},
+    ])
+    findings = audit(params_dir)
+    assert any(f.check == "correlation" and "not PSD" in f.message for f in findings)
+
+
+def test_finding_as_dict_roundtrip():
+    from downstream.audit import Finding
+    assert Finding(WARN, "check", "msg").as_dict() == {"severity": WARN, "check": "check", "message": "msg"}
+
+
+def test_unknown_dist_name_is_flagged(params_dir):
+    rows, fields = _rows(params_dir)
+    rows[0]["dist"] = "biblical"
+    _write_rows(params_dir, rows, fields)
+    findings = audit(params_dir)
+    assert any(f.check == "dist" and "not in" in f.message for f in findings)
+
+
+def test_normal_dist_off_midpoint_warns(params_dir):
+    rows, fields = _rows(params_dir)
+    rows[0]["dist"] = "normal"
+    rows[0]["low"], rows[0]["point"], rows[0]["high"] = "0.0", "0.4", "1.0"
+    _write_rows(params_dir, rows, fields)
+    findings = audit(params_dir)
+    assert any(f.check == "dist" and f.severity == WARN and "midpoint" in f.message
+               for f in findings)
+
+
+def test_places_without_national_row_is_flagged(params_dir):
+    rows, fields = _place_rows(params_dir)
+    kept = [r for r in rows if r["key"] != "national"]
+    assert len(kept) < len(rows)
+    _write_place_rows(params_dir, kept, fields)
+    findings = audit(params_dir)
+    assert any(f.check == "places" and "no 'national' row" in f.message for f in findings)
+
+
+def test_mortality_rate_without_precision_n_warns(params_dir):
+    rows, fields = _place_rows(params_dir)
+    target = next(r for r in rows if r["key"] != "national")
+    target["mortality_rate"] = "0.005"
+    target["mortality_n"] = ""
+    _write_place_rows(params_dir, rows, fields)
+    findings = audit(params_dir)
+    assert any(f.check == "places" and f.severity == WARN and "mortality_rate without mortality_n" in f.message
+               for f in findings)
+
+
+def test_header_only_correlations_file_is_tolerated(params_dir):
+    with open(params_dir / "correlations.csv", "w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=["from_param", "to_param", "spearman", "justification"])
+        w.writeheader()
+    findings = audit(params_dir)
+    assert not any(f.check == "correlation" for f in findings)
