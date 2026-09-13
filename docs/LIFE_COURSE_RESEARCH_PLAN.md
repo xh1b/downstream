@@ -54,10 +54,13 @@ point; short-duration events need finer timing or a documented approximation.
 Longitudinal data such as [PSID](https://psidonline.isr.umich.edu/default.aspx)
 are worth assessing for household, earnings, and intergenerational dynamics.
 The [2026-09-13 PSID assessment](PSID_BASELINE_DATA_ASSESSMENT_2026-09-13.md)
-adopted PSID as the R2 candidate with declared limitations: biennial
-interviewing since 1997, public geography capped at state/region, and no
-computed transitions yet — the extract and one held-out baseline-transition
-reproduction are the next R2 steps.
+names PSID the best scientific fit with declared limitations: biennial
+interviewing since 1997, public geography capped at state/region, and a
+license that routes reproduction through the open ICPSR-PSID extract
+repository rather than data shipped in-repo. The dataset decision is a
+licensing-posture call (PSID-with-terms versus the public-domain SIPP,
+whose panel science is weaker) and remains with the owner; no transitions
+have been computed yet.
 
 ### 2. Separate three evidential roles
 

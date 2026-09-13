@@ -21,13 +21,15 @@ See `docs/MATH_REVIEW.md` for reviewed arithmetic and remaining assumptions.
 
 - **[R0-R1] Correct and classify:** resolve current review findings; distinguish
   baseline transitions, causal effects, and structural assumptions in evidence records.
-- **[R2] Baseline household trajectories:** PSID adopted as the candidate
-  dataset (2026-09-13 assessment:
-  `docs/PSID_BASELINE_DATA_ASSESSMENT_2026-09-13.md` — biennial cadence,
-  public geography capped at state, weights and attrition documented).
-  Next: owner-registered extract (family + individual files, weights,
-  FIMS maps), variable verification, then one weighted two-wave
-  employment/earnings transition reproduced with held-out validation.
+- **[R2] Baseline household trajectories:** PSID assessed as the best-fit
+  candidate (2026-09-13:
+  `docs/PSID_BASELINE_DATA_ASSESSMENT_2026-09-13.md`); dataset decision
+  is an owner licensing call — PSID's terms bar redistributing microdata
+  but provide an open archived extract repository for reproduction
+  (click-through terms still apply), versus public-domain SIPP with
+  weaker panels. Once chosen: extract, variable verification, then one
+  weighted two-wave employment/earnings transition reproduced with
+  held-out validation.
 - **[R3] First full comparison:** a five-year involuntary-displacement scenario
   versus a stated reference, limited to supported employment, earnings, and
   household-resource outcomes. Current long-run coefficients are not annual paths.

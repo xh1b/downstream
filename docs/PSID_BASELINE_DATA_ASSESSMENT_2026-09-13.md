@@ -15,13 +15,15 @@ peer-reviewed descriptions. Every factual claim carries its source. It
 makes **no** claims about transition estimates: none have been computed,
 and the reproduction step remains open.
 
-**Verdict: adopt PSID as the R2 candidate dataset, with three declared
+**Verdict: adopt PSID as the R2 candidate dataset, with four declared
 limitations** — biennial interviewing since 1997 (annual simulation steps
 need a documented cadence decision), public geography capped at
-state/region (county context requires the restricted geocode enclave), and
-a two-wave baseline panel that measures ordinary transitions at two-year
-spacing. None of the three blocks the R2 exit criteria; all three shape
-the design.
+state/region (county context requires the restricted geocode enclave), a
+two-wave baseline panel that measures ordinary transitions at two-year
+spacing, and a license whose data-sharing terms constrain how the
+pipeline can be reproduced (analyzed below — it is workable but not
+friction-free, and the owner's licensing call is still open). None of the
+four blocks the R2 exit criteria outright; all four shape the design.
 
 ## What R2 needs from a dataset
 
@@ -166,16 +168,72 @@ strata where displacement concentrates are both observable. Sample sizes
 per cell still bound subgroup resolution — cell counts are an at-extraction
 check, not an assumption.
 
-### Access
+### Access and license — the reproducibility constraint
 
 Public-use data are free after registration and acceptance of the
 conditions of use; no ICPSR membership is required
 ([PSID Getting Started](https://psidonline.isr.umich.edu/GettingStarted.aspx);
 [conditions of use](https://simba.isr.umich.edu/u/conduse.aspx)).
 
-Consequence: acquisition is not a blocker. An owner-registered account and
-a Data Center extract (family + individual files, with weights and FIMS
-maps) is the concrete next step.
+The license matters for this repository's reproducibility standard. The
+conditions of use, in their own words, require the user to:
+
+> 4. Not transfer PSID public data that has been downloaded from the
+>    website, including user-created data extracts, to any third parties
+>    (other than to assistants or students you supervise during an
+>    ongoing project). If you are required by a journal to provide
+>    access to your dataset, and if you want to share data extracts with
+>    others, you must deposit the data extract in the PSID Public Data
+>    Extract Repository maintained through the Open ICPSR initiative.
+>    Anyone — regardless of affiliation or ICPSR-members status — may
+>    deposit data into the ICPSR-PSID Data Extract Repository, as well
+>    as access and download PSID data from the repository.
+
+Read precisely, three things follow:
+
+1. **Microdata must not ship in this repository or be emailed around.**
+   Clause 4 prohibits transferring extracts to third parties outside the
+   sanctioned channel.
+2. **The sanctioned channel is itself open and archived.** Deposited
+   extracts live in the [ICPSR-PSID Public Data Extract
+   Repository](https://www.icpsr.umich.edu/sites/psid/home), which
+   "archives PSID data extracts created from PSID public data for
+   publication and other uses" and is "open to all"; anyone may deposit
+   and download, with no membership or fee
+   ([deposit instructions](https://www.icpsr.umich.edu/sites/psid/share-data)).
+   A reproduction pipeline is therefore possible: commit the estimation
+   code here, deposit the exact extract there, and every derived number
+   regenerates from a public archived artifact plus this repo's code and
+   content hashes — the same provenance standard the bundle export uses.
+3. **Derived aggregate estimates are publishable here.** The conditions
+   permit "scientific research and aggregate statistical reporting" with
+   citation; the baseline transition tables the engine would ship are
+   aggregate results, not microdata. The reidentification ban and the
+   destruction-on-request clause still travel with every use.
+
+What PSID cannot offer is the strongest sense of "open source data": the
+microdata are click-through-licensed, never public domain, and the repo
+can never be cloned together with its input data. Each reproducer must
+accept PSID's conditions on the ICPSR platform before downloading.
+
+**The fully-open alternative:** the Census Bureau's Survey of Income and
+Program Participation (SIPP) publishes public-use files that anyone may
+download without registration and freely redistribute
+([Census SIPP](https://www.census.gov/programs-surveys/sipp.html);
+[National Academies report, ch. 4](https://www.nationalacademies.org/read/27169/chapter/4):
+"Anyone may download SIPP public-use data from the SIPP data website. No
+registration is required"). The scientific costs are real: SIPP panels
+are short (years, not decades), attrition per panel is higher, and there
+is no PSID-equivalent multigenerational depth, no CDS/TAS child
+supplements, and no FIMS-style cross-generation maps. The household-trajectory
+layer R2 needs is representable, but the intergenerational structural
+layer's data support would be much thinner.
+
+Consequence: the dataset decision is now a licensing-posture decision for
+the owner — PSID with the repository-reproduction route (best scientific
+fit; open access with click-through terms), or SIPP (unconditional open
+licensing; weaker panel science). This document does not resolve that
+choice.
 
 ## Declared limitations
 
@@ -190,7 +248,12 @@ maps) is the concrete next step.
    The displacement effects already admitted stay separately sourced
    causal estimates; the plan's overlap rule (§2) forbids a transition
    model that embeds the same response the intervention layer adds.
-4. **Unverified at desk distance:** exact variable names and definitions
+4. **License.** Microdata are click-through-licensed and must never ship
+   in or be emailed from this repository; the sanctioned share channel is
+   the ICPSR-PSID Public Data Extract Repository, which is open to all.
+   Reproduction therefore runs through a public archived extract on the
+   ICPSR platform, with PSID's conditions accepted by each downloader.
+5. **Unverified at desk distance:** exact variable names and definitions
    by wave; wave-by-wave state-variable availability; the 2023 user
    manual's response-rate and exit/death tracking tables (the manual's
    PDF was not machine-readable here). All are first-week verification
@@ -198,20 +261,32 @@ maps) is the concrete next step.
 
 ## Decision and next steps
 
-1. **Adopt PSID as the R2 dataset** for employment, earnings, and
-   household-resource baselines, with the four limitations above declared
-   in every derived artifact.
-2. **Acquire:** owner registers, downloads recent-wave family and
+**Decision pending owner input: the licensing posture.** PSID has the
+best scientific fit; its terms require the extract-repository
+reproduction route described above. SIPP offers unconditional open
+licensing with weaker panel science. The plan does not choose between
+them; the owner decides whether "open" here means open-access-with-terms
+or public-domain-only.
+
+If PSID is confirmed:
+
+1. **Acquire:** owner registers, downloads recent-wave family and
    individual files plus longitudinal/cross-sectional weights (Data
-   Center), and the FIMS link files for intergenerational work.
-3. **Verify at acquisition:** variable naming by wave, state-of-residence
+   Center), and the FIMS link files for intergenerational work. The
+   working extract used for any published estimate gets deposited to the
+   ICPSR-PSID Public Data Extract Repository, and this repository
+   records its archived project ID beside the content hashes.
+2. **Verify at acquisition:** variable naming by wave, state-of-residence
    availability, exit/death recording, and per-cell sample sizes for the
    target populations.
-4. **Reproduce one baseline transition** (immediate goal 3's second
+3. **Reproduce one baseline transition** (immediate goal 3's second
    half): a two-wave employment/earnings transition for prime-age
    workers, weighted, with a held-out-wave validation report — the first
    R2 artifact, to be reviewed before any household simulation is built
    on it.
+
+If SIPP is chosen instead, this document is superseded by an equivalent
+SIPP assessment covering the same checklist before any extraction.
 
 ## Source register
 
@@ -229,3 +304,6 @@ maps) is the concrete next step.
 - [Gouskova et al. (2008), longitudinal weights 1993–2005](https://psidonline.isr.umich.edu/data/weights/Long-weights-doc.pdf).
 - [Heeringa (2018), cumulative response rates 1968–2015](https://psidonline.isr.umich.edu/publications/papers/tsp/2018-01_6815CRR_68SP.pdf).
 - [2017 longitudinal weights](https://psidonline.isr.umich.edu/data/weights/long_weight_17.pdf); [2021 cross-sectional individual weights](https://psidonline.isr.umich.edu/data/weights/cross_sec_weights_21.pdf).
+- [PSID conditions of use](https://simba.isr.umich.edu/u/conduse.aspx) — clause 4 quoted above.
+- [ICPSR-PSID Public Data Extract Repository](https://www.icpsr.umich.edu/sites/psid/home) — open extract archive; [deposit instructions](https://www.icpsr.umich.edu/sites/psid/share-data).
+- [Census SIPP program page](https://www.census.gov/programs-surveys/sipp.html); [National Academies report ch. 4](https://www.nationalacademies.org/read/27169/chapter/4) — SIPP public-use files, no registration, freely redistributable.
