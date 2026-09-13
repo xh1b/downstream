@@ -55,6 +55,24 @@ P2 = completes a stream; P3 = breadth.
 | 28 | multigenerational crime hazard | Farrington (Cambridge Study) | conviction-risk transmission across generations | pending |
 | 29 | grandparent education→grandchild | Anderson, Sheppard & Monden 2018 Demography | conditional grandparent effect (cross-checks the IGE-decay layer) | pending |
 
+## Transmission rows — one edge per outcome walks all generations
+
+Design landed 2026-09-13 (`src/downstream/transmissions.py`,
+`downstream transmissions`): an intergenerational walk is ONE admitted
+parent→child relationship applied recursively — never separately
+extracted per-generation parameters. The earnings walk (ige_earnings:
+US IGE literature anchors step 2, Lindahl 2015 / Adermon 2018 anchor
+the repetition) is the template. Each row below makes ONE more outcome
+walk to grandchildren; the audit fails if unrolled copies of a
+relationship drift apart.
+
+| # | Link | Study | Extraction target | Status |
+|:--|:--|:--|:--|:--|
+| 32 | parent achievement→child achievement | intergenerational cognitive-skill persistence (Swedish register design as in lindahl2015; Holmlund, Lindahl & Plug 2011 EER for the schooling-decomposition cross-check) | `child_achievement_sd->grandchild_achievement_sd` (sd scale; entry edge displacement_event->child_achievement_sd LANDED v1.43, bingley2026); composition kind must be declared for sd_delta before the walk admits | pending |
+| 33 | education-years transmission | Lindahl et al. 2015 JHR 50(1) — the paper's own four-generation education measure | `child_education_years->grandchild_education_years` AND the missing gen-2 entry (`displacement->child_education_years`; the hs_completion/college rows are probability-scale and cannot bridge without a declared conversion) — BOTH edges needed before the walk exists | pending |
+| 34 | parent depression→child depression | Weissman et al. three-generation depression studies (JAMA 2006; 2016 follow-up) as candidates; mclanahan1994 beside for the family-process pathway | `adult_depression_cesd->grandchild depression` row (entry edges exist: displacement_event->adult_depression_cesd brand2014, displacement_event->child_depression_anxiety schallerzerpa2019); sd-scale composition kind needed | pending |
+| 35 | parental divorce→child own-divorce | gruber2004 records the own-divorce finding beside its earnings estimand; mclanahan1994; McLanahan & Bumpass 1988 Demography as the classic transmission pin | the transmission row itself (full-text pinning of the own-divorce hazard ratio) PLUS a conditional composition kind: only the displaced marriages that actually dissolve transmit, so the walk is a mixture, not a gap product | pending |
+
 ## Validation data plugs
 
 | # | Item | Source | Status |
