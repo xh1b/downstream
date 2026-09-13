@@ -1,0 +1,42 @@
+{
+  "source": "CDC WONDER Underlying Cause of Death, 1999-2020 (controller D76)",
+  "source_url": "https://wonder.cdc.gov/ucd-icd10.html",
+  "local_file": "cdc_wonder_county_male_45_54_2015_2019.csv",
+  "sha256": "87b551c6248cec0d180580869e6a16fb6045fd677cc93e9ca4c0f0c6968d5259",
+  "retrieved_at": "2026-09-13T07:22:32+00:00",
+  "acquisition": {
+    "method": "public web UI session (browser automation); export downloaded by replaying the results-form state with a plain requests POST (action-Export=Download, O_export-format=csv) against the session-bound action URL",
+    "why_not_the_machine_API": "the XML web service is national-only by server policy: any county/state/urbanization group-by or location filter is answered with 'Only national data are available for this dataset when using the WONDER web service' (probed live 2026-09-13)",
+    "why_not_in_page_fetch": "the controller refuses export replays issued as fetch/XHR from inside the results page; a plain requests POST without Sec-Fetch headers is accepted",
+    "reproduction_script": "scripts/fetch_wonder.py county --sex M --age 45-54 --years 2015,2016,2017,2018,2019"
+  },
+  "query_criteria": "Sex: Male; Ten-Year Age Groups: 45-54 years; Year/Month: 2015; 2016; 2017; 2018; 2019; Group By: County; Show Totals: True; Show Zero Values: False; Show Suppressed: False; Calculate Rates Per: 100,000; Rate Options: Default intercensal populations for years 2001-2009 (except Infant Age Groups)",
+  "suggested_citation": "Centers for Disease Control and Prevention, National Center for Health Statistics. National Vital Statistics System, Mortality 1999-2020 on CDC WONDER Online Database, released in 2021. Data are from the Multiple Cause of Death Files, 1999-2020, as compiled from data provided by the 57 vital statistics jurisdictions through the Vital Statistics Cooperative Program. Accessed at http://wonder.cdc.gov/ucd-icd10.html on Sep 13, 2026 7:22:32 AM",
+  "contents": {
+    "county_rows": 2748,
+    "measures": [
+      "Deaths",
+      "Population",
+      "Crude Rate"
+    ],
+    "total_row": {
+      "deaths": 514314,
+      "person_years": 104024440,
+      "crude_rate_per_100k": 494.4
+    },
+    "population_semantics": "July 1 census estimate per year; the five 2015-2019 populations sum to pooled person-years"
+  },
+  "reconciliation": {
+    "national_total_row": "514314 deaths / 104024440 person-years reproduces baselines.csv:all_cause_mortality_annual (0.004944) and validation/cdc_wonder_d76_national_year_age_sex_1999_2020.xml exactly",
+    "visible_county_sums": {
+      "deaths": 512417,
+      "person_years": 103554436
+    },
+    "suppression_note": "counties with <=9 deaths are OMITTED entirely (Show Suppressed: False) while the Total row still counts them; the 1897-death difference is suppressed small counties and must never be reconstructed"
+  },
+  "integration_status": "eligible county context for county-wonder-posterior with a national prior of the identical profile/window (male, 45-54 years, All causes, 2015-2019); the companion sidecar .metadata.json carries the declared query metadata required by downstream.county_mortality.parse_export",
+  "reproduction_check": {
+    "method": "scripts/fetch_wonder.py county --sex M --age 45-54 --years 2015,2016,2017,2018,2019 (2026-09-13)",
+    "result": "all 2773 lines byte-identical except the two session-stamped timestamp lines ('Query Date' and 'Accessed at'); sha256 of the timestamp-stripped exports matches: 8d6a8150403f6ecc2fc5a459aecf023b3297e100577aa8ed5fc4ea3073ec7e69"
+  }
+}

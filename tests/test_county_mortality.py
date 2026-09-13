@@ -1,4 +1,5 @@
 import pytest
+from pathlib import Path
 
 from downstream.county_mortality import count_observations, parse_export
 
@@ -102,6 +103,46 @@ def test_import_refuses_export_without_county_rows(tmp_path):
     path.write_text('"County Code"\t"Deaths"\t"Population"\n""\t""\t""\n')
     with pytest.raises(ValueError, match="no county rows"):
         parse_export(path, metadata=_base_metadata())
+
+
+def test_import_parses_genuine_csv_export_with_footnotes_and_total_row(tmp_path):
+    """Genuine WONDER CSV exports: quoted commas in county names, a Total
+    row, a '---' separator, and trailing footnotes/query-parameter lines.
+
+    csv.Sniffer mis-handled the quoted commas and shifted footnote text
+    into the County Code column (fixed: delimiter detected directly).
+    """
+    path = tmp_path / "county.csv"
+    path.write_text(
+        '"Notes","County","County Code",Deaths,Population,Crude Rate\n'
+        ',"Autauga County, AL","01001",115,19096,602.2\n'
+        ',"Baldwin County, AL","01003",370,68663,538.9\n'
+        '"Total",,,514314,104024440,494.4\n'
+        '"---"\n'
+        '"Dataset: Underlying Cause of Death, 1999-2020"\n'
+        '"Sex: Male"\n'
+        '"Group By: County"\n'
+    )
+    parsed = parse_export(path, metadata=_base_metadata())
+    assert parsed["rows"]["01001"]["mortality_rate"] == pytest.approx(115 / 19096)
+    assert set(parsed["count_rows"]) == {"01001", "01003"}
+    observations = count_observations(parsed)
+    assert len(observations) == 2
+
+
+def test_import_parses_the_all_ages_context_export(tmp_path):
+    """The real all-ages county context export parses as county context
+    (its registry row stays context_only; this pins the file format)."""
+    import shutil
+
+    src = Path(__file__).resolve().parent.parent / "validation" / "cdc_wonder_county_all_ages_1999_2020.csv"
+    if not src.exists():
+        pytest.skip("context export not present")
+    work = tmp_path / "context.csv"
+    shutil.copy(src, work)
+    metadata = _base_metadata(years=list(range(1999, 2021)), sex="All", age="All ages")
+    parsed = parse_export(work, metadata=metadata)
+    assert len(parsed["count_rows"]) == 3147
 
 
 def _write_export(path, body):

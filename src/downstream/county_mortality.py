@@ -73,12 +73,11 @@ def parse_export(path, *, metadata):
         raise ValueError("source_url and retrieved_at are required")
     raw = Path(path).read_bytes()
     decoded = raw.decode("utf-8-sig")
-    # WONDER's browser export is CSV; some saved exports are tab-delimited.
-    # Do not infer demographics from columns: metadata is the authority.
-    try:
-        dialect = csv.Sniffer().sniff(decoded[:8192], delimiters="\t,")
-    except csv.Error:
-        dialect = csv.excel_tab
+    # WONDER's browser export is CSV; some saved exports are TSV. Sniffing
+    # mis-handles quoted commas ("Autauga County, AL") and shifts footnote
+    # cells into data columns, so detect the delimiter directly: a genuine
+    # export is tab-delimited iff it contains tabs.
+    dialect = csv.excel_tab if "\t" in decoded[:8192] else csv.excel
     reader = csv.DictReader(io.StringIO(decoded), dialect=dialect)
     if not {"County Code", "Deaths", "Population"} <= set(reader.fieldnames or []):
         raise ValueError("expected a county WONDER tab-delimited export")

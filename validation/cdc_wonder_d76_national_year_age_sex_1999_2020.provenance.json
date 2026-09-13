@@ -3,12 +3,16 @@
   "source_url": "https://wonder.cdc.gov/ucd-icd10.html",
   "endpoint": "https://wonder.cdc.gov/controller/datarequest/D76",
   "local_file": "cdc_wonder_d76_national_year_age_sex_1999_2020.xml",
-  "sha256": "24134d7fc303919c03e994c634ea3fb433e3ff4e03b32d45280e291c4d357348",
+  "sha256": "12d093414abf0ef1a2538e108ee74c249a2abe10276133bb69ba0807af9a87a9",
   "retrieved_at": "2026-09-13T05:59:32+00:00",
   "request": {
     "protocol": "XML data API POST (request_xml + accept_datause_restrictions), one request, no key; request parameters match the live-validated query in xh1b scraper/scraper/wonder.py (probed 2026-09-06)",
     "dataset": "Underlying Cause of Death, 1999-2020",
-    "group_by": ["Year (V1-level1)", "Ten-Year Age Groups (V5)", "Gender (V7)"],
+    "group_by": [
+      "Year (V1-level1)",
+      "Ten-Year Age Groups (V5)",
+      "Gender (V7)"
+    ],
     "filters": {
       "cause": "All causes (*All*, ICD-10 V2 unconstrained)",
       "geography": "The United States (V9/V10/V27 all)",
@@ -16,28 +20,73 @@
       "age": "All ten-year age groups (V5)",
       "sex": "Female and Male (V7)"
     },
-    "measures": ["Deaths (M1)", "Population (M2)", "Crude Rate per 100,000 (M3)"],
-    "options": {"age_adjusted": "aar_none", "show_totals": false}
+    "measures": [
+      "Deaths (M1)",
+      "Population (M2)",
+      "Crude Rate per 100,000 (M3)"
+    ],
+    "options": {
+      "age_adjusted": "aar_none",
+      "show_totals": false
+    },
+    "request_title": "downstream all-cause mortality, year x age x gender"
   },
   "contents": {
     "rows": 528,
-    "dimensions": ["year 1999-2020", "ten-year age group", "gender"],
+    "dimensions": [
+      "year 1999-2020",
+      "ten-year age group",
+      "gender"
+    ],
     "suppression": "cells with <10 deaths are suppressed in the source; none of the 2015-2019 pooled strata used for profile rows contain suppressed cells",
     "population_semantics": "July 1 census population estimate per year; pooled person-years = sum of annual populations across 2015-2019"
   },
   "derivation": {
     "profile_window": "2015-2019 pooled, rate = deaths / person-years (event per person-year)",
     "verified_pools": {
-      "male_45_54": {"deaths": 514314, "person_years": 104024440, "annual_rate": 0.004944},
-      "female_45_54": {"deaths": 329068, "person_years": 106831953, "annual_rate": 0.00308},
-      "male_25_34": {"deaths": 200402, "person_years": 114460126, "annual_rate": 0.001751},
-      "female_25_34": {"deaths": 86968, "person_years": 111335086, "annual_rate": 0.000781},
-      "male_35_44": {"deaths": 250489, "person_years": 102105120, "annual_rate": 0.002453},
-      "female_35_44": {"deaths": 143553, "person_years": 102767221, "annual_rate": 0.001397},
-      "male_55_64": {"deaths": 1121543, "person_years": 100869670, "annual_rate": 0.011119},
-      "female_55_64": {"deaths": 724466, "person_years": 108188124, "annual_rate": 0.006696}
+      "male_45_54": {
+        "deaths": 514314,
+        "person_years": 104024440,
+        "annual_rate": 0.004944
+      },
+      "female_45_54": {
+        "deaths": 329068,
+        "person_years": 106831953,
+        "annual_rate": 0.00308
+      },
+      "male_25_34": {
+        "deaths": 200402,
+        "person_years": 114460126,
+        "annual_rate": 0.001751
+      },
+      "female_25_34": {
+        "deaths": 86968,
+        "person_years": 111335086,
+        "annual_rate": 0.000781
+      },
+      "male_35_44": {
+        "deaths": 250489,
+        "person_years": 102105120,
+        "annual_rate": 0.002453
+      },
+      "female_35_44": {
+        "deaths": 143553,
+        "person_years": 102767221,
+        "annual_rate": 0.001397
+      },
+      "male_55_64": {
+        "deaths": 1121543,
+        "person_years": 100869670,
+        "annual_rate": 0.011119
+      },
+      "female_55_64": {
+        "deaths": 724466,
+        "person_years": 108188124,
+        "annual_rate": 0.006696
+      }
     },
     "reproduction_check": "male 45-54 pooled 2015-2019 reproduces the 2026-09-06 warehouse pin exactly: 514314 / 104024440 = 494.4 per 100k = baselines.csv:all_cause_mortality_annual"
   },
-  "integration_status": "verified national rate profiles (params/mortality_profiles.csv rows *_2015_2019). County-level exports are NOT available from this API (county grouping is web-export-only; queued extraction #31). This file is a national aggregate and is never a county baseline."
+  "integration_status": "verified national rate profiles (params/mortality_profiles.csv rows *_2015_2019). County-level exports are NOT available from this API (county grouping is web-export-only; queued extraction #31). This file is a national aggregate and is never a county baseline.",
+  "reproduction_note": "re-pulled 2026-09-13 via scripts/fetch_wonder.py national; byte-level replays differ only in the server-embedded request/@query-date attribute \u2014 all 528 data rows are identical across pulls"
 }

@@ -7,6 +7,13 @@ additional group-by columns.
 
 For a profile suitable for this model:
 
+0. Reproducible downloads: `scripts/fetch_wonder.py` performs both pulls —
+   `national` (machine XML API, year x age x gender table) and `county`
+   (scripted web-UI session; the machine API is national-only by server
+   policy, probed 2026-09-13). Each writes the raw artifact plus a
+   `.provenance.json` sidecar; `county` also writes the `.metadata.json`
+   this importer consumes. The manual steps below document what the
+   script automates.
 1. In CDC WONDER's *Underlying Cause of Death* query, choose the desired
    years, sex, age range, and cause of death. Use all counties required by
    the XH1B/entity exposure geography.
