@@ -217,7 +217,8 @@ def test_evidence_loaders_refuse_duplicate_ids(tmp_path):
     findings_header = ("finding_id,corpus_id,exposure,outcome,estimand,point,"
                        "standard_error,unit,time_horizon,population_scope,design,"
                        "composition_status,extraction_status,notes\n")
-    row = ("f1,c1,ex,out,est,1.0,0.1,units,year 6+,US,IV,recorded,extracted,note\n")
+    row = ("f1,c1,ex,out,est,1.0,0.1,units,year 6+,US,IV,already_parameterized,"
+           "fulltext_table,note\n")
     dupf = tmp_path / "findings.csv"
     dupf.write_text(findings_header + row + row)
     with pytest.raises(ValueError, match="duplicate finding_id"):
@@ -695,3 +696,57 @@ def test_compute_counts_mortality_mix_paths(tmp_path):
     blocked = {b["outcome"]: b["reason"] for b in out["blocked"]}
     assert "excess_deaths" in blocked
     assert "no mortality profile registry" in blocked["excess_deaths"]
+
+
+# --- evidence: load_findings admission guards ---------------------------------
+
+FINDINGS_HEADER = ("finding_id,corpus_id,exposure,outcome,estimand,point,"
+                   "standard_error,unit,time_horizon,population_scope,design,"
+                   "composition_status,extraction_status,notes\n")
+
+
+def _finding_row(**overrides):
+    values = dict(finding_id="f1", corpus_id="c1", exposure="spouse_layoff",
+                  outcome="divorce", estimand="coefficient", point="0.309",
+                  standard_error="0.095", unit="probit_index", time_horizon="one year",
+                  population_scope="US couples", design="probit",
+                  composition_status="not_composable_without_probability_translation",
+                  extraction_status="fulltext_table", notes="table 6")
+    values.update(overrides)
+    order = FINDINGS_HEADER.strip().split(",")
+    return ",".join(str(values[k]) for k in order) + "\n"
+
+
+def test_load_findings_admits_valid_rows_and_refuses_bad_metadata(tmp_path):
+    from downstream.evidence import load_findings
+
+    good = tmp_path / "findings.csv"
+    good.write_text(FINDINGS_HEADER + _finding_row())
+    rows = load_findings(good)
+    assert len(rows) == 1
+    assert rows[0].point == pytest.approx(0.309)
+
+    blank_id = tmp_path / "blank_id.csv"
+    blank_id.write_text(FINDINGS_HEADER + _finding_row(finding_id=""))
+    with pytest.raises(ValueError, match="blank finding_id"):
+        load_findings(blank_id)
+
+    blank_meta = tmp_path / "blank_meta.csv"
+    blank_meta.write_text(FINDINGS_HEADER + _finding_row(population_scope=""))
+    with pytest.raises(ValueError, match="blank applicability metadata"):
+        load_findings(blank_meta)
+
+    bad_comp = tmp_path / "bad_comp.csv"
+    bad_comp.write_text(FINDINGS_HEADER + _finding_row(composition_status="sure"))
+    with pytest.raises(ValueError, match="unknown composition_status"):
+        load_findings(bad_comp)
+
+    bad_ext = tmp_path / "bad_ext.csv"
+    bad_ext.write_text(FINDINGS_HEADER + _finding_row(extraction_status="vibes"))
+    with pytest.raises(ValueError, match="unknown extraction_status"):
+        load_findings(bad_ext)
+
+    dup = tmp_path / "dup.csv"
+    dup.write_text(FINDINGS_HEADER + _finding_row() + _finding_row(point="0.5"))
+    with pytest.raises(ValueError, match="duplicate finding_id"):
+        load_findings(dup)
