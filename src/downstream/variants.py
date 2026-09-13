@@ -24,7 +24,9 @@ Variants (v1):
   (both decay shapes are geometric re-parameterizations of the SAME
    cited IGE band — declared assumption alternates, not new evidence)
 - log_elasticity_transmission finite-change mapping ``v**t`` instead of
-  the shipped first-order gap approximation ``1-t(1-v)``
+  the shipped first-order gap approximation ``1-t(1-v)``; composed
+  through the ledger's gap_log_elastic kind with the SAME
+  structural_transmission_assumption causal role as the shipped rule
 - closure_selection_contrast (v1.19) the direct child anchor
   (oreopoulos2008, a firm-closure design) set aside and the children
   line stood on the JLS father-shock path composed through the SAME
@@ -38,7 +40,7 @@ from __future__ import annotations
 from dataclasses import replace
 
 from .children import CHILD_DIRECT, GRANDCHILD, child_line
-from .ledger import DIRECT, GAP, combine_parallel, start
+from .ledger import DIRECT, GAP, GAP_LOG, combine_parallel, start
 from .params import ParameterSet
 
 VARIANT_IDS = (
@@ -117,15 +119,15 @@ def _log_elasticity_child(params: ParameterSet) -> dict:
     An intergenerational elasticity ``t`` implies ``v**t`` for a finite
     multiplier v. The shipped gap rule is its first-order approximation
     around v=1; neither expression identifies an intervention response.
+    Composed through the ledger's GAP_LOG kind so the published step
+    carries the SAME structural_transmission_assumption causal role,
+    citation, tier, studied population, and evidence role as the
+    shipped transmission — only the arithmetic rule differs.
     """
     direct = params.by_link(CHILD_DIRECT)
-    transmission = params.by_link(GRANDCHILD)
-    corners = [v ** t for v in (direct.low, direct.high)
-               for t in (transmission.low, transmission.high)]
     child = start("child_earnings", "gap_multiplier").apply(DIRECT, direct)
-    grand = replace(start("grandchild_earnings", "gap_multiplier"),
-                    point=direct.point ** transmission.point,
-                    low=min(corners), high=max(corners))
+    grand = child.apply(GAP_LOG, params.by_link(GRANDCHILD),
+                        causal_role="structural_transmission_assumption")
     return {"child": child, "grandchild": grand}
 
 

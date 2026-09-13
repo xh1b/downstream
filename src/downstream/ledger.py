@@ -5,6 +5,12 @@ per-step and typed:
 
   level        value * param            — plain multiplier on a level
   gap          1 - param * (1 - value)  — transmission gap propagation (IGE)
+  gap_log_elastic  value ** param       — finite-change mapping for a constant
+                                          log elasticity; the shipped gap rule
+                                          is its first-order Taylor expansion
+                                          at value=1. Declared ensemble
+                                          alternate ONLY (variants), never a
+                                          chain-invitable default.
   direct       param IS the new value   — directly estimated effect on this outcome
   rate         recorded only            — rate ratio, applied to a baseline at the
                                           count boundary (never chained)
@@ -21,6 +27,7 @@ from .params import Parameter
 
 LEVEL = "level"
 GAP = "gap"
+GAP_LOG = "gap_log_elastic"
 GAP_SCALE = "gap_scale"
 DIRECT = "direct"
 RATE = "rate"
@@ -74,6 +81,24 @@ class Ledger:
         elif kind == GAP:
             corners = [1 - t * (1 - x) for x in (self.low, self.high) for t in (p.low, p.high)]
             v = (1 - p.point * (1 - self.point), min(corners), max(corners))
+        elif kind == GAP_LOG:
+            # Finite-change mapping for a constant log elasticity: the
+            # incoming multiplier raised to the transmission power. The
+            # shipped GAP rule is this map's first-order Taylor expansion
+            # at value=1; for 0 <= value <= 1 and 0 <= t <= 1 it retains
+            # no more than GAP (equality at 0 and 1). Neither expression
+            # identifies an intervention response, so this kind exists
+            # for the declared ensemble alternate (variants.py) with the
+            # same structural_transmission_assumption causal role — it is
+            # deliberately absent from CHAIN_KINDS.
+            if min(self.point, self.low, self.high) < 0 or min(p.point, p.low, p.high) < 0:
+                raise ValueError(
+                    "gap_log_elastic composition needs a non-negative incoming "
+                    "value and transmission band; a fractional power of a "
+                    "negative base is undefined here"
+                )
+            corners = [x ** t for x in (self.low, self.high) for t in (p.low, p.high)]
+            v = (self.point ** p.point, min(corners), max(corners))
         elif kind == GAP_SCALE:
             # A same-place contrast can scale the *loss* from a direct
             # displacement effect while leaving a null displacement effect
