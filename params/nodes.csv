@@ -55,3 +55,7 @@ youth_minor_crime_ever,probability,"probability of EVER committing a minor offen
 youth_crime_convicted,probability,"probability of at least one crime CONVICTION at ages 15-21 (court convictions, Danish register; distinct from akee2010's arrest-based youth_any_crime)"
 youth_crime_conviction_share,percent,"share of 15-25-year-olds with a crime conviction in the municipality-year, in percentage points (a LEVEL; damm2014's operative exposure — the committed-crime RATE is a declared null, Table 6)"
 youth_violent_crime_conviction_share,percent,"share of 15-25-year-olds with a VIOLENT-crime conviction in the municipality-year, in percentage points (the operative crime type; property/drug shares are declared nulls, Table 5)"
+circulatory_mortality_hazard,rate_ratio,"relative circulatory-disease death rate vs matched controls (cumulative hazard ratio; boundary-applied exposure contrast, never chained)"
+alcohol_mortality_hazard,rate_ratio,"relative alcohol-related death rate vs matched controls (cumulative hazard ratio; boundary-applied exposure contrast, never chained)"
+external_cause_mortality_hazard,rate_ratio,"relative external-cause death rate (incl. suicide, traffic) vs matched controls (cumulative hazard ratio; boundary-applied exposure contrast, never chained)"
+spouse_mental_health_sd,sd_delta,"spouse mental-health distress vs matched controls, MCS points normalized to SD units (boundary-applied exposure contrast, never chained)"

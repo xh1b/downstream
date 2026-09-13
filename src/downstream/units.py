@@ -64,6 +64,9 @@ COMPOSITION = {
     (RATE_RATIO, SD_DELTA): "rate", # IPV exposure -> child SD outcomes (evans2008) - boundary
                                     # coefficient like dahl2012: the d contrast is per exposed-vs-not,
                                     # never chained
+    (PERSONS, SD_DELTA): "rate",    # displacement -> spouse mental health (marcus2013) - boundary
+                                    # exposure contrast like evans2008: the SD delta is per
+                                    # exposed-vs-not, never chained
     (USD, LIFE_YEARS): "rate",      # family income -> life expectancy (chetty2016)
     (PERCENT_DELTA, PERCENT_DELTA): "rate",  # unemployment pp -> property crime % (raphael2001)
     (RATE_RATIO, RATE_RATIO): "rate",  # unemployment shock -> IPV incidence (schneider2016) - boundary

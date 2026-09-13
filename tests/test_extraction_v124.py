@@ -33,7 +33,7 @@ COUP = "couple_unemployment->household_ipv"
 
 
 def test_version_is_v124():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.37"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.38"
 
 
 def test_shock_row():

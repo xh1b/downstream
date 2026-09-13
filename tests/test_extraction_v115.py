@@ -43,6 +43,6 @@ def test_carneiro_corroboration_sits_on_existing_rows_not_new_parameter():
 
 
 def test_version_bumped_and_audit_clean():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.37"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.38"
     errors = [f for f in audit(PARAMS_DIR) if f.severity == ERROR]
     assert errors == []

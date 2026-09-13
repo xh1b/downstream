@@ -1,3 +1,33 @@
+## v1.38 — 2026-09-13 — Browning & Heinesen 2012 + Marcus 2013 landed (full-text extractions)
+
+- browningheinesen2012 (J Health Econ 31(4):599-616, read from the published
+  version of record, VIVE-hosted PDF): three EXACT boundary-applied
+  cause-specific mortality rows on new nodes —
+  displacement->circulatory_mortality_hazard 1.54 [1.29, 1.83] (years 1-4;
+  year-1 2.39 [1.62, 3.51]; MI/stroke 1.58 beside),
+  displacement->alcohol_mortality_hazard 1.62 [1.09, 2.41] (the
+  deaths-of-despair channel; year-1 2.82 wide; 1-20y n.s. — first-years
+  concentration declared), displacement->external_cause_mortality_hazard
+  1.53 [1.15, 2.04] (suicide year-1 4.31 wide; cancer NULL everywhere —
+  cause-specific discipline declared). Population: Danish full-time males
+  20-60, plant closures 1986-2002, PSW + duration analysis.
+- ALL-CAUSE REPLICATION: B&H year-1 1.84 [1.44, 2.34] and 20-year 1.10
+  [1.05, 1.16] (still significant; harvesting rebutted by the authors)
+  recorded as cross-checks on the SvW peak (2.67) and sustained (1.135)
+  rows — the long-run magnitude replicates nearly exactly across
+  jurisdictions 25 years apart.
+- marcus2013 (J Health Econ 32(3):546-558, read via SOEPpapers 488 WP
+  draft — damm2014 read-via precedent): new node spouse_mental_health_sd;
+  displacement_event->spouse_mental_health_sd = -0.194 SD [-0.327, -0.061]
+  (spouse MCS -1.94, SE 0.68, ~11 months post-closure); own effect -0.272
+  SD recorded as a paul2009 cross-check (inside the causal-clean
+  factory-closure subset); own-vs-spouse difference p=0.38 (the spillover
+  is as large as the displaced worker's own effect); placebo (closure
+  without unemployment) clean.
+- Queue corrections: Browning citation fixed (Heinesen's co-author is
+  Browning alone on this paper — Danø is on the 2006 stress paper; the
+  sweep's title/venue were wrong).
+
 ## v1.37 — 2026-09-13 — huttunen2019 cross-check landed; brand2014 numbers pinned
 
 - READ (full text, both):

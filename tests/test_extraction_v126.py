@@ -32,7 +32,7 @@ LINK = "import_shock->radical_right_vote_share"
 
 
 def test_version_is_v126():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.37"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.38"
 
 
 def test_row_exact():

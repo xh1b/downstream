@@ -15,7 +15,7 @@ PARAMS_DIR = Path(__file__).resolve().parent.parent / "params"
 def test_vignette_structure_and_honesty_markers():
     parts = load_all(PARAMS_DIR)
     out = standard_family(parts["params"])
-    assert out["parameter_set_version"] == "v1.37"
+    assert out["parameter_set_version"] == "v1.38"
     assert "never a deterministic claim" in out["vignette"]["framing"]
     assert out["children_stream"]["weakest_identified"] == "greatgrandchild"
     assert out["family_stream"]["daughter_violence_odds"]["blocked"]
@@ -57,7 +57,7 @@ def test_legacy_scenario_both_conversions_computed_from_real_baselines():
     # count conversions now run on the REAL pinned values, nothing blocked.
     parts = load_all(PARAMS_DIR)
     out = compute_counts(
-        parts["params"], parts["baselines"], ScenarioInput(displaced_workers=100, mortality_method="legacy_additive", net_tradable_jobs_lost=100)
+        parts["params"], parts["baselines"], ScenarioInput(displaced_workers=100, mortality_method="legacy_additive", net_tradable_jobs_lost=100, local_job_mix="high_tech")
     )
     deaths = out["modeled"]["excess_deaths"]
     # v1.10 table-pinned S&vW (sustained 1.135, peak 2.672):
@@ -79,17 +79,17 @@ def test_scenario_strict_raises_on_missing_baseline():
     # shipped set and only trips when a consumed baseline is absent
     parts = load_all(PARAMS_DIR)
     out = compute_counts(
-        parts["params"], parts["baselines"], ScenarioInput(displaced_workers=100, net_tradable_jobs_lost=100), strict=True
+        parts["params"], parts["baselines"], ScenarioInput(displaced_workers=100, net_tradable_jobs_lost=100, local_job_mix="high_tech"), strict=True
     )
     assert out["blocked"] == []
     baselines = dict(parts["baselines"])
     baselines.pop("median_male_lifetime_earnings")
     with pytest.raises(BaselineMissing):
         compute_counts(
-            parts["params"], baselines, ScenarioInput(displaced_workers=100, net_tradable_jobs_lost=100), strict=True
+            parts["params"], baselines, ScenarioInput(displaced_workers=100, net_tradable_jobs_lost=100, local_job_mix="high_tech"), strict=True
         )
     out = compute_counts(
-        parts["params"], baselines, ScenarioInput(displaced_workers=100, net_tradable_jobs_lost=100)
+        parts["params"], baselines, ScenarioInput(displaced_workers=100, net_tradable_jobs_lost=100, local_job_mix="high_tech")
     )
     assert "child_lifetime_earnings_lost_usd" in {b["outcome"] for b in out["blocked"]}
 
