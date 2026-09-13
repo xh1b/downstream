@@ -27,17 +27,29 @@ class MortalityQueryProfile:
     @classmethod
     def from_metadata(cls, metadata: dict) -> "MortalityQueryProfile":
         try:
-            years = tuple(int(value) for value in metadata["years"])
+            years = tuple(sorted(int(value) for value in metadata["years"]))
         except (KeyError, TypeError, ValueError) as exc:
             raise ValueError("metadata.years must be a nonempty list of integer years") from exc
         if not years or len(set(years)) != len(years):
             raise ValueError("metadata.years must be nonempty and unique")
+        if any(later - earlier != 1 for earlier, later in zip(years, years[1:])):
+            raise ValueError(
+                "metadata.years must be a contiguous window; the reported "
+                "min-max time window would misrepresent a disjoint selection"
+            )
         fields = {name: str(metadata.get(name, "")).strip()
                   for name in ("sex", "age", "cause", "population_unit")}
         if not fields["sex"] or not fields["age"]:
             raise ValueError("metadata.sex and metadata.age are required")
-        return cls(years, fields["sex"], fields["age"], fields["cause"] or "All causes",
-                   "County", fields["population_unit"] or "person-years")
+        undeclared = [name for name in ("cause", "population_unit") if not fields[name]]
+        if undeclared:
+            raise ValueError(
+                f"metadata must declare {', '.join(undeclared)} explicitly; "
+                "silent defaults would repeat the unreproducible-filter problem "
+                "that keeps raw WONDER exports context-only"
+            )
+        return cls(years, fields["sex"], fields["age"], fields["cause"],
+                   "County", fields["population_unit"])
 
     def as_dict(self) -> dict:
         return {"years": list(self.years), "sex": self.sex, "age": self.age,
@@ -104,6 +116,25 @@ def parse_export(path, *, metadata):
             "source_sha256": hashlib.sha256(raw).hexdigest()}
 
 
+def _outcome_id(cause: str) -> str:
+    """Map the declared cause of death to a count-layer outcome id.
+
+    ``All causes`` keeps the historical ``all_cause_mortality_annual`` id. Any
+    other declared cause becomes its own outcome so the Bayesian prior can
+    only match a national rate for the *same* cause — never an all-cause
+    prior silently fit to cause-specific events.
+    """
+    normalized = " ".join(cause.split()).lower()
+    if normalized == "all causes":
+        return "all_cause_mortality_annual"
+    slug = "_".join(part for part in
+                    "".join(ch if ch.isalnum() else "_" for ch in normalized).split("_")
+                    if part)
+    if not slug:
+        raise ValueError(f"declared cause {cause!r} cannot be mapped to an outcome id")
+    return f"{slug}_mortality_annual"
+
+
 def count_observations(parsed: dict):
     """Adapt a validated WONDER export into strict count-likelihood rows.
 
@@ -117,10 +148,11 @@ def count_observations(parsed: dict):
     years = profile["years"]
     window = f"{min(years)}-{max(years)}"
     citation = query.get("citation") or query["source_url"]
+    outcome = _outcome_id(profile["cause"])
     scope = f"county residents, {profile['sex'].lower()}, ages {profile['age']}; cause: {profile['cause']}"
     return tuple(
         CountyRateObservation(
-            key=key, outcome="all_cause_mortality_annual", events=row["events"],
+            key=key, outcome=outcome, events=row["events"],
             person_years=row["person_years"], population_scope=scope,
             time_window=window, citation=citation,
         )

@@ -11,6 +11,7 @@ METADATA = {
     "years": [2015, 2016, 2017, 2018, 2019],
     "sex": "Male",
     "age": "45-54 years",
+    "cause": "All causes",
     "group_by": ["County"],
     "population_unit": "person-years",
     "source_url": "fixture",

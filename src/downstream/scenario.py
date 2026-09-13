@@ -217,7 +217,11 @@ def compute_counts(
                         scenario.exposure_years, scenario.mortality_method, timing=scenario.mortality_timing,
                     ) for attr in ("point", "low", "high")])
             values = [sum(component[index] for component in component_values) for index in range(3)]
-            baseline_info = {"profiles": [{"id": row.profile_id, "weight": weight, "annual_rate": row.annual_rate,
+            baseline_info = {"profiles": [{"id": row.profile_id, "weight": weight,
+                                             "sex": row.sex, "age": row.age, "years": row.years,
+                                             "cause": row.cause, "geography": row.geography,
+                                             "status": row.status,
+                                             "annual_rate": row.annual_rate,
                                              "population": row.population_scope, "citation": row.citation}
                                             for row, weight in resolved],
                              "effect_applicability": applicability}
@@ -254,7 +258,8 @@ def compute_counts(
             from .worker import mortality_profile
             profile = mortality_profile(params)
             mortality_steps = [{"link": p.link, "phase": phase, "point": p.point,
-                                "low": p.low, "high": p.high, "citation": p.citation}
+                                "low": p.low, "high": p.high, "citation": p.citation,
+                                "tier": p.tier, "population_scope": p.population_scope}
                                for phase, p in profile.items()]
         else:
             mortality_steps = [step.as_dict() for led in (peak, sustained) for step in led.steps]

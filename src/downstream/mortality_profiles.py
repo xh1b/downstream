@@ -56,6 +56,30 @@ def load_profiles(path: str | Path) -> dict[str, MortalityBaselineProfile]:
     return out
 
 
+def parse_mix_spec(spec: str) -> dict[str, float]:
+    """Parse a ``profile:weight,profile:weight`` declaration into a mixture.
+
+    Duplicate profile ids are refused rather than silently collapsed: without
+    this check ``a:0.6,a:1.0`` would quietly become ``{a: 1.0}`` and pass the
+    sum-to-one gate with a weight the caller never declared.
+    """
+    if not isinstance(spec, str) or not spec.strip():
+        raise ValueError("mortality mix must be a nonempty profile:weight list")
+    out: dict[str, float] = {}
+    for item in spec.split(","):
+        key, sep, raw = item.partition(":")
+        key, raw = key.strip(), raw.strip()
+        if not sep or not key or not raw:
+            raise ValueError(f"invalid mortality mix entry {item.strip()!r}; use profile:weight")
+        if key in out:
+            raise ValueError(f"duplicate mortality mix profile {key!r}; declare each profile once")
+        try:
+            out[key] = float(raw)
+        except ValueError as exc:
+            raise ValueError(f"invalid mortality mix weight for {key!r}: {raw!r}") from exc
+    return out
+
+
 def resolve_mix(profiles: dict[str, MortalityBaselineProfile], profile_id: str | None,
                 mixture: dict[str, float] | None) -> list[tuple[MortalityBaselineProfile, float]]:
     if profile_id and mixture:
@@ -84,18 +108,22 @@ def resolve_mix(profiles: dict[str, MortalityBaselineProfile], profile_id: str |
 def validate_sullivan_von_wachter_applicability(
     resolved: list[tuple[MortalityBaselineProfile, float]],
 ) -> dict:
-    """Check the demographic scope of the shipped mortality response profile.
+    """Check the demographic and cause scope of the shipped mortality response profile.
 
-    The response coefficients were estimated for high-tenure male workers in
-    the 45--54 age range. A different baseline rate is not evidence that the
-    relative displacement response transports to women or another age band.
+    The response coefficients were estimated as an *all-cause* mortality
+    response for high-tenure male workers in the 45--54 age range. A different
+    baseline rate is not evidence that the relative displacement response
+    transports to women or another age band, and a cause-specific baseline
+    rate is not the denominator for an all-cause response.
     Geography and calendar-time transport remain explicit assumptions rather
     than a false exact-match claim.
     """
-    incompatible = [p.profile_id for p, _ in resolved if p.sex != "Male" or p.age != "45-54 years"]
+    incompatible = [p.profile_id for p, _ in resolved
+                    if p.sex != "Male" or p.age != "45-54 years" or p.cause != "All causes"]
     if incompatible:
         raise ValueError(
-            "shipped mortality response applies only to Male, 45-54 years profiles; "
+            "shipped mortality response applies only to Male, 45-54 years, "
+            "All causes profiles; "
             f"incompatible profile(s): {', '.join(incompatible)}. Add a separately admitted effect profile before computing a causal mortality contrast."
         )
     return {

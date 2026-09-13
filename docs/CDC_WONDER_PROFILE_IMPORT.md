@@ -16,13 +16,20 @@ For a profile suitable for this model:
 3. Download the CSV (the importer also accepts tab-delimited exports) and
    save a sidecar JSON file with `years`, `sex`, `age`, `cause`,
    `group_by: ["County"]`, `population_unit: "person-years"`, `source_url`,
-   and `retrieved_at`. Preserve the original file unchanged.
+   and `retrieved_at`. Preserve the original file unchanged. Every one of
+   these fields is required: the importer refuses undeclared `cause` or
+   `population_unit` rather than assuming a silent default, and `years`
+   must be a contiguous window so the reported time window is exact.
 4. Add a row to `params/mortality_profiles.csv` only after independently
    checking the matching national annual rate and citation. Set `status` to
    `verified`. A `context_only` row cannot produce scenario counts.
 5. For county pooling, use `county-wonder-posterior`; its national prior
-   must have exactly the same profile and time window as the export. For
-   scenario or entity results, select the profile explicitly:
+   must have exactly the same profile and time window as the export. The
+   observation outcome id follows the declared cause: `All causes` maps to
+   `all_cause_mortality_annual`, and any other cause becomes its own
+   `<cause>_mortality_annual` id so an all-cause national prior can never be
+   silently fit to cause-specific events. For scenario or entity results,
+   select the profile explicitly:
 
 ```sh
 uv run python -m downstream.cli scenario --workers 1000 \
@@ -39,9 +46,13 @@ single demographic proxy:
 --mortality-mix female_45_54_2015_2019:0.4,male_45_54_2015_2019:0.6
 ```
 
-Weights must sum to one. The program reports expected mortality for a
-mixture but intentionally withholds the predictive-count interval until
-stratum-specific cohort counts are supplied.
+Weights must sum to one, each profile may appear at most once, and every
+selected profile must be `verified`. The shipped displacement response is an
+*all-cause* mortality response for male workers aged 45--54, so scenario and
+entity computations also refuse profiles with another cause, sex, or age band
+until a separately admitted effect profile exists. The program reports
+expected mortality for a mixture but intentionally withholds the
+predictive-count interval until stratum-specific cohort counts are supplied.
 
 The existing `cdc_wonder_county_all_ages_1999_2020.csv` remains context only:
 its exported parameter block does not reproduce the filters, so it is not a

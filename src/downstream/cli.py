@@ -37,6 +37,26 @@ def _dump(obj) -> None:
     print()
 
 
+def _mortality_mix_arg(parser, raw: str | None) -> dict[str, float] | None:
+    if not raw:
+        return None
+    from .mortality_profiles import parse_mix_spec
+
+    try:
+        return parse_mix_spec(raw)
+    except ValueError as exc:
+        parser.error(f"invalid --mortality-mix; use profile:weight,... ({exc})")
+
+
+def _mortality_profiles_arg(parser, params_dir: str):
+    from .mortality_profiles import load_profiles
+
+    try:
+        return load_profiles(Path(params_dir) / "mortality_profiles.csv")
+    except (OSError, ValueError) as exc:
+        parser.error(f"cannot load mortality profile registry: {exc}")
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="downstream")
     sub = parser.add_subparsers(dest="cmd", required=True)
@@ -306,8 +326,14 @@ def main(argv: list[str] | None = None) -> int:
             metadata = json.loads(Path(args.metadata).read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError) as exc:
             parser.error(f"invalid WONDER metadata JSON: {exc}")
-        parsed = parse_export(args.export, metadata=metadata)
-        matches = [r for r in count_observations(parsed) if r.key == args.key]
+        try:
+            parsed = parse_export(args.export, metadata=metadata)
+        except (OSError, ValueError) as exc:
+            parser.error(f"invalid WONDER export: {exc}")
+        try:
+            matches = [r for r in count_observations(parsed) if r.key == args.key]
+        except ValueError as exc:
+            parser.error(str(exc))
         if not matches:
             parser.error("county was absent or suppressed in the validated WONDER export")
         prior = NationalRatePrior(matches[0].outcome, args.national_rate,
@@ -331,41 +357,37 @@ def main(argv: list[str] | None = None) -> int:
                 raise SystemExit(f"places.csv absent under {args.params} — cannot resolve --place {args.place!r}")
         from .scenario import sample_counts
         mortality_profiles = None
-        mortality_mix = None
-        if args.mortality_mix:
-            try:
-                mortality_mix = {item.split(":", 1)[0]: float(item.split(":", 1)[1])
-                                 for item in args.mortality_mix.split(",")}
-            except (IndexError, ValueError) as exc:
-                parser.error(f"invalid --mortality-mix; use profile:weight,... ({exc})")
+        mortality_mix = _mortality_mix_arg(parser, args.mortality_mix)
         if args.mortality_profile or mortality_mix:
-            from .mortality_profiles import load_profiles
-            mortality_profiles = load_profiles(Path(args.params) / "mortality_profiles.csv")
-        out = sample_counts(
-            params,
-            parts["baselines"],
-            ScenarioInput(
-                displaced_workers=args.workers,
-                n_children=args.children,
-                tradable_share=args.tradable_share,
-                net_tradable_jobs_lost=args.net_tradable_jobs_lost,
-                wage_multiplier=args.wage_multiplier,
-                exposure_years=args.exposure_years,
-                mortality_method=args.mortality_method,
-                mortality_timing=args.mortality_timing,
-                mortality_profile=args.mortality_profile,
-                mortality_mix=mortality_mix,
-                place_application=args.place_application,
-            ),
-            strict=args.strict,
-            places=places,
-            place_key=args.place,
-            mortality_profiles=mortality_profiles,
-            draws=args.draws,
-            seed=args.seed,
-            nodes=parts["nodes"],
-            params_dir=Path(args.params),
-        )
+            mortality_profiles = _mortality_profiles_arg(parser, args.params)
+        try:
+            out = sample_counts(
+                params,
+                parts["baselines"],
+                ScenarioInput(
+                    displaced_workers=args.workers,
+                    n_children=args.children,
+                    tradable_share=args.tradable_share,
+                    net_tradable_jobs_lost=args.net_tradable_jobs_lost,
+                    wage_multiplier=args.wage_multiplier,
+                    exposure_years=args.exposure_years,
+                    mortality_method=args.mortality_method,
+                    mortality_timing=args.mortality_timing,
+                    mortality_profile=args.mortality_profile,
+                    mortality_mix=mortality_mix,
+                    place_application=args.place_application,
+                ),
+                strict=args.strict,
+                places=places,
+                place_key=args.place,
+                mortality_profiles=mortality_profiles,
+                draws=args.draws,
+                seed=args.seed,
+                nodes=parts["nodes"],
+                params_dir=Path(args.params),
+            )
+        except (KeyError, ValueError) as exc:
+            parser.error(str(exc))
         _dump(out)
         return 0
 
@@ -398,16 +420,9 @@ def main(argv: list[str] | None = None) -> int:
         if args.place and (not places or args.place not in places):
             parser.error(f"cannot resolve place {args.place!r}")
         mortality_profiles = None
-        mortality_mix = None
-        if args.mortality_mix:
-            try:
-                mortality_mix = {item.split(":", 1)[0]: float(item.split(":", 1)[1])
-                                 for item in args.mortality_mix.split(",")}
-            except (IndexError, ValueError) as exc:
-                parser.error(f"invalid --mortality-mix; use profile:weight,... ({exc})")
+        mortality_mix = _mortality_mix_arg(parser, args.mortality_mix)
         if args.mortality_profile or mortality_mix:
-            from .mortality_profiles import load_profiles
-            mortality_profiles = load_profiles(Path(args.params) / "mortality_profiles.csv")
+            mortality_profiles = _mortality_profiles_arg(parser, args.params)
         try:
             result = compute_entity_counts(
                 params, parts["baselines"], exposure,
@@ -418,7 +433,7 @@ def main(argv: list[str] | None = None) -> int:
                 places=places, place_key=args.place,
                 mortality_profiles=mortality_profiles,
             )
-        except (ValueError, TypeError) as exc:
+        except (ValueError, TypeError, KeyError) as exc:
             parser.error(str(exc))
         _dump(result)
         return 0
