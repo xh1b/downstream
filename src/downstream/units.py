@@ -95,6 +95,10 @@ COMPOSITION = {
     (PERSONS, SCALE01): "rate",     # maternal displacement -> young-adult CESD index
                                     # (brand2014) - LEVEL exposure contrast on the 0-1
                                     # symptom scale, boundary applied, never chained
+    (PERSONS, LOG_ELASTICITY): "rate",  # husband displacement -> wife participation
+                                    # elasticity (halla2020) - the AWE elasticity is
+                                    # defined w.r.t. the husband's 5-year earnings loss
+                                    # (-21..-24%); boundary coefficient, never chained
 }
 
 
