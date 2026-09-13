@@ -482,8 +482,17 @@ def main(argv: list[str] | None = None) -> int:
     if args.cmd == "sensitivity":
         outcome_fn = sampling_child
         if args.ci and args.dependent_blocks:
-            parser.error("--ci is currently available for classical independent Sobol only")
-        if args.dependent_blocks:
+            from .params import load_correlations
+            from .sensitivity import correlated_block_sobol_ci
+
+            dump_sampling(
+                correlated_block_sobol_ci(
+                    params, outcome_fn, parts["nodes"],
+                    load_correlations(Path(args.params) / "correlations.csv"),
+                    base=args.base, seed=args.seed, replicates=args.ci,
+                )
+            )
+        elif args.dependent_blocks:
             from .params import load_correlations
             from .sensitivity import correlated_block_sobol
 

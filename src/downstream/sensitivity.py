@@ -77,7 +77,19 @@ def sobol_indices(
         # Centering each independently sampled section avoids cancellation
         # when the outcome mean is much larger than its variation.
         mean_b = sum(fB) / base
-        s_first = sum((fB[i] - mean_b) * ((fj[i] - fA[i])) for i in range(base)) / (base * total_var)
+        # Saltelli's covariance identity: S_j = Cov(fB, fAB - fA) / Var.
+        # BOTH factors are centered by their own sample means. Leaving
+        # the second factor's sample mean inside the product adds a
+        # mu * mean(fAB - fA) noise term whose variance explodes when
+        # the output mean dwarfs its variation (2026-09-10 review: a
+        # shipped grandchild block run returned S_first -.384 against a
+        # total index of .0753). The population covariance is
+        # shift-invariant; the centered plug-in estimator is too, and
+        # stays usable at small base. Never clip to [0, 1]: a residual
+        # negative is design noise, and clipping would hide it.
+        d = [fj[i] - fA[i] for i in range(base)]
+        mean_d = sum(d) / base
+        s_first = sum((fB[i] - mean_b) * (d[i] - mean_d) for i in range(base)) / (base * total_var)
         t_total = 0.5 * sum((fA[i] - fj[i]) ** 2 for i in range(base)) / (base * total_var)
         out.append(
             {
@@ -171,7 +183,12 @@ def correlated_block_sobol(
                 row[j] = b_plan.u[i][j]
             f_ab.append(run(row))
         mean_b = sum(f_b) / base
-        first = sum((f_b[i] - mean_b) * (f_ab[i] - f_a[i]) for i in range(base)) / (base * total_var)
+        # Same both-factor centering as sobol_indices: an uncentered
+        # second factor turns a large output mean into estimator noise
+        # exactly where correlated blocks can least afford it.
+        d = [f_ab[i] - f_a[i] for i in range(base)]
+        mean_d = sum(d) / base
+        first = sum((f_b[i] - mean_b) * (d[i] - mean_d) for i in range(base)) / (base * total_var)
         total = .5 * sum((f_a[i] - f_ab[i]) ** 2 for i in range(base)) / (base * total_var)
         effects.append({
             "links": [rows[j].link for j in block],
@@ -251,6 +268,65 @@ def sobol_ci(
             "that a ranking separates by more than its noise."
         ),
         "assumes_independent_parameters": True,
+    }
+
+
+def correlated_block_sobol_ci(
+    params: ParameterSet,
+    compute: Callable[[ParameterSet], float],
+    nodes: dict,
+    correlations: list[Correlation],
+    base: int = 128,
+    seed: int = 1901,
+    replicates: int = 5,
+) -> dict:
+    """Seed-replicate spread of block S_total (sobol_ci's block analog).
+
+    The 2026-09-10 review required design-noise reporting for
+    dependent-block experiments as well as independent Sobol. Same
+    reading as sobol_ci: the sd is across independent sampling designs,
+    not a confidence interval on a true index; a block ranking is
+    stable when means separate by more than their sds.
+    """
+    if replicates < 2:
+        raise ValueError(f"replicates must be >= 2, got {replicates}")
+    runs = [
+        correlated_block_sobol(params, compute, nodes, correlations, base=base, seed=seed + r)
+        for r in range(replicates)
+    ]
+    block_keys = [tuple(b["links"]) for b in runs[0]["blocks"]]
+    out = []
+    for key in block_keys:
+        vals = []
+        for run in runs:
+            match = [b for b in run["blocks"] if tuple(b["links"]) == key]
+            if not match:
+                raise ValueError(f"block {list(key)!r} vanished between replicates")
+            vals.append(match[0]["S_total"])
+        mean = sum(vals) / replicates
+        sd = (sum((v - mean) ** 2 for v in vals) / (replicates - 1)) ** 0.5
+        out.append(
+            {
+                "links": list(key),
+                "S_total_mean": round(mean, 4),
+                "S_total_sd": round(sd, 4),
+                "values": [round(v, 4) for v in vals],
+            }
+        )
+    out.sort(key=lambda r: -r["S_total_mean"])
+    return {
+        "base": base,
+        "seed": seed,
+        "replicates": replicates,
+        "model_evals": runs[0]["model_evals"] * replicates,
+        "blocks": out,
+        "method": "correlation-aware independent-block Sobol, seed-replicate spread",
+        "correlations_applied": runs[0]["correlations_applied"],
+        "note": (
+            "sd is across independent sampling designs (design noise), "
+            "not a confidence interval on a true index. Use it to check "
+            "that a block ranking separates by more than its noise."
+        ),
     }
 
 

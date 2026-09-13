@@ -248,11 +248,14 @@ def test_infer_agree_action_crosschecks_mc(capsys):
     assert "mean_diff_in_se" in out
 
 
-def test_sensitivity_rejects_ci_with_dependent_blocks(capsys):
-    with pytest.raises(SystemExit) as exc:
-        main(["sensitivity", "--base", "2", "--ci", "2", "--dependent-blocks"])
-    assert exc.value.code == 2
-    assert "--ci" in capsys.readouterr().err
+def test_sensitivity_block_ci_runs_and_reports_design_noise(capsys):
+    # 2026-09-10 review: dependent-block experiments must report
+    # seed-replicate spread too; the old surface refused --ci there.
+    assert main(["sensitivity", "--base", "2", "--ci", "2", "--dependent-blocks"]) == 0
+    out = json.loads(capsys.readouterr().out)
+    assert out["method"].startswith("correlation-aware")
+    assert out["replicates"] == 2
+    assert out["blocks"] and all("S_total_sd" in b for b in out["blocks"])
 
 
 def test_scenario_place_resolves_national_row(capsys):
