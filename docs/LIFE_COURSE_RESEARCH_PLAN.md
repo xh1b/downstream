@@ -53,8 +53,11 @@ point; short-duration events need finer timing or a documented approximation.
 
 Longitudinal data such as [PSID](https://psidonline.isr.umich.edu/default.aspx)
 are worth assessing for household, earnings, and intergenerational dynamics.
-Data suitability, geography access, attrition, survey weights, and coverage
-of relevant subgroups need evaluation before choosing a dataset.
+The [2026-09-13 PSID assessment](PSID_BASELINE_DATA_ASSESSMENT_2026-09-13.md)
+adopted PSID as the R2 candidate with declared limitations: biennial
+interviewing since 1997, public geography capped at state/region, and no
+computed transitions yet — the extract and one held-out baseline-transition
+reproduction are the next R2 steps.
 
 ### 2. Separate three evidential roles
 
