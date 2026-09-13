@@ -26,6 +26,7 @@ PROB = "probability"
 PERCENTILE = "percentile"      # a rank in 0-100 (Chetty-Hendren kfr scale)
 EDU_YEARS = "edu_years"        # additional years of educational attainment (akee2010)
 PERCENT = "percent"            # a LEVEL share expressed in percentage points (damm2014)
+SCALE01 = "scale01"            # a 0-1 symptom index (CESD), NOT a probability
 
 
 @dataclass(frozen=True)
@@ -87,6 +88,13 @@ COMPOSITION = {
                                     # (damm2014) - per-1pp boundary coefficient: each 1pp of
                                     # the area share adds the row's probability points; the
                                     # share is a LEVEL, never chained from a crime-count delta
+    (PERSONS, PROB): "rate",        # maternal displacement -> child education probabilities
+                                    # (brand2014) - LEVEL exposure contrasts from PSM TT
+                                    # matching, boundary applied like akee2010/damm2014,
+                                    # never chained
+    (PERSONS, SCALE01): "rate",     # maternal displacement -> young-adult CESD index
+                                    # (brand2014) - LEVEL exposure contrast on the 0-1
+                                    # symptom scale, boundary applied, never chained
 }
 
 

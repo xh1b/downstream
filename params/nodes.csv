@@ -60,3 +60,7 @@ alcohol_mortality_hazard,rate_ratio,"relative alcohol-related death rate vs matc
 external_cause_mortality_hazard,rate_ratio,"relative external-cause death rate (incl. suicide, traffic) vs matched controls (cumulative hazard ratio; boundary-applied exposure contrast, never chained)"
 spouse_mental_health_sd,sd_delta,"spouse mental-health distress vs matched controls, MCS points normalized to SD units (boundary-applied exposure contrast, never chained)"
 exam_noncompletion_hazard,rate_ratio,"relative probability of obtaining NO grade-9 exam scores or teacher assessments vs counterfactual (1.0 = unharmed); left-tail school-progress indicator, NOT test-score SDs"
+hs_completion,probability,"probability of completing high school by age 19 vs matched controls; LEVEL change in probability points (brand2014 PSM TT exposure contrast, boundary-applied, never chained)"
+college_attendance,probability,"probability of attending some college by age 21-22 vs matched controls; LEVEL change (a stock - DISTINCT estimand from the college_enrollment annual flow, never merged; boundary-applied, never chained)"
+college_completion,probability,"probability of completing college by age 25 vs matched controls; LEVEL change (boundary-applied, never chained)"
+adult_depression_cesd,scale01,"young-adult depressive symptoms, 7-item CESD index scaled 0-1 (control mean 0.208) vs matched controls; LEVEL change on the 0-1 symptom scale - an index, NOT a probability (boundary-applied, never chained)"
