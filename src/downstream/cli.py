@@ -269,6 +269,8 @@ def main(argv: list[str] | None = None) -> int:
         help="which outcomes walk to grandchildren, on whose evidence — and what is one extraction away",
     )
     p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
+    p.add_argument("--walk", default=None, metavar="OUTCOME",
+                   help="compose the generation ledgers for a walkable outcome (e.g. earnings, achievement)")
 
     p = sub.add_parser("credits", help="the computed collective behind the model")
     p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
@@ -764,7 +766,23 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     if args.cmd == "transmissions":
-        from .transmissions import describe
+        from .transmissions import describe, find_transmission, walk
+
+        if args.walk:
+            t = find_transmission(args.walk)
+            ledgers = walk(params, t)
+            _dump({
+                "outcome": t.outcome,
+                "unit": t.unit,
+                "generations": {
+                    label: {
+                        "point": led.point, "low": led.low, "high": led.high,
+                        "steps": [s.as_dict() for s in led.steps],
+                    }
+                    for label, led in ledgers.items()
+                },
+            })
+            return 0
 
         _dump(describe(params))
         return 0

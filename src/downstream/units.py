@@ -51,6 +51,9 @@ COMPOSITION = {
     (RATE_RATIO, GAP): "direct",         # divorce -> child_earnings (parallel stream)
     (COUNT, GAP): "direct",              # family_size -> child_earnings (parallel stream)
     (GAP, GAP): "gap",                   # IGE links (child -> grandchild -> great-grandchild)
+    (SD_DELTA, SD_DELTA): "sd_linear",   # standardized-shift transmission walk
+                                         # (parent achievement -> grandchild achievement);
+                                         # structural assumption, carried caveats on the row
     (RATE_RATIO, ODDS_RATIO): "direct",  # ipv -> daughter odds (dangling upstream)
     (PERSONS, LEVEL_RATIO): "level_ratio",
     (GAP, PERCENT_DELTA): "elasticity",

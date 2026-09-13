@@ -90,20 +90,28 @@ EARNINGS = Transmission(
     ),
 )
 
-TRANSMISSIONS = (EARNINGS,)
+ACHIEVEMENT = Transmission(
+    outcome="achievement",
+    unit="sd_delta",
+    entry="displacement_event->child_achievement_sd",
+    entry_label="child_achievement_sd",
+    steps=(
+        TransmissionStep(
+            link="child_achievement_sd->grandchild_achievement_sd",
+            kind="sd_linear",
+            relationship="skill_persistence",
+            support=("blackdevereuxsalvanes2009",),
+        ),
+    ),
+)
+
+TRANSMISSIONS = (EARNINGS, ACHIEVEMENT)
 
 # Outcomes with an admitted generation-2 displacement estimate but no
 # admitted transmission row: the walk is ONE extraction away. These are
-# declared, visible skeleton — never silently extrapolated.
+# declared, visible skeleton — never silently extrapolated. Landed walks
+# (earnings, achievement) are in TRANSMISSIONS above, not here.
 BLOCKED_CANDIDATES = (
-    {
-        "outcome": "achievement",
-        "entry": "displacement_event->child_achievement_sd",
-        "missing": "parent achievement -> child achievement row (candidate "
-                   "extraction: intergenerational cognitive-skill persistence "
-                   "in Swedish register data, cf. lindahl2015's design)",
-        "note": "composition kind must be declared for sd_delta scale",
-    },
     {
         "outcome": "education_years",
         "entry": None,
@@ -118,7 +126,9 @@ BLOCKED_CANDIDATES = (
         "missing": "parent depression -> child depression row (candidate "
                    "extraction: intergenerational depression transmission "
                    "meta-analyses)",
-        "note": "composition kind must be declared for sd scale",
+        "note": "the entry is scale01 (0-1 CESD index), so the walk also "
+                "needs the parent index in SD units or a same-scale "
+                "transmission",
     },
     {
         "outcome": "divorce",
@@ -260,6 +270,17 @@ def load_transmissions(params: ParameterSet) -> tuple[Transmission, ...]:
                     "boundary coefficients are applied by named adapters, not walked"
                 )
     return TRANSMISSIONS
+
+
+def find_transmission(outcome: str) -> Transmission:
+    """The declared walk for an outcome, or KeyError naming the gap."""
+    for t in TRANSMISSIONS:
+        if t.outcome == outcome:
+            return t
+    raise KeyError(
+        f"no admitted transmission walk for outcome {outcome!r}; "
+        f"walkable: {[t.outcome for t in TRANSMISSIONS]}"
+    )
 
 
 def describe(params: ParameterSet) -> dict:

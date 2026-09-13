@@ -23,6 +23,7 @@ from downstream.transmissions import (
     EARNINGS,
     describe,
     drift_relationships,
+    find_transmission,
     generation_label,
     load_transmissions,
     transmission_findings,
@@ -172,9 +173,9 @@ def test_cli_transmissions_verb(capsys):
 
     assert main(["transmissions"]) == 0
     d = json.loads(capsys.readouterr().out)
-    assert [w["outcome"] for w in d["walkable"]] == ["earnings"]
+    assert [w["outcome"] for w in d["walkable"]] == ["earnings", "achievement"]
     assert d["walkable"][0]["depth"] == 3
-    assert len(d["blocked"]) >= 4
+    assert len(d["blocked"]) == 3
 
 
 def test_describe_maps_walkable_and_blocked_outcomes():
@@ -183,8 +184,71 @@ def test_describe_maps_walkable_and_blocked_outcomes():
     assert outcomes["earnings"]["depth"] == 3
     assert outcomes["earnings"]["generations"] == [
         "child", "grandchild", "greatgrandchild"]
-    assert {b["outcome"] for b in d["blocked"]} >= {
-        "achievement", "education_years", "adult_depression", "divorce"}
+    assert outcomes["achievement"]["depth"] == 2
+    assert outcomes["achievement"]["steps"][0]["kind"] == "sd_linear"
+    assert {b["outcome"] for b in d["blocked"]} == {
+        "education_years", "adult_depression", "divorce"}
     blocked = {b["outcome"]: b for b in d["blocked"]}
     assert blocked["divorce"]["entry"] == "displacement->divorce_hazard"
     assert "conditional" in blocked["divorce"]["note"]
+
+
+def test_achievement_walk_composes_the_standardized_slope():
+    out = walk(PARAMS, find_transmission("achievement"))
+    child, grandchild = out["child"], out["grandchild"]
+    entry = PARAMS.by_link("displacement_event->child_achievement_sd")
+    slope = PARAMS.by_link("child_achievement_sd->grandchild_achievement_sd")
+    assert child.unit == "sd_delta"
+    assert (child.point, child.low, child.high) == (entry.point, entry.low, entry.high)
+    # sd_linear: the shift is multiplied by the standardized slope
+    assert grandchild.point == pytest.approx(slope.point * child.point)
+    corners = [t * x for x in (child.low, child.high) for t in (slope.low, slope.high)]
+    assert grandchild.low == pytest.approx(min(corners))
+    assert grandchild.high == pytest.approx(max(corners))
+    assert grandchild.steps[-1].causal_role == "structural_transmission_assumption"
+    assert grandchild.steps[-1].evidence_role == "structural"
+
+
+def test_sd_linear_kind_orders_bands_sign_safely():
+    from downstream.ledger import SD_LINEAR, start
+
+    def param(link, point, low, high):
+        return Parameter(link=link, from_node="f", to_node="t", point=point,
+                         low=low, high=high, tier="canonical", citation="c",
+                         population_scope="s", notes="", dist="", evidence_role="structural")
+
+    # negative parent shift, positive slope: band stays negative, ordered
+    led = start("a", "sd_delta", 0.0).apply(
+        DIRECT, param("e", -0.021, -0.04, 0.0))
+    out = led.apply(SD_LINEAR, param("t", 0.38, 0.38, 0.42))
+    assert out.point == pytest.approx(0.38 * -0.021)
+    assert out.low == pytest.approx(0.42 * -0.04)
+    assert out.high == pytest.approx(0.38 * 0.0)
+    assert out.low <= out.point <= out.high
+    # positive shift: mirrored ordering
+    led_p = start("a", "sd_delta", 0.0).apply(DIRECT, param("e", 0.02, 0.01, 0.03))
+    out_p = led_p.apply(SD_LINEAR, param("t", 0.38, 0.38, 0.42))
+    assert out_p.low == pytest.approx(0.38 * 0.01)
+    assert out_p.high == pytest.approx(0.42 * 0.03)
+    # a non-positive slope band would flip signs unpredictably; the
+    # corner min/max keeps the band ordered regardless
+    out_n = led_p.apply(SD_LINEAR, param("t", 0.38, -0.42, 0.42))
+    assert out_n.low <= out_n.point <= out_n.high
+
+
+def test_find_transmission_names_the_gap():
+    from downstream.transmissions import find_transmission
+
+    assert find_transmission("achievement").outcome == "achievement"
+    with pytest.raises(KeyError, match="no admitted transmission walk"):
+        find_transmission("divorce")
+
+
+def test_cli_transmissions_walk_achievement(capsys):
+    from downstream.cli import main
+
+    assert main(["transmissions", "--walk", "achievement"]) == 0
+    d = json.loads(capsys.readouterr().out)
+    assert d["outcome"] == "achievement"
+    assert list(d["generations"]) == ["child", "grandchild"]
+    assert d["generations"]["grandchild"]["point"] == pytest.approx(-0.00783, abs=1e-4)

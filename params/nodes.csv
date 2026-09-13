@@ -22,6 +22,7 @@ import_shock_per_worker,usd,"decadal change in Chinese import exposure per worke
 local_wage_response,percent_delta,"percent change in local nonmanufacturing (non-displaced) wages per $1k/worker import exposure; boundary-applied vs a baseline wage"
 family_income_shock,usd,"family income change in $1,000s of year-2000 dollars (positive = gain)"
 child_achievement_sd,sd_delta,"child math-reading achievement change in standard deviations (normalized PIAT combined score)"
+grandchild_achievement_sd,sd_delta,"grandchild math-reading achievement change in standard deviations (transmission walk: parent achievement shift scaled by the standardized parent-child skill persistence slope)"
 life_expectancy_years,life_years,"life-expectancy change in years at age 40 per $1k household earnings (near-median local slope)"
 college_enrollment,rate_ratio,"children annual college-enrollment rate vs counterfactual (hilger2016 Table 3 base: 40.66% at ages 18-22)"
 parental_income_shortrun,gap_multiplier,"parental ANNUAL income in the layoff event window vs counterfactual (short-run; NOT the long-run worker_earnings gap)"

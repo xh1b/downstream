@@ -29,6 +29,7 @@ LEVEL = "level"
 GAP = "gap"
 GAP_LOG = "gap_log_elastic"
 GAP_SCALE = "gap_scale"
+SD_LINEAR = "sd_linear"
 DIRECT = "direct"
 RATE = "rate"
 
@@ -107,6 +108,16 @@ class Ledger:
             corners = [1 - m * (1 - x) for x in (self.low, self.high)
                        for m in (p.low, p.high)]
             v = (1 - p.point * (1 - self.point), min(corners), max(corners))
+        elif kind == SD_LINEAR:
+            # Standardized-shift transmission: the child outcome moves a
+            # constant slope times the parent shift, both in the same
+            # additive scale (sd_delta). A correlation between standardized
+            # outcomes is exactly this slope. Like GAP it is a structural
+            # transmission assumption — the shipped correlation estimates
+            # carry their authors' own no-causal-interpretation caveats —
+            # not an identified intervention response.
+            corners = [t * x for x in (self.low, self.high) for t in (p.low, p.high)]
+            v = (p.point * self.point, min(corners), max(corners))
         elif kind == DIRECT:
             v = (p.point, p.low, p.high)
         elif kind == RATE:
@@ -154,6 +165,8 @@ CHAIN_KINDS = {
     "displacement->child_earnings": DIRECT,
     "child_earnings->grandchild_earnings": GAP,
     "grandchild_earnings->greatgrandchild_earnings": GAP,
+    "displacement_event->child_achievement_sd": DIRECT,
+    "child_achievement_sd->grandchild_achievement_sd": SD_LINEAR,
 }
 
 # Composition has a different epistemic status from its arithmetic. These
@@ -164,6 +177,8 @@ CHAIN_CAUSAL_ROLES = {
     "displacement->child_earnings": "direct_displacement_estimate",
     "child_earnings->grandchild_earnings": "structural_transmission_assumption",
     "grandchild_earnings->greatgrandchild_earnings": "structural_transmission_assumption",
+    "displacement_event->child_achievement_sd": "direct_displacement_estimate",
+    "child_achievement_sd->grandchild_achievement_sd": "structural_transmission_assumption",
 }
 
 
