@@ -20,7 +20,10 @@ from downstream.ledger import DIRECT, GAP, GAP_SCALE, start
 from downstream.params import Parameter, ParameterSet, load_all
 from downstream import transmissions as mod
 from downstream.transmissions import (
+    ACHIEVEMENT,
     EARNINGS,
+    Transmission,
+    TransmissionStep,
     describe,
     drift_relationships,
     find_transmission,
@@ -268,3 +271,163 @@ def test_education_transmission_row_pinned_and_dangling_by_design():
     assert CHAIN_KINDS["child_education_years->grandchild_education_years"] == LINEAR_SHIFT
     blocked = {b["outcome"]: b for b in describe(PARAMS)["blocked"]}
     assert "LANDED" in blocked["education_years"]["missing"]
+
+
+# --- adversarial: attacks on the registry, the walker, and the CLI ---
+
+
+def test_walk_enforces_the_hook_contract():
+    """The hook is trusted to preserve unit and band ordering only in the
+    docstring's dreams: a hook that breaks either is refused, and a
+    well-behaved hook walks through untouched."""
+    for bad, fragment in (
+        (lambda led, i: dataclasses.replace(led, unit="gap_multiplier"), "unit"),
+        (lambda led, i: dataclasses.replace(led, low=1.0, high=-1.0), "band"),
+    ):
+        with pytest.raises(ValueError, match=fragment):
+            walk(PARAMS, find_transmission("achievement"), hook=bad)
+    identity = walk(PARAMS, find_transmission("achievement"),
+                    hook=lambda led, i: led)
+    assert identity == walk(PARAMS, find_transmission("achievement"))
+
+
+def test_relationship_drift_is_caught_across_transmissions():
+    """One relationship id must agree with itself across the WHOLE
+    registry: an impostor transmission reusing ige_earnings with a
+    different band is drift, even though each transmission is internally
+    consistent."""
+    impostor = Transmission(
+        outcome="earnings_mirror", unit="gap_multiplier",
+        entry="displacement->child_earnings", entry_label="child_earnings",
+        steps=(TransmissionStep(
+            link="child_achievement_sd->grandchild_achievement_sd",
+            kind="gap", relationship="ige_earnings", support=()),),
+    )
+    original = mod.TRANSMISSIONS
+    mod.TRANSMISSIONS = (EARNINGS, impostor)
+    try:
+        assert "ige_earnings" in drift_relationships(PARAMS)
+    finally:
+        mod.TRANSMISSIONS = original
+    assert drift_relationships(PARAMS) == []  # shipped registry stays clean
+
+
+def test_duplicate_outcome_claims_are_refused_at_load():
+    rogue = dataclasses.replace(EARNINGS, outcome="achievement")
+    original = mod.TRANSMISSIONS
+    mod.TRANSMISSIONS = (ACHIEVEMENT, rogue)
+    try:
+        with pytest.raises(ValueError, match="'achievement'"):
+            load_transmissions(PARAMS)
+    finally:
+        mod.TRANSMISSIONS = original
+
+
+def test_transmission_without_steps_is_refused():
+    empty = dataclasses.replace(EARNINGS, steps=())
+    original = mod.TRANSMISSIONS
+    mod.TRANSMISSIONS = (empty,)
+    try:
+        with pytest.raises(ValueError, match="no steps"):
+            load_transmissions(PARAMS)
+    finally:
+        mod.TRANSMISSIONS = original
+
+
+def test_boundary_role_is_refused_on_steps_too():
+    boundary_step = tuple(
+        dataclasses.replace(r, evidence_role="boundary")
+        if r.link == GREATGRANDCHILD else r for r in PARAMS.parameters)
+    with pytest.raises(ValueError, match="step.*boundary"):
+        load_transmissions(ParameterSet(version="t", parameters=boundary_step))
+
+
+def test_registry_units_are_pinned_to_the_node_table():
+    """A fabricated Transmission mislabeling its unit would mislabel every
+    generation it walks; the registry's units are the node table's."""
+    from downstream.params import load_nodes
+
+    nodes = load_nodes(PARAMS_DIR / "nodes.csv")
+    for t in (EARNINGS, ACHIEVEMENT):
+        entry = PARAMS.by_link(t.entry)
+        assert t.entry_label == entry.to_node
+        assert t.unit == nodes[entry.to_node].unit
+        for s in t.steps:
+            row = PARAMS.by_link(s.link)
+            assert nodes[row.from_node].unit == nodes[row.to_node].unit
+
+
+def test_walk_recurses_to_arbitrary_depth_on_admitted_edges():
+    """The recursion is unrolled copies of ONE relationship: repeating an
+    admitted step walks further generations with composed labels, no
+    new machinery, no drift."""
+    deep = dataclasses.replace(EARNINGS, steps=EARNINGS.steps + (
+        EARNINGS.steps[1], EARNINGS.steps[1], EARNINGS.steps[1]))
+    out = walk(PARAMS, deep)
+    assert list(out) == [
+        "child", "grandchild", "greatgrandchild", "greatgreatgrandchild",
+        "greatgreatgreatgrandchild", "greatgreatgreatgreatgrandchild"]
+    exp = out["greatgrandchild"].apply(
+        GAP, PARAMS.by_link(GREATGRANDCHILD),
+        causal_role="structural_transmission_assumption")
+    assert out["greatgreatgrandchild"] == exp
+    assert all(led.unit == "gap_multiplier" for led in out.values())
+    assert drift_relationships(PARAMS) == []  # same band everywhere: no drift
+
+
+def test_linear_shift_survives_degenerate_bands():
+    from downstream.ledger import LINEAR_SHIFT, start
+
+    def param(link, point, low, high):
+        return Parameter(link=link, from_node="f", to_node="t", point=point,
+                         low=low, high=high, tier="canonical", citation="c",
+                         population_scope="s", notes="", dist="", evidence_role="structural")
+
+    # zero-width bands on both sides: everything collapses to the point
+    led = start("a", "sd_delta", 0.0).apply(DIRECT, param("e", -0.02, -0.02, -0.02))
+    out = led.apply(LINEAR_SHIFT, param("t", 0.4, 0.4, 0.4))
+    assert (out.point, out.low, out.high) == pytest.approx((-0.008, -0.008, -0.008))
+    # a null parent shift transmits null regardless of the slope
+    out0 = start("a", "sd_delta", 0.0).apply(
+        DIRECT, param("e", 0.0, -0.01, 0.01)).apply(
+        LINEAR_SHIFT, param("t", 0.4, 0.38, 0.42))
+    assert out0.point == 0.0 and out0.low <= 0.0 <= out0.high
+    # a slope band above 1 (extrapolation) never inverts the ordering
+    out_big = led.apply(LINEAR_SHIFT, param("t", 1.3, 1.2, 1.4))
+    assert out_big.low == pytest.approx(1.4 * -0.02)
+    assert out_big.high == pytest.approx(1.2 * -0.02)
+    assert out_big.low <= out_big.point <= out_big.high
+
+
+def test_cli_walk_refuses_unknown_and_blocked_outcomes_cleanly(capsys):
+    """A typo or a blocked candidate is a usage error naming what DOES
+    walk — never a raw KeyError traceback."""
+    from downstream.cli import main
+
+    for name in ("nosuchoutcome", "divorce", "education_years",
+                 "adult_depression"):
+        with pytest.raises(SystemExit) as ei:
+            main(["transmissions", "--walk", name])
+        assert ei.value.code == 2
+    err = capsys.readouterr().err
+    assert "earnings" in err and "achievement" in err
+
+
+def test_cli_transmissions_refuses_a_broken_registry_cleanly(tmp_path, capsys):
+    """A params dir missing an admitted row degrades to a clean CLI
+    error (and an audit ERROR finding), not a traceback."""
+    work = tmp_path / "params"
+    shutil.copytree(PARAMS_DIR, work,
+                    ignore=shutil.ignore_patterns("__pycache__"))
+    kept = [ln for ln in (work / "parameters.csv").read_text().splitlines()
+            if not ln.startswith("displacement_event->child_achievement_sd,")]
+    (work / "parameters.csv").write_text("\n".join(kept) + "\n", encoding="utf-8")
+    from downstream.cli import main
+
+    with pytest.raises(SystemExit) as ei:
+        main(["transmissions", "--params", str(work)])
+    assert ei.value.code == 2
+    assert "failed to load" in capsys.readouterr().err
+    hits = [f for f in audit(work) if f.check == "transmission"]
+    assert hits and hits[0].severity == ERROR
+    assert "failed to load" in hits[0].message

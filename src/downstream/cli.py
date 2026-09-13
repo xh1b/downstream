@@ -769,7 +769,10 @@ def main(argv: list[str] | None = None) -> int:
         from .transmissions import describe, find_transmission, walk
 
         if args.walk:
-            t = find_transmission(args.walk)
+            try:
+                t = find_transmission(args.walk)
+            except KeyError as e:
+                parser.error(str(e))
             ledgers = walk(params, t)
             _dump({
                 "outcome": t.outcome,
@@ -784,7 +787,10 @@ def main(argv: list[str] | None = None) -> int:
             })
             return 0
 
-        _dump(describe(params))
+        try:
+            _dump(describe(params))
+        except Exception as e:
+            parser.error(f"transmission registry failed to load: {e}")
         return 0
 
     if args.cmd == "credits":

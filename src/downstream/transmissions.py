@@ -160,6 +160,12 @@ def validate_transmission(params: ParameterSet, t: Transmission) -> None:
     whatever rows admission let through, exactly like the explicit
     per-generation composition it replaced.
     """
+    if not t.steps:
+        raise ValueError(
+            f"transmission {t.outcome!r} declares no steps: a transmission is "
+            "one parent->child edge walked recursively, so with no edge there "
+            "is nothing to walk"
+        )
     params.by_link(t.entry)  # KeyError names the missing link
     if t.entry not in CHAIN_KINDS or CHAIN_KINDS[t.entry] != "direct":
         raise ValueError(
@@ -185,14 +191,17 @@ def drift_relationships(params: ParameterSet) -> list[str]:
 
     Steps sharing a relationship id are ONE edge unrolled across
     generations; if their rows disagree, one of them is wrong (or a
-    third relationship should have been declared)."""
+    third relationship should have been declared). The band map spans
+    the whole registry: one relationship id must agree with itself
+    everywhere it appears, not just within one transmission."""
     drifted = []
+    bands: dict[str, tuple] = {}
     for t in TRANSMISSIONS:
-        bands: dict[str, tuple] = {}
         for step in t.steps:
             p = params.by_link(step.link)
             band = (p.point, p.low, p.high)
-            if step.relationship in bands and bands[step.relationship] != band:
+            if (step.relationship in bands and bands[step.relationship] != band
+                    and step.relationship not in drifted):
                 drifted.append(step.relationship)
             bands[step.relationship] = band
     return drifted
@@ -239,16 +248,32 @@ def walk(
 
     hook(prev_ledger, generation_index) may rewrite each generation's
     ledger in place in the walk (used for the exploratory place
-    modifier); it must preserve the ledger's unit and band ordering.
+    modifier); the hook contract — same unit, ordered band — is
+    enforced, not trusted.
     """
     validate_transmission(params, t)
+    unit = t.unit
+
+    def guarded(led: Ledger, i: int) -> Ledger:
+        if led.unit != unit:
+            raise ValueError(
+                f"walk hook rewrote generation {i} into unit {led.unit!r}; "
+                f"hooks must preserve the walk's unit {unit!r}"
+            )
+        if not (led.low <= led.point <= led.high):
+            raise ValueError(
+                f"walk hook left generation {i} with an unordered band: "
+                f"[{led.low}, {led.high}] does not contain {led.point}"
+            )
+        return led
+
     ledgers: dict[str, Ledger] = {}
-    prev = start(t.entry_label or t.outcome, t.unit).apply(
+    prev = start(t.entry_label or t.outcome, unit).apply(
         DIRECT, params.by_link(t.entry),
         causal_role=CHAIN_CAUSAL_ROLES[t.entry],
     )
     if hook is not None:
-        prev = hook(prev, 1)
+        prev = guarded(hook(prev, 1), 1)
     ledgers[generation_label(1)] = prev
     for i, step in enumerate(t.steps, start=2):
         prev = prev.apply(
@@ -256,14 +281,21 @@ def walk(
             causal_role=CHAIN_CAUSAL_ROLES[step.link],
         )
         if hook is not None:
-            prev = hook(prev, i)
+            prev = guarded(hook(prev, i), i)
         ledgers[generation_label(i)] = prev
     return ledgers
 
 
 def load_transmissions(params: ParameterSet) -> tuple[Transmission, ...]:
     """Admit the declared walks or refuse loudly at load."""
+    seen: set[str] = set()
     for t in TRANSMISSIONS:
+        if t.outcome in seen:
+            raise ValueError(
+                f"two admitted transmissions claim outcome {t.outcome!r}; "
+                "find_transmission would silently walk only the first"
+            )
+        seen.add(t.outcome)
         validate_transmission(params, t)
         entry = params.by_link(t.entry)
         if entry.evidence_role == "boundary":
