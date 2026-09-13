@@ -82,6 +82,52 @@ survivors are message-string or unexercised-path mutations; triage and a
 meaningful mutation-score floor belong in the scheduled job after the first
 few iterations.
 
+## Dead code policy
+
+Dead code is removed, not tolerated: in a citation-calibrated engine, an
+unreachable branch is a claim about behavior that nothing verifies, and
+readers cannot tell protection from ornament. The repo runs three
+complementary detectors, and the 2026-09-13 sweep shows how they work
+together.
+
+Detectors:
+
+- **Ruff (`F` rules, correctness set)** catches unused imports and
+  unused local variables at edit time. It runs in the lint job over
+  `src` and `scripts`.
+- **Vulture (dead-code scan, `python -m vulture`)** catches unused
+  functions, classes, methods, and attributes across `src` and
+  `scripts`, which import-graph lints cannot see. It fails the lint
+  job. Intentionally-unused API surface is allowed only through
+  `scripts/vulture_whitelist.py`, where every entry carries a reason;
+  an entry whose reason no longer holds should be deleted together
+  with the code it excuses. Tests are excluded from the scan because
+  pytest and Hypothesis discover test names reflectively.
+- **Branch coverage with admission review.** Coverage tells you a
+  branch never executed; only reading the admission path tells you
+  whether it is *unreachable*. The audit module had six findings that
+  could never fire: duplicate links, blank citations, out-of-band
+  points, incomplete verified baselines, unknown baseline statuses,
+  and unknown place levels are all refused at admission by
+  `params.load`, `load_baselines`, and `load_places` before
+  `audit()` sees any row. Branch coverage alone would suggest "write a
+  test"; admission review shows the honest fix is deletion (landed as
+  `842601e`), with the loaders-vs-audit division of labor documented in
+  the module docstring.
+
+Rules that keep dead code out:
+
+- Validation has ONE authoritative home per input family: the loader
+  admission contracts. Downstream layers (audit, synthesis, CLI) may
+  assume admitted data and must not re-check admission facts
+  defensively — that re-checking is where dead branches come from.
+- Deliberately-unwired public API (SPEC'd caller-invoked branches,
+  back-compat wrappers, pipeline entry points) is declared in the
+  vulture whitelist with its reason, so "intentional" stays a
+  reviewed, finite list rather than an excuse.
+- A private helper is written when second use appears, not before;
+  speculative generality is pruned on sight.
+
 ## Test design rules
 
 - Use property tests for invariants over a broad valid domain; use fixtures
