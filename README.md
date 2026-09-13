@@ -85,7 +85,7 @@ for ratio parameters, optional declared rank correlation (empty until
 citable), Sobol sensitivity, CRPS/coverage scoring for the validation
 program. See `SPEC.md` §7-10 and `docs/MODEL_CARD.md`.
 
-`scenario` samples the count headlines jointly and adds a central 90%
+`scenario` samples the eligible count headlines jointly and adds a central 90%
 **parameter-only** interval to each result. Its existing `low`/`high`
 fields remain support envelopes, not confidence intervals. Documented
 exposure, baseline estimation, county measurement/pooling, structural
@@ -116,7 +116,7 @@ these bands do not include uncertainty in county measurements. Output
 includes the place sources and the declared composition assumption.
 Arbitrary `simulate --links` chains do not accept `--place`.
 
-`entity --input exposure.json` accepts an already computed exposure:
+`entity --input exposure.json` accepts an already computed displacement exposure:
 
 ```json
 {
@@ -130,6 +130,8 @@ Arbitrary `simulate --links` chains do not accept `--place`.
 
 The entity adapter uses the same scenario arithmetic and accepts
 `--place`, `--children`, `--tradable-share`, and `--exposure-years`.
+Local service employment is blocked unless the input also supplies a documented
+net local tradable-job loss. A worker displacement count is not that input.
 It preserves source and method references. The caller owns the exposure
 conversion: filing counts, wage-gap dollars, and WARN notices cannot be
 passed as worker counts without an explicit upstream method. Persons
@@ -173,9 +175,10 @@ by git; `paper/build_tables.py` generates the numerical data. Vector diagrams
 and chart layouts live in `paper/figures/`. The PDF uses TikZ and PGFPlots,
 with the numerical scorecard tables retained in an appendix.
 
-The PDF is not checked into Git. Tag a reviewed paper release as
-`paper-v*` to rebuild it in GitHub Actions and attach the canonical PDF to
-the release. A manual workflow run stores the same PDF as a CI artifact.
+The reviewed methods PDF is checked in at `paper/downstream.pdf` so public
+links remain stable. Tag a reviewed paper release as `paper-v*` to rebuild it
+in GitHub Actions and attach the same reviewed PDF to the release. A manual
+workflow run stores the build as a CI artifact.
 
 
 Engine 0.2.0 corrects mortality odds-to-risk conversion and survival timing,

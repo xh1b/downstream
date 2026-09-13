@@ -24,8 +24,9 @@ def service_jobs_lost(
 ) -> dict:
     """Local non-traded service jobs implied by a net tradable-job loss.
 
-    A count, additive in n. Band spans Moretti's own range
-    (manufacturing 1.6 to high-tech 5.0).
+    A count, additive in n. The stored low-to-high values span different job
+    classes in Moretti (manufacturing through high-tech). They are a declared
+    sensitivity span, not a confidence interval around one job mix.
     """
     p = params.by_link(LOCAL_MULTIPLIER)
     return {
@@ -37,6 +38,7 @@ def service_jobs_lost(
         "citation": p.citation,
         "tier": p.tier,
         "population_scope": p.population_scope,
+        "support_note": "job-class sensitivity span; not a confidence interval",
     }
 
 

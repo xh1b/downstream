@@ -28,16 +28,17 @@ housing and relocation, family structure, education, crime and incarceration,
 mental health, environment, and protective interventions as cited bridges are
 extracted.
 
-The current implementation takes an **exposure** (workers displaced from
-tradable jobs) and propagates it through cited effect links into four initial
-regions of the graph:
+The current implementation takes a documented **worker-displacement exposure**
+and propagates it through cited effect links. A separate community input may
+name a documented net change in a metro's tradable employment. A worker count
+does not establish that net change.
 
 | Stream | Outcomes |
 |:---|:---|
 | worker | long-run earnings, excess mortality |
 | children | child adult earnings, grandchild earnings, great-grandchild earnings |
 | family | divorce hazard, family-size penalty, daughter adult-violence odds |
-| community | local service jobs, school-spending effects, youth-crime response |
+| community | local service jobs from a separate net-employment input; school-spending and youth-crime branches |
 
 Every number carries: a point estimate, a band, a precision tier, at
 least one bib key (`params/references.bib`), and a population scope.
@@ -110,7 +111,7 @@ Full history: params/CHANGELOG.md)
 | ipv_exposure→daughter_violence_odds | 2.5 [2.0, 3.0] | canonical | widom1989; ehrensaft2003 |
 | displacement→infant_birth_weight | 0.954 [0.912, 0.998] | EXACT | lindo2011 |
 | wage_ratio→household_ipv (ln-elasticity) | −0.813 [−1.45, −0.18] | EXACT-results | aizer2010 |
-| displacement→local_service_jobs | 5.0 [1.6, 5.0] | canonical | moretti2010 |
+| net metro tradable-job change→local_service_jobs | 5.0 [1.6, 5.0] | canonical | moretti2010 |
 | school_spending→child_earnings (per +10% × 12y) | 1.07 [1.03, 1.10] | canonical | jackson2016 |
 | youth_wages→youth_crime (elasticity) | −1.0 [−1.5, −0.5] | canonical | gould2002; grogger1998 |
 | import_shock→non_displaced_wage_spillover (log pts/$1k) | −0.822 [−1.304, −0.340] | EXACT | adh2013 |
@@ -183,7 +184,8 @@ combined view, behind its own cited derivation.
   family-size penalty (level-compounded per extra child), daughter
   violence odds (odds ratio; upstream IPV incidence is queued — the
   vignette reports it `blocked`).
-- **Community** (`community.py`): service jobs lost (level ratio),
+- **Community** (`community.py`): service jobs lost from a documented net
+  metro tradable-job loss (level ratio),
   school-spending effect normalized linearly in
   `(spend_pct/10) × (years/12)` — both normalizations are declared
   assumptions — and youth-crime percent delta via the wage elasticity.
