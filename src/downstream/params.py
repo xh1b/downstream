@@ -17,6 +17,17 @@ from .citations import parse_bib
 
 VALID_TIERS = {"EXACT", "EXACT-abstract", "EXACT-results", "canonical"}
 
+# Applicability roles from docs/STUDY_APPLICABILITY_AUDIT_2026-09-13.md.
+# Every admitted row states how its study may be used:
+#   admitted    — the study estimates this link for the named input/outcome
+#   conditional — relevant but population/event/time/unit differ; transport
+#                 conditions travel with the row
+#   structural  — persistence or a conversion rule, never an intervention
+#                 effect
+#   boundary    — informs a separate input type or is associational; never
+#                 starts from generic worker displacement
+EVIDENCE_ROLES = {"admitted", "conditional", "structural", "boundary"}
+
 
 @dataclass(frozen=True)
 class Parameter:
@@ -31,6 +42,7 @@ class Parameter:
     population_scope: str
     notes: str = ""
     dist: str = ""  # optional declared distribution; unit decides the default
+    evidence_role: str = ""  # applicability role; required at load
 
     @property
     def citation_keys(self) -> list[str]:
@@ -159,6 +171,7 @@ def load(path: str | Path, version: str | None = None) -> ParameterSet:
                     population_scope=row["population_scope"],
                     notes=row.get("notes", ""),
                     dist=row.get("dist", ""),
+                    evidence_role=(row.get("evidence_role") or "").strip(),
                 )
             if not p.link or p.link in seen:
                 raise ValueError(f"duplicate or empty parameter link {p.link!r}")
@@ -171,6 +184,14 @@ def load(path: str | Path, version: str | None = None) -> ParameterSet:
             if blank:
                 raise ValueError(
                     f"parameter {p.link!r} has blank support metadata: {', '.join(blank)}"
+                )
+            # Applicability contract: an unclassified row cannot state how
+            # it may be used, so it is refused rather than silently treated
+            # as a usable effect.
+            if p.evidence_role not in EVIDENCE_ROLES:
+                raise ValueError(
+                    f"parameter {p.link!r} has evidence_role {p.evidence_role!r}; "
+                    f"expected one of {sorted(EVIDENCE_ROLES)}"
                 )
             if not all(math.isfinite(v) for v in (p.point, p.low, p.high)):
                 raise ValueError(f"parameter {p.link!r} has non-finite values")

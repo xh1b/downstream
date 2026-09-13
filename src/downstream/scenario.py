@@ -281,7 +281,8 @@ def compute_counts(
             profile = mortality_profile(params)
             mortality_steps = [{"link": p.link, "phase": phase, "point": p.point,
                                 "low": p.low, "high": p.high, "citation": p.citation,
-                                "tier": p.tier, "population_scope": p.population_scope}
+                                "tier": p.tier, "population_scope": p.population_scope,
+                                "evidence_role": p.evidence_role}
                                for phase, p in profile.items()]
         else:
             mortality_steps = [step.as_dict() for led in (peak, sustained) for step in led.steps]

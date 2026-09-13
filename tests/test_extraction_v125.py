@@ -34,7 +34,7 @@ LINK = "unemployment_status->mental_health_sd"
 
 
 def test_version_is_v125():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.38"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.39"
 
 
 def test_row_exact_meta():

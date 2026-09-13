@@ -12,19 +12,23 @@ from pathlib import Path
 import pytest
 
 from downstream.community import service_jobs_lost
+from downstream.ledger import CHAIN_KINDS, validate_chain
 from downstream.params import load, load_all, load_baselines
 from downstream.scenario import ScenarioInput, compute_counts
+from downstream.vignette import standard_family
 
 PARAMS_DIR = Path(__file__).resolve().parent.parent / "params"
 
 _FIELDS = ["link", "from_node", "to_node", "point", "low", "high",
-           "tier", "citation", "population_scope", "notes", "dist"]
+           "tier", "citation", "population_scope", "notes", "dist",
+           "evidence_role"]
 
 
 def _row(**overrides):
     row = {"link": "a->b", "from_node": "a", "to_node": "b", "point": "1.0",
            "low": "1.0", "high": "1.0", "tier": "canonical", "citation": "x",
-           "population_scope": "y", "notes": "", "dist": ""}
+           "population_scope": "y", "notes": "", "dist": "",
+           "evidence_role": "conditional"}
     row.update(overrides)
     return row
 
@@ -168,3 +172,69 @@ def test_load_baselines_admits_pending_row_without_value(tmp_path):
     loaded = load_baselines(path)
     assert loaded["all_cause_mortality_annual"].value is None
     assert loaded["all_cause_mortality_annual"].status == "pending"
+
+
+def test_load_refuses_unclassified_parameter(tmp_path):
+    path = _write(tmp_path, _row(evidence_role="  "))
+    with pytest.raises(ValueError, match="evidence_role"):
+        load(path, version="t")
+    path = _write(tmp_path, _row(evidence_role="vibes"))
+    with pytest.raises(ValueError, match="evidence_role"):
+        load(path, version="t")
+
+
+def test_shipped_rows_classified_and_roles_match_composition():
+    params = load_all()["params"]
+    roles = {p.link: p.evidence_role for p in params.parameters}
+    assert len(roles) == len(params.parameters)
+    # The audit admits no shipped row to the strict bar yet.
+    assert "admitted" not in set(roles.values())
+    # Headline estimates stay conditional; transmission stays structural.
+    assert roles["displacement->worker_earnings"] == "conditional"
+    assert roles["displacement->child_earnings"] == "conditional"
+    assert roles["child_earnings->grandchild_earnings"] == "structural"
+    assert roles["neighborhood_exposure->child_outcomes_modifier"] == "structural"
+    # A boundary row can never be chain-composable.
+    for link in CHAIN_KINDS:
+        assert roles[link] != "boundary"
+
+
+def test_chain_refuses_boundary_role_link():
+    parts = load_all()
+    with pytest.raises(ValueError, match="evidence_role=boundary"):
+        validate_chain(parts["params"], ["divorce->child_earnings"], ["direct"],
+                       parts["nodes"])
+
+
+def test_public_steps_publish_evidence_role():
+    params = load_all()["params"]
+    for link in ("displacement->worker_earnings",
+                 "child_earnings->grandchild_earnings"):
+        p = params.by_link(link)
+        assert p.evidence_role in {"conditional", "structural"}
+    from downstream.children import child_line
+    line = child_line(params)
+    for name in ("child", "grandchild", "greatgrandchild"):
+        for step in line[name].steps:
+            published = step.as_dict()["evidence_role"]
+            assert published == params.by_link(step.link).evidence_role
+            assert published, f"{step.link} published without its evidence role"
+
+
+def test_mortality_profile_steps_carry_evidence_role():
+    parts = load_all()
+    result = compute_counts(parts["params"], parts["baselines"],
+                            ScenarioInput(10, exposure_years=8), _raw=True)
+    for step in result["modeled"]["excess_deaths"]["steps"]:
+        assert step["evidence_role"] == "conditional"
+
+
+def test_vignette_visibly_blocks_boundary_streams():
+    out = standard_family(load_all()["params"])
+    family = out["family_stream"]
+    assert "evidence_role=boundary" in family["family_size_penalty"]["blocked"]
+    assert "evidence_role=boundary" in family["daughter_violence_odds"]["blocked"]
+    # The divorce row is conditional and stays a computable parallel stream.
+    assert "blocked" not in family["divorce_hazard"]
+    notes = " ".join(out["composition_notes"])
+    assert "boundary-only and visibly blocked" in notes

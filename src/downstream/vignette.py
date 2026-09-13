@@ -9,7 +9,7 @@ a family of this type — NEVER a deterministic claim about a person.
 from __future__ import annotations
 
 from .children import child_line
-from .family import daughter_violence_odds, divorce_hazard, family_size_penalty
+from .family import daughter_violence_odds, divorce_hazard
 from .params import ParameterSet
 from .worker import worker_outcomes
 
@@ -52,7 +52,6 @@ def standard_family(
     line = child_line(params, place_modifier=modifier)
 
     divorce = divorce_hazard(params)
-    fam_penalty = family_size_penalty(params, n_children)
     daughter = daughter_violence_odds(params)
     # The standard family identifies a displaced tradable worker, not a job
     # class. Moretti's multipliers are class-specific (1.6 manufacturing,
@@ -98,12 +97,20 @@ def standard_family(
         },
         "family_stream": {
             "divorce_hazard": _ledger_dict(divorce),
-            "family_size_penalty": _ledger_dict(fam_penalty),
+            "family_size_penalty": {
+                "outcome": "family_size_penalty",
+                "blocked": (
+                    "evidence_role=boundary: the per-extra-child row is a "
+                    "family-size estimand, not a displacement consequence; "
+                    "it stays outside the default displacement view"
+                ),
+            },
             "daughter_violence_odds": {
                 **_ledger_dict(daughter),
                 "blocked": (
-                    "upstream household_ipv incidence not yet parameterized "
-                    "(Aizer 2010 extraction queued)"
+                    "evidence_role=boundary: no admitted displacement-to-IPV "
+                    "incidence edge exists (upstream household_ipv incidence "
+                    "not yet parameterized; Aizer 2010 extraction queued)"
                 ),
             },
         },
@@ -111,7 +118,8 @@ def standard_family(
         "composition_notes": [
             "earnings and mortality are separate outcomes of one shock — not composed",
             "child line composes in GAP space for IGE links (1 - IGE*(1-gap))",
-            "divorce and family-size streams reported side by side; "
+            "divorce stays a parallel conditional stream; the family-size "
+            "and daughter-violence rows are boundary-only and visibly blocked; "
             "parallel streams are never composed silently",
             "great-grandchild layer carries the weakest-identification honesty statement",
         ],

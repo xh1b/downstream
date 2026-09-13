@@ -13,7 +13,7 @@ PARAMS = Path(__file__).resolve().parent.parent / "params" / "parameters.csv"
 def test_loads_versioned_and_acyclic():
     params = load(PARAMS)
     assert params.parameters
-    assert params.version == "v1.38"
+    assert params.version == "v1.39"
     assert any(p.tier == "EXACT" for p in params.parameters)
 
 

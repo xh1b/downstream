@@ -1,4 +1,4 @@
-"""v1.38 pins: Browning & Heinesen 2012 + Marcus 2013 full-text extractions.
+"""v1.39 pins: Browning & Heinesen 2012 + Marcus 2013 full-text extractions.
 
 What this file pins:
 - three EXACT boundary-applied cause-specific mortality rows from
@@ -68,4 +68,4 @@ def test_marcus_spouse_row_pinned():
 def test_audit_clean_and_version_current():
     s = summary(audit(PARAMS_DIR))
     assert s["pass"], [f.as_dict() for f in audit(PARAMS_DIR) if f.severity.value == "error"]
-    assert PARAMS.version == "v1.38"
+    assert PARAMS.version == "v1.39"

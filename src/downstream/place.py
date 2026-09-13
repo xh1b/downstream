@@ -558,6 +558,7 @@ def modifier_parameter(
             tier="derived",
             citation=mod["citation"],
             population_scope="children of displaced workers",
+            evidence_role="structural",
             notes=(
                 f"place-resolved mobility multiplier for {key}: pct "
                 f"{mod['mobility_percentile']} vs national "

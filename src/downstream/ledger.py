@@ -36,6 +36,7 @@ class Step:
     value: tuple[float, float, float]  # point, low, high AFTER the step
     causal_role: str = "unspecified"
     population_scope: str = ""  # studied population of the source estimate
+    evidence_role: str = ""  # applicability role (admitted/conditional/structural/boundary)
 
     def as_dict(self) -> dict:
         return {
@@ -51,6 +52,7 @@ class Step:
             "value_high": self.value[2],
             "causal_role": self.causal_role,
             "population_scope": self.population_scope,
+            "evidence_role": self.evidence_role,
         }
 
 
@@ -97,6 +99,7 @@ class Ledger:
             value=v,
             causal_role=causal_role,
             population_scope=p.population_scope,
+            evidence_role=p.evidence_role,
         )
 
     def apply(self, kind: str, param: Parameter, label: str = "", causal_role: str = "unspecified") -> "Ledger":
@@ -146,6 +149,11 @@ def validate_chain(params, links: list[str], kinds: list[str], nodes: dict) -> N
     previous = None
     for link, kind in zip(links, kinds):
         parameter = params.by_link(link)
+        if parameter.evidence_role == "boundary":
+            raise ValueError(
+                f"chain link {link!r} is evidence_role=boundary: it informs a "
+                "separate input type and cannot start from generic worker displacement"
+            )
         expected = CHAIN_KINDS.get(link)
         if expected is None:
             raise ValueError(

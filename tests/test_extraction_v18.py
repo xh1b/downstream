@@ -83,13 +83,15 @@ def test_parameters_csv_every_row_exact_field_count():
     # 2026-09-07: the aizer note field was left UNTERMINATED at v1.8;
     # it silently absorbed the next appended row. One row = 10 fields.
     # v1.27 appends the declared `dist` column -> 11.
+    # v1.39 appends the applicability `evidence_role` column -> 12.
     import csv as _csv
     from downstream.params import default_dir
 
     with open(default_dir() / "parameters.csv", newline="") as f:
         rows = list(_csv.reader(f))
-    assert all(len(r) == 11 for r in rows), (
-        f"malformed rows: {[i for i, r in enumerate(rows) if len(r) != 11]}"
+    assert all(len(r) == 12 for r in rows), (
+        f"malformed rows: {[i for i, r in enumerate(rows) if len(r) != 12]}"
     )
     assert rows[0][9] == "notes"
     assert rows[0][10] == "dist"
+    assert rows[0][11] == "evidence_role"

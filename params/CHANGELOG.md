@@ -1,3 +1,24 @@
+## v1.39 — 2026-09-13 — machine-readable evidence_role on every parameter row
+
+- parameters.csv gains an evidence_role column classifying all 49 rows per
+  the four-status scheme in docs/STUDY_APPLICABILITY_AUDIT_2026-09-13.md:
+  18 conditional (direct displacement/loss estimates with named transport
+  conditions), 3 structural (IGE transmission x2, Chetty-Hendren same-place
+  modifier), 28 boundary (separate input families or associational rows that
+  must never start from generic worker displacement). `admitted` is reserved
+  for future rows meeting the strict bar; no shipped row claims it yet. The
+  four v1.38 rows (Browning & Heinesen cause-specific hazards, Marcus 2013
+  spouse mental health) postdate the audit document and are classified
+  conditional from their row metadata; fold them into the audit's pathway
+  table at its next revision.
+- params.load refuses rows with blank or unknown evidence_role: an
+  unclassified row cannot state how it may be used, so it is not support.
+- ledger.Step publishes evidence_role beside citation/population_scope;
+  validate_chain refuses evidence_role=boundary links explicitly; the
+  vignette visibly blocks the family-size and daughter-violence streams
+  with role-named reasons (audit release gate 4); scenario mortality
+  profile steps and the snapshot registry publish the role.
+
 ## v1.38 — 2026-09-13 — Browning & Heinesen 2012 + Marcus 2013 landed (full-text extractions)
 
 - browningheinesen2012 (J Health Econ 31(4):599-616, read from the published

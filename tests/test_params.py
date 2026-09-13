@@ -11,7 +11,7 @@ PARAMS_DIR = Path(__file__).resolve().parent.parent / "params"
 
 
 def test_version_stamp():
-    assert load(PARAMS_DIR / "parameters.csv").version == "v1.38"
+    assert load(PARAMS_DIR / "parameters.csv").version == "v1.39"
 
 
 def test_nodes_registry_loads_with_known_units():
@@ -86,9 +86,11 @@ def test_cycle_rejection():
 
     rows = [
         {"link": "a->b", "from_node": "a", "to_node": "b", "point": "1.0", "low": "1.0", "high": "1.0",
-         "tier": "canonical", "citation": "x", "population_scope": "y", "notes": ""},
+         "tier": "canonical", "citation": "x", "population_scope": "y", "notes": "", "dist": "",
+         "evidence_role": "conditional"},
         {"link": "b->a", "from_node": "b", "to_node": "a", "point": "1.0", "low": "1.0", "high": "1.0",
-         "tier": "canonical", "citation": "x", "population_scope": "y", "notes": ""},
+         "tier": "canonical", "citation": "x", "population_scope": "y", "notes": "", "dist": "",
+         "evidence_role": "conditional"},
     ]
     with tempfile.TemporaryDirectory() as td:
         f = Path(td) / "bad.csv"

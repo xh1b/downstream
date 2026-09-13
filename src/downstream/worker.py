@@ -37,6 +37,8 @@ def worker_earnings(params: ParameterSet, wage_multiplier: float | None = None) 
         citation=p.citation,
         population_scope=p.population_scope,
         notes=p.notes + " | caller-pinned multiplier",
+        dist=p.dist,
+        evidence_role=p.evidence_role,
     )
     return start("worker_earnings", "gap_multiplier").apply(DIRECT, pinned)
 
