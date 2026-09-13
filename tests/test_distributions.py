@@ -15,14 +15,6 @@ from downstream.distributions import (
     sample_unit_interval,
     _probit,
 )
-from downstream.params import load_nodes, default_dir
-
-NODES = load_nodes(default_dir() / "nodes.csv")
-
-
-def _unit(node_name):
-    return NODES[node_name].unit if node_name in NODES else None
-
 
 def test_rate_ratios_default_to_log_space():
     from downstream.params import Parameter, load, default_dir

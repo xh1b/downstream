@@ -2,10 +2,12 @@
 from __future__ import annotations
 
 import json
+import shutil
 
 import pytest
 
 from downstream.cli import main
+from downstream.params import default_dir
 
 
 def _write_json(path, value):
@@ -111,8 +113,6 @@ def test_file_backed_cli_verbs_route_and_emit_contracts(tmp_path, monkeypatch, c
 
 def test_cli_optional_output_modes_and_failure_statuses(tmp_path, monkeypatch, capsys):
     """Exercise public flags whose output contracts differ from the defaults."""
-    from downstream.params import default_dir
-
     params = str(default_dir())
     assert main(["explain", "--text", "--draws", "2"]) == 0
     assert "parameter set" in capsys.readouterr().out
@@ -159,10 +159,6 @@ def test_cli_rejects_invalid_optional_mode_combinations(argv, message, capsys):
 # ===========================================================================
 # Coverage round: uncommon verbs, error branches, and alternate output modes
 # ===========================================================================
-
-import shutil
-
-from downstream.params import default_dir
 
 STUDIES_CSV = (
     "link,study_id,point,standard_error,scale,population_scope,design,time_horizon,citation\n"
@@ -224,7 +220,7 @@ def test_simulate_place_errors_are_named(tmp_path, capsys):
               "--params", str(bare)])
     assert "places.csv absent" in capsys.readouterr().err
 
-    with pytest.raises(SystemExit) as exc:
+    with pytest.raises(SystemExit):
         main(["simulate", "--outcome", "child", "--draws", "2", "--place", "atlantis"])
     assert "unknown place" in capsys.readouterr().err
 

@@ -11,7 +11,6 @@ from .ledger import DIRECT, LEVEL, Ledger, start
 from .params import ParameterSet
 
 DIVORCE = "displacement->divorce_hazard"
-DIVORCE_CHILD = "divorce->child_earnings"
 FAMILY_SIZE = "family_size->child_earnings"
 IPV_DAUGHTER = "ipv_exposure->daughter_violence_odds"
 

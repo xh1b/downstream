@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pytest
 
-from downstream.params import Baseline, Parameter, ParameterSet, load_all
+from downstream.params import Baseline, ParameterSet, load_all
 from downstream.scenario import ScenarioInput
 
 PARAMS_DIR = Path(__file__).resolve().parent.parent / "params"
@@ -163,7 +163,7 @@ def test_source_profile_phase_years_validates_years():
 
 
 def test_excess_deaths_profile_validates_inputs_and_phases():
-    from downstream.mortality import excess_deaths_profile, source_profile_phase_years
+    from downstream.mortality import excess_deaths_profile
 
     phases = {name: 1.2 for name, _ in
               [("peak", 0), ("sustained", 0)]}  # wrong keys on purpose

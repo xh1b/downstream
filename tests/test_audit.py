@@ -141,14 +141,10 @@ def test_boundary_inputs_are_declared_not_orphaned(params_dir):
 def test_verified_baseline_needs_value(params_dir):
     lines = (params_dir / "baselines.csv").read_text().splitlines()
     lines[1] = lines[1].replace(",pending,", ",verified,")
-    (params_dir / "baselines.csv").read_text()
-    out = []
-    for ln in lines:
-        parts = ln.split(",")
-        out.append(ln)
-    (params_dir / "baselines.csv").write_text("\n".join(out) + "\n")
+    (params_dir / "baselines.csv").write_text("\n".join(lines) + "\n")
     findings = audit(params_dir)
-    # whatever the edit, audit must not crash and must stay honest
+    # admission refuses a verified row without value/citation, so the
+    # audit sees a load failure finding and must not crash
     assert isinstance(summary(findings)["errors"], int)
 
 

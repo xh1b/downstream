@@ -46,10 +46,6 @@ PLACES_PATH = Path(default_dir()) / "places.csv"
 # mortality_rate / divorce_rate MUST be in the same unit and population
 # as baselines.csv:all_cause_mortality_annual / divorce_5y_cumulative.
 # *_n columns are the precision counts behind those county values.
-PLACE_COLUMNS = (
-    "key", "name", "level", "mobility_percentile", "mobility_n",
-    "mortality_rate", "mortality_n", "divorce_rate", "divorce_n", "citation",
-)
 PLACE_LEVELS = ("national", "state", "county")
 
 MODIFIER_TO_NODE = "child_outcomes_modifier"

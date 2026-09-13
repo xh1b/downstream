@@ -98,11 +98,8 @@ def explain_child_line(params: ParameterSet, draws: int = 4000, seed: int = 1901
     steps: list[Step] = []
     prev = (1.0, 1.0, 1.0)
     contributions: list[float] = []
-    for ledger, readable in (
-        (child["child"], "the child's adult earnings"),
-        (child["grandchild"], "the grandchild's adult earnings"),
-        (child["greatgrandchild"], "the great-grandchild's adult earnings"),
-    ):
+    for key in ("child", "grandchild", "greatgrandchild"):
+        ledger = child[key]
         s = ledger.steps[-1]
         effect = math.log(max(ledger.point, 1e-9)) - math.log(max(prev[0], 1e-9))
         contributions.append(effect)

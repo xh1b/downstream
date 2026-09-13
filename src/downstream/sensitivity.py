@@ -56,9 +56,6 @@ def sobol_indices(
         _dist_for_param(p, nodes) for p in rows
     ]
 
-    def _dist(j: int) -> str:
-        return dists[j]
-
     A = matrix()
     B = matrix()
     fA = [run(row) for row in A]

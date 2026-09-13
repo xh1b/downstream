@@ -49,7 +49,6 @@ from typing import Callable
 from .distributions import LOGUNIFORM, dist_for, materialize_parameter_set, plan, sample_unit_interval
 from .params import Parameter, ParameterSet
 
-Z95 = 1.959963984540054
 Z90 = 1.6448536269514722
 
 
