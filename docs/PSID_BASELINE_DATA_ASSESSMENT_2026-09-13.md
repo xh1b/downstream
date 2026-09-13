@@ -15,15 +15,16 @@ peer-reviewed descriptions. Every factual claim carries its source. It
 makes **no** claims about transition estimates: none have been computed,
 and the reproduction step remains open.
 
-**Verdict: adopt PSID as the R2 candidate dataset, with four declared
-limitations** — biennial interviewing since 1997 (annual simulation steps
-need a documented cadence decision), public geography capped at
-state/region (county context requires the restricted geocode enclave), a
-two-wave baseline panel that measures ordinary transitions at two-year
-spacing, and a license whose data-sharing terms constrain how the
-pipeline can be reproduced (analyzed below — it is workable but not
-friction-free, and the owner's licensing call is still open). None of the
-four blocks the R2 exit criteria outright; all four shape the design.
+**Verdict (revised later the same day after the license review): PSID is
+the strongest scientific fit and is nonetheless ruled out for this
+project's workflow.** The ICPSR LLM policy — which governs PSID data —
+forbids sharing the microdata with exactly the kind of LLM service this
+repository is built and operated with. The four declared limitations
+(biennial cadence, state-capped public geography, two-year transitions,
+click-through license) were each survivable; the LLM policy is not,
+because every artifact PSID would feed here passes through cloud LLM
+agents. SIPP — public domain, redistributable, no registration — becomes
+the dataset to assess for R2 (see the decision section).
 
 ## What R2 needs from a dataset
 
@@ -216,24 +217,60 @@ microdata are click-through-licensed, never public domain, and the repo
 can never be cloned together with its input data. Each reproducer must
 accept PSID's conditions on the ICPSR platform before downloading.
 
+### The decisive constraint: LLM-assisted work is barred
+
+PSID data are distributed and archived through ICPSR, and ICPSR's
+[Policy on the Use of Large Language Models](https://www.icpsr.umich.edu/sites/icpsr/about/policies/large-language-models-and-ai)
+(approved December 11, 2024) classifies LLMs in three types. In its own
+words:
+
+- **Type 1** — LLMs that "retain user-provided data for any purpose,
+  including training (e.g., GPT, Llama)": **"None: this counts as
+  redistributing the data to the company operating the LLM, so it is
+  not permitted."**
+- **Type 2** — institutionally licensed, contractually no-retention
+  deployments (the policy's example is U-M Maizey): public-use datasets
+  may be shared only "with Permission from ICPSR. Please contact ICPSR
+  prior to use."
+- **Type 3** — Type 2 but isolated or air-gapped: permitted for
+  public-use data.
+
+Cloud LLM coding agents — the model this repository is developed with —
+fall in Type 1. The operational consequence is total: raw PSID files can
+never enter this workspace, an agent can never read a row, an extraction
+script can never be debugged against the real data, and no analysis step
+can run with an LLM in the loop. The data would be usable only by a
+human working in a licensed no-retention or air-gapped setup with prior
+ICPSR permission. Published PSID-based *aggregate estimates* remain
+citable like any other study (the policy governs the microdata, not the
+literature), but the R2 goal — fitting and validating our own baseline
+transitions on the microdata — is incompatible with this project's
+LLM-driven, open-source workflow.
+
+This also answers the "is it really that good" challenge honestly: PSID's
+scientific standing is real — it is the field's reference household panel
+for exactly the dynamics R2 needs. The dataset is not the problem; the
+terms of use are. A dataset that cannot be touched by the people and
+machines who must build on it is not usable here, however good it is.
+
 **The fully-open alternative:** the Census Bureau's Survey of Income and
 Program Participation (SIPP) publishes public-use files that anyone may
 download without registration and freely redistribute
 ([Census SIPP](https://www.census.gov/programs-surveys/sipp.html);
 [National Academies report, ch. 4](https://www.nationalacademies.org/read/27169/chapter/4):
 "Anyone may download SIPP public-use data from the SIPP data website. No
-registration is required"). The scientific costs are real: SIPP panels
-are short (years, not decades), attrition per panel is higher, and there
-is no PSID-equivalent multigenerational depth, no CDS/TAS child
-supplements, and no FIMS-style cross-generation maps. The household-trajectory
-layer R2 needs is representable, but the intergenerational structural
-layer's data support would be much thinner.
+registration is required"). US-government works are not copyrighted, so
+the data can ship inside this repository, be handled by LLM agents, and
+be redistributed without terms. The scientific costs are real: SIPP
+panels are short (years, not decades), attrition per panel is higher,
+and there is no PSID-equivalent multigenerational depth, no CDS/TAS
+child supplements, and no FIMS-style cross-generation maps. After the
+LLM-policy finding, SIPP is no longer merely an alternative: it is the
+dataset R2 should assess next.
 
-Consequence: the dataset decision is now a licensing-posture decision for
-the owner — PSID with the repository-reproduction route (best scientific
-fit; open access with click-through terms), or SIPP (unconditional open
-licensing; weaker panel science). This document does not resolve that
-choice.
+Consequence: **PSID is ruled out for this project despite its scientific
+fit.** The dataset decision moves to a full SIPP assessment against the
+same checklist.
 
 ## Declared limitations
 
@@ -261,32 +298,27 @@ choice.
 
 ## Decision and next steps
 
-**Decision pending owner input: the licensing posture.** PSID has the
-best scientific fit; its terms require the extract-repository
-reproduction route described above. SIPP offers unconditional open
-licensing with weaker panel science. The plan does not choose between
-them; the owner decides whether "open" here means open-access-with-terms
-or public-domain-only.
+**Decision (revised 2026-09-13 after the license review): PSID is ruled
+out for this project's workflow by the ICPSR LLM policy** — sharing the
+microdata with the cloud LLM agents that build and run this repository
+is redistribution under the policy, and no Type 2/Type 3 exemption is
+available to an open-source project. The scientific fit was never in
+doubt; the workflow compatibility is, decisively.
 
-If PSID is confirmed:
+Next steps:
 
-1. **Acquire:** owner registers, downloads recent-wave family and
-   individual files plus longitudinal/cross-sectional weights (Data
-   Center), and the FIMS link files for intergenerational work. The
-   working extract used for any published estimate gets deposited to the
-   ICPSR-PSID Public Data Extract Repository, and this repository
-   records its archived project ID beside the content hashes.
-2. **Verify at acquisition:** variable naming by wave, state-of-residence
-   availability, exit/death recording, and per-cell sample sizes for the
-   target populations.
-3. **Reproduce one baseline transition** (immediate goal 3's second
-   half): a two-wave employment/earnings transition for prime-age
-   workers, weighted, with a held-out-wave validation report — the first
-   R2 artifact, to be reviewed before any household simulation is built
-   on it.
-
-If SIPP is chosen instead, this document is superseded by an equivalent
-SIPP assessment covering the same checklist before any extraction.
+1. **Assess SIPP for R2** against the same checklist (design and cadence,
+   household representation, earnings/employment content, geography,
+   attrition, weights, subgroup coverage, terms) before any extraction.
+2. **Keep PSID in the citation pipeline only:** published PSID-based
+   aggregate estimates (IGE persistence, mobility decompositions) remain
+   citable as literature — the existing extraction discipline already
+   handles them — while no microdata, extracts, or repository deposits
+   are used.
+3. **The first R2 artifact is unchanged in shape:** a weighted two-wave
+   employment/earnings transition for prime-age workers with a held-out
+   validation report — to be built on whichever dataset passes its
+   assessment, SIPP being the candidate.
 
 ## Source register
 
@@ -307,3 +339,4 @@ SIPP assessment covering the same checklist before any extraction.
 - [PSID conditions of use](https://simba.isr.umich.edu/u/conduse.aspx) — clause 4 quoted above.
 - [ICPSR-PSID Public Data Extract Repository](https://www.icpsr.umich.edu/sites/psid/home) — open extract archive; [deposit instructions](https://www.icpsr.umich.edu/sites/psid/share-data).
 - [Census SIPP program page](https://www.census.gov/programs-surveys/sipp.html); [National Academies report ch. 4](https://www.nationalacademies.org/read/27169/chapter/4) — SIPP public-use files, no registration, freely redistributable.
+- [ICPSR Policy on the Use of Large Language Models and AI](https://www.icpsr.umich.edu/sites/icpsr/about/policies/large-language-models-and-ai) (approved December 11, 2024) — Type 1/2/3 classification quoted above.
