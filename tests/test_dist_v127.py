@@ -218,7 +218,7 @@ def test_simulate_stamps_iman_conover_and_is_reproducible():
     assert a == b
     assert a["sampler"] == "lhs+iman-conover"
     assert a["correlations_applied"] == 2
-    assert a["parameter_set_version"] == "v1.43-sampled"
+    assert a["parameter_set_version"] == "v1.44-sampled"
 
 
 def test_simulate_can_opt_out_of_declared_correlations():
