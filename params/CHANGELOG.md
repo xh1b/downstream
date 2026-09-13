@@ -1,3 +1,39 @@
+## v1.42 — 2026-09-13 — Brand & Simon Thomas 2014 landed; EB prior-strength yardstick; second research sweep
+
+- brand2014 (AJS 119(4):955-1001, read via PMC4372265 author manuscript
+  of the published version; user-directed node design): FOUR EXACT
+  conditional rows on new nodes, maternal displacement (US NLSY79
+  children of single mothers, PSM kernel TT) —
+  displacement_event->hs_completion -0.037 [-0.0801, 0.0061] (p<.10
+  declared; the band honestly crosses zero), ->college_attendance
+  -0.063 [-0.1081, -0.0179], ->college_completion -0.036 [-0.0674,
+  -0.0046], ->adult_depression_cesd +0.025 [0.0034, 0.0466] on a new
+  `scale01` unit (0-1 CESD symptom index, NOT a probability). Timing
+  gradients travel in row notes: education effects concentrate in
+  adolescence (HS 12-17 -0.115**), CESD in middle childhood (+0.047**).
+  PSM is declared the weakest identification class in the set on every
+  row — corroboration of the education streams, never an anchor.
+- units.py: (PERSONS, PROB) and (PERSONS, SCALE01) boundary-applied
+  compositions; college_attendance declared a stock, distinct from the
+  hilger2016 college_enrollment annual flow — never merged.
+- EB PRIOR-STRENGTH YARDSTICK: county_rates.empirical_bayes_prior_
+  person_years (method-of-moments; Poisson-noise subtraction) +
+  build_county_mortality.py --estimate-prior-k (writes nothing). On the
+  committed male export: k ≈ 822 prior person-years (Gamma shape ≈ 4.1,
+  noise ≈ 11% of the county spread) vs the DECLARED k = 2000 — the
+  declared prior shrinks harder; kept as the shipped conservative
+  choice, recorded in docs/DATA_SOURCES.md with the rerun-when-more-
+  exports rule (tests/test_county_eb_prior.py pins the arithmetic).
+- SECOND RESEARCH SWEEP queued (6 verified candidates): Eliason &
+  Storrie 2009 (JHR 44(2) — venue corrected, Sweden), Bloemen,
+  Stancanelli & van der Klaauw 2018 (JHE 59, Dutch, year-1 +84%),
+  Halla-Schmieder-Weber 2020 (AEJ:Applied 12(4), spousal labor supply +
+  divorce), Huttunen & Kellokumpi 2014 (Labour Economics,
+  displacement-fertility), Schaller & Zerpa 2019 (AJHE, child health),
+  Mörk et al. (Swedish child-health nulls). Open gap recorded: no
+  displacement→spouse-MORTALITY study exists in the surfaced
+  literature.
+
 ## v1.41 — 2026-09-13 — shrunk county mortality baselines in places.csv
 
 - `downstream build-places` (new CLI verb) fills the generated places.csv

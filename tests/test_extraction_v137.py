@@ -31,12 +31,18 @@ def test_huttunen_cross_check_recorded_not_composed():
     assert "fulltext-table" in bib.read_text().split("@article{huttunen2019")[1][:600]
 
 
-def test_brand2014_bib_present_not_composed():
+def test_brand2014_bib_evidence_still_current():
+    # v1.37 pinned brand2014 as queued-but-not-composed; v1.42 landed it
+    # (4 EXACT rows at user direction, PSM declared the weakest class).
+    # This pin keeps guarding the bib evidence field the rows rely on.
     bib = (PARAMS_DIR / "references.bib").read_text()
     assert "brand2014" in bib
+    entry = bib.split("@article{brand2014")[1][:700]
+    assert "fulltext-table" in entry
     params = load(PARAMS_DIR / "parameters.csv")
     rows = [p.link for p in params.parameters if "brand2014" in p.citation_keys]
-    assert rows == []  # pinned in the queue; no composed row until admitted
+    assert len(rows) == 4
+    assert all(l.startswith("displacement_event->") for l in rows)
 
 
 def test_audit_still_clean():
@@ -45,4 +51,4 @@ def test_audit_still_clean():
 
 
 def test_version_stamp():
-    assert load(PARAMS_DIR / "parameters.csv").version == "v1.41"
+    assert load(PARAMS_DIR / "parameters.csv").version == "v1.42"
