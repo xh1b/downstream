@@ -12,6 +12,7 @@ Each trap names the defect it hunts:
 from __future__ import annotations
 
 import math
+import pathlib
 
 import pytest
 
@@ -335,3 +336,152 @@ def test_stress_matrix_rejects_non_psd():
     # equicorrelation of -0.9 over three links is not PSD
     with pytest.raises(ValueError):
         _stress_matrix(5, [0, 1, 2], -0.9)
+
+
+# ===========================================================================
+# Round 3: guard rails on moments, chains, logspace shares, stress machinery
+# ===========================================================================
+
+
+def test_loguniform_moments_refuse_nonpositive_bounds():
+    from downstream.inference import _loguniform_moments as lm
+    with pytest.raises(ValueError, match="positive bounds"):
+        lm(0.0, 1.0)
+
+
+def test_loguniform_moments_degenerate_band():
+    assert _loguniform_moments(2.0, 2.0) == (2.0, 4.0, 8.0)
+
+
+def test_clamped_moments_degenerate_band():
+    from downstream.inference import _clamped_moments
+    p = Parameter("a->b", "a", "b", 2.0, 2.0, 2.0, "canonical", "x", population_scope="t")
+    assert _clamped_moments(p) == (2.0, 4.0, 8.0)
+
+
+def test_lognormal_moments_refuse_nonpositive_band():
+    from downstream.inference import param_moments
+    p = Parameter("a->b", "a", "b", 1.0, -1.0, 1.0, "canonical", "x",
+                  population_scope="t", dist="lognormal")
+    with pytest.raises(ValueError, match="lognormal bands must be positive"):
+        param_moments(p, None)
+
+
+def test_analytic_chain_length_mismatch_names_itself():
+    with pytest.raises(ValueError, match="same length"):
+        analytic_chain(PARAMS, ["displacement->worker_earnings"], [], NODES)
+
+
+def test_analytic_chain_unknown_kind():
+    with pytest.raises(ValueError, match="unknown composition kind"):
+        analytic_chain(
+            PARAMS,
+            ["earnings_shock->mortality_sustained"],
+            ["bogus"],
+            NODES,
+        )
+
+
+def test_negative_variance_raises_moment_violation():
+    ps, nodes = _synthetic([(0.4, 0.6, 0.5)])
+    with pytest.raises(ArithmeticError, match="negative variance"):
+        analytic_chain(ps, ["n0->n1"], ["gap"], nodes, base=2.0, base_m2=1.0, base_m3=8.0)
+
+
+def test_tiny_negative_variance_clamps_to_zero():
+    ps, nodes = _synthetic([(1.0, 1.0, 1.0)])
+    out = analytic_chain(ps, ["n0->n1"], ["level"], nodes,
+                         base=2.0, base_m2=4.0 * (1 - 2 ** -52), base_m3=8.0)
+    assert out["var"] == 0.0
+    assert out["sd"] == 0.0
+
+
+def test_degenerate_skew_is_clamped_to_zero():
+    ps, nodes = _synthetic([(1.0, 1.0, 1.0)])
+    out = analytic_chain(ps, ["n0->n1"], ["level"], nodes,
+                         base=2.0, base_m2=4.0 * (1 + 1e-7), base_m3=9.0)
+    assert out["sd"] > 0
+    assert out["skewness"] == 0.0
+
+
+def test_z_alpha_bounds():
+    from downstream.inference import _z_alpha
+    for bad in (0.0, 1.0, -0.5, 1.5):
+        with pytest.raises(ValueError, match="alpha"):
+            _z_alpha(bad)
+
+
+def test_var_log_refuses_nonpositive_loguniform_band():
+    from downstream.distributions import LOGUNIFORM
+    from downstream.inference import _var_log
+    with pytest.raises(ValueError, match="positive bounds"):
+        _var_log(LOGUNIFORM, 0.0, 1.0)
+
+
+def test_var_log_degenerate_band_is_zero():
+    from downstream.inference import _var_log
+    assert _var_log("uniform", 3.0, 3.0) == 0.0
+
+
+def test_logspace_shares_default_kinds_are_all_level():
+    ps, nodes = _synthetic([(0.5, 1.5, 1.0), (0.5, 2.0, 1.0)])
+    out = logspace_variance_shares(ps, ["n0->n1", "n1->n2"], nodes)
+    assert out["var_log_total"] > 0
+    assert abs(sum(r["share"] for r in out["shares"]) - 1.0) < 1e-3
+
+
+def test_logspace_shares_length_mismatch():
+    ps, nodes = _synthetic([(0.5, 1.5, 1.0), (0.5, 2.0, 1.0)])
+    with pytest.raises(ValueError, match="same length"):
+        logspace_variance_shares(ps, ["n0->n1", "n1->n2"], nodes, kinds=["level"])
+
+
+def test_logspace_shares_refuse_normal_marginal():
+    ps, nodes = _synthetic([(0.5, 1.5, 1.0)])
+    ps.parameters[0].__dict__["dist"] = "normal" if hasattr(ps.parameters[0], "__dict__") else None
+    # frozen dataclass: rebuild instead of mutating
+    from downstream.params import Parameter as P, ParameterSet as PS
+    p0 = ps.parameters[0]
+    rebuilt = PS("t", (P(p0.link, p0.from_node, p0.to_node, p0.point, p0.low, p0.high,
+                         p0.tier, p0.citation, population_scope=p0.population_scope,
+                         dist="normal"),))
+    with pytest.raises(ValueError, match="uniform/loguniform"):
+        logspace_variance_shares(rebuilt, ["n0->n1"], nodes)
+
+
+def test_logspace_shares_pinned_row_gets_zero_share():
+    ps, nodes = _synthetic([(1.0, 1.0, 1.0), (0.5, 2.0, 1.0)])
+    out = logspace_variance_shares(ps, ["n0->n1", "n1->n2"], nodes)
+    pinned = next(r for r in out["shares"] if r["link"] == "n0->n1")
+    assert pinned["share"] == 0.0 and pinned["var_log"] == 0.0
+
+
+def test_logspace_shares_all_pinned_raises():
+    ps, nodes = _synthetic([(1.0, 1.0, 1.0)])
+    with pytest.raises(ValueError, match="all links pinned"):
+        logspace_variance_shares(ps, ["n0->n1"], nodes)
+
+
+def test_stress_matrix_writes_only_the_block_offdiagonals():
+    m = _stress_matrix(3, [1, 2], 0.5)
+    assert m[1][2] == 0.5 and m[2][1] == 0.5
+    assert m[0][1] == 0.0 and m[0][2] == 0.0
+    assert all(m[i][i] == 1.0 for i in range(3))
+
+
+def test_correlation_stress_tolerates_missing_declared_file(monkeypatch):
+    import downstream.params
+    monkeypatch.setattr(downstream.params, "default_dir",
+                        lambda: pathlib.Path("/nonexistent/params"))
+    out = correlation_stress(
+        PARAMS, _grandchild, NODES,
+        block_links=[CHILD_DIRECT, GRANDCHILD], rho=0.0,
+        draws=300, trials=30, seed=13,
+    )
+    assert out["declared_correlations_retained"] == 0
+
+
+def test_reused_parameter_in_chain_is_refused():
+    ps, nodes = _synthetic([(0.5, 1.5, 1.0)])
+    with pytest.raises(ValueError, match="independent-step moments"):
+        analytic_chain(ps, ["n0->n1", "n0->n1"], ["level", "level"], nodes)
