@@ -4,6 +4,14 @@ Static checks over the parameter set, node registry, baselines, and
 bibliography. Every finding names the file and the fix. The audit
 exits nonzero on any ERROR; WARN items are honest-gaps reporting.
 
+Division of labor: admission contracts (duplicate links, blank support
+metadata, out-of-band points, unknown statuses) are enforced by the
+loaders in params.py and place.py, which refuse the file outright. By
+the time the audit sees a row it is syntactically admissible, so the
+checks here cover only cross-file semantics a single-file loader cannot
+know: tier-vs-evidence consistency, distribution shape, unit
+composition, the citation graph, and correlation-matrix validity.
+
 Run: downstream audit   (or python -m downstream.audit)
 """
 
@@ -61,28 +69,20 @@ def audit(params_dir: str | Path | None = None) -> list[Finding]:
     if params.version == "unversioned":
         findings.append(Finding(WARN, "version", "params/VERSION missing; outputs stamp 'unversioned'"))
 
-    seen_links: set[str] = set()
     cited_keys: set[str] = set()
 
     for p in params.parameters:
         where = f"parameters.csv:{p.link}"
-        if p.link in seen_links:
-            findings.append(Finding(ERROR, "duplicate-link", f"{where}: duplicate link id"))
-        seen_links.add(p.link)
-
-        if not (p.low <= p.point <= p.high):
-            findings.append(
-                Finding(ERROR, "band", f"{where}: point {p.point} outside [{p.low}, {p.high}]")
-            )
-
+        # Duplicate links, blank citations, and out-of-band points were
+        # refused by params.load before this loop; nothing re-checks them.
         if p.tier not in VALID_TIERS:
             findings.append(
                 Finding(ERROR, "tier", f"{where}: tier {p.tier!r} not in {sorted(VALID_TIERS)}")
             )
 
+        # citation_keys is nonempty by admission: load refuses blank
+        # citations, so every key here is a nonempty string.
         keys = p.citation_keys
-        if not keys:
-            findings.append(Finding(ERROR, "citation", f"{where}: no citation keys"))
         for k in keys:
             cited_keys.add(k)
             if k not in bib:
@@ -224,28 +224,18 @@ def audit(params_dir: str | Path | None = None) -> list[Finding]:
                 Finding(INFO, "uncited-bib", f"references.bib:{key}: cited nowhere ({entry.cite()})")
             )
 
-    # Baselines: verified rows need value + citation; pending rows are listed.
+    # Baselines: load_baselines guarantees the status is 'verified' or
+    # 'pending' and that verified rows carry value, citation, and
+    # population — anything else is refused at admission. The audit's
+    # remaining job here is listing pending rows as honest gaps.
     for name, b in baselines.items():
-        if b.status == "verified":
-            if b.value is None or not b.citation:
-                findings.append(
-                    Finding(
-                        ERROR,
-                        "baseline",
-                        f"baselines.csv:{name}: status=verified but value/citation missing",
-                    )
-                )
-        elif b.status == "pending":
+        if b.status == "pending":
             findings.append(
                 Finding(
                     INFO,
                     "baseline",
                     f"baselines.csv:{name}: pending — count conversions blocked until pinned",
                 )
-            )
-        else:
-            findings.append(
-                Finding(ERROR, "baseline", f"baselines.csv:{name}: unknown status {b.status!r}")
             )
 
     # Place-resolved plug (params/places.csv, optional): rows need
@@ -269,12 +259,11 @@ def audit(params_dir: str | Path | None = None) -> list[Finding]:
             )
         for key, pl in places.items():
             prow = f"places.csv:{key}"
+            # load_places guarantees a known level and finite nonnegative
+            # precision counts; it does not require a citation, so blank
+            # citations still reach this check.
             if not pl.citation:
                 findings.append(Finding(ERROR, "places", f"{prow}: no citation"))
-            if pl.level not in ("national", "state", "county"):
-                findings.append(
-                    Finding(ERROR, "places", f"{prow}: unknown level {pl.level!r}")
-                )
             if pl.mortality_rate is not None and pl.mortality_n is None:
                 findings.append(
                     Finding(
