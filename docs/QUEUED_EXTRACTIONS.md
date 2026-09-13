@@ -106,22 +106,25 @@ Excluded from candidacy: Brand 2015 (Annual Review of Sociology) — narrative
 review, not an identified estimate; Oreopoulos et al. 2008 — already LANDED
 (oreopoulos2008); Sullivan & von Wachter 2009 — the shipped response source.
 
-## Research sweep 2026-09-13 (second pass) — candidates (NOT extracted)
+## Research sweep 2026-09-13 (second pass) — READ + LANDED v1.43
 
 Targets were the coverage gaps left by the first pass: third-country
 mortality replication, fertility, spousal labor supply, child mental
-health. All candidates verified to exist with a peer-reviewed venue or
-open full text; none extracted yet. NOTE: no displacement→SPOUSE-MORTALITY
-study surfaced (searches return the widowhood-effect literature, which is
-the reverse direction) — recorded as an open gap, not a queue row. A
-remembered "Kuka/Shenhav/Shumway long-run children" paper was searched for
-and DOES NOT EXIST under that attribution — not queued.
+health. All six extracted from open full text and landed. Corrections
+made at extraction: no displacement→SPOUSE-MORTALITY study exists (the
+widowhood literature is the reverse direction) — open gap, not a row;
+the remembered "Kuka/Shenhav/Shumway" paper does not exist; the ES NBER
+number a search result supplied (w12128) was WRONG (an unrelated
+Glaeser paper) — ES was read via GUPEA WP 153 through the repository's
+bot gate; HK's venue is the Journal of Labor Economics 34(2) 2016, not
+Labour Economics, and its regression tables live in IZA DP 6707 (the
+SOLE PDF's tables are images).
 
-| Candidate | Design | What it could anchor | Access |
+| Study | Design | Anchors | Status |
 |:--|:--|:--|:--|
-| Eliason & Storrie 2009, "Does Job Loss Shorten Life?" J Human Resources 44(2):277-302, DOI 10.1353/jhr.2009.0020 (sweep correction: JHR, not JHE — their JHE 2008 paper is the earnings-scars one) | Swedish establishment closures 1983-92, ~1M workers, event-study hazard models | THIRD-COUNTRY all-cause mortality replication + cause-specific/hospitalization timing beside browningheinesen2012 | open Gothenburg WP (gupea.ub.gu.se WP 153); JHR page of record |
-| Bloemen, Stancanelli & van der Klaauw 2018, J Health Econ 59:78-90 | Dutch admin registers, job loss from firm bankruptcy, hazard models | FOURTH-COUNTRY mortality replication: year-1 mortality risk +84% — converges with B&H year-1 2.39 and SvW 50-100% | IZA DP 9483 open PDF; RePEc page of record |
-| Halla, Schmieder & Weber 2020, AEJ:Applied 12(4):253-287, DOI 10.1257/app.20180671 | Austrian ASOS registers, husbands displaced via firm closure/downsizing event studies | NEW spousal-labor-supply node (wives' extensive-margin employment response — small relative to the earnings loss) + DIVORCE cross-check (small increase, beside the shipped divorce row) | IZA DP 11752 open PDF; openICPSR replication files |
-| Huttunen & Kellokumpi 2014, Labour Economics (Finnish FLEED) | Plant-closure DiD on couples' fertility | NEW personal-displacement→fertility stream: female displacement ≈ -3 births per 100 displaced women; MALE null (the shipped kearney2018fracking row is a local-shock effect — a different treatment, never merged) | open SOLE PDF (sole-jole.org 13266) + Helsinki repository |
-| Schaller & Zerpa 2019, American Journal of Health Economics (NBER w21745) | US MEPS, parental job loss, child health | Child health/mental-health probability stream: paternal job loss raises child anxiety/depression/injuries, low-SES concentration | NBER w21745 open + Arizona repository PDF of the AJHE version |
-| Mörk, Sjögren & Zhuravleva (IZA DP 12559; verify peer-review venue at extraction — if still WP-only, the canonical cap applies) | Swedish workplace closures, registers, 10-year child follow-up | HONESTY stream: hospitalization/mortality NULLS condition the child-health pathway; short-run mental-health dip only | IZA DP 12559 open PDF; IFAU WP 2014:8 earlier draft |
+| Eliason & Storrie 2009, J Human Resources 44(2):277-302, DOI 10.1353/jhr.2009.0020 | Swedish PSW establishment closures 1983-92, men 20-60 | mortality timing + causes | READ + LANDED v1.43 as CROSS-CHECKS: men ≤4y all-cause HR 1.44 [1.19,1.76] on the peak row; external 2.07 [1.42,3.02], suicide 2.15 [1.28,3.59], alcohol 2.21 [1.14,4.31] on the B&H external row; DECLARED DIVERGENCE on the sustained row — NO long-run effect (5-8y 0.98, 9-12y 0.91 n.s.); women null declared. Read via GUPEA WP 153 (2007 revision) through the bot gate |
+| Bloemen, Stancanelli & van der Klaauw 2018, J Health Econ 59:78-90 | Dutch registers, men 45-59, ≥5y tenure, firm-closure job loss, LPM | mortality timing + causes | READ + LANDED v1.43 as CROSS-CHECKS: year-1 +0.2229pp (SE 0.0812) = +85.8%; 5y +0.5968pp (SE 0.1763) = +33.5% (2y 60.9→declining); circulatory +0.2453pp (+52.8%), cerebrovascular +152.9% on the B&H circulatory row; DIVERGES on external (−0.0389pp) and suicide (n.s.) — heterogeneity declared. Read via IZA DP 9483 |
+| Halla, Schmieder & Weber 2020, AEJ:Applied 12(4):253-287, DOI 10.1257/app.20180671 | Austrian ASOS registers, husbands displaced, event studies | spousal labor supply + divorce | READ + LANDED v1.43: NEW EXACT row displacement_event->spouse_participation_elasticity −0.04 [−0.07,−0.03] (band = the paper's subgroup range, dist empty; AWE an order below the literature's −0.4; extensive-margin only); DIVORCE cross-check on the rege2007 row: +0.004pp/quarter (SE 0.001), ~0.5pp/5y, PRECISE ZERO vs mass-layoff-firm controls — order smaller than the shipped multiplier, divergence declared; births null beside. Read via IZA DP 11752 |
+| Huttunen & Kellokumpi 2016, Journal of Labor Economics 34(2), DOI 10.1086/683645 — VENUE CORRECTED (not Labour Economics 2014) | Finnish FLEED, plant closures 1991-93, couples | displacement→fertility | READ + LANDED v1.43: NEW EXACT row displacement_event->annual_birth_response −0.005 [−0.0089,−0.0011] (displacement-year P(birth), Table 3; year-3 recurrence; cumulative −4 births/100 women by year 11, Figure 6; high-education −0.05, career-concern channel not income); MALE NULL declared (Table 4) + halla2020 husband-null beside; never merged with the kearney local-shock row. Read via IZA DP 6707 (tables; the SOLE/Helda PDFs carry image tables) |
+| Schaller & Zerpa 2019, American Journal of Health Economics 5(2):247-279 (NBER w21745) | US MEPS, individual-FE LPM, parental job loss, children | child mental/physical health | READ + LANDED v1.43: NEW EXACT row displacement_event->child_depression_anxiety +0.008 [0.0002,0.0158] (paternal, tenured spec; closure +0.006*, all +0.002 n.s. — spec sensitivity declared); mental-health-excellent falls (father closure −0.044**, mother −0.038**/−0.058**); MATERNAL depression/anxiety NULL declared; MÖRK honesty beside. Read via NBER w21745 |
+| Mörk, Sjögren & Svaleryd 2019, IZA DP 12559 — AUTHOR CORRECTION at extraction (Svaleryd, not Zhuravskaya); WP-only, canonical cap holds | Swedish workplace closures, registers, 10y child follow-up | HONESTY anchor | READ + RECORDED v1.43 (no row, by design): child hospitalization/mortality NULLS (only significant result: paternal mental/behavior admissions −2.8/1000 = −8.3%, a DECLINE); paternal education NULLS; maternal GPA/HS negatives carry similar pre-trends and are questioned by the authors. Cited from the child_depression_anxiety honesty note; never promoted past the cap |
