@@ -34,7 +34,7 @@ LINK = "foreclosure_order->house_price_gap"
 
 
 def test_version_is_v122():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.42"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.43"
 
 
 def test_row_matches_preferred_did():

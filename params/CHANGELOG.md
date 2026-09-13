@@ -1,3 +1,43 @@
+## v1.43 — 2026-09-13 — the six second-sweep studies extracted and landed
+
+- ALL SIX second-sweep candidates read from open full text and landed.
+- THREE NEW EXACT rows: displacement_event->spouse_participation_
+  elasticity -0.04 [-0.07, -0.03] (halla2020, AEJ:Applied 12(4):253-287
+  via IZA DP 11752: the added-worker effect on Austrian registers, band
+  = the paper's subgroup range with dist empty; an order below the AWE
+  literature's -0.4; extensive-margin only), displacement_event->
+  annual_birth_response -0.005 [-0.0089, -0.0011] (huttunenkellokumpi
+  2016, JLE 34(2) via IZA DP 6707 Table 3: the displacement-year birth
+  probability, ~5% relative; cumulative -4 births per 100 displaced
+  women by year 11; career-concern channel, not income; MALE NULL
+  declared beside and halla2020's husband null corroborates),
+  displacement_event->child_depression_anxiety +0.008 [0.0002, 0.0158]
+  (schallerzerpa2019, AJHE via NBER w21745: the CHILD'S own short-run
+  mental health, paternal channel; spec sensitivity declared; maternal
+  null declared).
+- MORTALITY REPLICATIONS as cross-checks: the peak row gains a
+  three-country year-1 convergence (eliasonstorrie2009 Swedish HR 1.44
+  [1.19, 1.76]; bloemen2018 Dutch +85.8%); the sustained row gains
+  Bloemen's declining 5y +33.5% AND the declared ES divergence (NO
+  long-run all-cause effect: 5-8y 0.98, 9-12y 0.91) — positions never
+  averaged; the B&H circulatory/external rows gain Bloemen's
+  circulatory +52.8%/cerebrovascular +152.9% corroboration and the
+  declared cause-pattern heterogeneity (Bloemen's external NEGATIVE);
+  the rege2007 divorce row gains HSW's order-smaller register estimate
+  with its precise-zero mass-layoff-firm control.
+- HONESTY ANCHOR: mork2019 (IZA DP 12559, WP-only, canonical cap)
+  recorded without a row — register-based child hospitalization/
+  mortality NULLS over 10 years; paternal education NULLS; the
+  maternal GPA/HS negatives are questioned by the authors' own
+  pre-trend analysis.
+- units.py: (PERSONS, LOG_ELASTICITY) boundary composition; new nodes
+  spouse_participation_elasticity (log_elasticity), annual_birth_
+  response and child_depression_anxiety (probability).
+- Corrections at extraction: HK's venue is JLE 34(2) 2016 (not Labour
+  Economics); ES's search-supplied NBER w12128 attribution was wrong
+  (read via GUPEA WP 153 past the repository bot gate); Mörk authors
+  corrected (Svaleryd, not Zhuravskaya).
+
 ## v1.42 — 2026-09-13 — Brand & Simon Thomas 2014 landed; EB prior-strength yardstick; second research sweep
 
 - brand2014 (AJS 119(4):955-1001, read via PMC4372265 author manuscript
