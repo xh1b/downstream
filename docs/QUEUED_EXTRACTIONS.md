@@ -83,3 +83,25 @@ identical coefficient/SE, N corrected 8608→8609). Also available, not yet land
 | Carneiro et al. 2021 (DOI 10.1086/712443) | TIMING of parental income — which child ages matter; supports/bounds the sustained-exposure framing |
 | Michelmore & Pilkauskas 2021 (DOI 10.1086/711383) | EITC response by child age (maternal labor supply/childcare) — side stream, low priority |
 | Thornton 1980 (Population and Environment 3(1):51-72, DOI 10.1007/bf01253070 — Crossref-verified) | LANDED v1.18 as CROSS-CHECK NOTES on the fertility row (not a composed row — PSID two-generation OLS correlations, observational; CITING §1 bars non-quasi-experimental points): ACTUAL family size transmits near-null (.070 zero-order / .058 controlled, ns; parity sign-inconsistent), IDEAL family size transmits strongly (.282*/.237*) — the recorded reason the model carries no cross-generation fertility multiplier | done 2026-09-08 |
+
+## Research sweep 2026-09-13 — candidates (NOT numbered, NOT extracted)
+
+Web sweep for quasi-experimental (plant-closure / mass-layoff identified)
+studies beyond the landed corpus. These are CANDIDATES ONLY: no estimate
+lands until a full-text table extraction follows the standard process
+(exact point/band/SE, tier, scope, CITING §1 admissibility). Search terms:
+job displacement mortality long-run quasi-experimental; parental job
+displacement children outcomes; plant closure spouse mental health.
+
+| Candidate | Design | What it could anchor | Status |
+|:--|:--|:--|:--|
+| Browning, Dano & Heinesen 2012 (J Health Econ 31(5):786-797) | Danish plant closures, matched worker panels | CAUSE-SPECIFIC mortality/alcohol-related death response — the admitted-effect-profile gate (v1.35 note) needs exactly this class of estimate before non-all-cause or non-male strata can compute | candidate — needs full text |
+| Schaller & Stevens 2015 (J Health Econ 44:180-196; NBER w19884) | US PSID job losses, mortality follow-up | Short-run (1y) vs long-run mortality timing check against the source-offset profile | candidate — needs full text |
+| Marcus 2013 (J Health Econ 32(3):546-558) | German SOEP plant closures | SPOUSE mental-health spillover (SF-12 MCS) — new family-spillover channel beside divorce/child lines | candidate — needs full text |
+| Huttunen, Møen & Salvanes 2019 (J Labor Econ 37(3); also IZA DP 12788) | Norwegian plant closures | CHILD earnings — independent Nordic replication beside oreopoulos2008 (which is US-based); same link, different jurisdiction | candidate — needs full text |
+| Brand 2014 (Socius/ASR — single mothers' displacement; PMC4372265) | US SIPP plant/employer closures | MATERNAL displacement → child outcomes — the female-stratum exposure the v1.35 rate rows are waiting on | candidate — needs full text |
+| Bingley et al. 2023 (EconStor DP 16367, "Timing of Parental Job Loss and a Child's Education") | Danish registers | Education timing effects (exposure before age 5) — child-line timing structure | candidate — needs full text + author verification |
+
+Excluded from candidacy: Brand 2015 (Annual Review of Sociology) — narrative
+review, not an identified estimate; Oreopoulos et al. 2008 — already LANDED
+(oreopoulos2008); Sullivan & von Wachter 2009 — the shipped response source.

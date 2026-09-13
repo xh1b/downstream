@@ -1,1 +1,19 @@
-{"years":[2015,2016,2017,2018,2019],"sex":"Male","age":"45-54 years","cause":"All causes","group_by":["County"],"population_unit":"person-years","source_url":"https://wonder.cdc.gov/ucd-icd10.html","retrieved_at":"2026-09-13T07:22:32+00:00"}
+{
+  "years": [
+    2015,
+    2016,
+    2017,
+    2018,
+    2019
+  ],
+  "sex": "Male",
+  "age": "45-54 years",
+  "cause": "All causes",
+  "group_by": [
+    "County"
+  ],
+  "population_unit": "person-years",
+  "source_url": "https://wonder.cdc.gov/ucd-icd10.html",
+  "retrieved_at": "2026-09-13T07:22:32+00:00",
+  "citation": "Centers for Disease Control and Prevention, National Center for Health Statistics. National Vital Statistics System, Mortality 1999-2020 on CDC WONDER Online Database, released in 2021. Accessed at http://wonder.cdc.gov/ucd-icd10.html on Sep 13, 2026 7:22:32 AM"
+}

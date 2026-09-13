@@ -101,7 +101,7 @@ def _places(philly: Place | None = None) -> dict[str, Place]:
 
 
 def test_version_is_v129():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.35"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.36"
 
 
 # --- loader -------------------------------------------------------
@@ -183,7 +183,7 @@ def test_place_baselines_refuses_generic_mortality_pooling():
     out = place_baselines(_places(_philly()), _baseline_dict(), "42101")
     o = out["provenance"]["overrides"]["all_cause_mortality_annual"]
     assert o["applied"] is False
-    assert "Gamma-Poisson" in o["reason"]
+    assert "build params/county_mortality.csv" in o["reason"]
     b = out["baselines"]["all_cause_mortality_annual"]
     assert b.value == NAT_RATE
 
@@ -192,7 +192,7 @@ def test_place_baselines_without_n_stays_national():
     out = place_baselines(_places(_philly(deaths_n=None)), _baseline_dict(), "42101")
     o = out["provenance"]["overrides"]["all_cause_mortality_annual"]
     assert o["applied"] is False
-    assert "Gamma-Poisson" in o["reason"]
+    assert "build params/county_mortality.csv" in o["reason"]
     assert out["baselines"]["all_cause_mortality_annual"].value == NAT_RATE
 
 
@@ -527,3 +527,124 @@ def test_cli_place_smoke():
     )
     assert r2.returncode == 0, r2.stderr[-400:]
     assert json.loads(r2.stdout)["place"]["modifier_applied"] is True
+
+
+# --- v1.36: county mortality posterior integration (strict contract) ---
+
+def _county_mortality_table():
+    from downstream.county_rates import load_county_mortality_posteriors
+
+    return load_county_mortality_posteriors(PARAMS_DIR / "county_mortality.csv")
+
+
+def test_county_mortality_posterior_table_loads_strictly():
+    table = _county_mortality_table()
+    assert len(table) == 2748
+    autauga = table["01001"]
+    assert autauga.outcome == "all_cause_mortality_annual"
+    assert (autauga.events, autauga.person_years) == (115, 19096.0)
+    # posterior mean = (prior_rate * prior_py + events) / (prior_py + person_years)
+    expected = (0.004944 * 2000.0 + 115) / (2000.0 + 19096.0)
+    assert autauga.posterior_mean_rate == pytest.approx(expected, abs=1e-9)
+
+
+def test_county_mortality_loader_refuses_duplicates_and_blank_provenance(tmp_path):
+    from downstream.county_rates import load_county_mortality_posteriors
+
+    header = ("key,outcome,population_scope,time_window,events,person_years,"
+              "posterior_mean_rate,prior_rate,prior_unit,prior_population,"
+              "prior_citation,prior_person_years,observation_citation\n")
+    good = ("01001,all_cause_mortality_annual,scope,2015-2019,115,19096,"
+            "0.005919985,0.004944,deaths_per_person_year,pop,cite,2000,cite\n")
+    with pytest.raises(ValueError, match="duplicate"):
+        load_county_mortality_posteriors(_write(tmp_path, header + good + good))
+    with pytest.raises(ValueError, match="blank provenance"):
+        load_county_mortality_posteriors(
+            _write(tmp_path, header + good.replace(",pop,", ",,")))
+    with pytest.raises(ValueError, match="invalid counts"):
+        load_county_mortality_posteriors(
+            _write(tmp_path, header + good.replace("115,19096", "-1,19096")))
+
+
+def _write(tmp_path, content):
+    p = tmp_path / "county_mortality.csv"
+    p.write_text(content)
+    return p
+
+
+def test_place_mortality_applies_strict_posterior_contract():
+    from downstream.params import load_baselines
+
+    places = load_places(PARAMS_DIR / "places.csv")
+    # the real baseline table: the strict check compares the posterior's
+    # prior chain against baselines.csv's exact value/population/citation
+    baselines = load_baselines(PARAMS_DIR / "baselines.csv")
+    out = place_baselines(places, baselines, "01001",
+                          county_mortality=_county_mortality_table())
+    override = out["provenance"]["overrides"]["all_cause_mortality_annual"]
+    assert override["applied"] is True
+    assert override["contract"] == "Gamma-Poisson posterior (strict events + person-years)"
+    assert override["weight"] == pytest.approx(19096 / (2000 + 19096), abs=1e-6)
+    county_baseline = out["baselines"]["all_cause_mortality_annual"]
+    assert county_baseline.value == pytest.approx(0.005919985, abs=1e-9)
+    assert county_baseline.unit == "deaths_per_person_year"
+    assert "Gamma-Poisson posterior" in county_baseline.notes
+    # the shipped national baseline row stays untouched
+    assert baselines["all_cause_mortality_annual"].value == 0.004944
+
+
+def test_place_mortality_refuses_broken_prior_chain():
+    import dataclasses
+
+    from downstream.params import load_baselines
+
+    places = load_places(PARAMS_DIR / "places.csv")
+    baselines = load_baselines(PARAMS_DIR / "baselines.csv")
+    table = _county_mortality_table()
+    row = dataclasses.replace(table["01001"], prior_rate=0.005)
+    out = place_baselines(places, _baseline_dict(), "01001",
+                          county_mortality={**table, "01001": row})
+    override = out["provenance"]["overrides"]["all_cause_mortality_annual"]
+    assert override["applied"] is False
+    assert "does not match the national baseline value" in override["reason"]
+    assert out["baselines"]["all_cause_mortality_annual"].value == 0.004944
+
+
+def test_place_mortality_refuses_missing_row_or_table():
+    from downstream.params import load_baselines
+
+    places = load_places(PARAMS_DIR / "places.csv")
+    baselines = load_baselines(PARAMS_DIR / "baselines.csv")
+    # no table at all
+    out = place_baselines(places, baselines, "01001")
+    override = out["provenance"]["overrides"]["all_cause_mortality_annual"]
+    assert override["applied"] is False
+    assert "build params/county_mortality.csv" in override["reason"]
+    # table present, county absent (suppressed)
+    table = {k: v for k, v in _county_mortality_table().items() if k != "01001"}
+    out = place_baselines(places, baselines, "01001", county_mortality=table)
+    override = out["provenance"]["overrides"]["all_cause_mortality_annual"]
+    assert override["applied"] is False
+    assert "suppressed or absent" in override["reason"]
+    assert out["baselines"]["all_cause_mortality_annual"].value == 0.004944
+
+
+def test_scenario_place_resolved_mortality_changes_counts():
+    from downstream.scenario import ScenarioInput, compute_counts
+    from downstream.params import load_all, load_baselines
+
+    parts = load_all(PARAMS_DIR)
+    places = load_places(PARAMS_DIR / "places.csv")
+    table = _county_mortality_table()
+    baselines = load_baselines(PARAMS_DIR / "baselines.csv")
+    national = compute_counts(parts["params"], baselines,
+                              ScenarioInput(1000))
+    resolved = compute_counts(parts["params"], baselines,
+                              ScenarioInput(1000), places=places,
+                              place_key="01001", county_mortality=table)
+    n_point = national["modeled"]["excess_deaths"]["point"]
+    r_point = resolved["modeled"]["excess_deaths"]["point"]
+    assert r_point > n_point  # Autauga's rate is above the national mean
+    # monotone consistency with the rate ratio at 20y follow-up
+    ratio = resolved["modeled"]["excess_deaths"]["components"]
+    assert ratio["follow_up_years"] == 20.0

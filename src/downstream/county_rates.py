@@ -111,6 +111,90 @@ def poisson_gamma_posterior(observation: CountyRateObservation, prior: NationalR
     }
 
 
+@dataclass(frozen=True)
+class CountyMortalityPosterior:
+    """One county's pooled mortality rate with its full provenance chain.
+
+    ``prior_*`` fields are the national baseline identity the posterior
+    was pooled toward; consumers must verify them against the live
+    baseline table before applying anything.
+    """
+    key: str
+    outcome: str
+    population_scope: str
+    time_window: str
+    events: int
+    person_years: float
+    posterior_mean_rate: float
+    prior_rate: float
+    prior_unit: str
+    prior_population: str
+    prior_citation: str
+    prior_person_years: float
+    observation_citation: str
+
+
+COUNTY_MORTALITY_COLUMNS = (
+    "key", "outcome", "population_scope", "time_window",
+    "events", "person_years", "posterior_mean_rate",
+    "prior_rate", "prior_unit", "prior_population", "prior_citation",
+    "prior_person_years", "observation_citation",
+)
+
+
+def load_county_mortality_posteriors(path: str | Path) -> dict[str, CountyMortalityPosterior]:
+    """Load the county posterior table built by scripts/build_county_mortality.py.
+
+    Rows are refused unless every provenance field is present and finite;
+    duplicate county keys are refused. Applying a row is a separate,
+    metadata-checked decision (see place.place_baselines) — loading alone
+    changes nothing.
+    """
+    with open(path, newline="", encoding="utf-8") as handle:
+        reader = csv.DictReader(line for line in handle if not line.lstrip().startswith("#"))
+        if reader.fieldnames is None or any(c not in reader.fieldnames for c in COUNTY_MORTALITY_COLUMNS):
+            raise ValueError(f"county mortality posterior CSV requires columns {COUNTY_MORTALITY_COLUMNS}")
+        out: dict[str, CountyMortalityPosterior] = {}
+        for raw in reader:
+            key = raw["key"].strip()
+            if not key:
+                continue  # separator/notes rows
+            if key in out:
+                raise ValueError(f"duplicate county mortality posterior key {key!r}")
+            try:
+                row = CountyMortalityPosterior(
+                    key=key,
+                    outcome=raw["outcome"].strip(),
+                    population_scope=raw["population_scope"].strip(),
+                    time_window=raw["time_window"].strip(),
+                    events=int(raw["events"]),
+                    person_years=float(raw["person_years"]),
+                    posterior_mean_rate=float(raw["posterior_mean_rate"]),
+                    prior_rate=float(raw["prior_rate"]),
+                    prior_unit=raw["prior_unit"].strip(),
+                    prior_population=raw["prior_population"].strip(),
+                    prior_citation=raw["prior_citation"].strip(),
+                    prior_person_years=float(raw["prior_person_years"]),
+                    observation_citation=raw["observation_citation"].strip(),
+                )
+            except (TypeError, ValueError) as exc:
+                raise ValueError(f"invalid county mortality posterior row {key!r}: {exc}") from exc
+            if not all((row.outcome, row.population_scope, row.time_window,
+                        row.prior_unit, row.prior_population, row.prior_citation,
+                        row.observation_citation)):
+                raise ValueError(f"county mortality posterior {key!r} has blank provenance")
+            if row.events < 0 or row.person_years <= 0 or row.prior_person_years <= 0:
+                raise ValueError(f"county mortality posterior {key!r} has invalid counts")
+            if not all(math.isfinite(v) and v > 0 for v in
+                       (row.person_years, row.posterior_mean_rate, row.prior_rate,
+                        row.prior_person_years)):
+                raise ValueError(f"county mortality posterior {key!r} has non-finite or nonpositive rates")
+            out[key] = row
+    if not out:
+        raise ValueError(f"county mortality posterior table {path} has no rows")
+    return out
+
+
 def beta_binomial_posterior(observation: CountyRateObservation, national_rate: float,
                             prior_person_years: float, draws: int = 10_000,
                             seed: int = 1901) -> dict:

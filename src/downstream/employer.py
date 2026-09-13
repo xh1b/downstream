@@ -88,6 +88,7 @@ def compute_entity_counts(
     places: dict | None = None,
     place_key: str | None = None,
     mortality_profiles: dict | None = None,
+    county_mortality: dict | None = None,
     strict: bool = False,
 ) -> dict:
     """Compute population-average impacts for employers or other entities.
@@ -109,7 +110,8 @@ def compute_entity_counts(
         raise ValueError('tradable_share must not exceed 1')
     out = compute_counts(params, baselines, scenario, strict=strict,
                          places=places, place_key=place_key,
-                         mortality_profiles=mortality_profiles)
+                         mortality_profiles=mortality_profiles,
+                         county_mortality=county_mortality)
     out['subject'] = {'id': exposure.subject_id, 'type': exposure.subject_type}
     out['exposure_provenance'] = {'source': exposure.source, 'method': exposure.method}
     out['interpretation'] = (

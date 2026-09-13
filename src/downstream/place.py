@@ -196,10 +196,106 @@ def shrink(
     return min(max(value, min(national_value, county_value)), max(national_value, county_value)), w
 
 
+def _county_mortality_override(
+    outcome: str,
+    base: Baseline | None,
+    place: Place,
+    county_mortality: dict | None,
+) -> dict:
+    """County mortality override under the strict Gamma-Poisson contract.
+
+    Applied only when a posterior row exists for this place AND its prior
+    chain matches the live national baseline exactly (rate, unit,
+    population, citation). Anything else keeps the national value with
+    the precise reason — no silent fallback, no half-applied pooling.
+    """
+    refusal = {"outcome": outcome, "applied": False}
+    if county_mortality is None:
+        return {**refusal, "reason": (
+            "county mortality stays national: no county_mortality posterior "
+            "table supplied; build params/county_mortality.csv with "
+            "scripts/build_county_mortality.py from a validated WONDER export "
+            "(the strict events + person-years contract, not the generic "
+            "places.csv rate/precision columns)"
+        )}
+    row = county_mortality.get(place.key)
+    if row is None:
+        return {**refusal, "reason": (
+            f"no county-mortality posterior row for {place.key!r} "
+            "(suppressed or absent from the export); national value used"
+        )}
+    if row.outcome != outcome:
+        return {**refusal, "reason": (
+            f"posterior row outcome {row.outcome!r} does not match {outcome!r}"
+        )}
+    if base is None or base.status != "verified" or base.value is None:
+        return {**refusal, "reason": "no verified national baseline to verify the prior against"}
+    if base.unit != "deaths_per_person_year" or row.prior_unit != base.unit:
+        return {**refusal, "reason": (
+            f"unit mismatch: baseline {base.unit!r} vs posterior prior unit "
+            f"{row.prior_unit!r}"
+        )}
+    if row.prior_rate != base.value:
+        return {**refusal, "reason": (
+            f"prior rate {row.prior_rate} does not match the national baseline "
+            f"value {base.value} — the posterior was built against a different baseline"
+        )}
+    if row.prior_population != base.population:
+        return {**refusal, "reason": (
+            f"prior population {row.prior_population!r} does not match the "
+            f"national baseline population {base.population!r}"
+        )}
+    if row.prior_citation != base.citation:
+        return {**refusal, "reason": (
+            "prior citation does not match the national baseline citation — "
+            "the provenance chain is broken"
+        )}
+    weight = row.person_years / (row.prior_person_years + row.person_years)
+    return {
+        "outcome": outcome,
+        "applied": True,
+        "contract": "Gamma-Poisson posterior (strict events + person-years)",
+        "events": row.events,
+        "person_years": row.person_years,
+        "prior_rate": row.prior_rate,
+        "prior_person_years": row.prior_person_years,
+        "posterior_mean_rate": row.posterior_mean_rate,
+        "weight": round(weight, 6),
+        "population_scope": row.population_scope,
+        "time_window": row.time_window,
+        "observation_citation": row.observation_citation,
+        "national_citation": base.citation,
+    }
+
+
+def _baseline_from_mortality_posterior(
+    outcome: str, base: Baseline, place: Place, override: dict,
+) -> Baseline:
+    return Baseline(
+        outcome=outcome,
+        unit=base.unit,
+        population=base.population,
+        value=override["posterior_mean_rate"],
+        citation=base.citation,
+        source=base.source,
+        status="verified",
+        notes=(
+            f"place-resolved: county {place.key} Gamma-Poisson posterior "
+            f"({override['events']} deaths / {override['person_years']} person-years, "
+            f"{override['population_scope']}, {override['time_window']}) pooled toward "
+            f"the national {override['prior_rate']} with "
+            f"prior_person_years={override['prior_person_years']}, "
+            f"weight={override['weight']}; same unit and population as the "
+            "national baseline — no conversion applied"
+        ),
+    )
+
+
 def place_baselines(
     places: dict[str, Place],
     baselines: dict[str, Baseline],
     key: str,
+    county_mortality: dict | None = None,
 ) -> dict:
     """Shrunk county baselines for one place.
 
@@ -209,6 +305,15 @@ def place_baselines(
     arithmetic in the row's notes. Outcomes without a county value,
     without a precision n, or without a declared k fall back to the
     national value with the reason stated.
+
+    county_mortality: optional table from
+    county_rates.load_county_mortality_posteriors (params/
+    county_mortality.csv). When the place has a row there AND the row's
+    prior chain matches the national baseline exactly, county mortality
+    swaps in via the strict Gamma-Poisson contract (the posterior mean
+    already IS the pooling; the generic w = n/(n+k) path stays unused
+    for mortality). Absent table, absent row, or any metadata mismatch
+    keeps mortality national with the reason stated.
     """
     if not places:
         # No places.csv at all: the honest fallback is the shipped
@@ -238,14 +343,11 @@ def place_baselines(
         county_n = getattr(place, _N_COLUMNS[col])
         base = baselines.get(outcome)
         if outcome in _EXPERIMENTAL_RATE_OUTCOMES:
-            overrides[outcome] = {
-                "applied": False,
-                "reason": (
-                    "county mortality stays national: places.csv has only a rate and generic precision; "
-                    "use the experimental Gamma-Poisson county-rate contract with matching "
-                    "outcome, population, and time-window metadata before integration"
-                ),
-            }
+            overrides[outcome] = _county_mortality_override(
+                outcome, base, place, county_mortality)
+            if overrides[outcome].get("applied"):
+                out[outcome] = _baseline_from_mortality_posterior(
+                    outcome, base, place, overrides[outcome])
             continue
         if base is None or base.status != "verified" or base.value is None:
             overrides[outcome] = {

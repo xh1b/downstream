@@ -95,6 +95,7 @@ def compute_counts(
     places: dict | None = None,
     place_key: str | None = None,
     mortality_profiles: dict | None = None,
+    county_mortality: dict | None = None,
     _raw: bool = False,
 ) -> dict:
     """Modeled counts for a displacement scenario.
@@ -108,13 +109,19 @@ def compute_counts(
     modifier scales the direct child loss in a same-place contrast
     (exploratory structural assumption). Provenance lands in the "place"
     block; absent/blocked modifiers leave the computation unchanged.
+
+    county_mortality (optional): posterior table from
+    county_rates.load_county_mortality_posteriors — under a matching
+    place key, county mortality swaps in via the strict Gamma-Poisson
+    contract instead of staying national.
     """
     place_block: dict | None = None
     modifier = None
     if place_key is not None:
         from .place import modifier_parameter, place_baselines
 
-        pb = place_baselines(places, baselines, place_key)
+        pb = place_baselines(places, baselines, place_key,
+                             county_mortality=county_mortality)
         baselines = pb["baselines"]
         mp = modifier_parameter(params, places, place_key)
         modifier = mp["parameter"]
@@ -320,6 +327,7 @@ def sample_counts(
     places: dict | None = None,
     place_key: str | None = None,
     mortality_profiles: dict | None = None,
+    county_mortality: dict | None = None,
     nodes: dict | None = None,
     params_dir=None,
 ) -> dict:
@@ -335,13 +343,15 @@ def sample_counts(
 
     result = compute_counts(params, baselines, scenario, strict=strict,
                             places=places, place_key=place_key,
-                            mortality_profiles=mortality_profiles)
+                            mortality_profiles=mortality_profiles,
+                            county_mortality=county_mortality)
     names = tuple(result["modeled"])
 
     def outcomes(sampled: ParameterSet) -> dict[str, float]:
         sampled_result = compute_counts(sampled, baselines, scenario, strict=strict,
                                          places=places, place_key=place_key,
-                                         mortality_profiles=mortality_profiles, _raw=True)
+                                         mortality_profiles=mortality_profiles,
+                                         county_mortality=county_mortality, _raw=True)
         return {name: sampled_result["modeled"][name]["point"] for name in names}
 
     sampling = simulate_many(params, outcomes, draws=draws, seed=seed, nodes=nodes,
@@ -362,7 +372,8 @@ def sample_counts(
     predictive_baselines = baselines
     if place_key is not None:
         from .place import place_baselines
-        predictive_baselines = place_baselines(places, baselines, place_key)["baselines"]
+        predictive_baselines = place_baselines(places, baselines, place_key,
+                                               county_mortality=county_mortality)["baselines"]
     result["predictive_uncertainty"] = (
         {"available": False, "reason": "predictive mortality for demographic mixtures requires stratum-level cohort counts; expected effects are reported"}
         if scenario.mortality_profile is not None or scenario.mortality_mix is not None

@@ -341,8 +341,9 @@ def main() -> int:
         summarize_national(Path(args.out).read_bytes(), args.pool_from, args.pool_to)
         return 0
     years = [int(y) for y in args.years.split(",")]
+    sex_word = {"M": "male", "F": "female"}[args.sex]
     out = Path(args.out or
-               f"validation/cdc_wonder_county_{args.sex.lower()}_{args.age.replace('-', '_')}_"
+               f"validation/cdc_wonder_county_{sex_word}_{args.age.replace('-', '_')}_"
                f"{years[0]}_{years[-1]}.csv")
     fetch_county(out, args.sex, args.age, years)
     return 0

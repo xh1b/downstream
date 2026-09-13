@@ -1,3 +1,26 @@
+## v1.36 — 2026-09-13 — county mortality posteriors wired into the place layer
+
+- Extraction #31 COMPLETE: params/county_mortality.csv — 2748 Gamma-Poisson
+  county posteriors (male 45-54, All causes, 2015-2019) built by
+  scripts/build_county_mortality.py from the validated WONDER county export,
+  each row carrying the full provenance chain (events, person-years, declared
+  scope/window/citation + the national prior's exact rate/unit/population/
+  citation from baselines.csv).
+- Prior strength: the repo's declared place.py PRIOR_N convention (2000
+  equivalent person-years) — small counties shrink toward the national rate,
+  large counties keep their own signal. Empirical-Bayes estimation of the
+  prior strength remains open.
+- place_baselines now applies county mortality ONLY under the strict
+  contract: posterior row present AND prior chain matches the live national
+  baseline exactly (rate, unit, population, citation). Any mismatch keeps
+  mortality national with the precise refusal reason. The generic
+  places.csv rate/precision path stays refused.
+- scenario/entity --place FIPS now returns place-resolved excess deaths
+  (e.g. Autauga 01001: posterior 0.005920, weight 0.905, excess deaths
+  33.61 vs 28.73 national per 1000 workers over 20y).
+- parse_export CSV dialect fix (csv.Sniffer mis-parsed quoted county names);
+  genuine-export regression tests.
+
 ## v1.35 — 2026-09-13 — profile-specific verified mortality rates from a reproducible D76 pull
 
 - ONE live CDC WONDER D76 XML-API pull (2026-09-13, request parameters

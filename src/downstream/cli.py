@@ -57,6 +57,25 @@ def _mortality_profiles_arg(parser, params_dir: str):
         parser.error(f"cannot load mortality profile registry: {exc}")
 
 
+def _county_mortality_arg(parser, params_dir: str, place_key: str | None):
+    """Load the county mortality posterior table when it exists.
+
+    Absent file or no --place: None — county mortality then stays
+    national with the reason stated in the place provenance.
+    """
+    if not place_key:
+        return None
+    table_path = Path(params_dir) / "county_mortality.csv"
+    if not table_path.exists():
+        return None
+    from .county_rates import load_county_mortality_posteriors
+
+    try:
+        return load_county_mortality_posteriors(table_path)
+    except (OSError, ValueError) as exc:
+        parser.error(f"cannot load county mortality table: {exc}")
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="downstream")
     sub = parser.add_subparsers(dest="cmd", required=True)
@@ -360,6 +379,7 @@ def main(argv: list[str] | None = None) -> int:
         mortality_mix = _mortality_mix_arg(parser, args.mortality_mix)
         if args.mortality_profile or mortality_mix:
             mortality_profiles = _mortality_profiles_arg(parser, args.params)
+        county_mortality = _county_mortality_arg(parser, args.params, args.place)
         try:
             out = sample_counts(
                 params,
@@ -381,6 +401,7 @@ def main(argv: list[str] | None = None) -> int:
                 places=places,
                 place_key=args.place,
                 mortality_profiles=mortality_profiles,
+                county_mortality=county_mortality,
                 draws=args.draws,
                 seed=args.seed,
                 nodes=parts["nodes"],
@@ -423,6 +444,7 @@ def main(argv: list[str] | None = None) -> int:
         mortality_mix = _mortality_mix_arg(parser, args.mortality_mix)
         if args.mortality_profile or mortality_mix:
             mortality_profiles = _mortality_profiles_arg(parser, args.params)
+        county_mortality = _county_mortality_arg(parser, args.params, args.place)
         try:
             result = compute_entity_counts(
                 params, parts["baselines"], exposure,
@@ -432,6 +454,7 @@ def main(argv: list[str] | None = None) -> int:
                               mortality_mix=mortality_mix),
                 places=places, place_key=args.place,
                 mortality_profiles=mortality_profiles,
+                county_mortality=county_mortality,
             )
         except (ValueError, TypeError, KeyError) as exc:
             parser.error(str(exc))

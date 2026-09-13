@@ -1,0 +1,16 @@
+{
+  "source_table": "cdc_wonder_county_male_45_54_2015_2019.csv",
+  "metadata_sidecar": "cdc_wonder_county_male_45_54_2015_2019.metadata.json",
+  "built_at": "2026-09-13T09:40:53+00:00",
+  "rows": 2748,
+  "prior": {
+    "outcome": "all_cause_mortality_annual",
+    "rate": 0.004944,
+    "person_years": 2000.0,
+    "declared_by": "place.py PRIOR_N['all_cause_mortality_annual']",
+    "national_baseline_population": "US prime-age men (45-54)",
+    "national_baseline_citation": "cdc_wonder D76 (Underlying Cause of Death, 1999-2020), Male 45-54 years, pooled 2015-2019: 514314 deaths / 104024440 person-years = 494.4 per 100k; pulled 2026-09-06 via scraper.cli wonder-mortality into warehouse wonder_mortality"
+  },
+  "method": "Gamma-Poisson posterior per county; posterior_mean_rate = (prior_rate * prior_person_years + events) / (prior_person_years + person_years)",
+  "suppression": "counties with <=9 deaths are absent from the export and therefore from this table; never reconstructed"
+}
