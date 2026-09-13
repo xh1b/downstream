@@ -2,7 +2,7 @@
 
 ## Decision
 
-The model contains 45 parameter rows. They do not all support a worker-
+The model contains 51 parameter rows. They do not all support a worker-
 displacement claim. This audit separates four uses that the public site and
 engine must never blur:
 
@@ -18,6 +18,13 @@ its source record, the engine route, and the public route. It also rechecks the
 high-impact source papers at their primary publisher, author, or working-paper
 locations. It is not a new meta-analysis and does not turn a study population
 into a universal estimate.
+
+Revised later the same day to fold in the rows that landed after the first
+pass: the Browning–Heinesen cause-specific hazards and the Marcus spouse
+mental-health row (v1.38), and the Bingley–Cappellari–Ovidi child-education
+rows (v1.40). The v1.37 Huttunen–Riukula and v1.40 Schaller–Stevens
+cross-check notes are recorded where they attach; cross-checks are never
+averaged into a row's estimate.
 
 ## What a worker-displacement scenario may currently show
 
@@ -72,21 +79,23 @@ name the job mix before applying a high-tech multiplier.
 | `foreclosure_order→house_price_gap` | Campbell, Giglio, and Pathak estimate forced-sale price effects in Massachusetts transactions. | Boundary only | This is a property-sale and spatial-distance estimand, not a household consequence of job loss. |
 | `household_ipv→child_internalizing_sd` and `→child_externalizing_sd` | Evans, Davies, and DiLillo meta-analyze child exposure to interparental physical violence. | Boundary only | The row is a parallel exposure contrast. It cannot enter the displacement chain without a supported IPV-incidence edge. |
 | `local_unemp_shock`, `household_hardship`, and `couple_unemployment→household_ipv` | Schneider, Harknett, and McLanahan study Fragile Families mothers in 20 US cities. | Boundary only | Inputs and samples differ: area unemployment, hardship, and couple unemployment. The design does not license a generic worker-displacement-to-IPV result. |
-| `unemployment_status→mental_health_sd` | Paul and Moser meta-analyze unemployed versus employed adults across 26 countries. | Boundary only | This is mainly a heterogeneous status contrast, not a single causal displacement effect. It must remain separate until a compatible causal design is selected. |
+| `unemployment_status→mental_health_sd` | Paul and Moser meta-analyze unemployed versus employed adults across 26 countries. | Boundary only | This is mainly a heterogeneous status contrast, not a single causal displacement effect. It must remain separate until a compatible causal design is selected. Schaller and Stevens' MEPS fair/poor mental-health contrast is recorded beside as a probability-unit cross-check; it estimates no mortality effects of its own. |
 | `import_shock→radical_right_vote_share` | Colantone and Stanig estimate European regional import-competition effects. | Boundary only | Input is regional trade exposure and outcome is vote share. Do not convert it from US worker counts. |
 | `neighborhood_exposure→child_outcomes_modifier` | Chetty and Hendren estimate childhood exposure effects from family moves across US counties. | Structural | The engine may use it only as an explicitly exploratory same-place modifier. It does not identify that a place changes the causal effect of displacement. |
 | `unconditional_income→child_education_years`, `→youth_any_crime`, and `→youth_minor_crime_ever` | Akee et al. study casino transfers to previously poor Eastern Band of Cherokee households. | Boundary only | A recurring unconditional transfer is not a one-time loss of a job. Keep it as a separate intervention branch. |
 | `youth_crime_conviction_share` and `youth_violent_crime_conviction_share→youth_crime_convicted` | Damm and Dustmann study quasi-random municipality assignment of male refugee children in Denmark. | Boundary only | The input is neighborhood conviction exposure for a specific assigned-child population. It is not a worker-displacement continuation. |
+| `displacement→circulatory_mortality_hazard`, `→alcohol_mortality_hazard`, and `→external_cause_mortality_hazard` | Browning and Heinesen estimate cause-specific mortality after Danish plant-closure job loss (full-time males 20–60, closures 1986–2002, PSW with duration analysis). | Conditional | Direct displacement estimates on separately named causes. They are not a decomposition of the all-cause excess-deaths total and must not be added into it without a competing-risk incidence contract; show them only as cause-specific results with population and cause named. The all-cause year-1 and 20-year magnitudes are replication cross-checks on the Sullivan–von Wachter rows, never averaged, and the cancer null is declared. |
+| `displacement_event→spouse_mental_health_sd` | Marcus estimates the mental health (SF-12 MCS) of spouses of workers displaced by German plant closures, roughly eleven months after closure. | Conditional | A spouse outcome on its own event input; keep it a parallel stream and do not compose it into household or child results. The displaced workers' own effect is a Paul–Moser cross-check, not a replacement. Transport assumes German institutions and closure identification. |
+| `displacement_event→child_achievement_sd` and `→exam_noncompletion_hazard` | Bingley, Cappellari, and Ovidi estimate grade-9 mathematics achievement and exam noncompletion for Danish plant-closure children by exposure age. | Conditional | Effects concentrate by exposure timing, and the engine has no age-at-exposure selector yet, so the timing structure travels in notes. The income-channel mediation slope is a declared cross-check on the Dahl–Lochner row, never averaged. Transport assumes Danish institutions and closure identification. |
 
 ## Corrections and release gates
 
 1. **Done:** worker replacement no longer produces local service-job loss. The
    scenario needs `net_tradable_jobs_lost`.
-2. **Required before a local-jobs headline:** replace the generic point of 5.0
-   with an industry/skill-specific input contract, or use the manufacturing
-   estimate only where the input identifies manufacturing jobs. A band from
-   1.6 to 5.0 does not solve this problem because its endpoints describe
-   different job types, not uncertainty around one shared estimand.
+2. **Done (2026-09-13):** the scenario now requires a declared job mix
+   (`manufacturing` or `high_tech`) beside the net tradable-job input, and
+   the class value is read from the row's own band edge, so the 1.6–5.0
+   span is never sampled as uncertainty around one shared estimand.
 3. **Required public labels:** identify the direct child result as Canadian
    father–son firm closures; identify mortality as high-seniority male
    Pennsylvania displacement; identify later generations as structural
@@ -115,6 +124,9 @@ name the job mix before applying a high-tech multiplier.
 - [Collinson et al. (2024), eviction and poverty](https://doi.org/10.1093/qje/qjad042)
 - [Chetty and Hendren, childhood exposure effects](https://opportunityinsights.org/paper/movers/)
 - [Damm and Dustmann (2014), neighborhood exposure and youth crime](https://doi.org/10.1257/aer.104.6.1806)
+- [Browning and Heinesen (2012), plant-closure mortality and hospitalization](https://www.sciencedirect.com/science/article/abs/pii/S0167629612000276)
+- [Marcus (2013), unemployment and spouses' mental health](https://www.sciencedirect.com/science/article/abs/pii/S0167629613000118)
+- [Bingley, Cappellari, and Ovidi (2026), timing of parental job loss and child education](https://doi.org/10.1093/jeea/jvag048)
 
 The full bibliographic metadata, parameter points, extraction notes, and
 evidence tiers remain in `params/references.bib` and `params/parameters.csv`.

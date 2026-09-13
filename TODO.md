@@ -107,8 +107,10 @@ truth; do not duplicate rows here.
   (18 conditional / 3 structural / 28 boundary; `admitted` reserved) that
   load refuses when missing, chains refuse when boundary, and vignette
   streams visibly block with role-named reasons. Landing v1.39; applicability
-  conditions themselves remain explicit assumptions, and the four v1.38
-  rows still need folding into the audit document.
+  conditions themselves remain explicit assumptions. The audit document was
+  revised the same day to fold in the post-audit rows (Browning–Heinesen
+  cause-specific hazards, Marcus 2013 spouse mental health, Bingley–
+  Cappellari–Ovidi 2026 child education) and to mark release gate 2 done.
 - **[DONE 2026-09-10] Numerical review repairs:** independent copula designs,
   connected custom chains, chain starting values, county predictive baselines,
   and refusal of legacy additive predictive probabilities. Full findings and
