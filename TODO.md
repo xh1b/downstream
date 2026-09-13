@@ -28,9 +28,14 @@ See `docs/MATH_REVIEW.md` for reviewed arithmetic and remaining assumptions.
   panels, coarse public geography, >20% panel attrition, no
   intergenerational supplements. PSID ruled out on the ICPSR LLM policy
   — `docs/PSID_BASELINE_DATA_ASSESSMENT_2026-09-13.md` — and stays
-  citation-only). Next: download 2008 + 2021 panels and weights, verify
-  variables, then one weighted two-wave employment/earnings transition
-  reproduced with held-out validation.
+  citation-only). First R2 artifact built and held-out validated
+  (2026-09-14): FINYR2-weighted December-to-December 2021→2022
+  employment/earnings transitions for 3,206 prime-age span persons
+  (`docs/BASELINE_TRANSITION_R2_2026-09-14.md`; E-origin cells
+  calibrate to ~1pp, U-origin cells indicative-only at n≈14–19).
+  Next: pool the 2020/2021/2022 panel releases to enlarge U-origin
+  cells, add replicate-weight SEs (`lgtrw2023yr2`), then the 2008
+  panel for fine-grained monthly transitions.
 - **[R3] First full comparison:** a five-year involuntary-displacement scenario
   versus a stated reference, limited to supported employment, earnings, and
   household-resource outcomes. Current long-run coefficients are not annual paths.

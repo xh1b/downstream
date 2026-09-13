@@ -1,0 +1,399 @@
+{
+  "coverage": {
+    "span": "January 2021 - December 2022 (FINYR2, calendar-2023 weights release)",
+    "weight_population": 23878,
+    "prime_age_dec2021_in_universe": 19045,
+    "in_weighted_span": 3206,
+    "linked_transitions": 3206,
+    "dropped_2022": 0,
+    "state_definition": {
+      "E": "RMESR in 1-5 (with a job, whole or part of month)",
+      "U": "RMESR in 6-7 (no job, on layoff or looking)",
+      "N": "RMESR 8 (no job, no layoff and no looking)"
+    },
+    "heldout_calibration_cells": 54,
+    "heldout_max_abs_diff": 0.375864,
+    "heldout_mean_abs_diff": 0.0706,
+    "note": "Longitudinal weights cover persons present through the span; attrition between surveys is absorbed by the Census weight construction and is not separately re-modeled here. Nominal dollars; 2021->2022 earnings changes carry an inflation caveat."
+  },
+  "calibration": [
+    {
+      "cell": "female|25-34|E",
+      "dest": "E",
+      "train_share": 0.932217,
+      "heldout_share": 0.926967,
+      "abs_diff": 0.00525
+    },
+    {
+      "cell": "female|25-34|E",
+      "dest": "U",
+      "train_share": 0.006479,
+      "heldout_share": 0.0,
+      "abs_diff": 0.006479
+    },
+    {
+      "cell": "female|25-34|E",
+      "dest": "N",
+      "train_share": 0.061304,
+      "heldout_share": 0.073033,
+      "abs_diff": 0.011729
+    },
+    {
+      "cell": "female|25-34|N",
+      "dest": "E",
+      "train_share": 0.27863,
+      "heldout_share": 0.362989,
+      "abs_diff": 0.084359
+    },
+    {
+      "cell": "female|25-34|N",
+      "dest": "U",
+      "train_share": 0.030132,
+      "heldout_share": 0.0,
+      "abs_diff": 0.030132
+    },
+    {
+      "cell": "female|25-34|N",
+      "dest": "N",
+      "train_share": 0.691238,
+      "heldout_share": 0.637011,
+      "abs_diff": 0.054227
+    },
+    {
+      "cell": "female|25-34|U",
+      "dest": "E",
+      "train_share": 0.641424,
+      "heldout_share": 0.666013,
+      "abs_diff": 0.024589
+    },
+    {
+      "cell": "female|25-34|U",
+      "dest": "U",
+      "train_share": 0.291021,
+      "heldout_share": 0.209054,
+      "abs_diff": 0.081967
+    },
+    {
+      "cell": "female|25-34|U",
+      "dest": "N",
+      "train_share": 0.067555,
+      "heldout_share": 0.124933,
+      "abs_diff": 0.057378
+    },
+    {
+      "cell": "female|35-44|E",
+      "dest": "E",
+      "train_share": 0.9609,
+      "heldout_share": 0.981763,
+      "abs_diff": 0.020863
+    },
+    {
+      "cell": "female|35-44|E",
+      "dest": "U",
+      "train_share": 0.0,
+      "heldout_share": 0.005619,
+      "abs_diff": 0.005619
+    },
+    {
+      "cell": "female|35-44|E",
+      "dest": "N",
+      "train_share": 0.0391,
+      "heldout_share": 0.012618,
+      "abs_diff": 0.026482
+    },
+    {
+      "cell": "female|35-44|N",
+      "dest": "E",
+      "train_share": 0.077187,
+      "heldout_share": 0.171133,
+      "abs_diff": 0.093947
+    },
+    {
+      "cell": "female|35-44|N",
+      "dest": "U",
+      "train_share": 0.005825,
+      "heldout_share": 0.048474,
+      "abs_diff": 0.04265
+    },
+    {
+      "cell": "female|35-44|N",
+      "dest": "N",
+      "train_share": 0.916989,
+      "heldout_share": 0.780392,
+      "abs_diff": 0.136596
+    },
+    {
+      "cell": "female|35-44|U",
+      "dest": "E",
+      "train_share": 0.552175,
+      "heldout_share": 0.663741,
+      "abs_diff": 0.111566
+    },
+    {
+      "cell": "female|35-44|U",
+      "dest": "U",
+      "train_share": 0.146888,
+      "heldout_share": 0.317708,
+      "abs_diff": 0.17082
+    },
+    {
+      "cell": "female|35-44|U",
+      "dest": "N",
+      "train_share": 0.300937,
+      "heldout_share": 0.018551,
+      "abs_diff": 0.282386
+    },
+    {
+      "cell": "female|45-54|E",
+      "dest": "E",
+      "train_share": 0.954114,
+      "heldout_share": 0.923793,
+      "abs_diff": 0.030321
+    },
+    {
+      "cell": "female|45-54|E",
+      "dest": "U",
+      "train_share": 0.004025,
+      "heldout_share": 0.014021,
+      "abs_diff": 0.009997
+    },
+    {
+      "cell": "female|45-54|E",
+      "dest": "N",
+      "train_share": 0.041861,
+      "heldout_share": 0.062186,
+      "abs_diff": 0.020324
+    },
+    {
+      "cell": "female|45-54|N",
+      "dest": "E",
+      "train_share": 0.128205,
+      "heldout_share": 0.119078,
+      "abs_diff": 0.009126
+    },
+    {
+      "cell": "female|45-54|N",
+      "dest": "U",
+      "train_share": 0.00997,
+      "heldout_share": 0.049364,
+      "abs_diff": 0.039394
+    },
+    {
+      "cell": "female|45-54|N",
+      "dest": "N",
+      "train_share": 0.861825,
+      "heldout_share": 0.831557,
+      "abs_diff": 0.030268
+    },
+    {
+      "cell": "female|45-54|U",
+      "dest": "E",
+      "train_share": 0.668107,
+      "heldout_share": 0.436553,
+      "abs_diff": 0.231553
+    },
+    {
+      "cell": "female|45-54|U",
+      "dest": "U",
+      "train_share": 0.14431,
+      "heldout_share": 0.0,
+      "abs_diff": 0.14431
+    },
+    {
+      "cell": "female|45-54|U",
+      "dest": "N",
+      "train_share": 0.187583,
+      "heldout_share": 0.563447,
+      "abs_diff": 0.375864
+    },
+    {
+      "cell": "male|25-34|E",
+      "dest": "E",
+      "train_share": 0.97341,
+      "heldout_share": 0.95999,
+      "abs_diff": 0.01342
+    },
+    {
+      "cell": "male|25-34|E",
+      "dest": "U",
+      "train_share": 0.009944,
+      "heldout_share": 0.010456,
+      "abs_diff": 0.000513
+    },
+    {
+      "cell": "male|25-34|E",
+      "dest": "N",
+      "train_share": 0.016646,
+      "heldout_share": 0.029554,
+      "abs_diff": 0.012908
+    },
+    {
+      "cell": "male|25-34|N",
+      "dest": "E",
+      "train_share": 0.413185,
+      "heldout_share": 0.307117,
+      "abs_diff": 0.106068
+    },
+    {
+      "cell": "male|25-34|N",
+      "dest": "U",
+      "train_share": 0.035102,
+      "heldout_share": 0.037898,
+      "abs_diff": 0.002796
+    },
+    {
+      "cell": "male|25-34|N",
+      "dest": "N",
+      "train_share": 0.551713,
+      "heldout_share": 0.654985,
+      "abs_diff": 0.103272
+    },
+    {
+      "cell": "male|25-34|U",
+      "dest": "E",
+      "train_share": 0.861309,
+      "heldout_share": 0.841165,
+      "abs_diff": 0.020145
+    },
+    {
+      "cell": "male|25-34|U",
+      "dest": "U",
+      "train_share": 0.0,
+      "heldout_share": 0.081084,
+      "abs_diff": 0.081084
+    },
+    {
+      "cell": "male|25-34|U",
+      "dest": "N",
+      "train_share": 0.138691,
+      "heldout_share": 0.077751,
+      "abs_diff": 0.06094
+    },
+    {
+      "cell": "male|35-44|E",
+      "dest": "E",
+      "train_share": 0.981764,
+      "heldout_share": 0.971158,
+      "abs_diff": 0.010606
+    },
+    {
+      "cell": "male|35-44|E",
+      "dest": "U",
+      "train_share": 0.005695,
+      "heldout_share": 0.011957,
+      "abs_diff": 0.006262
+    },
+    {
+      "cell": "male|35-44|E",
+      "dest": "N",
+      "train_share": 0.012542,
+      "heldout_share": 0.016885,
+      "abs_diff": 0.004344
+    },
+    {
+      "cell": "male|35-44|N",
+      "dest": "E",
+      "train_share": 0.250437,
+      "heldout_share": 0.194704,
+      "abs_diff": 0.055734
+    },
+    {
+      "cell": "male|35-44|N",
+      "dest": "U",
+      "train_share": 0.049057,
+      "heldout_share": 0.030227,
+      "abs_diff": 0.018829
+    },
+    {
+      "cell": "male|35-44|N",
+      "dest": "N",
+      "train_share": 0.700506,
+      "heldout_share": 0.775069,
+      "abs_diff": 0.074563
+    },
+    {
+      "cell": "male|35-44|U",
+      "dest": "E",
+      "train_share": 0.853936,
+      "heldout_share": 0.551261,
+      "abs_diff": 0.302675
+    },
+    {
+      "cell": "male|35-44|U",
+      "dest": "U",
+      "train_share": 0.146064,
+      "heldout_share": 0.257728,
+      "abs_diff": 0.111664
+    },
+    {
+      "cell": "male|35-44|U",
+      "dest": "N",
+      "train_share": 0.0,
+      "heldout_share": 0.191011,
+      "abs_diff": 0.191011
+    },
+    {
+      "cell": "male|45-54|E",
+      "dest": "E",
+      "train_share": 0.976121,
+      "heldout_share": 0.973782,
+      "abs_diff": 0.002339
+    },
+    {
+      "cell": "male|45-54|E",
+      "dest": "U",
+      "train_share": 0.0,
+      "heldout_share": 0.014366,
+      "abs_diff": 0.014366
+    },
+    {
+      "cell": "male|45-54|E",
+      "dest": "N",
+      "train_share": 0.023879,
+      "heldout_share": 0.011852,
+      "abs_diff": 0.012027
+    },
+    {
+      "cell": "male|45-54|N",
+      "dest": "E",
+      "train_share": 0.27576,
+      "heldout_share": 0.162561,
+      "abs_diff": 0.113199
+    },
+    {
+      "cell": "male|45-54|N",
+      "dest": "U",
+      "train_share": 0.028297,
+      "heldout_share": 0.015367,
+      "abs_diff": 0.012931
+    },
+    {
+      "cell": "male|45-54|N",
+      "dest": "N",
+      "train_share": 0.695943,
+      "heldout_share": 0.822072,
+      "abs_diff": 0.12613
+    },
+    {
+      "cell": "male|45-54|U",
+      "dest": "E",
+      "train_share": 0.564573,
+      "heldout_share": 0.672763,
+      "abs_diff": 0.10819
+    },
+    {
+      "cell": "male|45-54|U",
+      "dest": "U",
+      "train_share": 0.055063,
+      "heldout_share": 0.0,
+      "abs_diff": 0.055063
+    },
+    {
+      "cell": "male|45-54|U",
+      "dest": "N",
+      "train_share": 0.380364,
+      "heldout_share": 0.327237,
+      "abs_diff": 0.053127
+    }
+  ]
+}
