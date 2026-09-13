@@ -1,3 +1,25 @@
+## v1.37 — 2026-09-13 — huttunen2019 cross-check landed; brand2014 numbers pinned
+
+- READ (full text, both):
+  - Huttunen & Riukula, IZA DP 12788 (Finland, plant closures 1991-2000):
+    child age-30 earnings -575.476 EUR (SE 278.543) on mean 25883.871 =
+    -2.2% (males -2.4%; females/mothers null; channel = career/study
+    choice, no GPA/crime effects). LANDED as CROSS-CHECK NOTES beside the
+    oreopoulos2008 -9.2% anchor on displacement->child_earnings (CITING 4:
+    the reported-CI band never shrinks; a working paper is never a
+    composed row).
+  - Brand & Simon Thomas, AJS 119(4):955-1001 (US SIPP, single mothers,
+    PSM): HS completion -0.037 (0.022), college attendance -0.063
+    (0.023), college completion -0.036 (0.016), CESD 25-29 +0.025
+    (0.011); adolescence timing stronger. Numbers PINNED in
+    QUEUED_EXTRACTIONS; not yet a composed row (PSM identification class
+    + new-node design are open decisions).
+- Queue corrections: sweep author error fixed (the DP is Huttunen &
+  Riukula, Finland); Schaller-Stevens and Browning-Dano-Heinesen venue
+  details marked unverified until extraction.
+- Place layer note: v1.36 county mortality posteriors verified end to end
+  (scenario/entity --place, family mobility, audit clean).
+
 ## v1.36 — 2026-09-13 — county mortality posteriors wired into the place layer
 
 - Extraction #31 COMPLETE: params/county_mortality.csv — 2748 Gamma-Poisson

@@ -50,6 +50,6 @@ def test_bib_duplicate_resolved_both_real_papers_kept():
 
 
 def test_version_bumped_and_audit_clean():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.36"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.37"
     errors = [f for f in audit(PARAMS_DIR) if f.severity == ERROR]
     assert errors == []
