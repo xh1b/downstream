@@ -93,11 +93,21 @@ def load_correlations(path: str | Path) -> list[Correlation]:
     with open(path, newline="", encoding="utf-8") as f:
         lines = [ln for ln in f if not ln.lstrip().startswith("#")]
     for row in csv.DictReader(lines):
+        spearman = float(row["spearman"])
+        if not row["from_param"].strip() or not row["to_param"].strip():
+            raise ValueError(
+                f"correlation {row['from_param']!r}->{row['to_param']!r} names a blank parameter link"
+            )
+        if not math.isfinite(spearman):
+            raise ValueError(
+                f"correlation {row['from_param'].strip()!r}->{row['to_param'].strip()!r} "
+                "has a non-finite spearman value"
+            )
         out.append(
             Correlation(
                 from_param=row["from_param"].strip(),
                 to_param=row["to_param"].strip(),
-                spearman=float(row["spearman"]),
+                spearman=spearman,
                 justification=row.get("justification", "").strip(),
             )
         )
