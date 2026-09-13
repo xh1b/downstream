@@ -122,7 +122,7 @@ def test_property_worker_line_is_monotone_in_shock_depth():
 def test_property_scenario_is_linear_in_exposure():
     parts = load_all(PARAMS_DIR)
     jobs = [
-        compute_counts(parts["params"], parts["baselines"], ScenarioInput(displaced_workers=n, net_tradable_jobs_lost=n))
+        compute_counts(parts["params"], parts["baselines"], ScenarioInput(displaced_workers=n, net_tradable_jobs_lost=n, local_job_mix="manufacturing"))
         ["modeled"]["local_service_jobs_lost"]["point"]
         for n in (10, 100, 1000)
     ]

@@ -18,27 +18,47 @@ from .params import ParameterSet
 LOCAL_MULTIPLIER = "displacement->local_service_jobs"
 SCHOOL_SPENDING = "school_spending->child_earnings"
 
+# Moretti publishes class-specific multipliers, and the stored row carries
+# both at its band edges: low = 1.6 (manufacturing), high = ~5 (high-tech).
+# They are different estimands, so a caller must declare which job class the
+# documented loss names. Class values are read from the invariant band edges
+# (not the sampleable point) so declared-class results stay fixed under
+# parameter sampling instead of silently varying across the cross-class span.
+JOB_CLASSES = ("manufacturing", "high_tech")
+
 
 def service_jobs_lost(
-    params: ParameterSet, net_tradable_jobs_lost: float
+    params: ParameterSet, net_tradable_jobs_lost: float, job_mix: str
 ) -> dict:
     """Local non-traded service jobs implied by a net tradable-job loss.
 
-    A count, additive in n. The stored low-to-high values span different job
-    classes in Moretti (manufacturing through high-tech). They are a declared
-    sensitivity span, not a confidence interval around one job mix.
+    A count, additive in n, for ONE declared job class. The row's 1.6-5.0
+    span crosses job classes and is not uncertainty around a shared
+    estimand, so the undeclared call is refused rather than answered with
+    a cross-class band.
     """
+    if job_mix not in JOB_CLASSES:
+        raise ValueError(
+            "local service-job conversion requires a declared job class "
+            "('manufacturing' or 'high_tech'); the published 1.6-5.0 span "
+            "crosses job classes and is not uncertainty around one estimand"
+        )
     p = params.by_link(LOCAL_MULTIPLIER)
+    value = p.low if job_mix == "manufacturing" else p.high
     return {
         "outcome": "local_service_jobs_lost",
         "unit": "jobs",
-        "point": net_tradable_jobs_lost * p.point,
-        "low": net_tradable_jobs_lost * p.low,
-        "high": net_tradable_jobs_lost * p.high,
+        "job_class": job_mix,
+        "point": net_tradable_jobs_lost * value,
+        "low": net_tradable_jobs_lost * value,
+        "high": net_tradable_jobs_lost * value,
         "citation": p.citation,
         "tier": p.tier,
         "population_scope": p.population_scope,
-        "support_note": "job-class sensitivity span; not a confidence interval",
+        "support_note": (
+            "single published class estimate; the row's 1.6-5.0 span "
+            "crosses job classes and is not an uncertainty band"
+        ),
     }
 
 

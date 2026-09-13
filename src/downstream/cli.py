@@ -94,6 +94,8 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--tradable-share", type=float, default=1.0)
     p.add_argument("--net-tradable-jobs-lost", type=float, default=None,
                    help="documented net metro-level loss of tradable jobs; required for local service jobs")
+    p.add_argument("--local-job-mix", choices=["manufacturing", "high_tech"], default=None,
+                   help="declared job class of the documented loss; Moretti's multipliers are class-specific")
     p.add_argument("--wage-multiplier", type=float, default=None)
     p.add_argument("--exposure-years", type=float, default=20.0)
     p.add_argument("--mortality-method", choices=["odds_survival", "legacy_additive"], default="odds_survival")
@@ -389,6 +391,7 @@ def main(argv: list[str] | None = None) -> int:
                     n_children=args.children,
                     tradable_share=args.tradable_share,
                     net_tradable_jobs_lost=args.net_tradable_jobs_lost,
+                    local_job_mix=args.local_job_mix,
                     wage_multiplier=args.wage_multiplier,
                     exposure_years=args.exposure_years,
                     mortality_method=args.mortality_method,

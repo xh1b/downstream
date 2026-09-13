@@ -31,6 +31,7 @@ class ScenarioInput:
     n_children: int = 2
     tradable_share: float = 1.0
     net_tradable_jobs_lost: float | None = None
+    local_job_mix: str | None = None       # declared class: 'manufacturing' or 'high_tech'
     wage_multiplier: float | None = None   # None = JLS default band
     exposure_years: float = 20.0           # total follow-up, including initial peak year
     label: str = "scenario"
@@ -56,6 +57,11 @@ class ScenarioInput:
                 or not math.isfinite(self.net_tradable_jobs_lost)
                 or self.net_tradable_jobs_lost < 0):
             raise ValueError('net_tradable_jobs_lost must be finite and nonnegative when supplied')
+        if self.local_job_mix is not None and self.local_job_mix not in {'manufacturing', 'high_tech'}:
+            raise ValueError(
+                "local_job_mix must be 'manufacturing' or 'high_tech' when supplied; "
+                "the published 1.6-5.0 span crosses job classes and is not uncertainty"
+            )
         if self.wage_multiplier is not None and (not math.isfinite(self.wage_multiplier) or self.wage_multiplier <= 0):
             raise ValueError('wage_multiplier must be finite and positive')
         if self.mortality_method not in {'odds_survival', 'legacy_additive'}:
@@ -173,6 +179,7 @@ def compute_counts(
             "n_children": scenario.n_children,
             "tradable_share": scenario.tradable_share,
             "net_tradable_jobs_lost": scenario.net_tradable_jobs_lost,
+            "local_job_mix": scenario.local_job_mix,
             "exposure_years": scenario.exposure_years,
         },
         "modeled": {},
@@ -183,15 +190,23 @@ def compute_counts(
     def rounded(value: float, digits: int) -> float:
         return value if _raw else round(value, digits)
 
-    # Moretti estimates net metro-level job changes, not worker replacement.
+    # Moretti estimates net metro-level job changes, not worker replacement,
+    # and publishes class-specific multipliers: the 1.6-5.0 row span crosses
+    # job classes, so a declared class is required before one is applied.
     if scenario.net_tradable_jobs_lost is None:
         computed["blocked"].append({
             "outcome": "local_service_jobs_lost",
             "reason": "requires a documented net local loss of tradable jobs; worker displacement alone is not this exposure",
         })
+    elif scenario.local_job_mix is None:
+        computed["blocked"].append({
+            "outcome": "local_service_jobs_lost",
+            "reason": "requires a declared job class ('manufacturing' or 'high_tech'); "
+                      "the published 1.6-5.0 span crosses job classes and is not uncertainty",
+        })
     else:
         computed["modeled"]["local_service_jobs_lost"] = service_jobs_lost(
-            params, scenario.net_tradable_jobs_lost
+            params, scenario.net_tradable_jobs_lost, scenario.local_job_mix
         )
 
     # Mortality counts: needs either the historical cited baseline or a

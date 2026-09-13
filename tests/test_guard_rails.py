@@ -498,6 +498,8 @@ def test_scenario_input_validations():
         ({"net_tradable_jobs_lost": True}, "net_tradable_jobs_lost"),
         ({"net_tradable_jobs_lost": -1}, "net_tradable_jobs_lost"),
         ({"net_tradable_jobs_lost": float("nan")}, "net_tradable_jobs_lost"),
+        ({"local_job_mix": "any"}, "local_job_mix must be"),
+        ({"local_job_mix": 5}, "local_job_mix must be"),
         ({"wage_multiplier": 0}, "wage_multiplier"),
         ({"wage_multiplier": float("nan")}, "wage_multiplier"),
         ({"mortality_method": "vibes"}, "unknown mortality_method"),

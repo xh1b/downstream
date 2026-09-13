@@ -82,16 +82,45 @@ def test_mortality_profile_steps_carry_population_and_tier():
         assert step["tier"] == "EXACT"
 
 
-def test_community_and_rate_steps_publish_population():
+def test_community_steps_publish_population_and_declared_class():
     parts = load_all()
     params = parts["params"]
-    jobs = service_jobs_lost(params, net_tradable_jobs_lost=2)
+    jobs = service_jobs_lost(params, net_tradable_jobs_lost=2, job_mix="manufacturing")
     assert jobs["population_scope"] == params.by_link(
         "displacement->local_service_jobs").population_scope
     result = compute_counts(params, parts["baselines"],
-                            ScenarioInput(10, net_tradable_jobs_lost=2), _raw=True)
+                            ScenarioInput(10, net_tradable_jobs_lost=2,
+                                          local_job_mix="manufacturing"), _raw=True)
     assert result["modeled"]["local_service_jobs_lost"]["population_scope"] == \
         jobs["population_scope"]
+
+
+def test_local_jobs_class_selection_uses_class_specific_estimands():
+    parts = load_all()
+    params = parts["params"]
+    row = params.by_link("displacement->local_service_jobs")
+    assert (row.low, row.high) == (1.6, 5.0)
+    manufacturing = service_jobs_lost(params, 10, "manufacturing")
+    high_tech = service_jobs_lost(params, 10, "high_tech")
+    # Each declared class returns its own published constant with a
+    # degenerate band: the row span crosses job classes, not uncertainty.
+    assert manufacturing["point"] == 16.0
+    assert high_tech["point"] == 50.0
+    for jobs in (manufacturing, high_tech):
+        assert jobs["low"] == jobs["high"] == jobs["point"]
+        assert "not an uncertainty band" in jobs["support_note"]
+    with pytest.raises(ValueError, match="declared job class"):
+        service_jobs_lost(params, 10, "any")
+
+
+def test_local_jobs_blocked_without_declared_class():
+    parts = load_all()
+    result = compute_counts(parts["params"], parts["baselines"],
+                            ScenarioInput(10, net_tradable_jobs_lost=2), _raw=True)
+    blocked = {b["outcome"]: b["reason"] for b in result["blocked"]}
+    assert "local_service_jobs_lost" in blocked
+    assert "declared job class" in blocked["local_service_jobs_lost"]
+    assert "local_service_jobs_lost" not in result["modeled"]
 
 
 _BASELINE_FIELDS = ["outcome", "unit", "population", "value", "citation",

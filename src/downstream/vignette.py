@@ -9,7 +9,6 @@ a family of this type — NEVER a deterministic claim about a person.
 from __future__ import annotations
 
 from .children import child_line
-from .community import service_jobs_lost
 from .family import daughter_violence_odds, divorce_hazard, family_size_penalty
 from .params import ParameterSet
 from .worker import worker_outcomes
@@ -55,7 +54,19 @@ def standard_family(
     divorce = divorce_hazard(params)
     fam_penalty = family_size_penalty(params, n_children)
     daughter = daughter_violence_odds(params)
-    jobs = service_jobs_lost(params, net_tradable_jobs_lost=1)
+    # The standard family identifies a displaced tradable worker, not a job
+    # class. Moretti's multipliers are class-specific (1.6 manufacturing,
+    # ~5 high-tech) and the row's span crosses classes, so the community
+    # stream stays visibly blocked here rather than borrowing a class.
+    jobs = {
+        "outcome": "local_service_jobs_lost",
+        "blocked": (
+            "requires a documented net tradable-job loss AND a declared job "
+            "class (manufacturing or high_tech); the standard family does "
+            "not identify either, and the published 1.6-5.0 span crosses "
+            "job classes rather than describing uncertainty"
+        ),
+    }
 
     out = {
         "vignette": {

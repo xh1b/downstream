@@ -61,10 +61,15 @@ def test_daughter_odds_reports_structurally_blocked_upstream():
 
 
 def test_moretti_jobs_are_a_level_ratio_not_a_multiplier():
-    jobs = service_jobs_lost(load(PARAMS), net_tradable_jobs_lost=100)
+    # One declared class at a time: the row's 1.6-5.0 span crosses job
+    # classes (manufacturing vs high-tech), it is not a band around one
+    # estimand, so each class returns its own published constant.
+    jobs = service_jobs_lost(load(PARAMS), net_tradable_jobs_lost=100, job_mix="high_tech")
     assert jobs["point"] == 500
-    assert jobs["low"] == 160  # 1.6 jobs/job for manufacturing-bound band
+    assert jobs["job_class"] == "high_tech"
     assert jobs["unit"] == "jobs"
+    manufacturing = service_jobs_lost(load(PARAMS), net_tradable_jobs_lost=100, job_mix="manufacturing")
+    assert manufacturing["point"] == 160  # 1.6 jobs/job for manufacturing
 
 
 def test_school_spending_normalizes_intensity_and_duration():
