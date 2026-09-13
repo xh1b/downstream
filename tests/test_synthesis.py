@@ -22,6 +22,53 @@ def test_random_effects_reports_heterogeneity_and_prediction_not_transport():
     hk = out["random_effects"]["hartung_knapp_sensitivity"]
     assert hk["degrees_of_freedom"] == 1
     assert hk["critical_value"] == pytest.approx(12.706)
+    assert out["random_effects"]["reml_sensitivity"]["tau2"] >= 0
+
+
+def test_prediction_interval_refused_for_two_studies():
+    out = random_effects(_rows())
+    assert out["random_effects"]["prediction_interval95"] is None
+    assert "at least three studies" in out["random_effects"]["prediction_interval_note"]
+    assert out["random_effects"]["prediction_critical_value"] is None
+
+
+def test_prediction_interval_uses_t_with_k_minus_2_df():
+    rows = [
+        StudyEstimate("a->b", "s1", .10, .02, "log_odds_ratio", "US", "IV", "year 6+"),
+        StudyEstimate("a->b", "s2", .20, .03, "log_odds_ratio", "US", "DiD", "year 6+"),
+        StudyEstimate("a->b", "s3", .15, .025, "log_odds_ratio", "US", "DiD", "year 6+"),
+    ]
+    out = random_effects(rows)
+    re = out["random_effects"]
+    assert re["prediction_critical_value"] == pytest.approx(12.706)
+    width = re["prediction_interval95"][1] - re["prediction_interval95"][0]
+    se = (re["tau2"] + re["standard_error"] ** 2) ** 0.5
+    assert width == pytest.approx(2 * 12.706 * se)
+
+
+def test_reml_sensitivity_tracks_heterogeneity():
+    homogeneous = [
+        StudyEstimate("a->b", "s1", .10, .02, "log_odds_ratio", "US", "IV", "year 6+"),
+        StudyEstimate("a->b", "s2", .10, .03, "log_odds_ratio", "US", "DiD", "year 6+"),
+        StudyEstimate("a->b", "s3", .10, .025, "log_odds_ratio", "US", "DiD", "year 6+"),
+    ]
+    flat = random_effects(homogeneous)["random_effects"]["reml_sensitivity"]
+    assert flat["tau2"] == pytest.approx(0.0, abs=1e-10)
+    assert flat["mean"] == pytest.approx(.10, abs=1e-9)
+
+    heterogeneous = [
+        StudyEstimate("a->b", "s1", .10, .02, "log_odds_ratio", "US", "IV", "year 6+"),
+        StudyEstimate("a->b", "s2", .30, .02, "log_odds_ratio", "US", "DiD", "year 6+"),
+        StudyEstimate("a->b", "s3", .50, .02, "log_odds_ratio", "US", "DiD", "year 6+"),
+    ]
+    report = random_effects(heterogeneous)
+    spread = report["random_effects"]["reml_sensitivity"]
+    dl_tau2 = report["random_effects"]["tau2"]
+    assert spread["tau2"] > 0
+    assert dl_tau2 > 0
+    assert .10 <= spread["mean"] <= .50
+    # Both estimators face the same data: they cannot disagree wildly.
+    assert spread["mean"] == pytest.approx(report["random_effects"]["mean"], abs=.15)
 
 
 def test_synthesis_blocks_singletons_and_mixed_scales():

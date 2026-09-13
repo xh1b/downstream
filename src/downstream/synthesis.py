@@ -30,6 +30,47 @@ def _t975(df: int) -> float:
     return _T975.get(df, 1.96)
 
 
+def _reml_score(tau2: float, rows: list[StudyEstimate]) -> float:
+    """REML profile score for the one-component random-effects model.
+
+    d/dtau² of the restricted log-likelihood (up to constants and the
+    -1/2 factor) for intercept-only weights w_i = 1/(se_i² + tau²) with
+    weighted residuals e_i = y_i - mu_hat(tau²); the weighted residual
+    term cross-derivative vanishes because sum(w_i e_i) = 0.
+    """
+    v = [r.standard_error**2 + tau2 for r in rows]
+    w = [1 / vi for vi in v]
+    w_sum = sum(w)
+    mean = sum(wi * r.point for wi, r in zip(w, rows)) / w_sum
+    e2 = [(r.point - mean) ** 2 for r in rows]
+    return (sum(w) - sum(wi * wi for wi in w) / w_sum
+            - sum(wi * wi * ei for wi, ei in zip(w, e2)))
+
+
+def _reml_tau2(rows: list[StudyEstimate]) -> float:
+    """REML heterogeneity estimate by bisection of the profile score.
+
+    The score crosses zero from below exactly at the restricted
+    maximum; when it is already non-negative at tau² = 0 the boundary
+    estimate 0 is the maximizer. Declared sensitivity beside the
+    DerSimonian--Laird default — neither is a small-study-safe
+    variance estimate (Viechtbauer 2005).
+    """
+    if _reml_score(0.0, rows) >= 0:
+        return 0.0
+    hi = 1.0
+    while _reml_score(hi, rows) < 0 and hi < 1e12:
+        hi *= 2.0
+    lo = 0.0
+    for _ in range(200):
+        mid = (lo + hi) / 2
+        if _reml_score(mid, rows) < 0:
+            lo = mid
+        else:
+            hi = mid
+    return (lo + hi) / 2
+
+
 @dataclass(frozen=True)
 class StudyEstimate:
     link: str
@@ -153,7 +194,36 @@ def random_effects(rows: list[StudyEstimate]) -> dict:
     hk_scale = sum(w * (r.point - mean) ** 2 for w, r in zip(re_weights, rows)) / df
     hk_se = math.sqrt(hk_scale / re_w_sum)
     hk_critical = _t975(df)
+    # REML sensitivity: same weights family, heterogeneity from the
+    # restricted likelihood instead of the DL method-of-moments.
+    reml_tau2 = _reml_tau2(rows)
+    reml_weights = [1 / (r.standard_error**2 + reml_tau2) for r in rows]
+    reml_w_sum = sum(reml_weights)
+    reml_mean = sum(w * r.point for w, r in zip(reml_weights, rows)) / reml_w_sum
+    reml_se = math.sqrt(1 / reml_w_sum)
+    # Prediction interval (Higgins, Thompson, and Spiegelhalter 2009):
+    # a t multiplier with k-2 degrees of freedom, and never reported at
+    # all below three studies — with two, between-study spread is not
+    # separable from estimation noise (Cochrane Handbook ch. 10).
     prediction_se = math.sqrt(tau2 + se**2)
+    if len(rows) >= 3:
+        pred_df = len(rows) - 2
+        pred_critical = _t975(pred_df)
+        prediction_interval95 = [mean - pred_critical * prediction_se,
+                                 mean + pred_critical * prediction_se]
+        prediction_note = (
+            f"t critical value with k-2 = {pred_df} degrees of freedom per "
+            "Higgins, Thompson, and Spiegelhalter (2009); describes a new "
+            "study on this same scale, not a transported target-population interval"
+        )
+    else:
+        pred_critical = None
+        prediction_interval95 = None
+        prediction_note = (
+            "not reported: a prediction interval needs at least three studies "
+            "(Cochrane Handbook ch. 10); with two, between-study spread is not "
+            "separable from estimation noise"
+        )
     return {
         "link": rows[0].link,
         "scale": rows[0].scale,
@@ -168,8 +238,19 @@ def random_effects(rows: list[StudyEstimate]) -> dict:
                 "critical_value": hk_critical,
                 "note": "Hartung-Knapp residual-scale sensitivity; do not treat it as reliable under unmodeled overlap or incompatible studies",
             },
+            "reml_sensitivity": {
+                "tau2": reml_tau2,
+                "mean": reml_mean,
+                "standard_error": reml_se,
+                "ci95": [reml_mean - hk_critical * reml_se, reml_mean + hk_critical * reml_se],
+                "degrees_of_freedom": df,
+                "critical_value": hk_critical,
+                "note": "REML heterogeneity sensitivity beside the DerSimonian-Laird default; both are sensitivity outputs, not admission-grade estimates",
+            },
             "tau2": tau2, "i2_percent": max(0.0, (q - df) / q * 100) if q > 0 else 0.0,
-            "prediction_interval95": [mean - 1.96*prediction_se, mean + 1.96*prediction_se],
+            "prediction_interval95": prediction_interval95,
+            "prediction_interval_note": prediction_note,
+            "prediction_critical_value": pred_critical,
         },
         "heterogeneity": {"Q": q, "df": df},
         "study_metadata": [
@@ -210,4 +291,4 @@ def synthesize(rows: tuple[StudyEstimate, ...], link: str | None = None) -> dict
         else:
             reports.append(random_effects(group))
     return {"reports": reports, "blocked": blocked,
-            "method": "DerSimonian-Laird random-effects; source-extracted compatible estimates only; plug-in intervals are sensitivity outputs, not small-study-safe intervals"}
+            "method": "DerSimonian-Laird random-effects with REML and Hartung-Knapp sensitivities; source-extracted compatible estimates only; prediction intervals require at least three studies and remain sensitivity outputs, not small-study-safe intervals"}
