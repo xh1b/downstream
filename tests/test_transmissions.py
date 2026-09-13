@@ -185,7 +185,7 @@ def test_describe_maps_walkable_and_blocked_outcomes():
     assert outcomes["earnings"]["generations"] == [
         "child", "grandchild", "greatgrandchild"]
     assert outcomes["achievement"]["depth"] == 2
-    assert outcomes["achievement"]["steps"][0]["kind"] == "sd_linear"
+    assert outcomes["achievement"]["steps"][0]["kind"] == "linear_shift"
     assert {b["outcome"] for b in d["blocked"]} == {
         "education_years", "adult_depression", "divorce"}
     blocked = {b["outcome"]: b for b in d["blocked"]}
@@ -200,7 +200,7 @@ def test_achievement_walk_composes_the_standardized_slope():
     slope = PARAMS.by_link("child_achievement_sd->grandchild_achievement_sd")
     assert child.unit == "sd_delta"
     assert (child.point, child.low, child.high) == (entry.point, entry.low, entry.high)
-    # sd_linear: the shift is multiplied by the standardized slope
+    # linear_shift: the shift is multiplied by the standardized slope
     assert grandchild.point == pytest.approx(slope.point * child.point)
     corners = [t * x for x in (child.low, child.high) for t in (slope.low, slope.high)]
     assert grandchild.low == pytest.approx(min(corners))
@@ -209,8 +209,8 @@ def test_achievement_walk_composes_the_standardized_slope():
     assert grandchild.steps[-1].evidence_role == "structural"
 
 
-def test_sd_linear_kind_orders_bands_sign_safely():
-    from downstream.ledger import SD_LINEAR, start
+def test_linear_shift_kind_orders_bands_sign_safely():
+    from downstream.ledger import LINEAR_SHIFT, start
 
     def param(link, point, low, high):
         return Parameter(link=link, from_node="f", to_node="t", point=point,
@@ -220,19 +220,19 @@ def test_sd_linear_kind_orders_bands_sign_safely():
     # negative parent shift, positive slope: band stays negative, ordered
     led = start("a", "sd_delta", 0.0).apply(
         DIRECT, param("e", -0.021, -0.04, 0.0))
-    out = led.apply(SD_LINEAR, param("t", 0.38, 0.38, 0.42))
+    out = led.apply(LINEAR_SHIFT, param("t", 0.38, 0.38, 0.42))
     assert out.point == pytest.approx(0.38 * -0.021)
     assert out.low == pytest.approx(0.42 * -0.04)
     assert out.high == pytest.approx(0.38 * 0.0)
     assert out.low <= out.point <= out.high
     # positive shift: mirrored ordering
     led_p = start("a", "sd_delta", 0.0).apply(DIRECT, param("e", 0.02, 0.01, 0.03))
-    out_p = led_p.apply(SD_LINEAR, param("t", 0.38, 0.38, 0.42))
+    out_p = led_p.apply(LINEAR_SHIFT, param("t", 0.38, 0.38, 0.42))
     assert out_p.low == pytest.approx(0.38 * 0.01)
     assert out_p.high == pytest.approx(0.42 * 0.03)
     # a non-positive slope band would flip signs unpredictably; the
     # corner min/max keeps the band ordered regardless
-    out_n = led_p.apply(SD_LINEAR, param("t", 0.38, -0.42, 0.42))
+    out_n = led_p.apply(LINEAR_SHIFT, param("t", 0.38, -0.42, 0.42))
     assert out_n.low <= out_n.point <= out_n.high
 
 
@@ -252,3 +252,19 @@ def test_cli_transmissions_walk_achievement(capsys):
     assert d["outcome"] == "achievement"
     assert list(d["generations"]) == ["child", "grandchild"]
     assert d["generations"]["grandchild"]["point"] == pytest.approx(-0.00783, abs=1e-4)
+
+
+def test_education_transmission_row_pinned_and_dangling_by_design():
+    """Row 33 landed; the walk cannot exist until the gen-2 entry lands."""
+    row = PARAMS.by_link("child_education_years->grandchild_education_years")
+    assert (row.point, row.low, row.high) == (0.296, 0.255, 0.337)
+    assert row.dist == "normal"  # SE-derived band: point sits at the midpoint
+    assert row.tier == "EXACT-results"
+    assert row.evidence_role == "structural"
+    assert "lindahl2015" in BIB
+    assert BIB["lindahl2015"].evidence == "fulltext"  # upgraded at extraction
+    # the walk is blocked only on the entry: CHAIN_KINDS admits the step
+    from downstream.ledger import CHAIN_KINDS, LINEAR_SHIFT
+    assert CHAIN_KINDS["child_education_years->grandchild_education_years"] == LINEAR_SHIFT
+    blocked = {b["outcome"]: b for b in describe(PARAMS)["blocked"]}
+    assert "LANDED" in blocked["education_years"]["missing"]

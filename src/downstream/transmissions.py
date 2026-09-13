@@ -98,7 +98,7 @@ ACHIEVEMENT = Transmission(
     steps=(
         TransmissionStep(
             link="child_achievement_sd->grandchild_achievement_sd",
-            kind="sd_linear",
+            kind="linear_shift",
             relationship="skill_persistence",
             support=("blackdevereuxsalvanes2009",),
         ),
@@ -115,20 +115,29 @@ BLOCKED_CANDIDATES = (
     {
         "outcome": "education_years",
         "entry": None,
-        "missing": "no displacement->child_education_years edge yet; the "
-                   "transmission itself is pinnable from lindahl2015's "
-                   "four-generation education measure",
-        "note": "needs BOTH the gen-2 entry and the transmission row",
+        "missing": "the transmission row itself LANDED (v1.44: "
+                   "child_education_years->grandchild_education_years, "
+                   "0.296 [0.255, 0.337], lindahl2015 Table 2); what is "
+                   "still missing is the gen-2 entry — no "
+                   "displacement->child_education_years edge exists (the "
+                   "hs_completion/college rows are probability-scale and "
+                   "cannot bridge without a declared conversion)",
+        "note": "walk exists the moment an admitted entry lands",
     },
     {
         "outcome": "adult_depression",
         "entry": "displacement_event->adult_depression_cesd",
-        "missing": "parent depression -> child depression row (candidate "
-                   "extraction: intergenerational depression transmission "
-                   "meta-analyses)",
-        "note": "the entry is scale01 (0-1 CESD index), so the walk also "
-                "needs the parent index in SD units or a same-scale "
-                "transmission",
+        "missing": "parent depression -> child depression row: candidate "
+                   "coefficients live in the parental-depression "
+                   "meta-analyses (Connell & Goodman 2002; Goodman et al. "
+                   "2011; Sutherland et al. 2022 meta-regression), but none "
+                   "was verifiable from a primary source at landing time "
+                   "(2026-09-14) — full-text pass queued",
+        "note": "two blockers: the meta-analytic association is reported "
+                "in SD units while the entry row is scale01 (0-1 CESD "
+                "index), so the walk needs the index SD or a same-scale "
+                "transmission; verify the coefficient from the actual "
+                "meta-analysis text before pinning anything",
     },
     {
         "outcome": "divorce",
