@@ -30,6 +30,7 @@ class ScenarioInput:
     displaced_workers: float
     n_children: int = 2
     tradable_share: float = 1.0
+    net_tradable_jobs_lost: float | None = None
     wage_multiplier: float | None = None   # None = JLS default band
     exposure_years: float = 20.0           # total follow-up, including initial peak year
     label: str = "scenario"
@@ -49,6 +50,12 @@ class ScenarioInput:
             raise ValueError('n_children must be a nonnegative integer')
         if self.tradable_share > 1:
             raise ValueError('tradable_share must be in [0, 1]')
+        if self.net_tradable_jobs_lost is not None and (
+                isinstance(self.net_tradable_jobs_lost, bool)
+                or not isinstance(self.net_tradable_jobs_lost, (int, float))
+                or not math.isfinite(self.net_tradable_jobs_lost)
+                or self.net_tradable_jobs_lost < 0):
+            raise ValueError('net_tradable_jobs_lost must be finite and nonnegative when supplied')
         if self.wage_multiplier is not None and (not math.isfinite(self.wage_multiplier) or self.wage_multiplier <= 0):
             raise ValueError('wage_multiplier must be finite and positive')
         if self.mortality_method not in {'odds_survival', 'legacy_additive'}:
@@ -125,7 +132,6 @@ def compute_counts(
 
     worker = worker_outcomes(params, wage_multiplier=scenario.wage_multiplier)
     line = child_line(params, place_modifier=modifier, place_application=scenario.place_application)
-    jobs = service_jobs_lost(params, scenario.displaced_workers * scenario.tradable_share)
 
     computed: dict = {
         "label": scenario.label,
@@ -159,6 +165,7 @@ def compute_counts(
             "displaced_workers": scenario.displaced_workers,
             "n_children": scenario.n_children,
             "tradable_share": scenario.tradable_share,
+            "net_tradable_jobs_lost": scenario.net_tradable_jobs_lost,
             "exposure_years": scenario.exposure_years,
         },
         "modeled": {},
@@ -169,8 +176,16 @@ def compute_counts(
     def rounded(value: float, digits: int) -> float:
         return value if _raw else round(value, digits)
 
-    # Local service jobs: a level ratio — no baseline needed.
-    computed["modeled"]["local_service_jobs_lost"] = jobs
+    # Moretti estimates net metro-level job changes, not worker replacement.
+    if scenario.net_tradable_jobs_lost is None:
+        computed["blocked"].append({
+            "outcome": "local_service_jobs_lost",
+            "reason": "requires a documented net local loss of tradable jobs; worker displacement alone is not this exposure",
+        })
+    else:
+        computed["modeled"]["local_service_jobs_lost"] = service_jobs_lost(
+            params, scenario.net_tradable_jobs_lost
+        )
 
     # Mortality counts: needs either the historical cited baseline or a
     # verified demographic profile / declared profile mixture.

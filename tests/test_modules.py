@@ -61,7 +61,7 @@ def test_daughter_odds_reports_structurally_blocked_upstream():
 
 
 def test_moretti_jobs_are_a_level_ratio_not_a_multiplier():
-    jobs = service_jobs_lost(load(PARAMS), displaced_tradable=100)
+    jobs = service_jobs_lost(load(PARAMS), net_tradable_jobs_lost=100)
     assert jobs["point"] == 500
     assert jobs["low"] == 160  # 1.6 jobs/job for manufacturing-bound band
     assert jobs["unit"] == "jobs"

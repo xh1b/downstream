@@ -55,7 +55,7 @@ def standard_family(
     divorce = divorce_hazard(params)
     fam_penalty = family_size_penalty(params, n_children)
     daughter = daughter_violence_odds(params)
-    jobs = service_jobs_lost(params, displaced_tradable=1)
+    jobs = service_jobs_lost(params, net_tradable_jobs_lost=1)
 
     out = {
         "vignette": {

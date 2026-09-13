@@ -1,9 +1,9 @@
 """Community stream: local multipliers and school spending.
 
-Moretti's multiplier is a LEVEL ratio (service jobs per displaced
-tradable job). It converts a worker count to a job count at the
-boundary — it must never be chained as a multiplier (the audit
-rejects that shape).
+Moretti's multiplier is a LEVEL ratio for a *net metro-level change*
+in tradable jobs. It does not identify the effect of replacing one
+worker with another in an existing job. It converts a documented net
+job change to a service-employment count at the boundary.
 """
 
 from __future__ import annotations
@@ -20,9 +20,9 @@ SCHOOL_SPENDING = "school_spending->child_earnings"
 
 
 def service_jobs_lost(
-    params: ParameterSet, displaced_tradable: float
+    params: ParameterSet, net_tradable_jobs_lost: float
 ) -> dict:
-    """Local non-traded service jobs implied by displaced tradable jobs.
+    """Local non-traded service jobs implied by a net tradable-job loss.
 
     A count, additive in n. Band spans Moretti's own range
     (manufacturing 1.6 to high-tech 5.0).
@@ -31,9 +31,9 @@ def service_jobs_lost(
     return {
         "outcome": "local_service_jobs_lost",
         "unit": "jobs",
-        "point": displaced_tradable * p.point,
-        "low": displaced_tradable * p.low,
-        "high": displaced_tradable * p.high,
+        "point": net_tradable_jobs_lost * p.point,
+        "low": net_tradable_jobs_lost * p.low,
+        "high": net_tradable_jobs_lost * p.high,
         "citation": p.citation,
         "tier": p.tier,
         "population_scope": p.population_scope,

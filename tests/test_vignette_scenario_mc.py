@@ -57,7 +57,7 @@ def test_legacy_scenario_both_conversions_computed_from_real_baselines():
     # count conversions now run on the REAL pinned values, nothing blocked.
     parts = load_all(PARAMS_DIR)
     out = compute_counts(
-        parts["params"], parts["baselines"], ScenarioInput(displaced_workers=100, mortality_method="legacy_additive")
+        parts["params"], parts["baselines"], ScenarioInput(displaced_workers=100, mortality_method="legacy_additive", net_tradable_jobs_lost=100)
     )
     deaths = out["modeled"]["excess_deaths"]
     # v1.10 table-pinned S&vW (sustained 1.135, peak 2.672):
@@ -79,17 +79,17 @@ def test_scenario_strict_raises_on_missing_baseline():
     # shipped set and only trips when a consumed baseline is absent
     parts = load_all(PARAMS_DIR)
     out = compute_counts(
-        parts["params"], parts["baselines"], ScenarioInput(displaced_workers=100), strict=True
+        parts["params"], parts["baselines"], ScenarioInput(displaced_workers=100, net_tradable_jobs_lost=100), strict=True
     )
     assert out["blocked"] == []
     baselines = dict(parts["baselines"])
     baselines.pop("median_male_lifetime_earnings")
     with pytest.raises(BaselineMissing):
         compute_counts(
-            parts["params"], baselines, ScenarioInput(displaced_workers=100), strict=True
+            parts["params"], baselines, ScenarioInput(displaced_workers=100, net_tradable_jobs_lost=100), strict=True
         )
     out = compute_counts(
-        parts["params"], baselines, ScenarioInput(displaced_workers=100)
+        parts["params"], baselines, ScenarioInput(displaced_workers=100, net_tradable_jobs_lost=100)
     )
     assert "child_lifetime_earnings_lost_usd" in {b["outcome"] for b in out["blocked"]}
 
