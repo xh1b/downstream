@@ -35,6 +35,7 @@ class Step:
     param: tuple[float, float, float]  # point, low, high
     value: tuple[float, float, float]  # point, low, high AFTER the step
     causal_role: str = "unspecified"
+    population_scope: str = ""  # studied population of the source estimate
 
     def as_dict(self) -> dict:
         return {
@@ -49,6 +50,7 @@ class Step:
             "value_low": self.value[1],
             "value_high": self.value[2],
             "causal_role": self.causal_role,
+            "population_scope": self.population_scope,
         }
 
 
@@ -94,6 +96,7 @@ class Ledger:
             param=(p.point, p.low, p.high),
             value=v,
             causal_role=causal_role,
+            population_scope=p.population_scope,
         )
 
     def apply(self, kind: str, param: Parameter, label: str = "", causal_role: str = "unspecified") -> "Ledger":

@@ -110,4 +110,5 @@ def _step_from(p, point: float, low: float, high: float):
         tier=p.tier,
         param=(p.point, p.low, p.high),
         value=(point, low, high),
+        population_scope=p.population_scope,
     )

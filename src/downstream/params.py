@@ -152,6 +152,16 @@ def load(path: str | Path, version: str | None = None) -> ParameterSet:
                 )
             if not p.link or p.link in seen:
                 raise ValueError(f"duplicate or empty parameter link {p.link!r}")
+            # Admission contract: a row without its extraction tier,
+            # citation, or studied population is missing metadata, not
+            # support. Blank fields are refused here rather than flowing
+            # into steps that would read as endorsed evidence.
+            blank = [f for f in ("tier", "citation", "population_scope")
+                     if not getattr(p, f).strip()]
+            if blank:
+                raise ValueError(
+                    f"parameter {p.link!r} has blank support metadata: {', '.join(blank)}"
+                )
             if not all(math.isfinite(v) for v in (p.point, p.low, p.high)):
                 raise ValueError(f"parameter {p.link!r} has non-finite values")
             if not p.low <= p.point <= p.high:
@@ -199,8 +209,26 @@ def load_baselines(path: str | Path) -> dict[str, Baseline]:
             )
             if not base.outcome or base.outcome in out:
                 raise ValueError(f"duplicate or empty baseline outcome {base.outcome!r}")
+            if base.status not in ("verified", "pending"):
+                raise ValueError(
+                    f"baseline {base.outcome!r} has unknown status {base.status!r}; "
+                    "expected 'verified' or 'pending'"
+                )
             if base.value is not None and not math.isfinite(base.value):
                 raise ValueError(f"baseline {base.outcome!r} has non-finite value")
+            # Admission contract: a verified row is what count conversions
+            # are built on, so it must pin its value and name its citation
+            # and studied population before it can support anything.
+            if base.status == "verified":
+                missing = [name for name in ("citation", "population")
+                           if not getattr(base, name)]
+                if base.value is None:
+                    missing.append("value")
+                if missing:
+                    raise ValueError(
+                        f"verified baseline {base.outcome!r} is missing "
+                        f"{', '.join(missing)}; pin them before computing counts"
+                    )
             out[base.outcome] = base
     return out
 

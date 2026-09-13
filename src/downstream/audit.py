@@ -49,7 +49,11 @@ def audit(params_dir: str | Path | None = None) -> list[Finding]:
         findings.append(Finding(ERROR, "dag", f"parameters.csv failed to load: {e}"))
         return findings
 
-    parts = load_all(d)
+    try:
+        parts = load_all(d)
+    except Exception as e:  # refusal at admission is a finding, not a crash
+        findings.append(Finding(ERROR, "inputs", f"parameter inputs failed to load: {e}"))
+        return findings
     nodes: dict = parts["nodes"]
     baselines: dict = parts["baselines"]
     bib: dict = parts["bib"]

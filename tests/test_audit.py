@@ -74,7 +74,11 @@ def test_trap_uncited_parameter(params_dir):
     rows[0]["citation"] = ""
     _write_rows(params_dir, rows, fields)
     findings = audit(params_dir)
-    assert any(f.check == "citation" and "no citation keys" in f.message for f in findings)
+    # A blank citation is now refused at admission (params.load), so the
+    # audit surfaces the load failure; the trap still names the row and
+    # the missing field.
+    assert any(f.severity == ERROR and "blank support metadata: citation" in f.message
+               for f in findings)
 
 
 def test_trap_unknown_tier(params_dir):
