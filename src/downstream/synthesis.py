@@ -82,6 +82,16 @@ def load_study_estimates(path: str | Path) -> tuple[StudyEstimate, ...]:
                 raise ValueError(f"invalid study estimate row {raw!r}") from exc
             if not row.link or not row.study_id or not row.scale or not row.citation:
                 raise ValueError("study estimate link, study_id, scale, and citation are required")
+            # population_scope/design/time_horizon are the compatibility
+            # keys; a blank field must not pool as "identical" to another
+            # blank field.
+            blank = [name for name in ("population_scope", "design", "time_horizon")
+                     if not getattr(row, name)]
+            if blank:
+                raise ValueError(
+                    f"study estimate {row.study_id!r} has blank compatibility metadata: "
+                    f"{', '.join(blank)}"
+                )
             if not all(math.isfinite(v) for v in (row.point, row.standard_error)) or row.standard_error <= 0:
                 raise ValueError(f"study estimate {row.study_id!r} must have finite point and positive standard_error")
             rows.append(row)
@@ -111,6 +121,15 @@ def random_effects(rows: list[StudyEstimate]) -> dict:
     overlap_groups = [r.overlap_group for r in rows if r.overlap_group]
     if len(scales) != 1 or len(links) != 1:
         raise ValueError("pool only one link and one identical estimand scale at a time")
+    # Programmatic rows bypass the loader, so the pooling path re-checks
+    # the compatibility fields it groups on.
+    blank = [name for name in ("population_scope", "design", "time_horizon")
+             if any(not getattr(r, name) for r in rows)]
+    if blank:
+        raise ValueError(
+            "blank compatibility metadata cannot establish like-for-like pooling: "
+            f"{' ,'.join(sorted(set(blank)))}"
+        )
     if len(populations) != 1 or len(horizons) != 1:
         raise ValueError("pool only studies with identical population_scope and time_horizon")
     if any(len(x) > 1 for x in (treatments, comparisons, definitions)):

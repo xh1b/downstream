@@ -1,8 +1,10 @@
+import csv
+
 import pytest
 
 from downstream.admission import compare_synthesis_to_parameter
 from downstream.params import load_all
-from downstream.synthesis import StudyEstimate, random_effects, synthesize
+from downstream.synthesis import StudyEstimate, load_study_estimates, random_effects, synthesize
 
 
 def _rows():
@@ -59,3 +61,46 @@ def test_complete_synthesis_metadata_removes_metadata_blocker_not_manual_review(
     assert out["metadata_complete"]
     assert out["admission_blockers"] == []
     assert out["automatic_admission"] is False
+
+
+_FIELDS = ["link", "study_id", "point", "standard_error", "scale",
+           "population_scope", "design", "time_horizon", "citation"]
+
+
+def _study_row(**overrides):
+    row = {"link": "a->b", "study_id": "s1", "point": "0.10", "standard_error": "0.02",
+           "scale": "log_odds_ratio", "population_scope": "US adults", "design": "IV",
+           "time_horizon": "year 6+", "citation": "source2026"}
+    row.update(overrides)
+    return row
+
+
+@pytest.mark.parametrize("blank_field",
+                         ["population_scope", "design", "time_horizon"])
+def test_loader_refuses_blank_compatibility_metadata(tmp_path, blank_field):
+    path = tmp_path / "studies.csv"
+    with open(path, "w", newline="") as fh:
+        writer = csv.DictWriter(fh, fieldnames=_FIELDS)
+        writer.writeheader()
+        writer.writerow(_study_row(**{blank_field: "  "}))
+    with pytest.raises(ValueError, match="blank compatibility metadata"):
+        load_study_estimates(path)
+
+
+@pytest.mark.parametrize("blank_field",
+                         ["population_scope", "design", "time_horizon"])
+def test_pooling_refuses_programmatic_rows_with_blank_compatibility(blank_field):
+    # Two blank fields would satisfy the identical-population/horizon
+    # equality check and pool silently; the pooling path must refuse them.
+    first, second = _rows()
+    blanked = StudyEstimate(
+        first.link, first.study_id, first.point, first.standard_error, first.scale,
+        **{**{n: getattr(first, n) for n in ("population_scope", "design", "time_horizon")},
+           blank_field: ""},
+    )
+    kept = StudyEstimate(
+        second.link, second.study_id, second.point, second.standard_error, second.scale,
+        **{n: getattr(second, n) for n in ("population_scope", "design", "time_horizon")},
+    )
+    with pytest.raises(ValueError, match="blank compatibility metadata"):
+        random_effects([blanked, kept])
