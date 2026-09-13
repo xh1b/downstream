@@ -53,6 +53,9 @@ def main() -> int:
     ap.add_argument("--params", default=str(ROOT / "params"))
     ap.add_argument("--out", default=None,
                     help="default: params/county_mortality.csv")
+    ap.add_argument("--estimate-prior-k", action="store_true",
+                    help="method-of-moments empirical-Bayes estimate of the prior "
+                         "strength from this export; prints a report and writes nothing")
     args = ap.parse_args()
 
     metadata_path = (Path(args.metadata) if args.metadata
@@ -65,6 +68,23 @@ def main() -> int:
         raise SystemExit("no verified all_cause_mortality_annual national baseline")
     if base.unit != "deaths_per_person_year":
         raise SystemExit(f"national baseline unit {base.unit!r} is not a rate")
+
+    parsed = parse_export(args.export, metadata=metadata)
+    observations = count_observations(parsed)
+
+    if args.estimate_prior_k:
+        from downstream.county_rates import empirical_bayes_prior_person_years
+        report = empirical_bayes_prior_person_years(observations, base.value)
+        print(json.dumps({
+            **report,
+            "declared_prior_person_years": PRIOR_PERSON_YEARS,
+            "note": "method-of-moments EB: Gamma prior matched to the between-county "
+                    "mean/variance of true rates after Poisson-noise subtraction; "
+                    "the declared k stays a choice the report informs, not a number "
+                    "this flag imposes",
+        }, indent=2))
+        return 0
+
     prior = NationalRatePrior(
         outcome="all_cause_mortality_annual",
         rate=base.value,

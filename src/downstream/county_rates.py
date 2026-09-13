@@ -111,6 +111,61 @@ def poisson_gamma_posterior(observation: CountyRateObservation, prior: NationalR
     }
 
 
+def empirical_bayes_prior_person_years(observations, prior_rate: float) -> dict:
+    """Method-of-moments empirical-Bayes estimate of the Gamma prior strength.
+
+    Models county true rates as lambda_i ~ Gamma(mean m, variance v) with
+    events_i | lambda_i ~ Poisson(py_i * lambda_i). The spread of the
+    OBSERVED rates mixes real between-county heterogeneity with Poisson
+    noise; subtracting the noise term estimates v, and the Gamma prior with
+    mean m and variance v has rate parameter k = m / v - the "prior
+    person-years" the posterior pools with. Unweighted across counties
+    (each county is one unit of heterogeneity); refusal when the data show
+    no residual heterogeneity (v <= 0), which would mean full pooling.
+    """
+    obs = list(observations)
+    if len(obs) < 30:
+        raise ValueError(f"need >= 30 county observations, got {len(obs)}")
+    if not prior_rate > 0:
+        raise ValueError("prior_rate must be positive")
+    total_events = sum(o.events for o in obs)
+    total_py = sum(o.person_years for o in obs)
+    if total_events <= 0 or total_py <= 0:
+        raise ValueError("observations must carry positive events and person-years")
+    m = total_events / total_py
+    rates = [o.events / o.person_years for o in obs]
+    n = len(rates)
+    spread = sum((r - m) ** 2 for r in rates) / n
+    noise = m * sum(1.0 / o.person_years for o in obs) / n
+    residual = spread - noise
+    result = {
+        "counties": n,
+        "pooled_rate_per_person_year": m,
+        "mean_observed_rate": sum(rates) / n,
+        "observed_rate_variance": spread,
+        "poisson_noise_variance": noise,
+        "noise_share_of_spread": noise / spread if spread > 0 else None,
+        "residual_heterogeneity_variance": residual,
+    }
+    if residual <= 0:
+        result["estimate"] = None
+        result["reason"] = ("no residual between-county heterogeneity after noise "
+                            "subtraction; EB would imply full pooling, no prior "
+                            "strength to estimate")
+        return result
+    k = m / residual
+    pys = sorted(o.person_years for o in obs)
+    def _w(q):
+        py = pys[int(q * (len(pys) - 1))]
+        return {"person_years": py, "shrinkage_weight": py / (py + k)}
+    result.update({
+        "estimate_prior_person_years": k,
+        "implied_gamma_shape": m * k,
+        "shrinkage_weight_deciles": {f"p{int(q * 100)}": _w(q) for q in (0.1, 0.25, 0.5, 0.75, 0.9)},
+    })
+    return result
+
+
 @dataclass(frozen=True)
 class CountyMortalityPosterior:
     """One county's pooled mortality rate with its full provenance chain.
