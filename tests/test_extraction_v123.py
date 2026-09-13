@@ -34,7 +34,7 @@ EXT = "household_ipv->child_externalizing_sd"
 
 
 def test_version_is_v123():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.43"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.44"
 
 
 def test_internalizing_row_exact():

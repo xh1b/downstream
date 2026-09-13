@@ -50,7 +50,7 @@ NODES = load_nodes(PARAMS_DIR / "nodes.csv")
 
 
 def test_version_is_v127():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.43"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.44"
 
 
 # --- declared per-parameter distributions -------------------------------

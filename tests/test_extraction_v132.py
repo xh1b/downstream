@@ -27,7 +27,7 @@ PARAMS = load(PARAMS_DIR / "parameters.csv")
 
 
 def test_version_is_v132():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.43"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.44"
 
 
 EDUCATION = "unconditional_income->child_education_years"

@@ -1,3 +1,32 @@
+## v1.44 — 2026-09-14 — generational transmission rows 32-33: achievement and education walk toward grandchildren
+
+- REGISTRY LANDED (prior commit): `src/downstream/transmissions.py` —
+  one admitted parent->child relationship per outcome, applied
+  recursively; per-step evidence support; audit drift guard on unrolled
+  copies; `downstream transmissions [--walk OUTCOME]` renders the map
+  and the walks.
+- ROW 32 LANDED: child_achievement_sd->grandchild_achievement_sd
+  0.38 [0.38, 0.42] EXACT-results (blackdevereuxsalvanes2009, Economics
+  Letters 105(1):138-140 via IZA DP 3651: the father-son IQ correlation
+  .38; band = the single-measure replications to the Bowles-Gintis 2002
+  lower bound; the authors' "no causal interpretation whatsoever"
+  caveat travels on the row). New `linear_shift` ledger kind composes
+  standardized shifts (unit rule sd_delta->sd_delta). The ACHIEVEMENT
+  walk is live: displacement -0.021 SD -> grandchild -0.008 SD.
+- ROW 33 TRANSMISSION LANDED: child_education_years->
+  grandchild_education_years 0.296 [0.255, 0.337] EXACT-results dist
+  normal (lindahl2015 Table 2, SE 0.021, N=1,823, read in full via IZA
+  DP 6463; bib upgraded to fulltext). DANGLING UPSTREAM by design: no
+  displacement->child_education_years entry yet, so no walk — reported
+  as the outcome's remaining gap.
+- DOI discipline: a search surface returned a WRONG DOI for BDS 2009
+  (resolved to an unrelated paper); caught by Crossref verification and
+  pinned as 10.1016/j.econlet.2009.06.022.
+- ROWS 34-35 (depression, divorce transmission) stay queued: no
+  primary-source-verifiable coefficient at landing time; the divorce
+  walk additionally needs a conditional composition kind (only the
+  dissolved marriages transmit).
+
 ## v1.43 — 2026-09-13 — the six second-sweep studies extracted and landed
 
 - ALL SIX second-sweep candidates read from open full text and landed.
