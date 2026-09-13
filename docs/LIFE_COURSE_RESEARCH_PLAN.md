@@ -52,15 +52,18 @@ resolution at which time is simulated. Annual steps are a candidate starting
 point; short-duration events need finer timing or a documented approximation.
 
 Longitudinal data such as [PSID](https://psidonline.isr.umich.edu/default.aspx)
-are worth assessing for household, earnings, and intergenerational dynamics.
-The [2026-09-13 PSID assessment](PSID_BASELINE_DATA_ASSESSMENT_2026-09-13.md)
-names PSID the best scientific fit with declared limitations: biennial
-interviewing since 1997, public geography capped at state/region, and a
-license that routes reproduction through the open ICPSR-PSID extract
-repository rather than data shipped in-repo. The dataset decision is a
-licensing-posture call (PSID-with-terms versus the public-domain SIPP,
-whose panel science is weaker) and remains with the owner; no transitions
-have been computed yet.
+were first assessed, then ruled out for this project's workflow: PSID is
+distributed under ICPSR terms whose LLM policy forbids sharing the
+microdata with cloud LLM agents — the way this repository is built and
+operated ([2026-09-13 PSID assessment](PSID_BASELINE_DATA_ASSESSMENT_2026-09-13.md);
+it remains citation-only). The Census Bureau's
+[SIPP](https://www.census.gov/programs-surveys/sipp.html) was adopted in
+its place ([2026-09-13 SIPP assessment](SIPP_BASELINE_DATA_ASSESSMENT_2026-09-13.md)):
+public-domain, redistributable, LLM-compatible, with declared
+limitations — short panels, coarse public geography, higher attrition.
+No baseline transitions have been computed yet; the download, variable
+verification, and one held-out transition reproduction are the next R2
+steps.
 
 ### 2. Separate three evidential roles
 
