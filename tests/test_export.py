@@ -18,6 +18,7 @@ What this file hunts:
 """
 import json
 import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -95,7 +96,7 @@ def test_refuses_when_audit_red(tmp_path):
 def test_cli_export_matches_build():
     doc = json.loads(
         subprocess.run(
-            [str(ROOT / ".venv" / "bin" / "downstream"), "export"],
+            [sys.executable, "-m", "downstream.cli", "export"],
             capture_output=True,
             text=True,
             check=True,
