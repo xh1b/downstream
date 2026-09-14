@@ -100,5 +100,4 @@ w9360,https://www.nber.org/system/files/working_papers/w9360/w9360.pdf,0b9ca6a75
 w9652,https://www.nber.org/system/files/working_papers/w9652/w9652.pdf,0ad60babe5bcb4dc03f42d1b549b78c7342e0030d64319b2579e42a06aa76fe2,58,true,verified_pdf,unreviewed,acquired,w9652.pdf
 w9769,https://www.nber.org/system/files/working_papers/w9769/w9769.pdf,f5092d417c325eda88643d6008105809b0663785e571626ba09716043f8de00f,31,true,verified_pdf,screened,finding_recorded,w9769.pdf
 black2007_iza_dp1864,https://ftp.iza.org/dp1864.pdf,34398bafbe14556b64cee135f673be3c95042205049040e055bf0bf07d91d317,58,true,verified_pdf,screened,finding_recorded,black2007_iza_dp1864.pdf
-knop2018_pmc6405546,https://pmc.ncbi.nlm.nih.gov/articles/PMC6405546/,pmc_oai_fulltext_xml_2026-09-14,12,true,verified_pmc_xml,screened,finding_recorded,knop2018_pmc6405546.xml
-royer2009_aea_abstract_page,https://www.aeaweb.org/articles?id=10.1257/app.1.1.49,3a752afcf5a0f29864dc7d033eb0f4b2b37b2d2327ec595adf41a97cb9772829,1,true,verified_html_abstract,screened,finding_recorded,royer2009_aea_abstract_page.html
+knop2018_pmc6405546,https://europepmc.org/articles/PMC6405546?pdf=render,531823c2cd58e1a306a57d64531a64ed3d7083d53d72514f08c43e7d016a08fe,12,true,verified_pdf,screened,finding_recorded,knop2018_pmc6405546.pdf
