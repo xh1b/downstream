@@ -117,12 +117,27 @@ BLOCKED_CANDIDATES = (
         "entry": None,
         "missing": "the transmission row itself LANDED (v1.44: "
                    "child_education_years->grandchild_education_years, "
-                   "0.296 [0.255, 0.337], lindahl2015 Table 2); what is "
-                   "still missing is the gen-2 entry — no "
-                   "displacement->child_education_years edge exists (the "
-                   "hs_completion/college rows are probability-scale and "
-                   "cannot bridge without a declared conversion)",
-        "note": "walk exists the moment an admitted entry lands",
+                   "0.296 [0.255, 0.337], lindahl2015 Table 2); the gen-2 "
+                   "entry is a DOCUMENTED NULL, not an unextracted number: "
+                   "the best register designs find no displacement effect "
+                   "on children's educational level — Huttunen & Riukula "
+                   "(Labour Economics 2024; read via IZA DP 12788) Table 2: "
+                   "tertiary ed -0.002 (SE 0.008), N=182,697, 'no evidence "
+                   "that the father's job loss affects the educational "
+                   "level'; Oreopoulos, Page & Huff-Stevens 2008 (JLE "
+                   "26(3)) carry the -9% son-earnings penalty at similar "
+                   "schooling levels and report no education regression; "
+                   "Bratberg, Nilsen & Vaage 2008 (Labour Economics "
+                   "15(4)) regress child earnings only (father displaced "
+                   "-0.004 [0.019], itself null) with education in "
+                   "descriptives. The positive effects live on probability "
+                   "scales (Hilger 2016 enrollment; Bingley et al. 2023 "
+                   "HS enrollment; Coelli 2005 attendance) — the "
+                   "hs_completion/college rows cannot bridge to edu_years "
+                   "without a declared conversion",
+        "note": "walk goes live only via a declared probability->years "
+                "conversion; admitting a null entry would just make the "
+                "walk report an undetectable grandchild shift",
     },
     {
         "outcome": "adult_depression",
