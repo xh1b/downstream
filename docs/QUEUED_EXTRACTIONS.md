@@ -165,3 +165,37 @@ still requires the standard full-text table extraction.
 | Black, Devereux & Salvanes, "Losing Heart? The Effect of Job Displacement on Health" (NBER w18660; verify published venue/pages at extraction — Bloemen 2018 cites it as 2015 on smoking-related disease) | Norwegian registers (verify at extraction), plant closures | Health-BEHAVIOR mechanism beside the mortality cause rows (ES attributes long-run mortality to smoking; this is the morbidity-side evidence) | NBER w18660 open PDF |
 | Tyagi 2026, Social Science Research (S0049089X26000517) | Norwegian plant closures, couples | Cross-jurisdiction fertility check beside huttunenkellokumpi2016 (Finland) and delbono2012 (Austria) | ScienceDirect; verify open access at extraction |
 | Hofmann 2017, "Job Displacement and First Birth Over the Business Cycle" (PMC5486876; journal to verify at extraction) | Register data, first births, business-cycle interaction (verify design at extraction) | Fertility timing x macro-state (recession vs expansion displacement) — extends the v1.43 fertility row's context-dependence | PMC open |
+
+## Fetal-channel queue (opened v1.45, 2026-09-14)
+
+The v1.45 chain landed the earnings and disease-hazard dose-response
+rows. These four extractions complete the channel; none may land
+without its stated precondition.
+
+| Extraction | What it needs before landing | Numbers already recorded |
+|:--|:--|:--|
+| BDS 2007 HS completion (bds2007 twin FE: +0.95pp per +10% BW, SE 0.04) | a (GAP, PROB) dose-response composition decision — hs_completion is a probability-LEVEL node and boundary-applied; a RR-per-log-BW translation must be declared first | evidence_findings: bds2007_twinfe_hs_completion_pp |
+| BDS 2007 IQ (twin FE: +0.06 stanine per +10% BW, SE 0.18) | an SD translation row (stanine SD = 2) and a consumer node | evidence_findings: bds2007_twinfe_iq_stanine |
+| BDS 2007 one-year mortality (FE -41.15 per 1000 per log BW, SE 7.64) | a baseline infant-mortality node, a functional-form choice (logit marginals ~6x smaller), and a transport declaration (Norway 1967-88 -> US); the FE gradient flips sign across periods — the instability travels with any future row | evidence_findings: bds2007_twinfe_1yr_mortality |
+| Royer 2009 intergenerational BW (abstract reports effects "generally small" incl. offspring birth weight; the full PDF is paywalled and the evidence corpus is PDF-hash-pinned, so no finding row exists for it yet) | acquire the AEJ:Applied full-text PDF, then extract her Table 4/5 coefficients; until then NO offspring-birth-weight row may be fabricated | bib key royer2009 (xh1b-evidence: abstract); full text NOT yet in corpus |
+
+## Receiving-community channel queue (opened 2026-09-14)
+
+From `docs/IMMIGRATION_REPLACEMENT_EVIDENCE_SCAN_2026-09-14.md`: screen
+the six verified anchor channels through the admission contract. The
+crime channel carries one extra gate — an INDEPENDENCE CHECK (below)
+because the leading meta-analysis (Ousey & Kubrin 2018) is contested
+by the model's owner.
+
+- Independence check (crime): the near-null must be corroborated by at
+  least three quasi-experimental teams with no co-authorship or
+  shared-institution ties to Ousey/Kubrin, including at least one
+  team with no pro-immigration publication record — candidate
+  independent anchors already surfaced by the scan: Light & Miller
+  (AJPH 2018), Light/He/Robey (AJPH 2020), Bell, Fasani & Machin
+  (REStat/JEEA UK), plus European register studies. If independence
+  fails, the crime channel stays UNMODELED (silence, not a borrowed
+  null).
+- Mental-health anchor: Shin 2026 (IZA DP 18586, Jeju Island
+  quasi-experiment) — working-paper tier; re-check for journal
+  publication before screening.

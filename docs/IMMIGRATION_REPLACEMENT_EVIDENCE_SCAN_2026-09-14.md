@@ -142,6 +142,44 @@ silence or a uniform sign.
    with population_scope declared, as the existing non-US rows
    (browningheinesen2012, marcus2013, bingley2026) already are.
 
+## The crime channel is CONTESTED and gated (2026-09-14)
+
+The model's owner objected to the Ousey & Kubrin meta-analysis on the
+grounds that a co-author's wider record (Kubrin's rap-music expert
+testimony and advocacy-adjacent publications) is a conflict of
+interest. The record part is factually true; what follows from it is
+governed by the admission contract, not by motive:
+
+- **Motive is not an estimand.** This repo does not admit OR reject
+  evidence because of an author's presumed politics — the same standard
+  that admits the displacement literature (whose authors also have
+  priors) applies here. What the contract weighs is identification
+  quality, replication independence, and declared scope.
+- **The legitimate core of the objection is publication bias**, which
+  is real in contested fields and runs in BOTH directions. The
+  contract's defenses: design tiers, pre-registration checks, and —
+  added here — an explicit independence gate for this channel.
+- **Independence gate (the channel stays closed until it passes):** the
+  immigration-crime null must be corroborated by at least three
+  quasi-experimental teams with no co-authorship or shared-institution
+  ties to Ousey/Kubrin (UC Irvine), including at least one team whose
+  prior publication record gives them no pro-immigration incentive.
+  Independent anchors already surfaced: Michael Light's program
+  (Light & Miller, AJPH 2018, PMID 28727520-adjacent series; Light,
+  He & Robey, "The Myth of the Criminal Immigrant", AJPH 2020;
+  Light & Tran, Criminology 2017, PMID 30464356 — University of
+  Wisconsin, no UC Irvine ties) and the UK econ side (Bell, Fasani &
+  Machin, Review of Economic Studies 2013). First-pass screening: the
+  panel exists and is independent; full table extraction still
+  required before any row.
+- **What the null would mean if it lands:** a near-null aggregate link,
+  with population scope declared (US/EU totals). It would NOT certify
+  "no effect in every receiving community or composition" — it would
+  bound the average effect the engine may compose, which is the only
+  claim a parameter row ever makes.
+- **If the gate fails,** the crime channel stays UNMODELED — silence,
+  never a borrowed number in either direction.
+
 ## Explicitly out of scope for this scan
 
 - Aggregate/macro effects of immigration (growth, fiscal balances at
