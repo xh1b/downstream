@@ -71,3 +71,4 @@ annual_birth_response,probability,"probability of a birth in the year for the co
 child_depression_anxiety,probability,"probability of a child's depression/anxiety report vs unexposed peers; LEVEL change in probability points (schallerzerpa2019 US MEPS LPM, paternal job loss; boundary-applied, never chained)"
 adult_type2_diabetes_hazard,odds_ratio,"relative odds of adult type-2 diabetes vs the same birth at counterfactual birth weight (log-dose-response per log birth weight; fetal-origins channel, composes from infant_birth_weight)"
 adult_cardiovascular_disease_hazard,odds_ratio,relative odds of adult cardiovascular disease vs the same birth at counterfactual birth weight (log-dose-response; pooled incidence+death gradient)
+child_divorce_hazard,rate_ratio,"child's own divorce hazard vs counterfactual (offspring of disrupted marriages; walk generation 3 — the parent's own divorce hazard transmits only through the share of marriages that actually dissolve)"
