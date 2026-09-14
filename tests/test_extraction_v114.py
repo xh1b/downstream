@@ -54,6 +54,6 @@ def test_usd_usd_pair_is_boundary_applied():
 
 
 def test_version_bumped_and_audit_clean():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.45"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.46"
     errors = [f for f in audit(PARAMS_DIR) if f.severity == ERROR]
     assert errors == []

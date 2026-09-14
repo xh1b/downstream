@@ -1,3 +1,29 @@
+## v1.46 — 2026-09-15 — the divorce transmission row: parental disruption walks to child own-divorce (walk blocked on the mixture kind, by design)
+
+- NEW TRANSMISSION ROW: `divorce_hazard->child_divorce_hazard` 1.88
+  [1.57, 2.24] EXACT-results — McLanahan & Bumpass 1988 (AJS 94(1):130-152,
+  DOI 10.1086/228954; read in full via IRP DP 805-86 with an OCR
+  prose↔table cross-check: zero-order exp(.65)=1.92 matches the text's
+  "92 percent more likely to experience a marital disruption"; the landed
+  band is the background-controlled β 0.63 (SE 0.09) exponentiated).
+  BESIDE on the row: education-adjusted 1.67, Black women 1.36,
+  widowhood 1.35 — disruption carries the effect, not parent absence.
+- EXTRACTION HONESTY: gruber2004 ELIMINATED as the divorce-transmission
+  pin (full text via NBER w7968: a unilateral-divorce LAW-exposure ITT
+  with "no rise in the odds of being divorced" — earlier marriage +
+  churning that fades by middle age); bib VENUE CORRECTED to JOLE
+  22(4):799-833, DOI 10.1086/423155 (was mislabeled JPE 112(5)).
+- THE WALK STAYS BLOCKED BY DESIGN: the row composes only through a
+  conditional/mixture composition kind (only the displaced marriages
+  that actually dissolve transmit) — to be designed separately.
+  `downstream transmissions` reports the registry state.
+- EDUCATION-ENTRY HUNT RECORDED (no row): displacement → child
+  educational level is a DOCUMENTED NULL in the best register designs
+  (Huttunen & Riukula 2024 Table 2: −0.002 (0.008), N=182,697;
+  Oreopoulos et al. 2008 report no education regression; Bratberg et
+  al. 2008 regress child earnings only). The education_years walk goes
+  live only via a declared probability→years bridge.
+
 ## v1.45 — 2026-09-14 — fetal dose-response chain: birth weight walks to adult earnings and disease hazards
 
 - CHAIN ADMITTED: the in-utero cohort chain
