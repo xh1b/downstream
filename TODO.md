@@ -39,6 +39,12 @@ See `docs/MATH_REVIEW.md` for reviewed arithmetic and remaining assumptions.
 - **[R3] First full comparison:** a five-year involuntary-displacement scenario
   versus a stated reference, limited to supported employment, earnings, and
   household-resource outcomes. Current long-run coefficients are not annual paths.
+  The 2026-09-14 scenario review surfaced a second gap: the engine is silent on
+  receiving-community effects of replacement inflows (unmodeled, not estimated
+  zero). Anchors for rents, native wages, host mental health, trust, crime, and
+  voting are verified in
+  `docs/IMMIGRATION_REPLACEMENT_EVIDENCE_SCAN_2026-09-14.md`; next: screen them
+  through the admission contract into queued extractions.
 - **[R4-R5] Independent validation and applicability:** freeze a matched event
   evaluation, compare with simple models, and report subgroup and uncertainty limits.
 - **[W0-W3] Calculator design:** research useful questions, write the explanation
