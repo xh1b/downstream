@@ -157,9 +157,16 @@ BLOCKED_CANDIDATES = (
     {
         "outcome": "divorce",
         "entry": "displacement->divorce_hazard",
-        "missing": "parental divorce -> child own-divorce row (gruber2004 "
-                   "documents the own-divorce effect; needs full-text "
-                   "pinning as its own row)",
+        "missing": "parental divorce -> child own-divorce row. The queue's "
+                   "gruber2004 assumption FAILED at extraction (2026-09-15, "
+                   "full text via NBER w7968): it is a unilateral-divorce "
+                   "law-exposure ITT, and its own-divorce result is 'no "
+                   "rise in the odds of being divorced' - earlier marriage "
+                   "plus separation/churning that fades by middle age. The "
+                   "real pins are the family-demography transmission "
+                   "hazards: McLanahan & Bumpass 1988 (Demography 25(2)), "
+                   "Amato & DeBoer 2001 (JMF), or a Scandinavian register "
+                   "hazard",
         "note": "also needs a conditional composition kind: only the "
                 "share of marriages that actually dissolve transmit",
     },
