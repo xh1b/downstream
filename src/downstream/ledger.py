@@ -88,15 +88,15 @@ class Ledger:
             # shipped GAP rule is this map's first-order Taylor expansion
             # at value=1; for 0 <= value <= 1 and 0 <= t <= 1 it retains
             # no more than GAP (equality at 0 and 1). Neither expression
-            # identifies an intervention response, so this kind exists
-            # for the declared ensemble alternate (variants.py) with the
-            # same structural_transmission_assumption causal role — it is
-            # deliberately absent from CHAIN_KINDS.
-            if min(self.point, self.low, self.high) < 0 or min(p.point, p.low, p.high) < 0:
+            # identifies an intervention response. Admitted into
+            # CHAIN_KINDS only for the fetal dose-response links, whose
+            # dose-response slopes are log-log elasticities by
+            # construction (BDS 2007 Table 5; Knop 2018 pooled ORs).
+            if min(self.point, self.low, self.high) <= 0:
                 raise ValueError(
-                    "gap_log_elastic composition needs a non-negative incoming "
-                    "value and transmission band; a fractional power of a "
-                    "negative base is undefined here"
+                    "gap_log_elastic composition needs a strictly positive "
+                    "incoming value; a fractional power of a non-positive "
+                    "base is undefined here"
                 )
             corners = [x ** t for x in (self.low, self.high) for t in (p.low, p.high)]
             v = (self.point ** p.point, min(corners), max(corners))
@@ -168,6 +168,10 @@ CHAIN_KINDS = {
     "displacement_event->child_achievement_sd": DIRECT,
     "child_achievement_sd->grandchild_achievement_sd": LINEAR_SHIFT,
     "child_education_years->grandchild_education_years": LINEAR_SHIFT,
+    "displacement->infant_birth_weight": DIRECT,
+    "infant_birth_weight->child_earnings": GAP_LOG,
+    "infant_birth_weight->adult_type2_diabetes_hazard": GAP_LOG,
+    "infant_birth_weight->adult_cardiovascular_disease_hazard": GAP_LOG,
 }
 
 # Composition has a different epistemic status from its arithmetic. These
@@ -181,6 +185,10 @@ CHAIN_CAUSAL_ROLES = {
     "displacement_event->child_achievement_sd": "direct_displacement_estimate",
     "child_achievement_sd->grandchild_achievement_sd": "structural_transmission_assumption",
     "child_education_years->grandchild_education_years": "structural_transmission_assumption",
+    "displacement->infant_birth_weight": "direct_displacement_estimate",
+    "infant_birth_weight->child_earnings": "structural_transmission_assumption",
+    "infant_birth_weight->adult_type2_diabetes_hazard": "structural_transmission_assumption",
+    "infant_birth_weight->adult_cardiovascular_disease_hazard": "structural_transmission_assumption",
 }
 
 

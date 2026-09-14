@@ -1,3 +1,47 @@
+## v1.45 — 2026-09-14 — fetal dose-response chain: birth weight walks to adult earnings and disease hazards
+
+- CHAIN ADMITTED: the in-utero cohort chain
+  displacement_event -> infant_birth_weight (lindo2011, landed v1.x)
+  -> child_earnings / adult_type2_diabetes_hazard /
+  adult_cardiovascular_disease_hazard is now composable
+  (`CHAIN_KINDS` + causal roles in ledger.py). `gap_log_elastic` is
+  chainable for the first time: its dose-response slopes are log-log
+  elasticities by construction, and its guard now requires a strictly
+  positive BASE while allowing negative exponent bands (protective
+  gradients flip the monotonicity; corner arithmetic already covered
+  it).
+- ROW LANDED: infant_birth_weight->child_earnings 0.10 [0.0216,
+  0.1784] EXACT (black2007, QJE 122(1):409-439 via IZA DP 1864 Table 5,
+  twin FE on ln(BW), SE 0.04; a ln-ln elasticity by construction:
+  +10% BW -> ~+1% adult full-time earnings). Composed on the Lindo BW
+  shift: 0.9541^0.10 = 0.9953 -> -0.47% adult earnings — an order of
+  magnitude under the childhood-exposure channel (oreopoulos2008,
+  -9.24%), and a DIFFERENT population (in-utero vs childhood
+  exposure): the rows are never additive.
+- ROWS LANDED (medical): infant_birth_weight->adult_type2_diabetes_hazard
+  -0.9637 [-1.3834, -0.5401] and
+  infant_birth_weight->adult_cardiovascular_disease_hazard -0.6994
+  [-0.8173, -0.5850] EXACT (knop2018, JAHA 7(23):e008870, pooled
+  random-effects ORs per +1 kg BW: 0.78 [0.70-0.87] and 0.835
+  [0.81-0.86], converted to log elasticities on a DECLARED 3.4 kg mean
+  BW anchor). Composed: +4.6% T2D odds, +3.3% CVD odds for the
+  in-utero cohort. J-shape caveat travels on the rows (downward shifts
+  stay on the inverse branch; the high-tail upturn never enters).
+- FINDINGS RECORDED (not composable yet, honestly queued):
+  bds2007 twin-FE HS completion (+0.95pp per +10% BW; needs a
+  probability translation — hs_completion is a probability-LEVEL
+  node), bds2007 twin-FE IQ (+0.06 stanine per +10% BW; needs an SD
+  translation), bds2007 twin-FE one-year mortality (-41.15 per 1000
+  per log BW, SE 7.64 — UNSTABLE across periods/sex-composition and
+  needs a baseline node; recorded with the instability traveling
+  beside it), royer2009 intergenerational BW (abstract-only: effects
+  "generally small"; bounds the generational walk — no offspring-BW
+  row may be fabricated without her tables).
+- USER QUESTION THAT DROVE THIS: "arent lighter babies more likely to
+  have a variety of diseases, earn less" — yes, and now the engine
+  carries the identified part of that chain with the double-counting
+  scope rule declared on every row.
+
 ## v1.44 — 2026-09-14 — generational transmission rows 32-33: achievement and education walk toward grandchildren
 
 - REGISTRY LANDED (prior commit): `src/downstream/transmissions.py` —

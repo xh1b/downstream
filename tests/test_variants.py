@@ -104,7 +104,7 @@ def test_log_elastic_rule_retains_no_more_than_the_linear_rule():
     assert finite == pytest.approx(direct ** t)
 
 
-def test_gap_log_refuses_negative_inputs():
+def test_gap_log_takes_negative_exponents_but_never_a_nonpositive_base():
     from dataclasses import replace
 
     from downstream.ledger import GAP_LOG, start
@@ -113,11 +113,17 @@ def test_gap_log_refuses_negative_inputs():
     p = Parameter(link="x->y", from_node="x", to_node="y", point=0.4, low=0.2, high=0.6,
                   tier="canonical", citation="t:2000", population_scope="test",
                   evidence_role="structural")
+    # Negative exponents are legal since v1.45 (protective gradients:
+    # more birth weight, less disease risk flip the monotonicity).
     negative_band = replace(p, point=-0.4, low=-0.6, high=-0.2)
-    with pytest.raises(ValueError, match="non-negative"):
-        start("y", "gap_multiplier", value=0.5).apply(GAP_LOG, negative_band)
-    with pytest.raises(ValueError, match="non-negative"):
+    led = start("y", "gap_multiplier", value=0.5).apply(GAP_LOG, negative_band)
+    assert led.low <= led.point <= led.high
+    assert led.point == pytest.approx(0.5 ** -0.4)
+    # A non-positive base stays undefined for fractional powers.
+    with pytest.raises(ValueError, match="strictly positive"):
         start("y", "gap_multiplier", value=-0.5).apply(GAP_LOG, p)
+    with pytest.raises(ValueError, match="strictly positive"):
+        start("y", "gap_multiplier", value=0.0).apply(GAP_LOG, p)
 
 
 def test_chain_refuses_the_log_elastic_rule():
