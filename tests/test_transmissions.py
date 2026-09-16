@@ -176,9 +176,10 @@ def test_cli_transmissions_verb(capsys):
 
     assert main(["transmissions"]) == 0
     d = json.loads(capsys.readouterr().out)
-    assert [w["outcome"] for w in d["walkable"]] == ["earnings", "achievement"]
+    assert [w["outcome"] for w in d["walkable"]] == [
+        "earnings", "achievement", "divorce"]
     assert d["walkable"][0]["depth"] == 3
-    assert len(d["blocked"]) == 3
+    assert len(d["blocked"]) == 2
 
 
 def test_describe_maps_walkable_and_blocked_outcomes():
@@ -189,11 +190,14 @@ def test_describe_maps_walkable_and_blocked_outcomes():
         "child", "grandchild", "greatgrandchild"]
     assert outcomes["achievement"]["depth"] == 2
     assert outcomes["achievement"]["steps"][0]["kind"] == "linear_shift"
+    # the divorce walk lands its entry on the WORKER's own hazard
+    assert outcomes["divorce"]["generations"] == ["worker", "child"]
+    assert outcomes["divorce"]["unit"] == "rate_ratio"
+    step = outcomes["divorce"]["steps"][0]
+    assert step["kind"] == "conditional_mixture"
+    assert step["share"] == "married_cohort->parental_dissolution_share"
     assert {b["outcome"] for b in d["blocked"]} == {
-        "education_years", "adult_depression", "divorce"}
-    blocked = {b["outcome"]: b for b in d["blocked"]}
-    assert blocked["divorce"]["entry"] == "displacement->divorce_hazard"
-    assert "conditional" in blocked["divorce"]["note"]
+        "education_years", "adult_depression"}
 
 
 def test_achievement_walk_composes_the_standardized_slope():
@@ -244,7 +248,7 @@ def test_find_transmission_names_the_gap():
 
     assert find_transmission("achievement").outcome == "achievement"
     with pytest.raises(KeyError, match="no admitted transmission walk"):
-        find_transmission("divorce")
+        find_transmission("depression")
 
 
 def test_cli_transmissions_walk_achievement(capsys):
@@ -258,7 +262,8 @@ def test_cli_transmissions_walk_achievement(capsys):
 
 
 def test_education_transmission_row_pinned_and_dangling_by_design():
-    """Row 33 landed; the walk cannot exist until the gen-2 entry lands."""
+    """Row 33 landed; the entry is a documented null, so the walk stays
+    blocked pending a declared probability->years bridge."""
     row = PARAMS.by_link("child_education_years->grandchild_education_years")
     assert (row.point, row.low, row.high) == (0.296, 0.255, 0.337)
     assert row.dist == "normal"  # SE-derived band: point sits at the midpoint
@@ -404,7 +409,7 @@ def test_cli_walk_refuses_unknown_and_blocked_outcomes_cleanly(capsys):
     walk — never a raw KeyError traceback."""
     from downstream.cli import main
 
-    for name in ("nosuchoutcome", "divorce", "education_years",
+    for name in ("nosuchoutcome", "education_years",
                  "adult_depression"):
         with pytest.raises(SystemExit) as ei:
             main(["transmissions", "--walk", name])
@@ -431,3 +436,81 @@ def test_cli_transmissions_refuses_a_broken_registry_cleanly(tmp_path, capsys):
     hits = [f for f in audit(work) if f.check == "transmission"]
     assert hits and hits[0].severity == ERROR
     assert "failed to load" in hits[0].message
+
+
+def test_divorce_walk_is_the_conditional_mixture():
+    """The walk composes ONLY the extra dissolutions: worker hazard 1.11
+    over a 6.9% counterfactual share exposes ~0.73pp more children, and
+    each of those carries the 1.88 own-divorce hazard. Infra-marginal
+    dissolutions carry 1.88 in both worlds and cancel."""
+    from downstream.ledger import CONDITIONAL_MIXTURE, DIRECT, start
+
+    out = walk(PARAMS, find_transmission("divorce"))
+    worker, child = out["worker"], out["child"]
+    entry = PARAMS.by_link("displacement->divorce_hazard")
+    hazard = PARAMS.by_link("divorce_hazard->child_divorce_hazard")
+    share = PARAMS.by_link("married_cohort->parental_dissolution_share")
+    assert worker.unit == "rate_ratio"
+    assert (worker.point, worker.low, worker.high) == (
+        entry.point, entry.low, entry.high)
+    # walker == explicit composition
+    explicit = start("divorce_hazard", "rate_ratio").apply(
+        DIRECT, entry, causal_role="direct_displacement_estimate").apply(
+        CONDITIONAL_MIXTURE, hazard, causal_role="structural_transmission_assumption",
+        aux=share)
+    assert child == explicit
+    # the mixture arithmetic, checked against the source's own numbers
+    sv = lambda m, s: 1 - (1 - s) ** m
+    expected_point = 1 + (sv(1.11, 0.069) - 0.069) * (1.88 - 1)
+    assert child.point == pytest.approx(expected_point)
+    assert child.point == pytest.approx(1.0064, abs=1e-4)
+    corners = [1 + (sv(m, s) - s) * (t - 1)
+               for m in (entry.low, entry.high)
+               for t in (hazard.low, hazard.high)
+               for s in (share.low, share.high)]
+    assert child.low == pytest.approx(min(corners))
+    assert child.high == pytest.approx(max(corners))
+    assert child.low < child.point < child.high
+    # the effect is small BECAUSE it is a mixture: +0.7pp exposed x +0.88
+    assert child.high < 1.03
+    assert child.steps[-1].causal_role == "structural_transmission_assumption"
+
+
+def test_conditional_mixture_guards_and_sign_safety():
+    from downstream.ledger import CONDITIONAL_MIXTURE, DIRECT, start
+
+    def param(link, point, low, high):
+        return Parameter(link=link, from_node="f", to_node="t", point=point,
+                         low=low, high=high, tier="canonical", citation="c",
+                         population_scope="s", notes="", dist="", evidence_role="structural")
+
+    entry = param("e", 1.11, 1.05, 1.25)
+    led = start("a", "rate_ratio").apply(DIRECT, entry)
+    hazard = param("t", 1.88, 1.57, 2.24)
+    share = param("s", 0.069, 0.069, 0.072)
+    # no aux -> refused
+    with pytest.raises(ValueError, match="aux parameter"):
+        led.apply(CONDITIONAL_MIXTURE, hazard)
+    # a multiplier where a share belongs -> refused
+    with pytest.raises(ValueError, match="population share"):
+        led.apply(CONDITIONAL_MIXTURE, hazard, aux=param("s2", 1.5, 1.4, 1.6))
+    # a protective hazard (t < 1) still composes with ordered bands
+    out = led.apply(CONDITIONAL_MIXTURE, param("t2", 0.9, 0.8, 0.95), aux=share)
+    assert out.low <= out.point <= out.high
+    # a null hazard multiplier transmits nothing, whatever the share
+    out0 = start("a", "rate_ratio").apply(
+        DIRECT, param("e0", 1.0, 1.0, 1.0)).apply(
+        CONDITIONAL_MIXTURE, hazard, aux=share)
+    assert out0.point == pytest.approx(1.0)
+
+
+def test_cli_transmissions_walk_divorce(capsys):
+    from downstream.cli import main
+
+    assert main(["transmissions", "--walk", "divorce"]) == 0
+    d = json.loads(capsys.readouterr().out)
+    assert d["outcome"] == "divorce"
+    assert list(d["generations"]) == ["worker", "child"]
+    child = d["generations"]["child"]
+    assert child["point"] == pytest.approx(1.0064, abs=1e-3)
+    assert child["low"] < child["point"] < child["high"]

@@ -72,3 +72,5 @@ child_depression_anxiety,probability,"probability of a child's depression/anxiet
 adult_type2_diabetes_hazard,odds_ratio,"relative odds of adult type-2 diabetes vs the same birth at counterfactual birth weight (log-dose-response per log birth weight; fetal-origins channel, composes from infant_birth_weight)"
 adult_cardiovascular_disease_hazard,odds_ratio,relative odds of adult cardiovascular disease vs the same birth at counterfactual birth weight (log-dose-response; pooled incidence+death gradient)
 child_divorce_hazard,rate_ratio,"child's own divorce hazard vs counterfactual (offspring of disrupted marriages; walk generation 3 — the parent's own divorce hazard transmits only through the share of marriages that actually dissolve)"
+married_cohort,probability,"married-worker couples followed over the displacement window (the population whose dissolution share feeds the divorce transmission mixture)"
+parental_dissolution_share,probability,"share of the cohort's marriages dissolved over the follow-up window (counterfactual population constant for the conditional-mixture divorce transmission)"

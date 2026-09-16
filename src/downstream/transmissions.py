@@ -13,7 +13,11 @@ Two facts are distinct and both declared per step:
 
 - the COMPOSITION KIND: how a parent shift maps into the child outcome
   (earnings composes in GAP space — grandchild gap = 1 - IGE*(1 - child
-  gap) — never as level products);
+  gap) — never as level products; divorce composes as a CONDITIONAL
+  MIXTURE — only the marriages that actually dissolve expose their
+  children, so the child multiplier is 1 + (extra share)*(hazard - 1),
+  with the counterfactual dissolution share measured on the entry row's
+  own population and window);
 - the RELATIONSHIP id: steps sharing one id are a single edge unrolled
   across generations, so their parameter bands must be identical. The
   unrolled rows in parameters.csv are a presentation choice; this
@@ -52,6 +56,7 @@ class TransmissionStep:
     kind: str           # ledger composition kind (e.g. GAP)
     relationship: str   # steps sharing an id are ONE edge unrolled
     support: tuple[str, ...]  # bib keys licensing THIS step's repetition
+    share: str = ""     # aux parameter link (conditional-mixture population share)
 
 
 @dataclass(frozen=True)
@@ -63,10 +68,25 @@ class Transmission:
     entry: str                # displacement->child_X link (generation 2)
     steps: tuple[TransmissionStep, ...]  # generations 3, 4, ...
     entry_label: str = ""     # label of the generation-2 ledger ("" = outcome)
+    gen_labels: tuple[str, ...] = ()  # explicit per-generation labels; empty
+    # = ("child", "grandchild", ...). Walks whose entry lands on the
+    # WORKER (divorce: displacement->own hazard) label that generation
+    # explicitly, e.g. ("worker", "child").
 
     @property
     def depth(self) -> int:
         return 1 + len(self.steps)
+
+    def label(self, index: int) -> str:
+        """1-based generation label for this walk."""
+        if self.gen_labels:
+            if len(self.gen_labels) != self.depth:
+                raise ValueError(
+                    f"transmission {self.outcome!r} declares {len(self.gen_labels)} "
+                    f"generation labels for depth {self.depth}"
+                )
+            return self.gen_labels[index - 1]
+        return generation_label(index)
 
 
 EARNINGS = Transmission(
@@ -105,12 +125,36 @@ ACHIEVEMENT = Transmission(
     ),
 )
 
-TRANSMISSIONS = (EARNINGS, ACHIEVEMENT)
+# Divorce: the entry lands on the WORKER's own divorce hazard (gen-2 is
+# the displaced worker, not their child), so the walk labels its
+# generations explicitly. The transmission is a MIXTURE: only the
+# marriages that actually dissolve expose their children, so the step
+# composes the McLanahan-Bumpass own-divorce hazard (1.88 [1.57, 2.24])
+# through the counterfactual dissolution share measured on the entry
+# row's own population and window (rege2007 stable plants, 6.9%).
+DIVORCE = Transmission(
+    outcome="divorce",
+    unit="rate_ratio",
+    entry="displacement->divorce_hazard",
+    entry_label="divorce_hazard",
+    gen_labels=("worker", "child"),
+    steps=(
+        TransmissionStep(
+            link="divorce_hazard->child_divorce_hazard",
+            kind="conditional_mixture",
+            relationship="divorce_transmission",
+            share="married_cohort->parental_dissolution_share",
+            support=("mclanahanbumpass1988",),
+        ),
+    ),
+)
+
+TRANSMISSIONS = (EARNINGS, ACHIEVEMENT, DIVORCE)
 
 # Outcomes with an admitted generation-2 displacement estimate but no
 # admitted transmission row: the walk is ONE extraction away. These are
 # declared, visible skeleton — never silently extrapolated. Landed walks
-# (earnings, achievement) are in TRANSMISSIONS above, not here.
+# (earnings, achievement, divorce) are in TRANSMISSIONS above, not here.
 BLOCKED_CANDIDATES = (
     {
         "outcome": "education_years",
@@ -154,20 +198,6 @@ BLOCKED_CANDIDATES = (
                 "transmission; verify the coefficient from the actual "
                 "meta-analysis text before pinning anything",
     },
-    {
-        "outcome": "divorce",
-        "entry": "displacement->divorce_hazard",
-        "missing": "the transmission row itself LANDED (v1.46: "
-                   "divorce_hazard->child_divorce_hazard, 1.88 [1.57, 2.24], "
-                   "mclanahanbumpass1988 Table A1; gruber2004 was ELIMINATED "
-                   "as the pin — law-exposure ITT, 'no rise in the odds of "
-                   "being divorced', venue corrected to JOLE 22(4)); what "
-                   "remains is the conditional composition kind: only the "
-                   "displaced marriages that actually dissolve transmit, so "
-                   "the walk is a mixture, not a gap product",
-        "note": "also needs a conditional composition kind: only the "
-                "share of marriages that actually dissolve transmit",
-    },
 )
 
 
@@ -193,6 +223,8 @@ def validate_transmission(params: ParameterSet, t: Transmission) -> None:
         )
     for step in t.steps:
         params.by_link(step.link)
+        if step.share:
+            params.by_link(step.share)
         expected = CHAIN_KINDS.get(step.link)
         if expected is None:
             raise ValueError(
@@ -294,15 +326,16 @@ def walk(
     )
     if hook is not None:
         prev = guarded(hook(prev, 1), 1)
-    ledgers[generation_label(1)] = prev
+    ledgers[t.label(1)] = prev
     for i, step in enumerate(t.steps, start=2):
         prev = prev.apply(
             step.kind, params.by_link(step.link),
             causal_role=CHAIN_CAUSAL_ROLES[step.link],
+            aux=params.by_link(step.share) if step.share else None,
         )
         if hook is not None:
             prev = guarded(hook(prev, i), i)
-        ledgers[generation_label(i)] = prev
+        ledgers[t.label(i)] = prev
     return ledgers
 
 
@@ -353,7 +386,7 @@ def describe(params: ParameterSet) -> dict:
             "outcome": t.outcome,
             "unit": t.unit,
             "depth": t.depth,
-            "generations": [generation_label(i) for i in range(1, t.depth + 1)],
+            "generations": [t.label(i) for i in range(1, t.depth + 1)],
             "entry": t.entry,
             "steps": [
                 {
@@ -361,6 +394,7 @@ def describe(params: ParameterSet) -> dict:
                     "kind": s.kind,
                     "relationship": s.relationship,
                     "support": list(s.support),
+                    **({"share": s.share} if s.share else {}),
                 }
                 for s in t.steps
             ],

@@ -12,6 +12,17 @@ per-step and typed:
                                           alternate ONLY (variants), never a
                                           chain-invitable default.
   direct       param IS the new value   — directly estimated effect on this outcome
+  linear_shift value' = param * value   — standardized-shift transmission (SD scales)
+  conditional_mixture
+               1 + (s(m) - s) * (t - 1) — only the EXTRA dissolutions transmit:
+                                          a parent hazard multiplier m dissolves
+                                          share s(m) = 1 - (1-s)**m of marriages
+                                          over the window; the counterfactual
+                                          share s cancels against itself, and
+                                          only the marginal children carry the
+                                          elevated hazard t. aux is the measured
+                                          counterfactual share, same population
+                                          and window as the parent step.
   rate         recorded only            — rate ratio, applied to a baseline at the
                                           count boundary (never chained)
 
@@ -30,6 +41,7 @@ GAP = "gap"
 GAP_LOG = "gap_log_elastic"
 GAP_SCALE = "gap_scale"
 LINEAR_SHIFT = "linear_shift"
+CONDITIONAL_MIXTURE = "conditional_mixture"
 DIRECT = "direct"
 RATE = "rate"
 
@@ -75,7 +87,8 @@ class Ledger:
     high: float
     steps: tuple[Step, ...]
 
-    def _step(self, kind: str, p: Parameter, causal_role: str = "unspecified") -> Step:
+    def _step(self, kind: str, p: Parameter, causal_role: str = "unspecified",
+              aux: Parameter | None = None) -> Step:
         if kind == LEVEL:
             corners = [x * y for x in (self.low, self.high) for y in (p.low, p.high)]
             v = (self.point * p.point, min(corners), max(corners))
@@ -118,6 +131,46 @@ class Ledger:
             # not an identified intervention response.
             corners = [t * x for x in (self.low, self.high) for t in (p.low, p.high)]
             v = (p.point * self.point, min(corners), max(corners))
+        elif kind == CONDITIONAL_MIXTURE:
+            # Mixture transmission (divorce): the parent multiplier m
+            # dissolves an EXTRA share s(m) - s of marriages, with
+            # s(m) = 1 - (1 - s)**m under proportional hazards over the
+            # parent step's follow-up window. The infra-marginal
+            # dissolutions carry the elevated child hazard t in BOTH the
+            # treated and counterfactual worlds, so they cancel; only the
+            # marginal (extra-exposed) children contribute. aux carries
+            # the measured counterfactual dissolution share s.
+            if aux is None:
+                raise ValueError(
+                    "conditional_mixture composition needs the counterfactual "
+                    "dissolution share as its aux parameter"
+                )
+            if not 0.0 < aux.point <= 1.0:
+                raise ValueError(
+                    f"conditional_mixture share {aux.link!r} must lie in (0, 1]; "
+                    f"got {aux.point} — it is a population share, not a multiplier"
+                )
+            if self.point < 0.0:
+                raise ValueError(
+                    "conditional_mixture composition needs a non-negative parent "
+                    "hazard multiplier; a fractional power of a negative base is "
+                    "undefined here"
+                )
+
+            def sv(m: float, s: float) -> float:
+                return 1.0 - (1.0 - s) ** m
+
+            corners = [
+                1.0 + (sv(m, s) - s) * (t - 1.0)
+                for m in (self.low, self.high)
+                for t in (p.low, p.high)
+                for s in (aux.low, aux.high)
+            ]
+            v = (
+                1.0 + (sv(self.point, aux.point) - aux.point) * (p.point - 1.0),
+                min(corners),
+                max(corners),
+            )
         elif kind == DIRECT:
             v = (p.point, p.low, p.high)
         elif kind == RATE:
@@ -138,8 +191,10 @@ class Ledger:
             evidence_role=p.evidence_role,
         )
 
-    def apply(self, kind: str, param: Parameter, label: str = "", causal_role: str = "unspecified") -> "Ledger":
-        step = self._step(kind, param, causal_role)
+    def apply(self, kind: str, param: Parameter, label: str = "",
+              causal_role: str = "unspecified",
+              aux: Parameter | None = None) -> "Ledger":
+        step = self._step(kind, param, causal_role, aux)
         point, low, high = step.value
         if low > high:  # bands only widen; ordering is an invariant
             low, high = high, low
@@ -168,6 +223,8 @@ CHAIN_KINDS = {
     "displacement_event->child_achievement_sd": DIRECT,
     "child_achievement_sd->grandchild_achievement_sd": LINEAR_SHIFT,
     "child_education_years->grandchild_education_years": LINEAR_SHIFT,
+    "displacement->divorce_hazard": DIRECT,
+    "divorce_hazard->child_divorce_hazard": CONDITIONAL_MIXTURE,
     "displacement->infant_birth_weight": DIRECT,
     "infant_birth_weight->child_earnings": GAP_LOG,
     "infant_birth_weight->adult_type2_diabetes_hazard": GAP_LOG,
@@ -185,6 +242,8 @@ CHAIN_CAUSAL_ROLES = {
     "displacement_event->child_achievement_sd": "direct_displacement_estimate",
     "child_achievement_sd->grandchild_achievement_sd": "structural_transmission_assumption",
     "child_education_years->grandchild_education_years": "structural_transmission_assumption",
+    "displacement->divorce_hazard": "direct_displacement_estimate",
+    "divorce_hazard->child_divorce_hazard": "structural_transmission_assumption",
     "displacement->infant_birth_weight": "direct_displacement_estimate",
     "infant_birth_weight->child_earnings": "structural_transmission_assumption",
     "infant_birth_weight->adult_type2_diabetes_hazard": "structural_transmission_assumption",

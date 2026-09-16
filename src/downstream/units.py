@@ -53,6 +53,8 @@ COMPOSITION = {
     (GAP, GAP): "gap",                   # IGE links (child -> grandchild -> great-grandchild)
     (SD_DELTA, SD_DELTA): "linear_shift",   # standardized-shift transmission walk
     (EDU_YEARS, EDU_YEARS): "linear_shift",  # schooling-years transmission walk
+    (PROB, PROB): "conditional_mixture",  # dissolution share feeds the divorce
+                                         # transmission (aux population constant)
                                          # (parent achievement -> grandchild achievement);
                                          # structural assumption, carried caveats on the row
     (RATE_RATIO, ODDS_RATIO): "direct",  # ipv -> daughter odds (dangling upstream)
