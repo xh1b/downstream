@@ -165,20 +165,52 @@ governed by the admission contract, not by motive:
   ties to Ousey/Kubrin (UC Irvine), including at least one team whose
   prior publication record gives them no pro-immigration incentive.
   Independent anchors already surfaced: Michael Light's program
-  (Light & Miller, AJPH 2018, PMID 28727520-adjacent series; Light,
-  He & Robey, "The Myth of the Criminal Immigrant", AJPH 2020;
-  Light & Tran, Criminology 2017, PMID 30464356 — University of
-  Wisconsin, no UC Irvine ties) and the UK econ side (Bell, Fasani &
-  Machin, Review of Economic Studies 2013). First-pass screening: the
-  panel exists and is independent; full table extraction still
-  required before any row.
-- **What the null would mean if it lands:** a near-null aggregate link,
-  with population scope declared (US/EU totals). It would NOT certify
-  "no effect in every receiving community or composition" — it would
-  bound the average effect the engine may compose, which is the only
-  claim a parameter row ever makes.
-- **If the gate fails,** the crime channel stays UNMODELED — silence,
-  never a borrowed number in either direction.
+  (Light & Miller, Criminology 56(2):370-401, 2018, PMID 30464356 —
+  University of Wisconsin/Purdue, no UC Irvine ties; Light, He & Robey,
+  PNAS 117(51):32340-32347, 2020, PMID 33288713, descriptive Texas
+  rates) and the UK econ side (Bell, Fasani & Machin — venue CORRECTED
+  at extraction: Review of Economics and Statistics 95(4):1278-1290,
+  2013, not ReStud). The scan's original third-team candidate
+  (Halla, Wagner & Zweimüller 2017) turns out to be their
+  POLITICAL-BEHAVIOR paper (FPÖ vote share, European Economic Review),
+  so the executed gate substituted the Italian econ team Bianchi,
+  Buonanno & Pinotti, JEEA 10(6):1318-1347, 2012 instead.
+- **VERDICT (2026-09-16, after full-table extraction of all four
+  papers — see evidence_findings.csv, corpus ids
+  lightmiller2018_criminology, lightheobey2020_pnas,
+  bellfasanimachin2013_restat, bianchibuonannopinotti2012_jea):
+  the gate PASSES.** Three quasi-experimental teams, zero UC Irvine
+  ties; the panel is not a null-choir — Bell-Fasani-Machin publish the
+  POSITIVE where their identification finds it (asylum wave, property
+  crime), which is itself evidence against narrative-driven reporting;
+  the no-advocacy-incentive leg is carried by the Italian and LSE/Oxford
+  econ teams. What the tables show:
+  - Aggregate/total crime: NULL. BBP's OLS +0.156*** collapses under the
+    supply-push IV to +0.105 (0.187) n.s.; Light & Miller's lawful- and
+    undocumented-immigration coefficients are negative.
+  - Violent crime: NULL-OR-NEGATIVE. Light & Miller FE elasticity
+    -0.12 (0.03); IV -0.46 (0.15); both waves null in BFM.
+  - Property crime is CONDITIONAL ON LABOR-MARKET ACCESS — the panel's
+    one real divergence from a flat null, and the finding the gate was
+    built to surface: BFM's work-banned asylum wave RAISES property
+    crime (+1.14 OLS / +1.09 IV, per 100 adults per pp of share), while
+    their free-labor-access A8 wave LOWERS it (-0.06** / -0.39*** IV),
+    p(Asylum=A8)=0.001. The engine therefore models the work-access
+    margin (the replacement-scenario margin) and records the banned
+    branch as a findings row that must never be merged.
+  - Landed v1.48: `immigrant_influx->receiving_violent_crime_rate`
+    (GAP_LOG -0.12 [-0.18,-0.06]) and
+    `immigrant_influx->receiving_total_crime_rate` (GAP_LOG +0.105
+    [-0.26,+0.47], band includes zero — it is a null row by design).
+- **What the landed null means:** a near-null aggregate link with
+  population scope declared (US states 1990-2014; Italian provinces
+  1991-2001; UK local authorities 2002-2009; all work-access margins).
+  It does NOT certify "no effect in every receiving community or
+  composition" — it bounds the average effect the engine may compose,
+  and it says the crime effect of an influx runs through
+  labor-market access, not through immigration as such.
+- **If the gate had failed,** the crime channel would have stayed
+  UNMODELED — silence, never a borrowed number in either direction.
 
 ## Explicitly out of scope for this scan
 

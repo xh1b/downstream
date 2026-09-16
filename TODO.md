@@ -45,6 +45,14 @@ See `docs/MATH_REVIEW.md` for reviewed arithmetic and remaining assumptions.
   voting are verified in
   `docs/IMMIGRATION_REPLACEMENT_EVIDENCE_SCAN_2026-09-14.md`; next: screen them
   through the admission contract into queued extractions.
+  Progress 2026-09-16 (v1.48): the CRIME channel screened and LANDED — the
+  independence gate passed (Light-Miller Criminology 2018; Bell-Fasani-Machin
+  REStat 2013 published; Bianchi-Buonanno-Pinotti JEEA 2012), two
+  `immigrant_influx->receiving_*_crime_rate` rows shipped, and the
+  work-ban vs work-access property-crime split is recorded as findings.
+  Remaining receiving-community channels (rents, native wages, mental
+  health, trust, voting) still queued; scenario wiring for an
+  `--immigrant-influx` exposure is not built yet.
 - **[R4-R5] Independent validation and applicability:** freeze a matched event
   evaluation, compare with simple models, and report subgroup and uncertainty limits.
 - **[W0-W3] Calculator design:** research useful questions, write the explanation

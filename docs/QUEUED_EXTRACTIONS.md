@@ -198,6 +198,18 @@ by the model's owner.
   (REStat/JEEA UK), plus European register studies. If independence
   fails, the crime channel stays UNMODELED (silence, not a borrowed
   null).
+  EXECUTED 2026-09-16 (v1.48): gate PASSED with three extracted teams
+  — Light & Miller (Criminology 56(2), FE+IV), Bell/Fasani/Machin
+  (REStat 95(4) published version, work-ban vs work-access split),
+  Bianchi/Buonanno/Pinotti (JEEA 10(6), supply-push IV); plus
+  Light/He/Robey PNAS as descriptive context. Two rows landed
+  (violent-crime elasticity −0.12; aggregate null +0.105 with a band
+  through zero); the work-banned asylum property-crime branch is a
+  findings row that must never merge with the work-access rows.
+  Venue corrections landed with it: BFM is REStat (not ReStud),
+  Light & Miller is Criminology 2018 (the scan's "Light & Tran 2017,
+  PMID 30464356" was the same paper mislabeled), and HWZ 2017 is the
+  POLITICAL channel, not crime.
 - Mental-health anchor: Shin 2026 (IZA DP 18586, Jeju Island
   quasi-experiment) — working-paper tier; re-check for journal
   publication before screening.
