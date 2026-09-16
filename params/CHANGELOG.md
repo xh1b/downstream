@@ -1,3 +1,30 @@
+## v1.47 — 2026-09-16 — the divorce walk goes live: a conditional-mixture transmission over the entry row's own counterfactual share
+
+- NEW LEDGER KIND `conditional_mixture`: a parent hazard multiplier m
+  dissolves share s(m) = 1 − (1−s)^m of marriages over the parent
+  step's follow-up window (proportional hazards); the counterfactual
+  share s cancels against itself, so the child multiplier is
+  1 + (s(m) − s)(t − 1) — only the EXTRA dissolutions transmit. The
+  share arrives as a declared aux parameter on the walk step; guards
+  refuse a missing aux, an out-of-range share, or a negative parent
+  multiplier, and corner min/max keeps bands ordered for protective
+  hazards (t < 1).
+- NEW ROW: `married_cohort->parental_dissolution_share` 0.069
+  [0.069, 0.072] EXACT-results — rege2007 (SSB DP 514) Table 1 + prose,
+  the ENTRY row's own source: stable plants 6.9% dissolved by 2003,
+  closing plants 7.2%; band = the observed range across plant types.
+  Coherence check: at m = 1.11 the kind yields +0.73pp extra
+  dissolutions vs the paper's own adjusted +0.78pp (+11%).
+- THE DIVORCE WALK IS LIVE (`downstream transmissions --walk divorce`):
+  worker 1.11 [1.05, 1.25] → child 1.0064 [1.0019, 1.0213] — an honest
+  +0.6% child divorce hazard, small BECAUSE it is a mixture. The walk
+  labels its generations explicitly (worker, child): the entry lands on
+  the displaced worker's own hazard, not a child outcome. McLanahan &
+  Bumpass 1988 (1.88 [1.57, 2.24], landed v1.46) is the transmission
+  hazard; gruber2004's churning findings (earlier marriage,
+  separation-prone unions) travel beside as the mechanism the mixture
+  deliberately does NOT double-count.
+
 ## v1.46 — 2026-09-15 — the divorce transmission row: parental disruption walks to child own-divorce (walk blocked on the mixture kind, by design)
 
 - NEW TRANSMISSION ROW: `divorce_hazard->child_divorce_hazard` 1.88

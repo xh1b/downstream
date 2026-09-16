@@ -47,6 +47,6 @@ def test_no_thornton_parameter_row_exists():
 
 
 def test_version_bumped_and_audit_clean():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.46"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.47"
     errors = [f for f in audit(PARAMS_DIR) if f.severity == ERROR]
     assert errors == []

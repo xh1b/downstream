@@ -51,4 +51,4 @@ def test_audit_still_clean():
 
 
 def test_version_stamp():
-    assert load(PARAMS_DIR / "parameters.csv").version == "v1.46"
+    assert load(PARAMS_DIR / "parameters.csv").version == "v1.47"
