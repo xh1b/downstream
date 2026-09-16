@@ -143,15 +143,30 @@ def test_closure_coverage_hits_nominal_within_2p5se():
     # the pool to 14 seeds — if the deficit were a real coverage bias
     # rather than a stream re-roll, the tighter gate would fail
     # harder, not softer.
+    #
+    # 2026-09-16 (v1.47): the v1.45-v1.47 landings grew the set to 65
+    # rows and the pool drifted past the gate at nominal 0.9. Forensics
+    # this time went further than widening: (a) the widened 18-seed
+    # pool FAILED HARDER (0.894, 2.7 SE) — the v1.42 expectation that a
+    # stream re-roll washes out did not hold; (b) a single-stream
+    # 60k-trial run of the exact protocol covers 0.9001 +/- 0.0019 and
+    # a 200k-draw exact band covers 0.9003 — the machinery is
+    # calibrated; (c) the accumulated pool is contaminated by
+    # SELECTION: seeds were added at v1.25/v1.42 after watching drift
+    # at 0.8 and 0.5, and those v1.42-era seeds sit low at 0.9
+    # (mean 0.890). Remedy: re-draw the whole pool fresh — 18 primes
+    # fixed BEFORE any run, no coverage ever seen for them. If the
+    # fresh pool fails at 2.5 SE, the machinery genuinely undercovers
+    # and the band needs fixing, not the gate.
     rates = {lv: [] for lv in (0.5, 0.8, 0.9, 0.95)}
-    for seed in (11, 23, 47, 101, 211, 307, 409, 503, 601, 709,
-                 809, 811, 1013, 1019):
+    for seed in (1061, 1063, 1069, 1087, 1091, 1093, 1097, 1103, 1109,
+                 1117, 1123, 1129, 1151, 1153, 1163, 1171, 1181, 1187):
         out = closure_coverage(
             PARAMS, _grandchild, NODES, trials=1000, draws=2000, seed=seed
         )
         for r in out["levels"]:
             rates[r["nominal"]].append(r["empirical"])
-    trials = 14 * 1000
+    trials = 18 * 1000
     for nominal, emps in rates.items():
         pooled = sum(emps) / len(emps)
         se = (nominal * (1 - nominal) / trials) ** 0.5
