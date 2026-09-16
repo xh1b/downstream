@@ -74,3 +74,6 @@ adult_cardiovascular_disease_hazard,odds_ratio,relative odds of adult cardiovasc
 child_divorce_hazard,rate_ratio,"child's own divorce hazard vs counterfactual (offspring of disrupted marriages; walk generation 3 — the parent's own divorce hazard transmits only through the share of marriages that actually dissolve)"
 married_cohort,probability,"married-worker couples followed over the displacement window (the population whose dissolution share feeds the divorce transmission mixture)"
 parental_dissolution_share,probability,"share of the cohort's marriages dissolved over the follow-up window (counterfactual population constant for the conditional-mixture divorce transmission)"
+immigrant_influx,gap_multiplier,"local immigrant population vs baseline (1.0 = no net inflow; 1.10 = a +10% influx; the receiving-community exposure)"
+receiving_violent_crime_rate,gap_multiplier,"local violent-crime rate vs the counterfactual absent the influx (1.0 = unchanged; composed as a log-log elasticity from immigrant_influx)"
+receiving_total_crime_rate,gap_multiplier,"local total-crime rate vs the counterfactual absent the influx (1.0 = unchanged; composed as a log-log elasticity from immigrant_influx; work-access margin only)"

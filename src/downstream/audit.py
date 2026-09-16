@@ -198,6 +198,14 @@ def audit(params_dir: str | Path | None = None) -> list[Finding]:
         "unconditional_income",
         "youth_crime_conviction_share",
         "youth_violent_crime_conviction_share",
+        # The receiving-community exposure: like displacement_event, a
+        # scenario entry, not something the displacement DAG produces.
+        "immigrant_influx",
+        # v1.47 divorce-transmission stream: the node's own description
+        # declares it an entry population ("married-worker couples
+        # followed over the displacement window"); completing the
+        # declaration its landing missed.
+        "married_cohort",
         # Boundary-applied study inputs: they are deliberately not produced
         # by the displacement DAG and must not drown real audit warnings.
         "wage_ratio", "import_shock_per_worker", "family_income_shock",

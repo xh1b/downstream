@@ -1,3 +1,48 @@
+## v1.48 — 2026-09-16 — the receiving-community crime stream lands through the independence gate
+
+- THE CRIME GATE IS EXECUTED AND PASSES. The channel the model's owner
+  contested (owner objection: the leading meta-analysis's co-author
+  reads as advocacy-adjacent) was closed until three quasi-experimental
+  teams with zero UC Irvine ties corroborated the aggregate null, at
+  least one with no pro-immigration incentive. Full texts of all four
+  panel papers were acquired, hash-pinned into evidence_corpus.csv, and
+  table-extracted: Light & Miller (Criminology 56(2):370-401, US state
+  FE + IV), Bell/Fasani/Machin (REStat 95(4):1278-1290 PUBLISHED
+  version via LSE Research Online; the scan's ReStud venue claim was
+  wrong and is corrected), Bianchi/Buonanno/Pinotti (JEEA 10(6):
+  1318-1347 via HAL), plus Light/He/Robey (PNAS 117(51)) as descriptive
+  context. The panel is not a null-choir: BFM publish the positive
+  where identification finds it.
+- TWO ROWS LANDED (work-access margin): immigrant_influx->
+  receiving_violent_crime_rate -0.12 [-0.18,-0.06] GAP_LOG
+  (Light-Miller Table 2 Model 4; IV -0.46 recorded beside; the
+  conservative weighted spec -0.05 recorded beside), and
+  immigrant_influx->receiving_total_crime_rate +0.105 [-0.262,+0.472]
+  GAP_LOG (BBP Table 4 col 3; the band deliberately includes zero —
+  the aggregate NULL; OLS +0.156*** collapses under the supply-push
+  instrument, so the raw correlation is selection). Both dist normal,
+  evidence_role conditional, causal role
+  direct_receiving_community_estimate (new — these are NOT displacement
+  effects). NEW NODES: immigrant_influx, receiving_violent_crime_rate,
+  receiving_total_crime_rate (all gap_multiplier).
+- THE STRUCTURAL FINDING the gate surfaced: property crime responds to
+  LABOR-MARKET ACCESS, not to immigration as such. BFM's work-banned
+  asylum wave RAISES property crime (+1.14 OLS / +1.09 IV per 100
+  adults per pp of share; dispersal instrument F=1522) while their
+  free-labor-access A8 wave LOWERS it (-0.061** OLS / -0.386*** IV) —
+  p(Asylum=A8)=0.001. The banned branch is recorded as findings rows
+  (composable_after_baseline_and_time_alignment, fulltext_table) that
+  must NEVER merge with the work-access rows; the engine's rows model
+  the replacement-scenario margin (workers), not banned populations.
+  Light/He/Robey's 2x-4x arrest-rate ratios are recorded as
+  context_only_not_a_causal_edge (who-commits rates, not inflow
+  effects).
+- WHAT A REPLACEMENT SCENARIO NOW ANSWERS: a +10% immigrant influx
+  composes to violent crime x1.10^-0.12 = 0.988 (-1.2%) and total
+  crime x1.10^0.105 = 1.010 with a band through 1.0 — silence replaced
+  by an extracted, independence-gated near-null. Five findings rows
+  added; corpus 102 -> 106 verified PDFs (findings 75 -> 80).
+
 ## v1.47 — 2026-09-16 — the divorce walk goes live: a conditional-mixture transmission over the entry row's own counterfactual share
 
 - NEW LEDGER KIND `conditional_mixture`: a parent hazard multiplier m

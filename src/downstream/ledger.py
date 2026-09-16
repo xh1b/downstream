@@ -229,6 +229,12 @@ CHAIN_KINDS = {
     "infant_birth_weight->child_earnings": GAP_LOG,
     "infant_birth_weight->adult_type2_diabetes_hazard": GAP_LOG,
     "infant_birth_weight->adult_cardiovascular_disease_hazard": GAP_LOG,
+    # Receiving-community stream (v1.48): both rows are log-log
+    # elasticities of a local crime rate w.r.t. the local immigrant
+    # population, so the incoming multiplier (1.0 = no influx) is
+    # raised to the estimated elasticity.
+    "immigrant_influx->receiving_violent_crime_rate": GAP_LOG,
+    "immigrant_influx->receiving_total_crime_rate": GAP_LOG,
 }
 
 # Composition has a different epistemic status from its arithmetic. These
@@ -248,6 +254,11 @@ CHAIN_CAUSAL_ROLES = {
     "infant_birth_weight->child_earnings": "structural_transmission_assumption",
     "infant_birth_weight->adult_type2_diabetes_hazard": "structural_transmission_assumption",
     "infant_birth_weight->adult_cardiovascular_disease_hazard": "structural_transmission_assumption",
+    # The receiving-community rows are separately identified causal
+    # estimates (they are NOT effects of displacement), so they carry
+    # their own role rather than borrowing the displacement one.
+    "immigrant_influx->receiving_violent_crime_rate": "direct_receiving_community_estimate",
+    "immigrant_influx->receiving_total_crime_rate": "direct_receiving_community_estimate",
 }
 
 
