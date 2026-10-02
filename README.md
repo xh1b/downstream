@@ -1,122 +1,120 @@
 # downstream
 
-An evidence-locked causal consequence graph: a scientific model of how an
-event or changed life condition propagates through a person, their family, and
-their community over time. Fully open source.
+`downstream` calculates displacement impact through a causal consequence graph.
+You supply an initiating event, such as worker displacement. The engine
+composes published causal links and calculates how the event propagates through
+a person, their family, and their community over time. Every computed effect
+traces to a cited, peer-reviewed study. The engine has no runtime dependencies.
 
-Worker displacement is the first seed event, not the boundary of the project.
-The long-term goal is to grow a versioned graph of published causal evidence so
-that distant consequences emerge from cited bridges rather than from a
-hand-authored narrative. For example, a modelled event may alter earnings,
-family stability, childhood conditions, later adult outcomes, and eventually a
-later generation's outcomes — but only when every bridge is supported,
-compatible, and explicit about its uncertainty.
+Worker displacement is the first seed event. It is not the boundary. The
+long-term goal is a versioned graph of published causal evidence. Distant
+consequences then emerge from cited bridges, not from a hand-written narrative.
+The engine adds an effect only when the evidence supports the bridge, the
+bridge is compatible, and the uncertainty is explicit.
 
-The engine is descriptive, not agenda-driven: it retains harmful, beneficial,
-null, and conflicting results; reports structural alternatives rather than
-silently choosing a preferred story; and blocks paths that the evidence does
-not support. It models distributions for synthetic people and populations,
-never the destiny of an identified person.
+## Design rules
 
-Incorporates the findings of 81 peer-reviewed studies by 166
-researchers (1979-2023); its parameters rest directly on 19 studies
-by 43 research teams. The claim is computed from the bibliography —
-see CREDITS.md and `downstream credits` — never asserted.
+- The engine is descriptive. It keeps harmful, beneficial, null, and
+  conflicting results with equal status.
+- Where evidence supports competing structures, the engine reports all
+  structural variants. It does not select a preferred story.
+- A path without evidence support does not compute. An absent bridge stops the
+  path with an error.
+- Each parameter row carries its citation, evidence precision tier, population
+  scope, and uncertainty band.
+- Each result shows its uncertainty and the full path that produced it.
+- The engine models synthetic people and populations. It does not predict the
+  future of an identified person.
 
-Every modeled effect traces to a published study. Current parameter rows carry
-their citation, evidence precision tier, population scope, and uncertainty
-band. As the graph expands, every edge must additionally carry time semantics
-and causal-role metadata. Missing bridges fail loudly. Every generated result
-must expose its uncertainty and the path that produced it; the model publishes
-its own misses.
+The parameter set (v1.48) incorporates 81 peer-reviewed studies by 166
+researchers (1979–2023). Nineteen studies by 43 research teams supply the
+parameters. `CREDITS.md` computes these counts from the bibliography. Run
+`downstream credits` to see the full credit record.
 
-- `SPEC.md` — the algorithm: graph primitives, composition, uncertainty, and
-  what is computed from which citations
-- `docs/LIFE_COURSE_RESEARCH_PLAN.md` — research goals for a person-and-place
-  simulator, beginning with baseline household trajectories and a validated
-  five-year event comparison
-- `docs/CAUSAL_GRAPH_PLAN.md` — model records and composition rules supporting
-  the research milestones
-- `docs/WEBSITE_EXPERIENCE_PLAN.md` — the future calculator's user journey,
-  explanations, visual direction, usability evaluation, and release criteria
-- `docs/LITERATURE_ACQUISITION_PLAN.md` — reproducible corpus-building plan
-  and initial DOI/open-access acquisition batch
-- `params/` — the parameter set (versioned), node units, baselines, references.bib
-- `src/downstream/` — the DAG engine, typed ledger (level / gap / direct /
-  rate / elasticity composition), modules, scenario aggregation, Monte
-  Carlo, audit, validation
-- `CREDITS.md` — the computed collective: every researcher, every study, every DOI
-- `docs/CITING.md` — the binding citation and evidence-tier rules
-- `docs/ATTRIBUTION.md` — how credit is given and kept exact
-- `docs/QUEUED_EXTRACTIONS.md` — modeled links awaiting their number, with
-  the exact extraction target named
-- `docs/PRIOR_ATTEMPTS.md` — related work, including SimPaths, LifeSim,
-  DYNASIM, and the Future Elderly Model; similarities and lessons to investigate
-- `paper/` — `make` builds `downstream.pdf` (methods paper)
-- `tests/` — the compute checks (`pytest tests/`)
+## Install
 
-CLI:
+Python 3.12 or later is required.
 
+```sh
+python -m pip install .
 ```
-downstream family        # the standard-family vignette, fully cited
-downstream scenario --workers 1000  # envelopes + parameter-only and predictive intervals
-downstream entity --input exposure.json
+
+For development and tests:
+
+```sh
+python -m pip install -e '.[dev]'
+```
+
+## Reproduce
+
+Run the full test and coverage gate:
+
+```sh
+python -m coverage run -m pytest
+python -m coverage json -o coverage.json
+python scripts/quality_gate.py coverage.json
+```
+
+The gate requires at least 95% statement coverage and 90% branch coverage. The
+current parameter set measures 97.3% and 94.0%. The suite contains Hypothesis
+property tests for ledger envelopes, survival bounds, and county-pooling
+convexity. Deterministic fixtures cover citations, published coefficients, and
+regression examples.
+
+Additional checks:
+
+```sh
+python -m ruff check src scripts        # correctness lint; blocks CI
+python -m vulture                       # dead code; blocks CI
+python scripts/benchmark.py             # numerical microbenchmarks
+python -m mutmut run --max-children 4   # mutation campaign
+python -m mutmut results --all true     # all mutation results
+```
+
+The benchmarks are comparison baselines. They are not a performance gate. See
+`docs/TESTING_QUALITY.md` for the measured baseline and scaling notes. GitHub
+Actions runs a fast property/FSM/CLI suite on each change, the full coverage
+gate on pull requests, and a scheduled mutation-plus-benchmark job.
+
+## Quick start
+
+```sh
+downstream family                        # standard-family vignette, all citations
+downstream scenario --workers 1000       # envelopes + 90% parameter-only intervals
 downstream simulate --outcome child --place national --draws 1000
-downstream sensitivity --outcome child --place national
-downstream explain --text   # a claim walked from headline to citations
-downstream sensitivity      # Sobol: what drives the remaining range
-downstream sensitivity --ci 5   # ...with seed-replicate design noise
-downstream knobs --action sweep --link 'earnings_shock->mortality_sustained' --values 1.15,1.17,1.20
-downstream knobs --action voi --outcome grandchild   # which knob is worth pinning next
-downstream infer --outcome grandchild    # exact moments + normal band (no seed)
-downstream ensemble     # structural-variant spread (composition assumptions priced)
-downstream synthesize --input studies.csv  # same-scale random-effects evidence synthesis (not parameter admission)
-downstream county-posterior --input county_counts.csv --key 01001 --outcome mortality --time-window 2015-19 --national-rate .004944 --national-population-scope "US prime-age men 45-54" --national-citation cdc_wonder --prior-person-years 2000
-downstream county-wonder-posterior --export counties.tsv --metadata query.json --key 01001 --national-rate .004944 --prior-person-years 2000
-downstream infer --outcome grandchild --action closure   # do the 90% bands cover 90%?
-downstream audit         # parameter/citation/DAG/unit checks
-downstream validate      # V0 internal consistency + V1 retrodiction target
-downstream citations     # coverage report
-downstream simulate --links a,b --kinds direct,gap
+downstream explain --text                # one claim, from headline to citations
+downstream audit                         # parameter, citation, DAG, unit checks
+downstream validate                      # V0 consistency + V1 retrodiction
 ```
 
-Uncertainty methodology: Latin Hypercube Sampling, log-space sampling
-for ratio parameters, optional declared rank correlation (empty until
-citable), Sobol sensitivity, CRPS/coverage scoring for the validation
-program. See `SPEC.md` §7-10 and `docs/MODEL_CARD.md`.
+## Command reference
 
-`scenario` samples the eligible count headlines jointly and adds a central 90%
-**parameter-only** interval to each result. Its existing `low`/`high`
-fields remain support envelopes, not confidence intervals. Documented
-exposure, baseline estimation, county measurement/pooling, structural
-assumptions, and unmodeled pathways are separately labeled as fixed or
-excluded rather than folded into a falsely comprehensive band.
+| Command | Function |
+| --- | --- |
+| `family` | standard-family vignette with full citations |
+| `scenario` | effect envelopes for a worker cohort; parameter-only and predictive intervals |
+| `entity` | accepts a computed displacement exposure from a JSON file |
+| `policy` | compares supplied baseline and policy exposures |
+| `simulate` | Monte Carlo simulation for an outcome and place |
+| `sensitivity` | Sobol analysis of the result range; `--ci` adds seed-replicate design noise |
+| `knobs` | sweeps one parameter, or ranks parameters by value of information |
+| `infer` | exact moments and normal bands; `--action closure` checks band coverage |
+| `ensemble` | spread across structural variants |
+| `synthesize` | random-effects evidence synthesis from same-scale studies |
+| `county-posterior` | county mortality posterior from supplied counts |
+| `county-wonder-posterior` | county mortality posterior from a CDC WONDER export |
+| `explain` | one claim, from headline to citations |
+| `audit` | parameter, citation, DAG, and unit checks |
+| `validate` | V0 internal consistency and the V1 retrodiction target |
+| `citations` | citation coverage report |
+| `credits` | computed researcher and study credit |
+| `bundle` | exports a standalone engine and data bundle with checksums |
+| `forecast-register` | freezes a prospective forecast locally |
+| `forecast-score` | scores the forecast after the outcome window |
 
-For integer worker cohorts, it also reports a separately labeled
-posterior-predictive mortality simulation: parameter draws plus binomial
-variation in deaths for new exposed and counterfactual reference cohorts.
-That contrast is not a paired individual-level causal-outcome distribution.
-Fractional worker-equivalent aggregates retain expected effects only.
+## Inputs
 
-Mortality defaults to `source_profile`: the extracted displacement, offset 1,
-offsets 2–3, offsets 4–5, and offset 6+ profile from Sullivan--von Wachter Table 5 column 3.
-With displacement occupying follow-up year 1, +6 begins in year 7.
-`source_aligned` is retained only to reproduce the former incomplete timing;
-`immediate_sustained` remains a sensitivity assumption.
-
-Companion project: [xh1b.org/downstream](https://xh1b.org/downstream). Integration
-into its employer, county, state, and family surfaces is in progress. This repo
-contains only the model, the parameters, and the paper — no confidential material.
-
-Place experiments accept a `places.csv` key through `--place` on
-`simulate --outcome child|grandchild`, `sensitivity` (including `--ci`),
-and `knobs` (sweep and VOI). The mobility parameter is recomputed for
-every draw or pin. Place measurements and pooling weights are fixed;
-these bands do not include uncertainty in county measurements. Output
-includes the place sources and the declared composition assumption.
-Arbitrary `simulate --links` chains do not accept `--place`.
-
-`entity --input exposure.json` accepts an already computed displacement exposure:
+`entity --input exposure.json` accepts a computed displacement exposure:
 
 ```json
 {
@@ -128,15 +126,15 @@ Arbitrary `simulate --links` chains do not accept `--place`.
 }
 ```
 
-The entity adapter uses the same scenario arithmetic and accepts
-`--place`, `--children`, `--tradable-share`, and `--exposure-years`.
-Local service employment is blocked unless the input also supplies a documented
-net local tradable-job loss. A worker displacement count is not that input.
-It preserves source and method references. The caller owns the exposure
-conversion: filing counts, wage-gap dollars, and WARN notices cannot be
-passed as worker counts without an explicit upstream method. Persons
-use `subject_type: "person"`; results describe population-average
-modeled impacts, never an individual's predicted outcomes.
+- The entity adapter uses the same scenario arithmetic. It accepts `--place`,
+  `--children`, `--tradable-share`, and `--exposure-years`.
+- The caller owns the exposure conversion. Filing counts, wage-gap dollars, and
+  WARN notices are not worker counts.
+- Local service employment computes only when the input also supplies a
+  documented net local tradable-job loss.
+- The adapter preserves the `source` and `method` references.
+- For one person, use `subject_type: "person"`. Results are population-average
+  modeled impacts. They are not predictions for one person.
 
 For a warehouse aggregate, use `entity --input-format warehouse --input row.json`:
 
@@ -156,93 +154,136 @@ For a warehouse aggregate, use `entity --input-format warehouse --input row.json
 }
 ```
 
-These are synthetic fixture values. The components are already in
-worker-equivalent units. The adapter preserves `americans_displaced`,
-requires it to equal `total`, and checks the component sum within 0.002
-(the maximum discrepancy from rounding three components and their total
-to three decimal places). Employer rows require `warn_layoffs`; person
-rows may omit it. Missing fields and empty breakdowns fail, including an
-empty breakdown paired with zero exposure. A known zero must carry
-explicit zero components. Additional breakdown fields remain caller-owned
-and do not enter the exposure calculation. The database runner and its
-record-selection rules belong to the companion project.
+The example values are synthetic fixtures. The components are in
+worker-equivalent units.
 
-Build the methods paper with `make -C paper`. The build regenerates its
-parameter inventory, V1 scorecard, and chart coordinates from the engine, then compiles
-`paper/downstream.pdf`. `paper/generated/results.json` contains the full
-validation output and a source-content hash. Generated files are ignored
-by git; `paper/build_tables.py` generates the numerical data. Vector diagrams
-and chart layouts live in `paper/figures/`. The PDF uses TikZ and PGFPlots,
-with the numerical scorecard tables retained in an appendix.
+- The adapter preserves `americans_displaced` and requires it to equal `total`.
+  It checks the component sum within 0.002.
+- Employer rows require `warn_layoffs`. Person rows can omit it.
+- Missing fields fail. Empty breakdowns fail, including an empty breakdown with
+  zero exposure. A known zero needs explicit zero components.
+- Additional breakdown fields stay caller-owned. They do not enter the exposure
+  calculation.
 
-The reviewed methods PDF is checked in at `paper/downstream.pdf` so public
-links remain stable. Tag a reviewed paper release as `paper-v*` to rebuild it
-in GitHub Actions and attach the same reviewed PDF to the release. A manual
-workflow run stores the build as a CI artifact.
+`policy --input comparison.json` compares supplied baseline and policy
+exposures. Each case has `name`, `source`, `method`, and a `scenario` object
+with `displaced_workers`. `exposure_low`, `exposure_high`, and `place_key` are
+optional. They add exposure uncertainty and geography. Output reports policy
+minus baseline. The command does not infer how a policy causes displacement.
 
+## Place experiments
 
-Engine 0.2.0 corrects mortality odds-to-risk conversion and survival timing,
-uses a source-offset mortality profile, scales optional place effects as a
-same-place displacement-loss contrast, and fixes
-signed uncertainty envelopes and normal/lognormal analytic moments. See
-`docs/MATH_REVIEW.md` for the findings and remaining assumptions.
-Historical scenario arithmetic is available through
-`--mortality-method legacy_additive --place-application legacy_repeated`.
+`simulate --outcome child|grandchild`, `sensitivity` (with `--ci`), and `knobs`
+(sweep and VOI) accept a `places.csv` key through `--place`. The engine
+recomputes the mobility parameter for every draw or pin. Place measurements and
+pooling weights are fixed. The bands do not include uncertainty in county
+measurements. Output shows the place sources and the declared composition
+assumption. Chains from `simulate --links` do not accept `--place`.
 
-The September 10 review additionally repairs independent copula designs,
-custom-chain connectivity and starting values, county predictive baselines,
-and rate-likelihood semantics. Generic county mortality values are not used
-by scenarios; county results remain experimental until their matching
-population/window metadata enter through a validated integration bridge.
-Correlated Monte Carlo results change at historical seeds after the copula
-repair. Legacy additive mortality retains expected counts only.
+## Uncertainty method
 
-`downstream policy --input comparison.json` compares supplied baseline and
-policy exposures. Each case has `name`, `source`, `method`, and a `scenario`
-object with `displaced_workers`; optional `exposure_low`, `exposure_high`,
-and `place_key` add exposure uncertainty and geography. Output reports
-policy minus baseline. It does not infer how a policy causes displacement.
+- Latin Hypercube Sampling. Log-space sampling for ratio parameters.
+- Optional declared rank correlation. It stays empty until citable.
+- Sobol sensitivity. CRPS and coverage scores for the validation program.
+- `scenario` adds a central 90% **parameter-only** interval. The `low` and
+  `high` fields are support envelopes. They are not confidence intervals.
+- Documented exposure, baseline estimation, county pooling, structural
+  assumptions, and unmodeled pathways are labeled as fixed or excluded. The
+  engine does not fold them into one falsely complete band.
+- Integer worker cohorts also get a labeled posterior-predictive mortality
+  simulation: parameter draws plus binomial variation in deaths. This is not a
+  paired individual-level causal distribution. Fractional worker-equivalent
+  aggregates keep expected effects only.
 
-`downstream bundle --out /path/to/new-directory` exports a standalone engine
-and data bundle with per-file checksums and a content-based version.
-The destination must not exist. Integration into XH1B is deferred while
-this model is strengthened.
+See `SPEC.md` §7–10 and `docs/MODEL_CARD.md`.
 
-`downstream forecast-register --input proposal.json --out registration.json`
-freezes a prospective forecast locally. `forecast-score` reports misses as
-well as coverage after the outcome window. Required proposal fields are
-listed in `src/downstream/forecast_registry.py`; registration still needs
-an independent timestamp to establish public preregistration.
+## Mortality timing
 
-## Test quality
+The default is `source_profile`: the displacement year, offsets 1, 2–3, 4–5,
+and 6+ from Sullivan–von Wachter Table 5 column 3. Displacement occupies
+follow-up year 1, so +6 starts in year 7. `source_aligned` exists only to
+reproduce the former incomplete timing. `immediate_sustained` is a sensitivity
+assumption.
 
-Install the development extras, then run the complete test and coverage gate:
+## Engine corrections (0.2.0)
+
+Engine 0.2.0 corrects mortality odds-to-risk conversion and survival timing. It
+scales optional place effects as a same-place displacement-loss contrast. It
+fixes signed uncertainty envelopes and normal/lognormal analytic moments. See
+`docs/MATH_REVIEW.md` for the findings and remaining assumptions. Correlated
+Monte Carlo results change at historical seeds after the copula repair. County
+results stay experimental until their population and window metadata enter
+through a validated integration bridge.
+
+Historical scenario arithmetic:
 
 ```sh
-python -m pip install -e '.[dev]'
-python -m coverage run -m pytest
-python -m coverage json -o coverage.json
-python scripts/quality_gate.py coverage.json
+downstream scenario --workers 1000 --mortality-method legacy_additive \
+  --place-application legacy_repeated
 ```
 
-The gate requires at least 95% statement coverage and 90% branch coverage
-(measured: 97.3% / 94.0% on the current parameter set). The suite includes
-Hypothesis property tests for ledger envelopes, mortality survival bounds,
-and county-pooling convexity; deterministic fixtures remain for citations,
-published coefficients, and regression examples.
+Legacy additive mortality keeps expected counts only.
 
-Ruff and vulture run as blocking CI checks for production code and scripts:
-`python -m ruff check src scripts` for correctness linting, `python -m
-vulture` for dead code (unused functions, classes, and attributes fail the
-build; intentionally-unwired API surface is reviewed, with reasons, in
-`scripts/vulture_whitelist.py`).
+## Methods paper
 
-Run the local numerical microbenchmarks with `python scripts/benchmark.py`.
-They are comparison baselines, not a flaky performance gate; see
-`docs/TESTING_QUALITY.md` for the measured baseline and scaling notes.
+```sh
+make -C paper
+```
 
-GitHub Actions runs a fast property/FSM/CLI contract suite for changes, the
-full coverage gate for pull requests, and a scheduled mutation-plus-benchmark
-job. Run the mutation campaign locally with `python -m mutmut run
---max-children 4`; inspect all results with `python -m mutmut results --all
-true`.
+The build regenerates the parameter inventory, the V1 scorecard, and the chart
+coordinates from the engine. It then compiles `paper/downstream.pdf`.
+`paper/generated/results.json` holds the full validation output and a
+source-content hash. Git ignores generated files. `paper/build_tables.py`
+generates the numerical data. Vector diagrams and chart layouts live in
+`paper/figures/`.
+
+The reviewed PDF is checked in, so public links stay stable. Tag a reviewed
+release as `paper-v*`. GitHub Actions then rebuilds the paper and attaches the
+same PDF to the release. A manual workflow run stores the build as an artifact.
+
+## Bundle and forecasts
+
+`bundle --out /path/to/new-directory` exports a standalone engine and data
+bundle. Each file has a checksum. The bundle has a content-based version. The
+destination must not exist.
+
+`forecast-register --input proposal.json --out registration.json` freezes a
+prospective forecast locally. `forecast-score` reports misses and coverage
+after the outcome window. The required proposal fields are in
+`src/downstream/forecast_registry.py`. Registration still needs an independent
+timestamp to establish public preregistration.
+
+## Repository layout
+
+| Path | Content |
+| --- | --- |
+| `SPEC.md` | the algorithm: graph primitives, composition, uncertainty, citation rules |
+| `params/` | versioned parameter set, node units, baselines, `references.bib` |
+| `src/downstream/` | DAG engine, typed ledger, modules, Monte Carlo, audit, validation |
+| `tests/` | the compute checks (`pytest`) |
+| `paper/` | the methods paper (`make -C paper`) |
+| `CREDITS.md` | every researcher, study, and DOI, computed from the bibliography |
+| `scripts/` | quality gate, benchmarks, data acquisition |
+| `docs/` | plans and binding rules; see below |
+
+Key documents:
+
+- `docs/CITING.md` — the binding citation and evidence-tier rules
+- `docs/ATTRIBUTION.md` — how credit is given and kept exact
+- `docs/QUEUED_EXTRACTIONS.md` — modeled links that await their number
+- `docs/PRIOR_ATTEMPTS.md` — SimPaths, LifeSim, DYNASIM, the Future Elderly Model
+- `docs/MODEL_CARD.md`, `docs/MATH_REVIEW.md` — model limits and corrections
+- Plans: `docs/LIFE_COURSE_RESEARCH_PLAN.md`, `docs/CAUSAL_GRAPH_PLAN.md`,
+  `docs/WEBSITE_EXPERIENCE_PLAN.md`, `docs/LITERATURE_ACQUISITION_PLAN.md`
+
+## Companion project
+
+[xh1b.org/downstream](https://xh1b.org/downstream) integrates this model into
+employer, county, state, and family surfaces. Integration is in progress. It is
+deferred while the team strengthens this model. This repo contains only the model, the
+parameters, and the paper. The database runner and its record-selection rules
+belong to the companion project.
+
+## License
+
+MIT. See `LICENSE`.
