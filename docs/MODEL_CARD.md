@@ -1,4 +1,4 @@
-# MODEL CARD — downstream engine 0.2.0 / parameters v1.34
+# MODEL CARD — downstream engine 0.2.0 / parameters v1.48
 
 Model card practice per Mitchell et al. 2019, "Model Cards for Model
 Reporting". This card travels with the model.
@@ -18,7 +18,7 @@ Reporting". This card travels with the model.
   loss) additionally carry jointly sampled central 90% intervals for
   **parameter uncertainty only**. Their support envelopes are retained
   and explicitly not presented as confidence intervals.
-- Parameter set v1.34: 42 parameter rows, each with point, band,
+- Parameter set v1.48: 67 parameter rows, each with point, band,
   precision tier, bib keys, and population scope.
 - Version stamping: params/VERSION; every output carries the version
   it used; sampled outputs mark `-sampled`.
@@ -29,7 +29,7 @@ Reporting". This card travels with the model.
   consequences for transparent public reporting: workers, children (three
   generations), family stability, and local economies.
 - Intended direction: graph-based simulation of downstream consequences from
-  a documented initiating event or altered state. Results must be distributions
+  a stated initiating event or altered state. Results must be distributions
   with scientific receipts and an error budget, not asserted personal futures.
 - Explanation-first surfaces: every claim ships with its derivation,
   drivers, falsifiers, and receipts.
@@ -56,18 +56,20 @@ Reporting". This card travels with the model.
 
 - V0 internal consistency: direct vs IGE-composed child effect
   (0.91 vs 0.89, bands overlap) — runs on every `validate`.
-- V1 China-shock retrodiction: scaffolded, data plugs pending.
+- V1 China-shock retrodiction: unit and commuting-zone panel checks run.
+  Family-status contrasts are covered. Male mortality variants overpredict,
+  and the lower-quartile earnings loss remains underpredicted after the
+  wage-spillover term is added. These misses are part of the scorecard.
 - V2 out-of-sample back-tests (NAFTA, 2008-09 auto crisis, BRAC):
   PRE-REGISTERED (outcome definitions + scoring rules frozen in code
   at v1.28, trap tests pin them); scoring blocks until each event's
   displacement bridge and measured coefficients land — recorded
   honestly, never fabricated.
-- Place-resolved layer (v1.29-v1.30): county baselines with empirical-Bayes
-  shrinkage toward national (w = n/(n+k), declared prior n) + the
-  Chetty-Hendren mobility modifier LANDED (gamma 0.037 [0.031,0.043]
-  EXACT, county level; declared 18-year dose) over 3,134 county
-  mobility rows from the Opportunity Atlas. County mortality + divorce
-  plugs still pending.
+- Place-resolved layer: the Chetty-Hendren mobility modifier uses gamma
+  0.037 [0.031, 0.043] and a declared 18-year dose. County mortality uses
+  CDC WONDER male ages 45–54 counts and Gamma-Poisson posterior baselines
+  where the matched county row is available. Suppressed or absent rows use
+  the named national baseline. A county divorce baseline is still pending.
 - V3: immutable local registration and scoring tools built; no real event registered.
 - Unit tests cover the known bug classes
   (level-vs-gap composition, level-ratio misuse, naked estimates,
@@ -99,7 +101,13 @@ Reporting". This card travels with the model.
   model; its output carries that statement.
 - Pending baselines block absolute counts on purpose: no baseline, no
   counts, no exceptions.
-- Count intervals hold documented exposure, baseline estimates, county
+- Count intervals hold stated exposure, baseline estimates, county
   measurements/pooling weights, and structural assumptions fixed. Those
   sources of uncertainty are not yet quantified jointly, and are listed
   as excluded rather than claimed to be covered by the parameter band.
+- The mortality count uses a US male age 45–54 baseline and a displacement
+  effect from high-seniority men. Child earnings transport a Canadian
+  father-son firm-closure finding to a US male lifetime-earnings baseline
+  in 2024 dollars. A mixed or unknown population needs a separately
+  reviewed transport rule before these counts can be read as its expected
+  outcomes.
