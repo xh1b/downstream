@@ -4,27 +4,16 @@
 You supply an initiating event, such as worker displacement. The engine
 composes published causal links and calculates how the event propagates through
 a person, their family, and their community over time. Every computed effect
-traces to a cited, peer-reviewed study. The engine has no runtime dependencies.
+traces to a cited, peer-reviewed study. Each result shows its uncertainty and
+the full path that produced it. The engine has no runtime dependencies.
 
 Worker displacement is the first seed event. It is not the boundary. The
 long-term goal is a versioned graph of published causal evidence. Distant
 consequences then emerge from cited bridges, not from a hand-written narrative.
 The engine adds an effect only when the evidence supports the bridge, the
-bridge is compatible, and the uncertainty is explicit.
-
-## Design rules
-
-- The engine is descriptive. It keeps harmful, beneficial, null, and
-  conflicting results with equal status.
-- Where evidence supports competing structures, the engine reports all
-  structural variants. It does not select a preferred story.
-- A path without evidence support does not compute. An absent bridge stops the
-  path with an error.
-- Each parameter row carries its citation, evidence precision tier, population
-  scope, and uncertainty band.
-- Each result shows its uncertainty and the full path that produced it.
-- The engine models synthetic people and populations. It does not predict the
-  future of an identified person.
+bridge is compatible, and the uncertainty is explicit. The engine models
+synthetic people and populations. It does not predict the future of an
+identified person. See `SPEC.md` for the full design rules.
 
 The parameter set (v1.48) incorporates 81 peer-reviewed studies by 166
 researchers (1979–2023). Nineteen studies by 43 research teams supply the
