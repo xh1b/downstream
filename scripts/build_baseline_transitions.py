@@ -85,13 +85,13 @@ def load_weights() -> dict[tuple[str, str, str], float]:
 
 
 def stream_december(path: Path, columns: tuple[str, ...],
-                    wanted: set[tuple[str, str, str]] | None = None,
-                    prime_only: bool = False) -> dict[tuple[str, str, str], dict[str, str]]:
+                    wanted: set[tuple[str, str, str]] | None = None) -> dict[tuple[str, str, str], dict[str, str]]:
     """One streaming pass over a pu file; December rows only.
 
-    prime_only filters on 25 <= TAGE_EHC <= 54 while scanning (used for
-    the 2021 pass, where age defines the sample); wanted filters on
-    known keys (used for the 2022 pass and the 2021 earnings pass).
+    The prime-age filter (25 <= TAGE_EHC <= 54) applies while scanning
+    when TAGE_EHC is among the columns (used for the 2021 pass, where
+    age defines the sample); wanted filters on known keys (used for the
+    2022 pass and the 2021 earnings pass).
     """
     out: dict[tuple[str, str, str], dict[str, str]] = {}
     with gzip.open(path, "rt") as fh:
@@ -140,7 +140,7 @@ def main() -> int:
     cols21 = BASE_COLS + ("RMESR", "TAGE_EHC", "ESEX")
     cols22 = BASE_COLS + ("RMESR", "TPEARN")
 
-    base21 = stream_december(PU2021, cols21, prime_only=True)
+    base21 = stream_december(PU2021, cols21)
     print(f"prime-age Dec-2021 in-universe persons: {len(base21)}", flush=True)
 
     span_persons = {k for k in weights if k in base21}
