@@ -175,6 +175,8 @@ def test_voi_zero_width_band_reported_not_crashed():
 def test_sobol_ci_rejects_single_replicate():
     with pytest.raises(ValueError, match="replicates"):
         sobol_ci(PARAMS, lambda ps: 1.0, NODES, replicates=1)
+    with pytest.raises(ValueError, match="variance"):
+        sobol_ci(PARAMS, lambda ps: 1.0, NODES, base=2, replicates=2)
 
 
 def test_sobol_ci_output_is_labeled_as_design_noise():

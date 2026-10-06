@@ -63,6 +63,8 @@ def sobol_indices(
     fB = [run(row) for row in B]
 
     total_var = _var(fA + fB)
+    if total_var <= 0:
+        raise ValueError("output variance is zero; Sobol indices are undefined")
     out = []
     aliases = shared_parameter_indices(params)
     for j in sorted(set(aliases)):
