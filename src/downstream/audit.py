@@ -24,6 +24,7 @@ from pathlib import Path
 from .distributions import KNOWN_DISTS, _cholesky
 from .params import (
     VALID_TIERS,
+    default_dir,
     load,
     load_all,
     load_correlations,
@@ -49,7 +50,7 @@ class Finding:
 
 
 def audit(params_dir: str | Path | None = None) -> list[Finding]:
-    d = Path(params_dir) if params_dir else Path(__file__).resolve().parents[2] / "params"
+    d = Path(params_dir) if params_dir else default_dir()
     findings: list[Finding] = []
 
     try:

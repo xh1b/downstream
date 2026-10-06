@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -8,11 +8,13 @@ version = "0.2.0"
 description = "Citation-calibrated microsimulation of displacement consequences"
 readme = "README.md"
 requires-python = ">=3.12"
-license = { text = "MIT" }
+license = "MIT"
+license-files = ["LICENSE"]
 dependencies = []
 
 [project.optional-dependencies]
 dev = [
+  "build>=1.2,<2",
   "coverage[toml]>=7.6,<8",
   "hypothesis>=6.120,<7",
   "mutmut>=3.7,<4",
@@ -24,8 +26,18 @@ dev = [
 [project.scripts]
 downstream = "downstream.cli:main"
 
-[tool.setuptools.packages.find]
-where = ["src"]
+[tool.setuptools]
+packages = ["downstream", "downstream_data.params", "downstream_data.validation"]
+include-package-data = false
+
+[tool.setuptools.package-dir]
+downstream = "src/downstream"
+"downstream_data.params" = "params"
+"downstream_data.validation" = "validation"
+
+[tool.setuptools.package-data]
+"downstream_data.params" = ["*"]
+"downstream_data.validation" = ["*.csv", "*.json", "*.xml", "*.txt"]
 
 [tool.pytest.ini_options]
 addopts = "--ignore=mutants"

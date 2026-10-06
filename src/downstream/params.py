@@ -10,6 +10,7 @@ from __future__ import annotations
 import csv
 import math
 from dataclasses import dataclass, replace
+from importlib.resources import files
 from pathlib import Path
 
 from . import units
@@ -265,7 +266,15 @@ def load_baselines(path: str | Path) -> dict[str, Baseline]:
 
 
 def default_dir() -> Path:
-    return Path(__file__).resolve().parents[2] / "params"
+    return data_dir("params")
+
+
+def data_dir(name: str) -> Path:
+    """Use checkout data in development and bundled data in installed wheels."""
+    checkout = Path(__file__).resolve().parents[2] / name
+    if Path(__file__).resolve().parent.parent.name == "src":
+        return checkout
+    return Path(str(files("downstream_data").joinpath(name)))
 
 
 def load_all(params_dir: str | Path | None = None):

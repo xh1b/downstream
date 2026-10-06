@@ -28,11 +28,11 @@ from pathlib import Path
 
 from .children import CHILD_DIRECT, GRANDCHILD
 from .ledger import DIRECT, GAP, chain
-from .params import ParameterSet
+from .params import ParameterSet, data_dir
 from .worker import WORKER_EARNINGS
 from .mortality import excess_deaths
 
-VALIDATION_DIR = Path(__file__).resolve().parents[2] / "validation"
+VALIDATION_DIR = data_dir("validation")
 
 
 def internal_consistency(params: ParameterSet) -> dict:
