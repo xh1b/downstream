@@ -4,7 +4,7 @@ The model's authority is borrowed, and the loans are itemized. Every
 parameter traces to named researchers; the methodology traces to named
 statisticians. This module computes the collective from references.bib
 — the "incorporates the work of N researchers" claim is machine-
-generated and therefore always exact and reproducible, never marketing.
+generated and therefore always exact and reproducible, an attribution index, not a count of independently verified researchers.
 
 Roles (derived from where a key is cited):
   parameter   — cited by params/parameters.csv (the evidence base)
@@ -44,7 +44,18 @@ def parse_authors(field: str) -> list[str]:
     name to credit).
     """
     names: list[str] = []
-    for raw in _clean_latex(field).split(" and "):
+    depth, start, raw_names = 0, 0, []
+    for i, char in enumerate(field):
+        if char == "{":
+            depth += 1
+        elif char == "}":
+            depth -= 1
+        elif depth == 0 and field.startswith(" and ", i):
+            raw_names.append(field[start:i])
+            start = i + 5
+    raw_names.append(field[start:])
+    for raw in raw_names:
+        raw = _clean_latex(raw)
         name = raw.strip()
         if not name or name.lower() == "others":
             continue
@@ -86,7 +97,12 @@ def collect(bib: dict[str, BibEntry], params_dir: Path | None = None) -> dict:
     for key, entry in bib.items():
         for name in parse_authors(entry.fields.get("author", "")):
             sur = _surname(name)
-            r = researchers.setdefault(sur.lower(), Researcher(name=name, surname=sur, entries=[]))
+            # Full names distinguish unrelated authors with a common surname.
+            aliases = {"Autor, David": "Autor, David H.", "Hanson, Gordon": "Hanson, Gordon H.",
+                       "Conover, W. J.": "Conover, William J.", "Sullivan, Daniel": "Sullivan, Daniel G."}
+            name = aliases.get(name, name)
+            identity = re.sub(r"[^\w]", "", name).casefold()
+            r = researchers.setdefault(identity, Researcher(name=name, surname=sur, entries=[]))
             if key not in r.entries:
                 r.entries.append(key)
 
@@ -146,16 +162,15 @@ def attribution_sentences(data: dict) -> list[str]:
     years = f'{data["year_min"]}-{data["year_max"]}'
     return [
         (
-            f"This model incorporates the findings of {n_studies} peer-reviewed "
-            f"studies by {n_researchers} researchers, {years}."
+            f"The bibliography contains {n_studies} sources and {n_researchers} named "
+            f"author records (people and organizations), {years}."
         ),
         (
-            f"Its parameters rest directly on {len(param_studies)} studies by "
-            f"{len(param_researchers)} research teams."
+            f"The parameters cite {len(param_studies)} sources with "
+            f"{len(param_researchers)} named author records; these are not counts of independent research teams."
         ),
         (
-            "Every modeled number carries its sources with it; nothing here "
-            "is a model-originated estimate of a scientific fact."
+            "The bibliography includes research, methods and context sources; inclusion does not establish peer review or independent validation. Modeled numbers carry their cited inputs and declared structural assumptions."
         ),
     ]
 
@@ -196,3 +211,16 @@ def write_credits_md(data: dict, path: Path) -> str:
     text = "\n".join(lines) + "\n"
     path.write_text(text, encoding="utf-8")
     return text
+
+
+def update_readme_attribution(data, path):
+    """Refresh the bounded generated attribution block in the README."""
+    path = Path(path)
+    text = path.read_text(encoding="utf-8")
+    block = "<!-- BEGIN GENERATED ATTRIBUTION -->\n" + "\n\n".join(attribution_sentences(data)) + "\n\nSee [CREDITS.md](CREDITS.md) for the complete attribution record.\n<!-- END GENERATED ATTRIBUTION -->"
+    pattern = r"<!-- BEGIN GENERATED ATTRIBUTION -->.*?<!-- END GENERATED ATTRIBUTION -->"
+    if re.search(pattern, text, re.S):
+        text = re.sub(pattern, lambda _: block, text, flags=re.S)
+    else:
+        text = re.sub(r"The parameter set \(v1\.48\).*?full credit record\.", lambda _: block, text, flags=re.S)
+    path.write_text(text, encoding="utf-8")

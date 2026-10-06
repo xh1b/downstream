@@ -4,7 +4,7 @@
 You supply an initiating event, such as worker displacement. The engine
 composes published causal links and calculates how the event propagates through
 a person, their family, and their community over time. Every computed effect
-traces to a cited, peer-reviewed study. Each result shows its uncertainty and
+traces to cited research or an explicitly labeled structural assumption. Each result shows its uncertainty and
 the full path that produced it. The engine has no runtime dependencies.
 
 Worker displacement is the first seed event. It is not the boundary. The
@@ -15,10 +15,15 @@ bridge is compatible, and the uncertainty is explicit. The engine models
 synthetic people and populations. It does not predict the future of an
 identified person. See `SPEC.md` for the full design rules.
 
-The parameter set (v1.48) incorporates 81 peer-reviewed studies by 166
-researchers (1979–2023). Nineteen studies by 43 research teams supply the
-parameters. `CREDITS.md` computes these counts from the bibliography. Run
-`downstream credits` to see the full credit record.
+<!-- BEGIN GENERATED ATTRIBUTION -->
+The bibliography contains 110 sources and 216 named author records (people and organizations), 1979-2026.
+
+The parameters cite 53 sources with 121 named author records; these are not counts of independent research teams.
+
+The bibliography includes research, methods and context sources; inclusion does not establish peer review or independent validation. Modeled numbers carry their cited inputs and declared structural assumptions.
+
+See [CREDITS.md](CREDITS.md) for the complete attribution record.
+<!-- END GENERATED ATTRIBUTION -->
 
 ## Install
 
