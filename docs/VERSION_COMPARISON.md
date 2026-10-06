@@ -56,7 +56,7 @@ unsupported commands fail visibly rather than producing an empty comparison.
 ## Reading the report
 
 Fields use escaped JSON-pointer paths, for example
-`/family/worker/earnings/point`. Lists of records are keyed by stable identifiers
+`/family/worker_stream/earnings/point`. Lists of records are keyed by stable identifiers
 (`link`, `key`, `outcome`, `name`, `id`, `label`, or `profile_id`), so reordering
 parameters does not look like a numerical change. Repeated outcomes use a
 qualifier such as exposure to distinguish separate calculations when possible.
