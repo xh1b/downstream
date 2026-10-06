@@ -8,7 +8,7 @@ from downstream.distributions import plan
 from downstream.inference import _draw_samples
 from downstream.ledger import validate_chain
 from downstream.mc import simulate
-from downstream.mortality import excess_deaths
+from downstream.mortality import parameter_profile_counts
 from downstream.params import load_all, load_correlations, spearman_matrix
 from downstream.validate import v1_retrodict
 
@@ -33,10 +33,7 @@ def test_v1_mortality_score_uses_the_shipped_survival_kernel():
     n = abs(float(bridge["mfg_employment_share_change_per_pp"]["point"])) * 1000
     baseline = (float(bridge["male_death_rate_1990_per100k"]["point"])
                 + float(bridge["female_death_rate_1990_per100k"]["point"])) / 2 / 100_000
-    expected = excess_deaths(n, baseline,
-                             params.by_link("earnings_shock->mortality_peak").point,
-                             params.by_link("earnings_shock->mortality_sustained").point,
-                             10)
+    expected = parameter_profile_counts(params, n, baseline, 10)
     assert row["modeled_excess_deaths_per100k"]["point"] == round(expected, 2)
 
 

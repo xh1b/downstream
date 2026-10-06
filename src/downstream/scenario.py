@@ -363,8 +363,8 @@ def compute_counts(
         matched = True
         if scenario.target_population is not None:
             target = scenario.target_population
-            matched = (target['sex'] == 'Male' and target['age'] == '45-54 years' and target['worker_tenure'] == 'high-tenure') if outcome == 'excess_deaths' else target['sex'] == 'Male' and target['children_sex'] == 'Male'
-        eligible = bool(decision and matched and scenario.mortality_method == 'odds_survival' and scenario.mortality_timing == 'source_profile')
+            matched = (target['sex'] == 'Male' and target['age'] == '45-54 years' and target['worker_tenure'] == 'high-tenure' and target['exposure_type'] in {'mass layoff', 'firm closure'}) if outcome == 'excess_deaths' else target['sex'] == 'Male' and target['children_sex'] == 'Male' and target['exposure_type'] == 'firm closure'
+        eligible = bool(decision and matched and (outcome != 'excess_deaths' or (scenario.mortality_method == 'odds_survival' and scenario.mortality_timing == 'source_profile')))
         row["applicability"] = {
             "status": "reviewed_conditional_transport" if eligible else "illustrative_reference_calculation",
             "eligible_for_public_headline": eligible,

@@ -45,7 +45,7 @@ def _write_v2_inputs(directory, *, workers="100", low="50", high="150",
 
 
 def test_version_is_v127():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.48"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.49"
 
 
 def test_registry_has_exactly_the_three_events():
@@ -61,8 +61,11 @@ def test_scored_streams_pre_registered():
     # every stream names its links: the definitions are in code, not prose
     mort = next(s for s in V2_SCORED_STREAMS if s["outcome"] == "excess_deaths_per100k")
     assert mort["links"] == [
-        "earnings_shock->mortality_sustained",
         "earnings_shock->mortality_peak",
+        "earnings_shock->mortality_offset_1",
+        "earnings_shock->mortality_offsets_2_3",
+        "earnings_shock->mortality_offsets_4_5",
+        "earnings_shock->mortality_sustained",
     ]
 
 

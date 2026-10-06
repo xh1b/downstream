@@ -74,4 +74,4 @@ def test_declared_prior_k_untouched_by_eb_yardstick():
 def test_audit_clean_and_version_current():
     s = summary(audit(PARAMS_DIR))
     assert s["pass"], [f.as_dict() for f in audit(PARAMS_DIR) if f.severity.value == "error"]
-    assert PARAMS.version == "v1.48"
+    assert PARAMS.version == "v1.49"

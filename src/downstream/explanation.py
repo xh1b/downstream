@@ -215,11 +215,5 @@ def _driver_sentences(sob: dict) -> list[dict]:
     return out
 
 
-def _load_nodes() -> dict:
-    from .params import default_dir, load_nodes
-
-    return load_nodes(default_dir() / "nodes.csv")
-
-
 def _r3(t: tuple[float, float, float]) -> tuple[float, float, float]:
     return tuple(round(v, 4) for v in t)

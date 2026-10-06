@@ -11,6 +11,7 @@ always reproducible.
 
 from __future__ import annotations
 
+import math
 from pathlib import Path
 from typing import Callable
 
@@ -79,7 +80,10 @@ def simulate(
     dp = plan(params, nodes, draws, seed, spearman=spearman)
     samples: list[float] = []
     for k in range(draws):
-        samples.append(compute(materialize_parameter_set(params, nodes, dp.u[k], dp.dists)))
+        value = compute(materialize_parameter_set(params, nodes, dp.u[k], dp.dists))
+        if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
+            raise ValueError("sampled outcome must be a finite number")
+        samples.append(value)
     samples.sort()
 
     def pct(p: float) -> float:
@@ -135,8 +139,8 @@ def simulate_many(
     for k in range(draws):
         values = compute(materialize_parameter_set(params, nodes, dp.u[k], dp.dists))
         for name, value in values.items():
-            if not isinstance(value, (int, float)):
-                raise TypeError(f"sampled outcome {name!r} must be numeric")
+            if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
+                raise ValueError(f"sampled outcome {name!r} must be a finite number")
             samples.setdefault(name, []).append(float(value))
 
     raw_samples = {name: values[:] for name, values in samples.items()} if include_samples else None

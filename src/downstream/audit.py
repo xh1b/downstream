@@ -77,7 +77,11 @@ def audit(params_dir: str | Path | None = None) -> list[Finding]:
         from .county_rates import load_county_mortality_posteriors
         from .place import _county_mortality_override
         if (d / "mortality_profiles.csv").exists():
-            load_profiles(d / "mortality_profiles.csv")
+            profiles = load_profiles(d / "mortality_profiles.csv")
+            base = baselines.get("all_cause_mortality_annual")
+            for profile in profiles.values():
+                if base and (profile.sex, profile.age, profile.years, profile.cause, profile.geography) == (base.sex, base.age, base.years, base.cause, base.geography) and profile.annual_rate != base.value:
+                    raise ValueError("mortality profile rate disagrees with the matching national baseline")
         if (d / "county_mortality.csv").exists():
             county = load_county_mortality_posteriors(d / "county_mortality.csv")
             places_for_audit = load_places(d / "places.csv")

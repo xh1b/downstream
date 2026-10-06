@@ -55,7 +55,7 @@ def compare_policies(params, baselines, baseline: PolicyCase, policy: PolicyCase
         combined = {}
         for key, row in point['modeled'].items():
             values = [r['modeled'][key][bound] for r in extremes for bound in ('low', 'high')]
-            combined[key] = {'point': row['point'], 'low': min(values), 'high': max(values), 'unit': row['unit']}
+            combined[key] = {'point': row['point'], 'low': min(values), 'high': max(values), 'unit': row['unit'], 'applicability': row.get('applicability'), 'baseline': row.get('baseline')}
         return {'name': case.name, 'exposure_assumption': {'source': case.source, 'method': case.method,
                 'point': case.scenario.displaced_workers, 'low': case.exposure_band[0], 'high': case.exposure_band[1]},
                 'parameter_envelope': point, 'parameter_and_exposure_envelope': combined}
@@ -82,7 +82,7 @@ def compare_policies(params, baselines, baseline: PolicyCase, policy: PolicyCase
         delta[key] = {'point': 0.0 if identical else round(p['point']-b['point'], 4),
                       'low': 0.0 if identical else round(p['low']-b['high'], 4),
                       'high': 0.0 if identical else round(p['high']-b['low'], 4),
-                      'unit': p['unit']}
+                      'unit': p['unit'], 'applicability': {'status': 'conditional_policy_contrast', 'eligible_for_public_headline': False, 'reason': 'Exposure changes are caller supplied; this model does not identify policy effects.'}}
     return {'schema': 'downstream-policy-comparison/1', 'engine_version': __version__,
             'parameter_set_version': params.version, 'baseline': before, 'policy': after,
             'policy_minus_baseline': delta, 'blocked': blocked,

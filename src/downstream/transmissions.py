@@ -251,7 +251,7 @@ def drift_relationships(params: ParameterSet) -> list[str]:
     for t in TRANSMISSIONS:
         for step in t.steps:
             p = params.by_link(step.link)
-            band = (p.point, p.low, p.high)
+            band = (p.point, p.low, p.high, p.dist)
             if (step.relationship in bands and bands[step.relationship] != band
                     and step.relationship not in drifted):
                 drifted.append(step.relationship)

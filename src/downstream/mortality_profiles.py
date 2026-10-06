@@ -48,6 +48,8 @@ def load_profiles(path: str | Path) -> dict[str, MortalityBaselineProfile]:
                 raise ValueError(f"duplicate or blank mortality profile {profile_id!r}")
             if not all((getattr(profile, field) for field in ("sex", "age", "years", "cause", "geography", "population_scope", "citation", "status"))):
                 raise ValueError(f"mortality profile {profile_id!r} has blank metadata")
+            if profile.status not in {"verified", "pending", "context_only"}:
+                raise ValueError(f"unknown mortality profile status {profile.status!r}")
             if rate is not None and (not math.isfinite(rate) or rate < 0):
                 raise ValueError(f"mortality profile {profile_id!r} has invalid annual_rate")
             if profile.status == "verified" and rate is None:

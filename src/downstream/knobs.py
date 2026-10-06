@@ -110,6 +110,7 @@ def sweep(
                 "knob": link,
                 "value": v,
                 "modeled": flat,
+                "applicability": {key: row.get("applicability") for key, row in out["modeled"].items()},
                 "delta_vs_first": {
                     k: (round(flat[k] - first[k], 4) if isinstance(flat[k], (int, float)) else None)
                     for k in flat

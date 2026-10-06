@@ -21,22 +21,22 @@ class DocumentedExposure:
     displaced_workers: float
     source: str
     method: str
+    target_population: dict[str, str] | None = None
+    applicability_decisions: dict[str, dict] | None = None
 
     def __post_init__(self):
         for name in ('subject_id', 'subject_type', 'source', 'method'):
             value = getattr(self, name)
             if not isinstance(value, str) or not value.strip():
                 raise ValueError(f'{name} must be a nonempty string')
-        if (isinstance(self.displaced_workers, bool)
-                or not isinstance(self.displaced_workers, (int, float))
-                or not math.isfinite(self.displaced_workers)
-                or self.displaced_workers < 0):
-            raise ValueError('displaced_workers must be finite and nonnegative')
+        ScenarioInput(self.displaced_workers, target_population=self.target_population,
+                      applicability_decisions=self.applicability_decisions)
 
     @classmethod
     def from_warehouse(
         cls, *, subject_id: str, subject_type: str, source: str,
         americans_displaced: float, displacement_breakdown: dict,
+        target_population=None, applicability_decisions=None,
     ) -> DocumentedExposure:
         """Validate the upstream employer/person aggregate without recalculating it.
 
@@ -76,7 +76,7 @@ class DocumentedExposure:
         if abs(components - total) > Decimal('0.002'):
             raise ValueError('displacement components disagree with the reported total')
         return cls(subject_id, subject_type, float(total), source,
-                   displacement_breakdown['formula'])
+                   displacement_breakdown['formula'], target_population, applicability_decisions)
 
 
 def compute_entity_counts(
@@ -98,7 +98,9 @@ def compute_entity_counts(
     impact computation; the result never predicts an individual's life.
     """
     scenario = replace(scenario or ScenarioInput(0),
-                       displaced_workers=exposure.displaced_workers)
+                       displaced_workers=exposure.displaced_workers,
+                       target_population=(scenario.target_population if scenario and scenario.target_population is not None else exposure.target_population),
+                       applicability_decisions=(scenario.applicability_decisions if scenario and scenario.applicability_decisions is not None else exposure.applicability_decisions))
     if (isinstance(scenario.n_children, bool) or not isinstance(scenario.n_children, int)
             or scenario.n_children < 0):
         raise ValueError('n_children must be a nonnegative integer')

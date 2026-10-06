@@ -147,7 +147,7 @@ def v1_backtest_spec() -> dict:
 V2_EVENT_IDS = ("nafta", "auto_crisis", "brac")
 
 V2_SCORED_STREAMS = (
-    {"outcome": "excess_deaths_per100k", "links": ["earnings_shock->mortality_sustained", "earnings_shock->mortality_peak"]},
+    {"outcome": "excess_deaths_per100k", "links": ["earnings_shock->mortality_peak", "earnings_shock->mortality_offset_1", "earnings_shock->mortality_offsets_2_3", "earnings_shock->mortality_offsets_4_5", "earnings_shock->mortality_sustained"]},
     {"outcome": "additional_divorces_per100k_women", "links": ["displacement->divorce_hazard"]},
     {"outcome": "local_service_jobs_per_displaced", "links": ["displacement->local_service_jobs"]},
 )
@@ -260,6 +260,11 @@ def v2_events(params: ParameterSet) -> dict:
     """The pre-registered V2 registry: what will be scored, and what blocks it."""
     return {
         "stage": "V2 out-of-sample back-tests",
+        "mortality_method_revision": {
+            "date": "2026-10-07", "engine": "0.3.0",
+            "reason": "Correct the historical two-coefficient scorer to use the complete production source profile before independent event scoring data lands; no coefficients tuned.",
+            "contract": source_profile_contract(),
+        },
         "pre_registered": (
             "Outcome definitions and scoring rules registered in code at "
             f"{params.version} BEFORE any event data lands; trap tests pin "

@@ -11,7 +11,7 @@ PARAMS_DIR = Path(__file__).resolve().parent.parent / "params"
 
 
 def test_version_stamp():
-    assert load(PARAMS_DIR / "parameters.csv").version == "v1.48"
+    assert load(PARAMS_DIR / "parameters.csv").version == "v1.49"
 
 
 def test_nodes_registry_loads_with_known_units():
