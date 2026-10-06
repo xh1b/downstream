@@ -30,7 +30,7 @@ from .children import CHILD_DIRECT, GRANDCHILD
 from .ledger import DIRECT, GAP, chain
 from .params import ParameterSet, data_dir
 from .worker import WORKER_EARNINGS
-from .mortality import excess_deaths
+from .mortality import parameter_profile_counts, source_profile_contract
 
 VALIDATION_DIR = data_dir("validation")
 
@@ -417,13 +417,10 @@ def v1_retrodict(params: ParameterSet) -> dict:
              + float(bridge["female_death_rate_1990_per100k"]["point"] or 0)) / 2 / 100_000
     m_male = float(bridge["male_death_rate_1990_per100k"]["point"]) / 100_000
 
-    sust = params.by_link("earnings_shock->mortality_sustained")
-    peak = params.by_link("earnings_shock->mortality_peak")
     WINDOW = 10.0  # ADH measure decadal changes
 
-    def excess(n: float, m: float, s, pk) -> float:
-        # Must be the same odds-to-risk/survival kernel exposed by scenario.
-        return excess_deaths(n, m, pk, s, WINDOW, method="odds_survival")
+    def excess(n: float, m: float, bound="point") -> float:
+        return parameter_profile_counts(params, n, m, WINDOW, bound)
 
     m_age = float(bridge["male_death_rate_2544_1999_2003_per_person"]["point"])
     scored = []
@@ -432,13 +429,15 @@ def v1_retrodict(params: ParameterSet) -> dict:
         ("all_male", m_male, "declared assumption: every lost mfg job is a man's"),
         ("all_male_age_matched", m_age, "WONDER 25-44 male pooled 1999-2003 (warehouse-pinned); closes the era/provenance caveat"),
     ):
-        point = excess(n_point, m, sust.point, peak.point)
-        lo = excess(n_lo, m, sust.low, peak.low)
-        hi = excess(n_hi, m, sust.high, peak.high)
+        point = excess(n_point, m)
+        lo = excess(n_lo, m, "low")
+        hi = excess(n_hi, m, "high")
         measured, mse = 4.27, 3.54
         scored.append({
             "variant": label,
             "scope_caveat": caveat,
+            "mortality_contract": source_profile_contract(),
+            "illustrative_transport": "Validation bridge populations differ from the source worker cohort; this is a diagnostic transport check.",
             "modeled_excess_deaths_per100k": {"point": round(point, 2), "low": round(lo, 2), "high": round(hi, 2)},
             "measured_differential_per100k": {"point": measured, "ci95": [round(measured - 1.96 * mse, 2), round(measured + 1.96 * mse, 2)]},
             "measured_inside_modeled_band": lo <= measured <= hi,
@@ -839,8 +838,6 @@ def v2_backtest(event_id: str, params: ParameterSet) -> dict:
         return {"event": event["id"], "status": "blocked: negative window_years",
                 "scored": [], "honesty": "A score requires a nonnegative follow-up window."}
 
-    sust = params.by_link("earnings_shock->mortality_sustained")
-    peak = params.by_link("earnings_shock->mortality_peak")
     baseline_key = "baseline_mortality_per_person_year"
     if baseline_key not in bridge:
         return {
@@ -848,29 +845,29 @@ def v2_backtest(event_id: str, params: ParameterSet) -> dict:
             "status": "blocked: bridge lacks cited baseline_mortality_per_person_year",
             "scored": [],
             "window_years": window,
-            "honesty": "Mortality scoring requires a baseline probability; measured excess deaths cannot be reused as that baseline.",
+            "honesty": "Mortality scoring requires a baseline annual rate; measured excess deaths cannot be reused as that baseline.",
         }
     try:
         baseline = number(baseline_key)
     except ValueError as exc:
         return {"event": event["id"], "status": f"blocked: {exc}", "scored": [],
-                "window_years": window, "honesty": "Mortality scoring requires a finite baseline probability."}
+                "window_years": window, "honesty": "Mortality scoring requires a finite baseline annual rate."}
     if not 0 <= baseline <= 1:
         return {"event": event["id"], "status": "blocked: invalid baseline_mortality_per_person_year",
                 "scored": [], "window_years": window,
-                "honesty": "Mortality scoring requires a baseline probability in [0, 1]."}
+                "honesty": "Mortality scoring requires a baseline annual rate in [0, 1]."}
 
-    def excess(n_: float, s: float, pk: float) -> float:
-        return excess_deaths(n_, baseline, pk, s, window, method="odds_survival")
+    def excess(n_: float, bound="point") -> float:
+        return parameter_profile_counts(params, n_, baseline, window, bound)
 
     scored = []
     for mrow in measured:
         if mrow["outcome"] != "excess_deaths_per100k":
             continue
-        corners = [excess(n_, s, pk) for n_ in (n_lo, n_hi)
-                   for s in (sust.low, sust.high) for pk in (peak.low, peak.high)]
+        corners = [excess(n_, bound) for n_ in (n_lo, n_hi)
+                   for bound in ("low", "high")]
         lo, hi = min(corners), max(corners)
-        pt = excess(n, sust.point, peak.point)
+        pt = excess(n)
         try:
             observed, mse = float(mrow["point"]), float(mrow["se"])
         except (KeyError, TypeError, ValueError):
@@ -883,6 +880,7 @@ def v2_backtest(event_id: str, params: ParameterSet) -> dict:
                     "honesty": "Measured outcome rows require finite point estimates and nonnegative standard errors."}
         scored.append({
             "outcome": "excess_deaths_per100k",
+            "mortality_contract": source_profile_contract(),
             "modeled": {"point": round(pt, 2), "low": round(lo, 2), "high": round(hi, 2)},
             "measured": {"point": observed, "ci95": [round(observed - 1.96 * mse, 2), round(observed + 1.96 * mse, 2)]},
             "measured_inside_modeled_band": lo <= observed <= hi,

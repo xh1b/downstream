@@ -28,6 +28,8 @@ from . import __version__
 from .params import default_dir, load_all, load_correlations
 from .place import load_places, PRIOR_N, DOSE_YEARS
 
+from .mortality import source_profile_contract
+
 SCHEMA = "downstream-parameter-set/2"
 
 
@@ -62,7 +64,8 @@ def build(params_dir: str | Path | None = None) -> dict:
         "modeling_assumptions": {
             "place_prior_n": PRIOR_N, "childhood_exposure_years": DOSE_YEARS,
             "place_application": "initial_only", "mortality_method": "odds_survival",
-            "mortality_timing": "initial peak year; years 2-5 unidentified and held at baseline; year-6+ coefficient thereafter",
+            "mortality_timing": "source_profile",
+            "mortality_contract": source_profile_contract(),
         },
         "parameters": [
             {
@@ -85,19 +88,7 @@ def build(params_dir: str | Path | None = None) -> dict:
             {"name": n.name, "unit": n.unit, "description": n.description}
             for n in nodes.values()
         ],
-        "baselines": [
-            {
-                "outcome": b.outcome,
-                "unit": b.unit,
-                "population": b.population,
-                "value": b.value,
-                "citation": b.citation,
-                "source": b.source,
-                "status": b.status,
-                "notes": b.notes,
-            }
-            for b in baselines.values()
-        ],
+        "baselines": [asdict(b) for b in baselines.values()],
         "citations": {
             key: {
                 "evidence": bib[key].evidence,

@@ -49,3 +49,15 @@ def test_explicit_empty_mortality_mix_is_rejected():
         resolve_mix({}, None, {})
     with pytest.raises(ValueError, match='at least one'):
         validate_sullivan_von_wachter_applicability([])
+
+
+def test_validation_and_scenario_use_same_mortality_profile():
+    from downstream.mortality import parameter_profile_counts, source_profile_contract
+    from downstream.scenario import ScenarioInput, compute_counts
+    from downstream.snapshot import build
+    parts = load_all()
+    for years in (5, 10, 20):
+        out = compute_counts(parts['params'], parts['baselines'], ScenarioInput(1000, exposure_years=years))
+        expected = parameter_profile_counts(parts['params'], 1000, parts['baselines']['all_cause_mortality_annual'].value, years)
+        assert out['modeled']['excess_deaths']['point'] == round(expected, 2)
+    assert build()['modeling_assumptions']['mortality_contract'] == source_profile_contract()

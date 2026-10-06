@@ -124,3 +124,34 @@ def excess_deaths(workers, baseline, peak, sustained, years, method='odds_surviv
     if peak <= 1 and sustained <= 1:
         return min(0.0, result)
     return result
+
+
+SOURCE_PROFILE_DESCRIPTION = (
+    "Source-offset profile: displacement, +1, +2–3, +4–5, and +6+; "
+    "displacement is follow-up year 1, so offset +6 begins in follow-up year 7. "
+    "Annual baseline rates use a constant-hazard rate-to-risk conversion; "
+    "odds ratios modify annual risk, and survival compounds across phases. "
+    "The selected baseline age rate is held fixed over the follow-up horizon."
+)
+
+
+def source_profile_contract() -> dict:
+    start = 0
+    phases = []
+    for name, duration in SOURCE_PROFILE_PHASES:
+        phases.append({"phase": name, "start_offset": start,
+                       "duration_years": None if math.isinf(duration) else duration,
+                       "first_follow_up_year": start + 1})
+        if not math.isinf(duration):
+            start += int(duration)
+    return {"method": "odds_survival", "timing": "source_profile",
+            "baseline_conversion": "1-exp(-annual_rate)", "phases": phases,
+            "description": SOURCE_PROFILE_DESCRIPTION}
+
+
+def parameter_profile_counts(params, workers, annual_rate, years, bound="point"):
+    """The production source profile at a declared parameter support bound."""
+    from .worker import mortality_profile
+    profile = mortality_profile(params)
+    return excess_deaths_profile(workers, rate_to_risk(annual_rate),
+                                {phase: getattr(p, bound) for phase, p in profile.items()}, years)
