@@ -164,13 +164,16 @@ def analytic_chain(
     m2 = m1 * m1 if base_m2 is None else float(base_m2)
     m3 = m1**3 if base_m3 is None else float(base_m3)
     steps = []
+    from .distributions import shared_parameter_indices
+    aliases = shared_parameter_indices(params)
+    identities = {p.link: params.parameters[aliases[i]].link for i, p in enumerate(params.parameters)}
     active_links = set()
     for link, kind in zip(links, kinds):
         if kind == "direct":
             active_links.clear()
-        elif link in active_links:
+        elif identities[link] in active_links:
             raise ValueError(f"reused parameter {link!r} violates independent-step moments; use Monte Carlo")
-        active_links.add(link)
+        active_links.add(identities[link])
         p = params.by_link(link)  # KeyError names a typo'd link
         node = nodes.get(p.to_node)
         t1, t2, t3 = param_moments(p, node.unit if node else None)

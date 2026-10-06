@@ -61,7 +61,7 @@ def simulate(
         from .params import default_dir, load_nodes
 
         try:
-            nodes = load_nodes(default_dir() / "nodes.csv")
+            nodes = load_nodes((Path(params_dir) if params_dir is not None else default_dir()) / "nodes.csv")
         except OSError:
             nodes = {}
 
@@ -121,7 +121,7 @@ def simulate_many(
         from .params import default_dir, load_nodes
 
         try:
-            nodes = load_nodes(default_dir() / "nodes.csv")
+            nodes = load_nodes((Path(params_dir) if params_dir is not None else default_dir()) / "nodes.csv")
         except OSError:
             nodes = {}
     n_pairs = 0
@@ -174,6 +174,7 @@ def simulate_chain(
     kinds: list[str] | None = None,
     nodes: dict | None = None,
     use_declared_correlations: bool = True,
+    params_dir=None,
 ) -> dict:
     """Convenience wrapper: sample a named chain of links.
 
@@ -185,7 +186,7 @@ def simulate_chain(
         raise ValueError("arbitrary chains require explicit composition kinds")
     if nodes is None:
         from .params import default_dir, load_nodes
-        nodes = load_nodes(default_dir() / "nodes.csv")
+        nodes = load_nodes((Path(params_dir) if params_dir is not None else default_dir()) / "nodes.csv")
     from .ledger import validate_chain
     validate_chain(params, links, kinds, nodes)
 
@@ -200,6 +201,7 @@ def simulate_chain(
         seed=seed,
         nodes=nodes,
         use_declared_correlations=use_declared_correlations,
+        params_dir=params_dir,
     )
     out["label"] = label
     out["links"] = links

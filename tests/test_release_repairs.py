@@ -61,3 +61,34 @@ def test_validation_and_scenario_use_same_mortality_profile():
         expected = parameter_profile_counts(parts['params'], 1000, parts['baselines']['all_cause_mortality_annual'].value, years)
         assert out['modeled']['excess_deaths']['point'] == round(expected, 2)
     assert build()['modeling_assumptions']['mortality_contract'] == source_profile_contract()
+
+
+def test_repeated_relationship_shares_exact_draw_and_sensitivity_block():
+    from downstream.distributions import plan, materialize_parameter_set
+    from downstream.sensitivity import sobol_indices, correlated_block_sobol
+    from downstream.inference import analytic_chain
+    from downstream.children import child_line
+    parts = load_all()
+    params, nodes = parts['params'], parts['nodes']
+    links = ['child_earnings->grandchild_earnings', 'grandchild_earnings->greatgrandchild_earnings']
+    draw = plan(params, nodes, 10, 19)
+    for row in draw.u:
+        sampled = materialize_parameter_set(params, nodes, row, draw.dists)
+        assert sampled.by_link(links[0]).point == sampled.by_link(links[1]).point
+    with pytest.raises(ValueError, match='reused parameter'):
+        analytic_chain(params, ['displacement->child_earnings', *links], ['direct', 'gap', 'gap'], nodes)
+    def compute(ps):
+        return child_line(ps)['greatgrandchild'].point
+    sob = sobol_indices(params, compute, nodes, base=16)
+    assert any(row['links'] == links for row in sob['indices'])
+    blocks = correlated_block_sobol(params, compute, nodes, [], base=16)
+    assert any(row['links'] == links for row in blocks['blocks'])
+
+
+def test_custom_link_sampling_uses_custom_correlations(tmp_path):
+    from downstream.mc import simulate_chain
+    parts = load_all()
+    (tmp_path / 'correlations.csv').write_text('from_param,to_param,spearman,justification\n')
+    result = simulate_chain(parts['params'], ['displacement->worker_earnings'], kinds=['level'],
+                            nodes=parts['nodes'], draws=10, params_dir=tmp_path)
+    assert result['correlations_applied'] == 0

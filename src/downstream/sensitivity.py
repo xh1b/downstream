@@ -18,7 +18,7 @@ from __future__ import annotations
 import random
 from typing import Callable
 
-from .distributions import materialize_parameter_set, plan
+from .distributions import materialize_parameter_set, plan, shared_parameter_indices, validate_sample_count
 from .params import Correlation, ParameterSet, spearman_matrix
 
 
@@ -34,6 +34,7 @@ def sobol_indices(
     `base` = rows in each of the (N+2) sections; model evals =
     base * (N+2). All indices are unit-free shares of output variance.
     """
+    validate_sample_count(base, "base")
     rows = list(params.parameters)
     n = len(rows)
     rng = random.Random(seed)
@@ -63,7 +64,8 @@ def sobol_indices(
 
     total_var = _var(fA + fB)
     out = []
-    for j in range(n):
+    aliases = shared_parameter_indices(params)
+    for j in sorted(set(aliases)):
         # AB_j = A with column j drawn from B (the standard pairing).
         fj = []
         for i in range(base):
@@ -94,6 +96,7 @@ def sobol_indices(
         out.append(
             {
                 "link": rows[j].link,
+                "links": [rows[k].link for k, alias in enumerate(aliases) if alias == j],
                 "S_first": round(s_first, 4),
                 "S_total": round(t_total, 4),
             }
@@ -102,7 +105,7 @@ def sobol_indices(
     return {
         "base": base,
         "seed": seed,
-        "model_evals": base * (n + 2),
+        "model_evals": base * (len(set(aliases)) + 2),
         "output_variance": round(total_var, 8),
         "indices": out,
         "note": (
@@ -136,6 +139,7 @@ def correlated_block_sobol(
     Shapley attribution; a conditional-distribution model is required before
     splitting a dependent block fairly.
     """
+    validate_sample_count(base, "base")
     rows = list(params.parameters)
     index = {p.link: i for i, p in enumerate(rows)}
     adjacency = {i: set() for i in range(len(rows))}
@@ -145,6 +149,10 @@ def correlated_block_sobol(
         a, b = index[c.from_param], index[c.to_param]
         adjacency[a].add(b)
         adjacency[b].add(a)
+    for i, j in enumerate(shared_parameter_indices(params)):
+        if i != j:
+            adjacency[i].add(j)
+            adjacency[j].add(i)
     seen: set[int] = set()
     blocks: list[list[int]] = []
     for root in range(len(rows)):

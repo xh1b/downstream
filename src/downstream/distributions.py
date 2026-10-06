@@ -27,7 +27,7 @@ from __future__ import annotations
 
 import math
 import random
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 
 from .params import Parameter
 
@@ -91,11 +91,36 @@ def materialize_parameter_set(params, nodes: dict, u_row: list[float], dists: li
     rows = list(params.parameters)
     if len(u_row) != len(rows) or len(dists) != len(rows):
         raise ValueError("draw dimensions must match parameter count")
-    out = params
-    for p, u, dist in zip(rows, u_row, dists):
-        lo, hi = sorted((p.low, p.high))
-        out = out.with_param(p.link, sample_unit_interval(dist, u, lo, hi, point=p.point))
-    return out
+    aliases = shared_parameter_indices(params)
+    values = []
+    for i, p in enumerate(rows):
+        j = aliases[i]
+        source = rows[j]
+        lo, hi = sorted((source.low, source.high))
+        values.append(replace(p, point=sample_unit_interval(dists[j], u_row[j], lo, hi, point=source.point)))
+    return replace(params, version=f"{params.version.split('-sampled')[0]}-sampled", parameters=tuple(values))
+
+
+def shared_parameter_indices(params) -> list[int]:
+    """Unrolled rows of the same relationship are one random variable.
+
+    Explicitly changed bands in experimental variants remain separate.
+    """
+    from .transmissions import TRANSMISSIONS
+    rows = list(params.parameters)
+    index = {p.link: i for i, p in enumerate(rows)}
+    aliases = list(range(len(rows)))
+    groups = {}
+    for transmission in TRANSMISSIONS:
+        for step in transmission.steps:
+            if step.link not in index:
+                continue
+            i = index[step.link]
+            p = rows[i]
+            identity = (step.relationship, p.point, p.low, p.high, p.dist)
+            aliases[i] = groups.setdefault(identity, i)
+    return aliases
+
 
 
 def _probit(u: float) -> float:
@@ -160,6 +185,17 @@ def apply_rank_correlation(u: list[list[float]], spearman: list[list[float]],
     n_rows, n_cols = len(u), len(u[0]) if u else 0
     if n_cols != len(spearman):
         raise ValueError("correlation matrix size must match parameter count")
+    active = [i for i in range(n_cols) if any(spearman[i][j] != 0 for j in range(n_cols) if i != j)]
+    if not active:
+        return [row[:] for row in u]
+    if len(active) < n_cols:
+        sub = apply_rank_correlation([[row[i] for i in active] for row in u],
+                                     [[spearman[i][j] for j in active] for i in active], rng)
+        out = [row[:] for row in u]
+        for row, values in zip(out, sub):
+            for j, value in zip(active, values):
+                row[j] = value
+        return out
     # The input is Spearman rank correlation, while Cholesky operates on
     # Gaussian-copula Pearson correlation.  For a bivariate normal copula,
     # rho_S = 6/pi * asin(r/2), hence r = 2 sin(pi rho_S/6).
@@ -205,10 +241,25 @@ def plan(
     spearman: list[list[float]] | None = None,
 ) -> DrawPlan:
     """Build the sampling matrix for a parameter set."""
+    validate_sample_count(draws, "draws")
     rng = random.Random(seed)
     rows = list(params.parameters)
     u = lhs_matrix(len(rows), draws, rng)
     if spearman is not None:
         u = apply_rank_correlation(u, spearman, rng=rng)
+    aliases = shared_parameter_indices(params)
+    if spearman is not None:
+        # A correlation attached only to a duplicate row would otherwise be lost.
+        for i, j in enumerate(aliases):
+            if i != j and any(spearman[i][k] != spearman[j][k] for k in range(len(rows)) if k not in (i, j)):
+                raise ValueError("shared relationship aliases must declare the same external correlations")
+    for row in u:
+        for i, j in enumerate(aliases):
+            row[i] = row[j]
     dists = [dist_for(p, nodes.get(p.to_node).unit if p.to_node in nodes else None) for p in rows]
     return DrawPlan(u=u, dists=dists)
+
+
+def validate_sample_count(value, name="draws"):
+    if isinstance(value, bool) or not isinstance(value, int) or not 2 <= value <= 1_000_000:
+        raise ValueError(f"{name} must be an integer from 2 to 1000000")
