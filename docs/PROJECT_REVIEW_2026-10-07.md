@@ -1,8 +1,66 @@
 # Downstream project review for public website use
 
+## Repair report — October 7, 2026
+
+The 13 repository findings below have been addressed in engine **0.3.0**, parameters **v1.49**. The original review is preserved after this update as a historical record; its examples and findings describe engine 0.2.0 before these repairs. No new causal coefficients or independent validation data were invented.
+
+| Finding | Repair and resulting behavior |
+| --- | --- |
+| 1. Population applicability | Scenario and entity inputs accept structured target demographics and reviewed per-outcome transport decisions. Default mortality and child-dollar results are explicitly illustrative and ineligible for public headlines. Incompatible target populations block the relevant outcome. Baseline derivation, source-population and horizon qualifications survive in output. |
+| 2. County mortality | National baselines carry sex, age, cause and period metadata. The builder refuses incompatible exports; the loader verifies Gamma–Poisson posterior arithmetic at serialization tolerance; consumption verifies the observation/prior chain. Audit covers county and mortality-profile registries. |
+| 3. Validation timing | V1 and scoreable V2 mortality use the production five-phase profile and rate-to-risk conversion. Outputs name the method. Tables and plots are regenerated; published misses remain visible. The V2 method revision is recorded before event data are available. |
+| 4. Snapshot contract | Snapshot, bundle and scenario use the shared mortality description and machine-readable phase boundaries, including +6 beginning in follow-up year 7. |
+| 5. Explanation | The child-to-grandchild explanation ends at its named outcome, describes the narrowing gap against a stable reference, uses percentage points correctly, and carries evidence roles and structural-projection eligibility. Sampling labels come from the resolved sampler. |
+| 6. Repeated uncertainty | Repeated aliases of one transmission relationship share one exact draw. Sensitivity and replicate summaries retain alias groups, closure truth vectors reuse the shared-variable sampler, declared external correlations resolve onto that shared identity, conflicting declarations fail, and independent-step analytic inference rejects repeated shared variables. |
+| 7. Geography across routes | Policy comparisons, exposure endpoints and knob experiments receive county and profile context. Explicit demographic-profile precedence over county mortality is disclosed. Matched-input county results agree across routes. Mortality experiments resolve county data once per request and sample unrounded values. |
+| 8. Empty mixtures | Explicitly empty mortality mixtures and empty resolved applicability lists fail instead of producing an estimated zero. |
+| 9. Credits | Full author identities and reviewed aliases replace surname-only grouping. Corporate names and accents are retained. README/CREDITS regenerate with modest bibliography and author-record claims; CI checks freshness. |
+| 10. Custom data context | Link simulation and explanations use the selected nodes/correlations context. Custom empty correlation registries produce uncorrelated sampling rather than silently loading defaults. |
+| 11. Public inputs | Counts and sample sizes reject invalid types, ranges and nonfinite values. Family descriptions reflect the supplied child count. Derived nonfinite outcomes fail. CLI errors return readable messages without tracebacks, zero-variance sensitivity designs fail explicitly, and JSON serialization refuses NaN/Infinity. |
+| 12. Methods equations | The paper uses separately documented net tradable-job loss, J = T × the declared class multiplier, and explicitly treats tradable share as metadata. Mortality equations match the implemented rate conversion and survival calculation. |
+| 13. Readability and freshness | The regenerated 17-page paper uses readable relationship labels and data-derived chart axes that include every displayed band. A self-contained semantic HTML methods companion includes scoped tables, keyboard navigation and a complete CSV download. Engine/data versions were advanced, scenario inputs are content hashed, and the paper publishes its complete input manifest including JSON/XML provenance. Fresh distributions are built from corrected source; source archives include the lockfile and HTML companion. |
+
+### Repair verification
+
+| Check | Final result |
+| --- | --- |
+| Full current suite | **904 passed in 121.32 seconds**, Python 3.12.14 on macOS, four pytest workers. Includes 18 new review regressions and updated assertions for corrected contracts. Earlier interrupted runs and obsolete assertions are superseded by this complete run. |
+| Coverage gate | **97.0% lines, 93.8% branches**. Required floors remain 95% and 90%; both pass. Coverage was collected across all four workers. |
+| Lint and dead code | Ruff and Vulture pass. |
+| Model audit | **0 errors, 0 warnings, 57 informational entries**, including checks of county and profile registries. |
+| County rebuild | The supported male export rebuilds byte-for-byte unchanged. Female export rejection, corrupted posterior rejection, and shared geography context are covered by regressions. |
+| Installed distribution | Fresh 0.3.0 wheel: audit, export, family, validation, scenario and bundle pass outside the checkout. Engine and parameter bytes are checked against source. The source archive includes the current lockfile and HTML companion; the lock validates offline. |
+| Methods paper | 17 pages regenerated, all rendered and visually inspected. No LaTeX overfull/underfull or unresolved-reference warnings. Automated checks preserve chart precision and require axes to contain every displayed band/point. Extracted PDF values and its digest match generated results. |
+| HTML companion | Checked at 1280px desktop and 375px mobile widths without document overflow. Keyboard skip link focuses the main content. Landmarks, scoped headers/captions, focusable table regions and complete identifier/CSV access are present. Freshness is checked by CI. |
+
+The paper declares a 103-file input manifest with SHA-256 `fe4d5ffce0828fbf3227568bad568080534494a8507f3ab41e568c1f7b86404b`. These checks establish implementation consistency and release integrity; they do not establish predictive or causal validity. The corrected all-adult V1 diagnostic is **18.77 [6.12, 41.11]** excess deaths per 100,000 adults per unit shock, versus measured **4.27** (95% CI −2.67 to 11.21), and misses both comparisons. The revision is a documented mortality-method correction, not a coefficient adjustment to improve fit.
+
+Reproduce the final checks with:
+
+```sh
+.venv/bin/python -m pytest -n 4 --cov=downstream --cov-branch --cov-report=json:coverage.json -q
+.venv/bin/python scripts/quality_gate.py coverage.json
+.venv/bin/python -m ruff check src scripts
+.venv/bin/python -m vulture
+.venv/bin/downstream audit
+uv lock --check --offline
+make -C paper all
+.venv/bin/python scripts/check_distribution.py dist/downstream-0.3.0-py3-none-any.whl
+```
+
+The parallel runner and pytest coverage plugin were already installed locally. CI retains its normal coverage command; no thresholds were weakened. Historical 0.2.0 archives in the local `dist/` directory are not the corrected release.
+
+### Release interpretation
+
+The backend defects identified here are repaired. A public **illustrative reference-cohort calculator** can use the repaired contracts provided it preserves applicability, blocked states, provenance, horizons and uncertainty labels. Named employer or policy headlines require compatible target inputs, a documented upstream exposure and a reviewed transport decision. A reviewer declaration is a traceable decision, not independent empirical validation.
+
+Actual xh1b.org frontend rendering, production caches, warehouse exposure conversion and deployment are outside this repository and have not been certified. Independent-event V2 and prospective V3 validation remain unestablished. The PDF remains untagged; the HTML companion supplies a semantic reading path, but a full assistive-technology audit of the deployed website remains separate. These scientific and integration limits cannot be removed by backend code changes.
+
+## Original review — before repairs
+
 Review date: October 7, 2026, Hong Kong time. Reviewed commit: `5ea7540e1a8666eff31e3590d855ee93e6cacbeb`, engine 0.2.0, parameters v1.48.
 
-**Recommendation: hold general publication of employer, county, or personal impact headlines until the six P1 findings below are resolved.** The project has a substantial numerical testing and provenance foundation, but its calculation, validation, explanation, and export routes do not yet agree. A carefully labeled research demonstration is more defensible than a general calculator that appears to estimate the consequences attributable to a named employer or immigration policy.
+**Original recommendation (before repairs): hold general publication of employer, county, or personal impact headlines until the six P1 findings below are resolved.** The project has a substantial numerical testing and provenance foundation, but its calculation, validation, explanation, and export routes do not yet agree. A carefully labeled research demonstration is more defensible than a general calculator that appears to estimate the consequences attributable to a named employer or immigration policy.
 
 The most consequential risks are scientific applicability and inconsistent public contracts. Passing tests does not establish that a displacement coefficient applies to an employer's actual workforce, or that an upstream worker-equivalent exposure is an identified displacement event. The engine already documents many of these limits; the public routes need to enforce and preserve them.
 
