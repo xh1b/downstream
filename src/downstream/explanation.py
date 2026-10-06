@@ -207,7 +207,7 @@ def _driver_sentences(sob: dict) -> list[dict]:
                 "share_of_uncertainty": share,
                 "sentence": (
                     f"{row['link']} drives about {share * 100:.0f}% of the "
-                    "remaining range — pinning it down is where more "
+                    "parameter-induced variance in this sensitivity design — more "
                     "evidence would help most."
                 ),
             }

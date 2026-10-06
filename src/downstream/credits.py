@@ -16,6 +16,7 @@ Roles (derived from where a key is cited):
 from __future__ import annotations
 
 import re
+import unicodedata
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -31,8 +32,12 @@ class Researcher:
 
 
 def _clean_latex(s: str) -> str:
-    s = re.sub(r"\{\\['`^\"=.](\w)\}", r"\1", s)
-    s = s.replace("\\'", "").replace("\\`", "")
+    accents = {"'": "\u0301", "`": "\u0300", "^": "\u0302", '"': "\u0308", "~": "\u0303", "=": "\u0304", ".": "\u0307"}
+    s = re.sub(r"\\(['`^\"~=.])\s*\{?([A-Za-z])\}?",
+               lambda m: unicodedata.normalize("NFC", m[2] + accents[m[1]]), s)
+    letters = {"aa": "å", "AA": "Å", "ae": "æ", "AE": "Æ", "o": "ø", "O": "Ø", "ss": "ß"}
+    s = re.sub(r"\\(aa|AA|ae|AE|ss|o|O)\s?", lambda m: letters[m[1]], s)
+    s = s.replace("\\&", "&").replace("\\%", "%").replace("~", " ")
     return s.replace("{", "").replace("}", "").strip()
 
 
@@ -101,7 +106,7 @@ def collect(bib: dict[str, BibEntry], params_dir: Path | None = None) -> dict:
             aliases = {"Autor, David": "Autor, David H.", "Hanson, Gordon": "Hanson, Gordon H.",
                        "Conover, W. J.": "Conover, William J.", "Sullivan, Daniel": "Sullivan, Daniel G."}
             name = aliases.get(name, name)
-            identity = re.sub(r"[^\w]", "", name).casefold()
+            identity = re.sub(r"[^\w]", "", "".join(c for c in unicodedata.normalize("NFKD", name) if not unicodedata.combining(c))).casefold()
             r = researchers.setdefault(identity, Researcher(name=name, surname=sur, entries=[]))
             if key not in r.entries:
                 r.entries.append(key)

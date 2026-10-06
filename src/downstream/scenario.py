@@ -50,7 +50,7 @@ class ScenarioInput:
                     or abs(value) > float("1.7976931348623157e308") or not math.isfinite(value) or value < 0):
                 raise ValueError(f'{name} must be finite and nonnegative')
         if isinstance(self.n_children, bool) or not isinstance(self.n_children, int) or not 0 <= self.n_children <= 1_000_000:
-            raise ValueError('n_children must be an integer from 0 to 1000000')
+            raise ValueError('n_children must be a nonnegative integer (maximum 1000000)')
         if self.tradable_share > 1:
             raise ValueError('tradable_share must be in [0, 1]')
         if self.net_tradable_jobs_lost is not None and (

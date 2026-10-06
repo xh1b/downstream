@@ -139,7 +139,9 @@ def simulate_many(
     for k in range(draws):
         values = compute(materialize_parameter_set(params, nodes, dp.u[k], dp.dists))
         for name, value in values.items():
-            if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
+            if not isinstance(value, (int, float)):
+                raise TypeError(f"sampled outcome {name!r} must be numeric")
+            if isinstance(value, bool) or not math.isfinite(value):
                 raise ValueError(f"sampled outcome {name!r} must be a finite number")
             samples.setdefault(name, []).append(float(value))
 

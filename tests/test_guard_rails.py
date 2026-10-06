@@ -353,7 +353,8 @@ def test_resolve_mix_refuses_empty_spec():
     from downstream.mortality_profiles import resolve_mix
 
     assert resolve_mix({}, profile_id=None, mixture=None) == []
-    assert resolve_mix({}, profile_id=None, mixture={}) == []
+    with pytest.raises(ValueError, match="nonempty"):
+        resolve_mix({}, profile_id=None, mixture={})
 
 
 # --- ledger: kind and ordering guards -----------------------------------------

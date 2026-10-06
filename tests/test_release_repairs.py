@@ -166,3 +166,80 @@ def test_credits_distinguish_people_and_stay_fresh(tmp_path):
     assert (default_dir().parent / 'CREDITS.md').read_text() == generated
     readme = (default_dir().parent / 'README.md').read_text()
     assert all(sentence in readme for sentence in attribution_sentences(data))
+
+
+def test_reviewed_applicability_requires_matching_event_and_demographics():
+    from downstream.scenario import ScenarioInput, compute_counts, BaselineMissing
+    from downstream.employer import DocumentedExposure, compute_entity_counts
+    parts = load_all()
+    target = dict(sex='Male', age='45-54 years', worker_tenure='high-tenure', geography='US',
+                  calendar_window='2026', exposure_type='firm closure', children_sex='Male')
+    decisions = {name: dict(status='reviewed', reviewer='cohort reviewer', rationale='Documented transport review', citations='review record')
+                 for name in ('excess_deaths', 'child_lifetime_earnings_lost_usd')}
+    exposure = DocumentedExposure('example', 'employer', 1000, 'document', 'supplied', target, decisions)
+    result = compute_entity_counts(parts['params'], parts['baselines'], exposure)
+    assert all(row['applicability']['eligible_for_public_headline'] for row in result['modeled'].values())
+    wrong = {**target, 'sex': 'Female'}
+    with pytest.raises(BaselineMissing, match='demographics'):
+        compute_counts(parts['params'], parts['baselines'], ScenarioInput(1000, target_population=wrong), strict=True)
+    for target_value, decision_value in (({}, None), ([], None), (target, {'unknown': {}}),
+                                         (target, {'excess_deaths': {'status': 'unreviewed'}})):
+        with pytest.raises(ValueError):
+            ScenarioInput(1000, target_population=target_value, applicability_decisions=decision_value)
+
+
+def test_profile_precedence_is_disclosed_on_county_output():
+    from downstream.scenario import ScenarioInput, compute_counts
+    from downstream.mortality_profiles import load_profiles
+    from downstream.place import load_places
+    parts = load_all()
+    result = compute_counts(parts['params'], parts['baselines'], ScenarioInput(1000, mortality_profile='male_45_54_2015_2019'),
+                            places=load_places(default_dir() / 'places.csv'), place_key='06037',
+                            mortality_profiles=load_profiles(default_dir() / 'mortality_profiles.csv'),
+                            county_mortality=load_county_mortality_posteriors(default_dir() / 'county_mortality.csv'))
+    assert result['modeled']['excess_deaths']['point'] == 28.73
+    override = result['place']['baseline_overrides']['all_cause_mortality_annual']
+    assert not override['applied'] and 'precedence' in override['reason']
+
+
+def test_shared_variable_correlation_uses_one_identity():
+    from downstream.distributions import plan
+    parts = load_all()
+    rows = parts['params'].parameters
+    indices = {p.link: i for i, p in enumerate(rows)}
+    direct, grand, great = (indices[k] for k in ('displacement->child_earnings', 'child_earnings->grandchild_earnings',
+                                                'grandchild_earnings->greatgrandchild_earnings'))
+    matrix = [[float(i == j) for j in range(len(rows))] for i in range(len(rows))]
+    matrix[direct][grand] = matrix[grand][direct] = .3
+    draw = plan(parts['params'], parts['nodes'], 10, 19, matrix)
+    assert all(row[grand] == row[great] for row in draw.u)
+    matrix[direct][great] = matrix[great][direct] = .5
+    with pytest.raises(ValueError, match='conflicting'):
+        plan(parts['params'], parts['nodes'], 10, 19, matrix)
+
+
+def test_sampling_rejects_nonfinite_outcomes_and_invalid_counts():
+    from downstream.mc import simulate, simulate_many
+    from downstream.distributions import plan
+    parts = load_all()
+    for count in (0, 1, True, 2.5, 1_000_001):
+        with pytest.raises(ValueError, match='draws'):
+            plan(parts['params'], parts['nodes'], count, 1)
+    for value in (float('nan'), float('inf'), True):
+        with pytest.raises(ValueError, match='finite'):
+            simulate(parts['params'], lambda ps: value, draws=2, nodes=parts['nodes'])
+        with pytest.raises(ValueError, match='finite'):
+            simulate_many(parts['params'], lambda ps: {'result': value}, draws=2, nodes=parts['nodes'])
+
+
+def test_semantic_methods_companion_is_current():
+    import importlib.util
+    path = default_dir().parent / 'scripts/build_methods_html.py'
+    spec = importlib.util.spec_from_file_location('methods_builder', path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    html = module.build()
+    assert html == (default_dir().parent / 'docs/methods.html').read_text()
+    assert 'tabindex="-1"' in html and 'scope="col"' in html and 'scope="row"' in html
+    assert 'Full identifier' in html and 'download="downstream-parameters.csv"' in html
+    assert 'eligible' in html and 'not confidence intervals' in html

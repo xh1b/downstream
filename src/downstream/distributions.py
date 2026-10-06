@@ -247,14 +247,27 @@ def plan(
     rng = random.Random(seed)
     rows = list(params.parameters)
     u = lhs_matrix(len(rows), draws, rng)
-    if spearman is not None:
-        u = apply_rank_correlation(u, spearman, rng=rng)
     aliases = shared_parameter_indices(params)
     if spearman is not None:
-        # A correlation attached only to a duplicate row would otherwise be lost.
-        for i, j in enumerate(aliases):
-            if i != j and any(spearman[i][k] != spearman[j][k] for k in range(len(rows)) if k not in (i, j)):
-                raise ValueError("shared relationship aliases must declare the same external correlations")
+        if len(spearman) != len(rows) or any(len(row) != len(rows) for row in spearman):
+            raise ValueError("correlation matrix size must match parameter count")
+        representatives = sorted(set(aliases))
+        groups = {j: [i for i, alias in enumerate(aliases) if alias == j] for j in representatives}
+        reduced = [[spearman[i][j] for j in representatives] for i in representatives]
+        for a, i in enumerate(representatives):
+            if len(groups[i]) == 1:
+                continue
+            for b, j in enumerate(representatives):
+                if a == b:
+                    continue
+                declared = {spearman[x][y] for x in groups[i] for y in groups[j] if spearman[x][y] != 0}
+                if len(declared) > 1:
+                    raise ValueError("conflicting external correlations for a shared relationship")
+                reduced[a][b] = reduced[b][a] = next(iter(declared), 0.0)
+        correlated = apply_rank_correlation([[row[j] for j in representatives] for row in u], reduced, rng=rng)
+        for row, values in zip(u, correlated):
+            for j, value in zip(representatives, values):
+                row[j] = value
     for row in u:
         for i, j in enumerate(aliases):
             row[i] = row[j]
