@@ -61,6 +61,8 @@ def test_validation_and_scenario_use_same_mortality_profile():
         expected = parameter_profile_counts(parts['params'], 1000, parts['baselines']['all_cause_mortality_annual'].value, years)
         assert out['modeled']['excess_deaths']['point'] == round(expected, 2)
     assert build()['modeling_assumptions']['mortality_contract'] == source_profile_contract()
+    legacy = compute_counts(parts['params'], parts['baselines'], ScenarioInput(1000, mortality_method='legacy_additive'))
+    assert legacy['assumptions']['mortality_contract'] is None
 
 
 def test_repeated_relationship_shares_exact_draw_and_sensitivity_block():

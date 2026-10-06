@@ -180,7 +180,7 @@ def compute_counts(
                 if scenario.mortality_method == "odds_survival"
                 else "legacy peak plus Y sustained years, linear rate approximation"
             ),
-            "mortality_contract": source_profile_contract() if scenario.mortality_timing == "source_profile" else None,
+            "mortality_contract": source_profile_contract() if scenario.mortality_method == "odds_survival" and scenario.mortality_timing == "source_profile" else None,
             "place_application": scenario.place_application,
             "place_counterfactual": (
                 "county child-dollar contrasts use a same-place loss scaling "
