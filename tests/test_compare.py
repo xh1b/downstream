@@ -71,6 +71,10 @@ def test_repeated_outcomes_use_exposure_identity_and_unnamed_duplicates_use_posi
     report = compare({"rows": rows}, {"rows": list(reversed(rows))})
     assert report["summary"]["changed"] == 0
     assert any('"exposure":"male"' in row["path"] for row in report["rows"])
+    report = compare({"rows": rows[:1]}, {"rows": rows})
+    assert report["summary"]["removed"] == 0
+    assert report["summary"]["changed"] == 0
+    assert report["summary"]["unchanged"] == 3
     report = compare({}, {"rows": [{"name": "a", "point": 1}, {"name": "a", "point": 2}]})
     assert "/rows/0/point" in {row["path"] for row in report["rows"]}
 

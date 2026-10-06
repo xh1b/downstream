@@ -29,6 +29,11 @@ def _flatten(value, path: str = "") -> dict:
             for key in IDENTIFIERS:
                 names = [row.get(key) for row in value]
                 if all(isinstance(name, str) and name for name in names):
+                    exposures = [row.get("exposure") for row in value]
+                    if key == "outcome" and all(isinstance(name, str) and name for name in exposures):
+                        if len(set(zip(names, exposures))) == len(names):
+                            identity = (key, "exposure")
+                            break
                     if len(set(names)) == len(names):
                         identity = (key,)
                         break
