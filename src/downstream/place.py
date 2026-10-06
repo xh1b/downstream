@@ -246,6 +246,15 @@ def _county_mortality_override(
             "prior citation does not match the national baseline citation — "
             "the provenance chain is broken"
         )}
+    try:
+        scope = base.county_population_scope
+    except ValueError as exc:
+        return {**refusal, "reason": str(exc)}
+    if row.population_scope != scope or row.time_window != base.years:
+        return {**refusal, "reason": "county observation population/window does not match the national prior"}
+    expected = (row.prior_rate * row.prior_person_years + row.events) / (row.prior_person_years + row.person_years)
+    if not math.isclose(row.posterior_mean_rate, expected, rel_tol=0, abs_tol=5.00001e-10):
+        return {**refusal, "reason": "county posterior disagrees with its counts and prior"}
     weight = row.person_years / (row.prior_person_years + row.person_years)
     return {
         "outcome": outcome,

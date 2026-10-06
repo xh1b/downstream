@@ -82,10 +82,12 @@ def parse_mix_spec(spec: str) -> dict[str, float]:
 
 def resolve_mix(profiles: dict[str, MortalityBaselineProfile], profile_id: str | None,
                 mixture: dict[str, float] | None) -> list[tuple[MortalityBaselineProfile, float]]:
-    if profile_id and mixture:
+    if profile_id is not None and mixture is not None:
         raise ValueError("mortality_profile and mortality_mix are mutually exclusive")
     weights = {profile_id: 1.0} if profile_id else (mixture or {})
     if not weights:
+        if mixture is not None:
+            raise ValueError("mortality mix must be nonempty and have positive total weight")
         return []
     if not all(isinstance(k, str) and k and isinstance(v, (int, float)) and not isinstance(v, bool)
                and math.isfinite(v) and v >= 0 for k, v in weights.items()):
@@ -118,6 +120,8 @@ def validate_sullivan_von_wachter_applicability(
     Geography and calendar-time transport remain explicit assumptions rather
     than a false exact-match claim.
     """
+    if not resolved:
+        raise ValueError("mortality applicability requires at least one profile")
     incompatible = [p.profile_id for p, _ in resolved
                     if p.sex != "Male" or p.age != "45-54 years" or p.cause != "All causes"]
     if incompatible:

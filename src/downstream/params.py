@@ -83,6 +83,19 @@ class Baseline:
     source: str
     status: str
     notes: str = ""
+    sex: str = ""
+    age: str = ""
+    years: str = ""
+    cause: str = ""
+    geography: str = ""
+
+    @property
+    def county_population_scope(self) -> str:
+        if not all((self.sex, self.age, self.years, self.cause, self.geography)):
+            raise ValueError("mortality baseline needs structured sex, age, years, cause, geography")
+        if self.geography != "US":
+            raise ValueError("county mortality requires a US national prior")
+        return f"county residents, {self.sex.lower()}, ages {self.age}; cause: {self.cause}"
 
 
 @dataclass(frozen=True)
@@ -238,6 +251,7 @@ def load_baselines(path: str | Path) -> dict[str, Baseline]:
                 source=row["source"].strip(),
                 status=row["status"].strip(),
                 notes=row.get("notes", ""),
+                **{key: (row.get(key) or "").strip() for key in ("sex", "age", "years", "cause", "geography")},
             )
             if not base.outcome or base.outcome in out:
                 raise ValueError(f"duplicate or empty baseline outcome {base.outcome!r}")

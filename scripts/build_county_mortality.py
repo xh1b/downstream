@@ -69,6 +69,12 @@ def main() -> int:
     if base.unit != "deaths_per_person_year":
         raise SystemExit(f"national baseline unit {base.unit!r} is not a rate")
 
+    scope = base.county_population_scope
+    window = f"{min(metadata['years'])}-{max(metadata['years'])}"
+    if (metadata['sex'] != base.sex or metadata['age'] != base.age
+            or metadata['cause'] != base.cause or window != base.years
+            or metadata['years'] != list(range(int(base.years[:4]), int(base.years[-4:]) + 1))):
+        raise SystemExit("county export sex/age/cause/window does not match the national prior")
     parsed = parse_export(args.export, metadata=metadata)
     observations = count_observations(parsed)
 
@@ -88,11 +94,8 @@ def main() -> int:
     prior = NationalRatePrior(
         outcome="all_cause_mortality_annual",
         rate=base.value,
-        population_scope=(
-            f"county residents, {metadata['sex'].lower()}, ages {metadata['age']}; "
-            f"cause: {metadata['cause']}"
-        ),
-        time_window=f"{min(metadata['years'])}-{max(metadata['years'])}",
+        population_scope=scope,
+        time_window=base.years,
         citation=base.citation,
     )
 

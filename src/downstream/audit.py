@@ -71,6 +71,26 @@ def audit(params_dir: str | Path | None = None) -> list[Finding]:
     if params.version == "unversioned":
         findings.append(Finding(WARN, "version", "params/VERSION missing; outputs stamp 'unversioned'"))
 
+    # Optional registries are audited even when no scenario selects them.
+    try:
+        from .mortality_profiles import load_profiles
+        from .county_rates import load_county_mortality_posteriors
+        from .place import _county_mortality_override
+        if (d / "mortality_profiles.csv").exists():
+            load_profiles(d / "mortality_profiles.csv")
+        if (d / "county_mortality.csv").exists():
+            county = load_county_mortality_posteriors(d / "county_mortality.csv")
+            places_for_audit = load_places(d / "places.csv")
+            base = baselines.get("all_cause_mortality_annual")
+            for key, row in county.items():
+                # Compatibility does not depend on the presence of a website place row.
+                from types import SimpleNamespace
+                result = _county_mortality_override(row.outcome, base, places_for_audit.get(key, SimpleNamespace(key=key)), county)
+                if not result["applied"]:
+                    raise ValueError(f"{key}: {result['reason']}")
+    except (ValueError, KeyError, OSError) as exc:
+        findings.append(Finding(ERROR, "mortality_inputs", str(exc)))
+
     cited_keys: set[str] = set()
 
     for p in params.parameters:

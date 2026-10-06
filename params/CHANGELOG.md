@@ -1,3 +1,7 @@
+## v1.49 — 2026-10-07 — enforce mortality baseline compatibility
+
+- Add structured sex, age, time window, cause and geography to the national mortality baseline. County builders and consumers verify observation scope and posterior arithmetic; audits include optional mortality registries. Numeric baseline and parameter estimates are unchanged.
+
 ## v1.48 — 2026-09-16 — the receiving-community crime stream lands through the independence gate
 
 - THE CRIME GATE IS EXECUTED AND PASSES. The channel the model's owner

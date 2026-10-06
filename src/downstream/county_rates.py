@@ -244,6 +244,10 @@ def load_county_mortality_posteriors(path: str | Path) -> dict[str, CountyMortal
                        (row.person_years, row.posterior_mean_rate, row.prior_rate,
                         row.prior_person_years)):
                 raise ValueError(f"county mortality posterior {key!r} has non-finite or nonpositive rates")
+            expected = (row.prior_rate * row.prior_person_years + row.events) / (row.prior_person_years + row.person_years)
+            # The builder serializes rates to nine decimal places.
+            if not math.isclose(row.posterior_mean_rate, expected, rel_tol=0, abs_tol=5.00001e-10):
+                raise ValueError(f"county mortality posterior {key!r} disagrees with its counts and prior")
             out[key] = row
     if not out:
         raise ValueError(f"county mortality posterior table {path} has no rows")
