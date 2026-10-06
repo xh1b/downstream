@@ -70,3 +70,8 @@ VARIANT_IDS
 # relationship; consumed by the transmission tests that pin the
 # row-level drift guard.
 GREATGRANDCHILD
+
+# Public single-parameter override for caller-specified experiments;
+# sampling uses bulk materialization, while counterfactual and sabotage
+# tests exercise this API to alter a point without changing its band.
+ParameterSet.with_param

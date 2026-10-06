@@ -46,7 +46,7 @@ import math
 import random
 from typing import Callable
 
-from .distributions import LOGUNIFORM, dist_for, materialize_parameter_set, plan, sample_unit_interval
+from .distributions import LOGUNIFORM, dist_for, materialize_parameter_set, plan
 from .params import Parameter, ParameterSet
 
 Z90 = 1.6448536269514722
@@ -398,14 +398,13 @@ def closure_coverage(
     samples = _draw_samples(params, compute, nodes, draws, seed + 2)
     bands = {lv: _normal_quantile_band(samples[:], lv) for lv in levels}
 
+    truth_dists = [dist_for(p, nodes.get(p.to_node).unit if p.to_node in nodes else None)
+                   for p in params.parameters]
     for _ in range(trials):
-        ps = params
-        for p in params.parameters:
-            lo, hi = sorted((p.low, p.high))
-            u = truth_rng.random()
-            node = nodes.get(p.to_node)
-            d = dist_for(p, node.unit if node else None)
-            ps = ps.with_param(p.link, sample_unit_interval(d, u, lo, hi, point=p.point))
+        # Preserve the independent truth stream while resolving repeated
+        # relationship aliases exactly as the interval sampler does.
+        u_row = [truth_rng.random() for _ in params.parameters]
+        ps = materialize_parameter_set(params, nodes, u_row, truth_dists)
         truth = compute(ps)
         for lv in levels:
             lo_b, hi_b = bands[lv]
@@ -432,7 +431,8 @@ def closure_coverage(
         "pass": all(r["within_2se"] for r in out),
         "note": (
             "Coverage of MC bands over truths redrawn from the declared "
-            "bands under an independent-input estimand. Machinery self-test "
+            "bands under an independent-distinct-relationship estimand; "
+            "repeated aliases share one draw. Machinery self-test "
             "only — the economics is tested by V1 retrodiction, not here."
         ),
         "assumes_independent_parameters": True,

@@ -243,3 +243,18 @@ def test_semantic_methods_companion_is_current():
     assert 'tabindex="-1"' in html and 'scope="col"' in html and 'scope="row"' in html
     assert 'Full identifier' in html and 'download="downstream-parameters.csv"' in html
     assert 'eligible' in html and 'not confidence intervals' in html
+
+
+def test_closure_truths_preserve_shared_relationship():
+    from downstream.inference import closure_coverage
+    parts = load_all()
+    links = ['child_earnings->grandchild_earnings', 'grandchild_earnings->greatgrandchild_earnings']
+    seen = []
+    def compute(ps):
+        left, right = (ps.by_link(link).point for link in links)
+        assert left == right
+        seen.append(left)
+        return left * right
+    result = closure_coverage(parts['params'], compute, parts['nodes'], trials=10, draws=10)
+    assert len(seen) == 20 and result['trials'] == 10
+    assert 'repeated aliases share one draw' in result['note']
