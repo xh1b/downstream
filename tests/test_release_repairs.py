@@ -260,3 +260,19 @@ def test_closure_truths_preserve_shared_relationship():
     assert 'repeated aliases share one draw' in result['note']
     with pytest.raises(ValueError, match='trials'):
         closure_coverage(parts['params'], compute, parts['nodes'], trials=0, draws=2)
+
+
+def test_mortality_voi_resolves_county_context_once(monkeypatch, capsys):
+    import json
+    from downstream import county_rates
+    from downstream.cli import main
+    real_loader = county_rates.load_county_mortality_posteriors
+    calls = []
+    def counted_loader(path):
+        calls.append(path)
+        return real_loader(path)
+    monkeypatch.setattr(county_rates, 'load_county_mortality_posteriors', counted_loader)
+    assert main(['knobs', '--action', 'voi', '--outcome', 'excess_deaths', '--draws', '2', '--place', '06037']) == 0
+    out = json.loads(capsys.readouterr().out)
+    assert len(calls) == 1
+    assert out['place']['provenance']['key'] == '06037'

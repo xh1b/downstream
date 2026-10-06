@@ -178,16 +178,25 @@ def test_sobol_ci_rejects_single_replicate():
 
 
 def test_sobol_ci_output_is_labeled_as_design_noise():
+    calls = 0
+    def compute(ps):
+        nonlocal calls
+        calls += 1
+        return child_line(ps)["grandchild"].point
     out = sobol_ci(
         PARAMS,
-        lambda ps: child_line(ps)["grandchild"].point,
+        compute,
         NODES,
         base=32,
         replicates=2,
     )
     assert "not a confidence interval" in out["note"]
-    assert len(out["indices"]) == len(PARAMS.parameters)
-    assert out["model_evals"] == out["base"] * (len(PARAMS.parameters) + 2) * 2
+    groups = [set(row["links"]) for row in out["indices"]]
+    assert set.union(*groups) == {p.link for p in PARAMS.parameters}
+    assert sum(map(len, groups)) == len(PARAMS.parameters)
+    assert {"child_earnings->grandchild_earnings", "grandchild_earnings->greatgrandchild_earnings"} in groups
+    assert out["model_evals"] == calls
+    assert "independent inputs" in out["correlation_note"]
 
 
 def test_sobol_ci_top_link_separates_from_its_noise():

@@ -574,6 +574,7 @@ def _run_main(argv: list[str] | None = None) -> int:
             exposure_years=args.exposure_years,
             label="knob-sweep",
         )
+        county_mortality = _county_mortality_arg(parser, args.params, args.place)
         if args.action == "sweep":
             if not args.link or not args.values:
                 print("knobs sweep needs --link and --values", file=sys.stderr)
@@ -582,12 +583,12 @@ def _run_main(argv: list[str] | None = None) -> int:
                 values = [float(v) for v in args.values.split(",")]
             except ValueError as exc:
                 parser.error(f"invalid --values: {exc}")
-            dump_sampling(knob_sweep(params, parts["baselines"], scenario, args.link, values, places=sampling_places, place_key=args.place, county_mortality=_county_mortality_arg(parser, args.params, args.place)))
+            dump_sampling(knob_sweep(params, parts["baselines"], scenario, args.link, values, places=sampling_places, place_key=args.place, county_mortality=county_mortality))
             return 0
         # voi: rank which knob is worth narrowing next
         if args.outcome == "excess_deaths":
             def outcome_fn(ps: ParameterSet) -> float:
-                out = compute_counts(ps, parts["baselines"], scenario, places=sampling_places, place_key=args.place, county_mortality=_county_mortality_arg(parser, args.params, args.place))
+                out = compute_counts(ps, parts["baselines"], scenario, places=sampling_places, place_key=args.place, county_mortality=county_mortality, _raw=True)
                 return out["modeled"]["excess_deaths"]["point"]
         else:
             outcome_fn = sampling_child

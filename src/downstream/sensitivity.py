@@ -238,13 +238,13 @@ def sobol_ci(
     links' means separate by more than their sds. Cheap: the model
     evaluates in microseconds.
     """
-    if replicates < 2:
-        raise ValueError(f"replicates must be >= 2, got {replicates}")
+    validate_sample_count(replicates, "replicates")
     runs = [
         sobol_indices(params, compute, nodes, base=base, seed=seed + r)
         for r in range(replicates)
     ]
     links = [r["link"] for r in runs[0]["indices"]]
+    groups = {r["link"]: r["links"] for r in runs[0]["indices"]}
     out = []
     for link in links:
         vals = []
@@ -258,6 +258,7 @@ def sobol_ci(
         out.append(
             {
                 "link": link,
+                "links": groups[link],
                 "S_total_mean": round(mean, 4),
                 "S_total_sd": round(sd, 4),
                 "values": [round(v, 4) for v in vals],
@@ -269,6 +270,7 @@ def sobol_ci(
         "seed": seed,
         "replicates": replicates,
         "model_evals": runs[0]["model_evals"] * replicates,
+        "correlation_note": runs[0]["correlation_note"],
         "indices": out,
         "note": (
             "sd is across independent sampling designs (design noise), "
@@ -296,8 +298,7 @@ def correlated_block_sobol_ci(
     not a confidence interval on a true index; a block ranking is
     stable when means separate by more than their sds.
     """
-    if replicates < 2:
-        raise ValueError(f"replicates must be >= 2, got {replicates}")
+    validate_sample_count(replicates, "replicates")
     runs = [
         correlated_block_sobol(params, compute, nodes, correlations, base=base, seed=seed + r)
         for r in range(replicates)

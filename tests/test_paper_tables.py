@@ -1,6 +1,7 @@
 """The paper's scorecard must come from live engine results."""
 import importlib.util
 import json
+import re
 from pathlib import Path
 
 from downstream.params import load_all, load_correlations
@@ -21,9 +22,10 @@ def test_paper_generation_matches_engine_and_is_deterministic(tmp_path, monkeypa
     assert output['parameter_set_version'] == parts['params'].version
     assert output['declared_correlation_pairs'] == len(load_correlations(ROOT / 'params/correlations.csv'))
     rows = (tmp_path / 'parameters.tex').read_text()
-    assert rows.count('\\nolinkurl{') == len(parts['params'].parameters)
-    for p in parts['params'].parameters:
-        assert p.link in rows
+    assert '\\nolinkurl{' not in rows
+    assert len(rows.splitlines()) == len(parts['params'].parameters)
+    assert r'displacement $\to$ worker earnings' in rows
+    assert r'child earnings $\to$ grandchild earnings' in rows
     # Charts must preserve the scorecard's units, order, and full precision.
     validation = run(parts['params'])
     unit = validation['v1_retrodict']
@@ -45,6 +47,10 @@ def test_paper_generation_matches_engine_and_is_deterministic(tmp_path, monkeypa
         actual = [[float(value) for value in line.split()] for line in lines[1:]]
         assert actual == [[i, model['point'], model['low'], model['high'], measured]
                           for i, (model, measured) in enumerate(expected)]
+        limits = (tmp_path / filename.replace('.dat', '_limits.tex')).read_text()
+        lower, upper, step = [float(v) for v in re.findall(r'\{([^}]+)\}', limits)]
+        values = [v for row in actual for v in row[1:]]
+        assert lower <= min(values) and upper >= max(values) and step > 0
     before = {p.name: (p.read_bytes(), p.stat().st_mtime_ns) for p in tmp_path.iterdir()}
     module.main()
     after = {p.name: (p.read_bytes(), p.stat().st_mtime_ns) for p in tmp_path.iterdir()}
