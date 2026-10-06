@@ -2,17 +2,19 @@
 \centering
 \scorelegend\par\medskip
 \textbf{A. Family status: both measured contrasts lie in the model bands}\par\smallskip
+\input{generated/panel_divorce_plot_limits.tex}
 \begin{tikzpicture}[trim axis left,trim axis right]
-  \begin{axis}[score, height=2.4cm, xmin=0, xmax=0.23, ymax=1.55,
-    xtick={0,0.05,0.1,0.15,0.2}, ytick={0,1}, yticklabels={Pooled,Male shock},
+  \begin{axis}[score, height=2.4cm, xmin=\PlotMin, xmax=\PlotMax, ymax=1.55,
+    xtick distance=\PlotStep, ytick={0,1}, yticklabels={Pooled,Male shock},
     xlabel={High-minus-low-shock contrast (percentage points)}]
     \scoreplot{generated/panel_divorce_plot.dat}
   \end{axis}
 \end{tikzpicture}\par\bigskip
 \textbf{B. Earnings: adding spillover reduces the miss but does not close it}\par\smallskip
+\input{generated/panel_earnings_plot_limits.tex}
 \begin{tikzpicture}[trim axis left,trim axis right]
-  \begin{axis}[score, height=2.4cm, xmin=-400, xmax=0, ymax=1.55,
-    xtick={-400,-300,-200,-100,0}, ytick={0,1},
+  \begin{axis}[score, height=2.4cm, xmin=\PlotMin, xmax=\PlotMax, ymax=1.55,
+    xtick distance=\PlotStep, ytick={0,1},
     yticklabels={Direct,{With spillover}},
     xlabel={High-minus-low-shock contrast (USD)}]
     \scoreplot{generated/panel_earnings_plot.dat}

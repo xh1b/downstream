@@ -28,12 +28,16 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: downstream-methods-paper-${{ github.sha }}
-          path: paper/downstream.pdf
+          path: |
+            paper/downstream.pdf
+            docs/methods.html
           if-no-files-found: error
           retention-days: 90
       - uses: softprops/action-gh-release@v2
         if: github.event_name == 'push'
         with:
-          files: paper/downstream.pdf
+          files: |
+            paper/downstream.pdf
+            docs/methods.html
           name: Downstream methods paper ${{ github.ref_name }}
           generate_release_notes: true

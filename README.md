@@ -200,6 +200,14 @@ follow-up year 1, so +6 starts in year 7. `source_aligned` exists only to
 reproduce the former incomplete timing. `immediate_sustained` is a sensitivity
 assumption.
 
+## Website readiness repairs (0.3.0)
+
+Engine 0.3.0 / parameters v1.49 enforce county mortality compatibility and posterior arithmetic, use the complete mortality profile in validation and exports, share repeated transmission draws, preserve custom sampling context, and reject invalid or nonfinite public inputs. Credits regenerate from full author identities. The methods paper uses independent net-job exposure and readable labels; [the HTML methods companion](docs/methods.html) is available for website integration.
+
+Default scenario and entity counts are **illustrative reference calculations**, with `applicability.eligible_for_public_headline = false` on each outcome. A reviewed conditional transport decision requires structured `target_population` fields (`sex`, `age`, `worker_tenure`, `geography`, `calendar_window`, `exposure_type`, `children_sex`) and per-outcome `applicability_decisions` (`status: reviewed`, `reviewer`, `rationale`, `citations`). Incompatible target demographics block the corresponding outcome. The adapter accepts this metadata on `DocumentedExposure` or `ScenarioInput`. A reviewed transport decision does not establish independent empirical validation.
+
+Website consumers must preserve outcome applicability, baseline derivation notes, lifetime versus follow-up horizons, support-envelope versus parameter-interval labels, blocked outcomes and fallback provenance. Use bundle content identities for cache keys and retain scenario `input_content_sha256`. Actual site rendering and production cache invalidation require integration outside this repository.
+
 ## Engine corrections (0.2.0)
 
 Engine 0.2.0 corrects mortality odds-to-risk conversion and survival timing. It

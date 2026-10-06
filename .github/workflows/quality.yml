@@ -56,7 +56,7 @@ jobs:
           tests/test_mathematics_v02.py tests/test_properties_hypothesis.py
           tests/test_ledger.py tests/test_place.py tests/test_build_places_adversarial.py
           tests/test_v2_backtest.py tests/test_forecast_fsm.py tests/test_bundle_fsm.py
-          tests/test_compare.py
+          tests/test_compare.py tests/test_release_repairs.py
 
   distribution:
     runs-on: ${{ matrix.os }}

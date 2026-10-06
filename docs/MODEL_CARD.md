@@ -1,4 +1,4 @@
-# MODEL CARD — downstream engine 0.2.0 / parameters v1.48
+# MODEL CARD — downstream engine 0.3.0 / parameters v1.49
 
 Model card practice per Mitchell et al. 2019, "Model Cards for Model
 Reporting". This card travels with the model.
@@ -18,10 +18,14 @@ Reporting". This card travels with the model.
   loss) additionally carry jointly sampled central 90% intervals for
   **parameter uncertainty only**. Their support envelopes are retained
   and explicitly not presented as confidence intervals.
-- Parameter set v1.48: 67 parameter rows, each with point, band,
+- Parameter set v1.49: 67 parameter rows, each with point, band,
   precision tier, bib keys, and population scope.
 - Version stamping: params/VERSION; every output carries the version
   it used; sampled outputs mark `-sampled`.
+
+- Public scenario results carry per-outcome applicability decisions and target metadata. Defaults are illustrative reference calculations and explicitly ineligible for public headlines; reviewed conditional transport requires a reviewer, rationale and citations. Structural projections remain distinct from direct effects.
+- Repeated intergenerational relationship rows share one exact uncertainty draw. Sensitivity groups them and analytic independent-step inference rejects repeated aliases.
+- Scenario results carry input content hashes. Bundles additionally hash engine code and exported files; engine and parameter version labels alone are insufficient cache keys.
 
 ## Intended use
 
@@ -43,8 +47,7 @@ Reporting". This card travels with the model.
 - NOT a forecasting system until V3 prospective validation runs.
 - NOT an immigration effects model per se: it models DISPLACEMENT
   events and their documented consequences. It refuses links the
-  pooled literature does not support (SPEC §10), including the
-  immigration-crime link.
+  pooled literature does not support (SPEC §10). Receiving-community crime paths require a separately defined influx input; they never start from generic worker displacement.
 
 ## Factors
 

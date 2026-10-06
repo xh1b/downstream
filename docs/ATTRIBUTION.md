@@ -8,16 +8,9 @@ rules keep the credit exact.
 Public surfaces state the collective ONLY through the generated
 sentences (`downstream credits`):
 
-> This model incorporates the findings of 81 peer-reviewed studies by
-> 166 researchers, 1979-2023. Its parameters rest directly on 19
-> studies by 43 research teams. Every modeled number carries its
-> sources with it; nothing here is a model-originated estimate of a
-> scientific fact.
+See the generated attribution in [CREDITS.md](../CREDITS.md) and the README. `downstream credits --write` regenerates both from `params/references.bib`.
 
-These numbers are computed from `params/references.bib` by
-`downstream/credits.py` and regenerate `CREDITS.md`. Never round them
-up, never paraphrase ("over 100 researchers" is forbidden when the
-exact count is 166 — exact is more credible anyway).
+Counts describe bibliography sources and named author records, including organizations. Full names distinguish unrelated people sharing a surname; a small reviewed alias map reconciles abbreviated names. These are not independently verified researcher or research-team counts, and the bibliography includes working papers, books, government sources and methods material as well as journal articles. Never label all entries as peer-reviewed studies.
 
 ## 2. Citation etiquette
 
@@ -53,7 +46,6 @@ exact count is 166 — exact is more credible anyway).
 
 ## 5. Citing this model
 
-When the paper exists: cite the paper. Until then, cite the repo with
-the parameter-set version: "downstream model, parameter set v1.2,
+Cite the methods paper, or cite the repository with the engine version, content hash and parameter-set version: "downstream model, parameter set v1.2,
 xh1b/downstream (local)". Every exported number already stamps its
 own version, seed, and sources — that stamp is the citation.

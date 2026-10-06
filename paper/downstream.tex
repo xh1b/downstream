@@ -122,7 +122,7 @@ that a causal pathway is identified.
 
 \subsection{Exposure and outcomes}
 A scenario supplies displaced-worker exposure $N$, children per exposed
-worker $C$, a tradable-job share $s$, and a mortality window $Y$.
+worker $C$, independently documented net tradable-job loss $T$, a job class, and a mortality window $Y$. The tradable-share field is metadata only; it does not infer $T$ from $N$.
 The worker module reports earnings and mortality responses. The child
 module reports earnings across three descendant generations. Family and
 community modules expose additional pathways, but their availability in
@@ -210,13 +210,13 @@ correctly. Full notes and evidence classes remain in the CSV and
 bibliography rather than being replaced by the compact appendix.
 
 \subsection{Count conversion}
-With annual mortality baseline $m$, source-offset odds ratios $r_j$,
+With annual mortality risk $m=1-e^{-\lambda}$ from baseline rate $\lambda$, source-offset odds ratios $r_j$,
 and lifetime earnings baseline $L$, the current scenario implements
 \begin{align}
  q(r) &= \frac{rm}{1-m+rm},\\
  D &= N\left\{(1-m)^Y-\prod_{j\in\mathcal P}[1-q(r_j)]^{d_j}\right\},\\
  E &= NC(1-g_c)L,\\
- J &= Ns\ell,
+ J &= T\ell_{\mathrm{class}},
 \end{align}
 where $\mathcal P=\{0,1,2{:}3,4{:}5,6+\}$ indexes the displacement-year
 and source-offset phases, and their durations are
@@ -255,8 +255,8 @@ lists its current values; some support modules beyond the count interface.
 \end{tabular}
 \end{table}
 
-Mortality uses CDC WONDER deaths per person-year as an approximation to
-the annual probability $m$. A person-time rate is not itself a cohort
+Mortality converts the CDC WONDER deaths-per-person-year rate to
+the annual probability $m$ using the constant-hazard mapping. A person-time rate is not itself a cohort
 probability \cite{cdcRiskMeasures}; under a constant hazard $\lambda$,
 that probability is $1-e^{-\lambda}$. The current implementation applies
 this conversion for a compatible mortality rate, but does not advance
@@ -318,7 +318,7 @@ reordering \cite{iman1982}. The shipped table contains \CorrelationCount{} decla
 worker earnings with peak and sustained mortality. Their direction is
 motivated by the shared recession context, but their moderate negative
 magnitude is a declared assumption, not an extracted sampling covariance.
-Monte Carlo applies these pairs by default; analytic chains and standard
+Unrolled copies of one intergenerational relationship share exactly one uncertainty draw, rather than independent copies. Sensitivity attribution groups those copies; independent-step analytic inference refuses chains that reuse the same relationship. Monte Carlo applies these pairs by default; analytic chains and standard
 Sobol experiments retain their independence assumptions. Each Monte Carlo output records the seed, draw count, sampler,
 and parameter version. Sample quantiles describe uncertainty conditional
 on the specified distributions; they do not include all model error.
@@ -640,7 +640,7 @@ underlying CSV files. Source content digest for this build begins
 copied into the prose. Vector diagrams and charts use the same restrained
 palette throughout. Model bands and measured points differ in both color
 and marker shape. Chart coordinates retain the engine's unrounded values;
-the tables provide compact rounded readings.
+the tables provide compact rounded readings. The digest manifest includes engine code, parameter and validation CSV, JSON and XML inputs, and build scripts/configuration. A semantic HTML companion at \nolinkurl{docs/methods.html} supplies readable text, scoped tables, baseline qualifications and a complete CSV download. The PDF remains an untagged publication artifact; the HTML companion is the accessible reading path.
 
 \clearpage
 \appendix
@@ -690,13 +690,13 @@ The table is an inventory, not a claim that every row belongs to one
 composable causal chain. Values use each destination node's declared
 unit in \nolinkurl{params/nodes.csv}. Different rows cannot be compared
 as if their numbers shared a scale. Parameter values below are rounded to
-four decimal places; the source CSV retains full precision.
+four decimal places; the source CSV retains full precision and identifiers. Readable relationship labels are used here to prevent identifier fragments. A semantic HTML companion is generated at \nolinkurl{docs/methods.html}.
 \begingroup\footnotesize
 \setlength{\tabcolsep}{4pt}
 \begin{longtable}{>{\raggedright\arraybackslash}p{2.65in}>{\raggedright\arraybackslash}p{1.35in}>{\raggedright\arraybackslash}p{0.75in}>{\raggedright\arraybackslash}p{0.9in}}
 \caption{Generated parameter inventory, \ParameterVersion.}\\
-\toprule Link & Point [band] & Tier & Sources \\ \midrule\endfirsthead
-\toprule Link & Point [band] & Tier & Sources \\ \midrule\endhead
+\toprule Relationship & Point [band] & Tier & Sources \\ \midrule\endfirsthead
+\toprule Relationship & Point [band] & Tier & Sources \\ \midrule\endhead
 \bottomrule\endfoot
 \tableinput{generated/parameters.tex}
 \end{longtable}

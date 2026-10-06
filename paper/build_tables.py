@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 from pathlib import Path
 import sys
 
@@ -47,6 +48,15 @@ def plot_data(name, rows):
                               (index, modeled['point'], modeled['low'],
                                modeled['high'], measured)))
     write(name, '\n'.join(lines) + '\n')
+    values = [value for modeled, measured in rows for value in (modeled['point'], modeled['low'], modeled['high'], measured)]
+    lo, hi = min(0, min(values)), max(0, max(values))
+    span = max(hi - lo, 1e-9)
+    scale = 10 ** math.floor(math.log10(span / 5))
+    step = next(multiplier * scale for multiplier in (1, 2, 5, 10) if multiplier * scale >= span / 5)
+    lower = 0 if lo == 0 else math.floor((lo - .03 * span) / step) * step
+    upper = 0 if hi == 0 else math.ceil((hi + .03 * span) / step) * step
+    write(name.replace('.dat', '_limits.tex'),
+          f"\\def\\PlotMin{{{lower:g}}}\n\\def\\PlotMax{{{upper:g}}}\n\\def\\PlotStep{{{step:g}}}\n")
 
 
 def main():
@@ -57,20 +67,20 @@ def main():
     correlations = load_correlations(ROOT / 'params/correlations.csv')
     source_files = sorted(p for directory in ('src/downstream', 'params', 'validation')
                           for p in (ROOT / directory).rglob('*')
-                          if p.is_file() and (p.suffix in {'.py', '.csv', '.bib'}
+                          if p.is_file() and (p.suffix in {'.py', '.csv', '.bib', '.json', '.xml', '.txt', '.md'}
                                              or p.name == 'VERSION'))
     # Include the manuscript, generator, and build configuration; generated
     # output is excluded to avoid a self-referential content hash.
     source_files = sorted(set(source_files) | set((ROOT / 'paper/figures').glob('*.tex')) | {
         ROOT / 'paper/downstream.tex', ROOT / 'paper/build_tables.py',
         ROOT / 'paper/review_references.bib', ROOT / 'paper/Makefile',
-        ROOT / 'pyproject.toml', ROOT / 'uv.lock',
+        ROOT / 'pyproject.toml', ROOT / 'uv.lock', ROOT / 'scripts/build_methods_html.py',
     })
     digest = hashlib.sha256()
     for path in source_files:
         digest.update(str(path.relative_to(ROOT)).encode() + b'\0' + path.read_bytes())
     write('results.json', json.dumps({'parameter_set_version': ps.version,
-          'source_sha256': digest.hexdigest(), 'declared_correlation_pairs': len(correlations), 'validation': validation}, indent=2) + '\n')
+          'source_sha256': digest.hexdigest(), 'source_manifest': [str(p.relative_to(ROOT)) for p in source_files], 'declared_correlation_pairs': len(correlations), 'validation': validation}, indent=2) + '\n')
     macros = [r'\newcommand{\CorrelationCount}{' + str(len(correlations)) + '}',
               r'\newcommand{\ParameterVersion}{' + tex(ps.version) + '}',
               r'\newcommand{\ParameterCount}{' + str(len(ps.parameters)) + '}',
@@ -87,12 +97,12 @@ def main():
     rows = []
     for p in ps.parameters:
         refs = ','.join(k.strip() for k in p.citation.split(';'))
-        rows.append(r'\nolinkurl{' + p.link + '} & ' + band(vars(p)) + ' & ' +
+        rows.append(tex(p.link.replace('_', ' ').replace('->', ' → ')) + ' & ' + band(vars(p)) + ' & ' +
                     tex(p.tier).replace('-', r'-\allowbreak ') + r' & \cite{' + refs + r'} \\')
     write('parameters.tex', '\n'.join(rows) + '\n')
     rows = []
     for b in parts['baselines'].values():
-        rows.append(r'\nolinkurl{' + b.outcome + '} & ' +
+        rows.append(tex(b.outcome.replace('_', ' ')) + ' & ' +
                     (f'{b.value:,.6f}'.rstrip('0').rstrip('.') if b.value is not None else 'pending') + ' & ' +
                     tex(b.population) + r' \\')
     write('baselines.tex', '\n'.join(rows) + '\n')

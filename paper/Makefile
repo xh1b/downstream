@@ -9,6 +9,7 @@ all: downstream.pdf
 # unchanged mtimes, so latexmk skips compilation when content is unchanged.
 data:
 	$(PYTHON) build_tables.py
+	$(PYTHON) ../scripts/build_methods_html.py
 
 downstream.pdf: downstream.tex $(wildcard figures/*.tex) build_tables.py data
 	$(LATEXMK) downstream.tex
