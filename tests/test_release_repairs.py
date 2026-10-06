@@ -258,3 +258,5 @@ def test_closure_truths_preserve_shared_relationship():
     result = closure_coverage(parts['params'], compute, parts['nodes'], trials=10, draws=10)
     assert len(seen) == 20 and result['trials'] == 10
     assert 'repeated aliases share one draw' in result['note']
+    with pytest.raises(ValueError, match='trials'):
+        closure_coverage(parts['params'], compute, parts['nodes'], trials=0, draws=2)

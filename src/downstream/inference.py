@@ -46,7 +46,7 @@ import math
 import random
 from typing import Callable
 
-from .distributions import LOGUNIFORM, dist_for, materialize_parameter_set, plan
+from .distributions import LOGUNIFORM, dist_for, materialize_parameter_set, plan, validate_sample_count
 from .params import Parameter, ParameterSet
 
 Z90 = 1.6448536269514722
@@ -390,6 +390,7 @@ def closure_coverage(
     90% bands behave like 90% bands. An attacker who rejects them is
     arguing with the literature, not the arithmetic.
     """
+    validate_sample_count(trials, "trials")
     truth_rng = random.Random(seed + 1)
     covered = {lv: 0 for lv in levels}
 
