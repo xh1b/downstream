@@ -80,6 +80,16 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="downstream")
     sub = parser.add_subparsers(dest="cmd", required=True)
 
+    p = sub.add_parser("compare", help="compare saved outputs or parameter snapshots from two versions")
+    p.add_argument("--before", required=True, help="JSON file or directory of JSON results")
+    p.add_argument("--after", required=True, help="JSON file or directory of JSON results")
+    p.add_argument("--before-label", default="before")
+    p.add_argument("--after-label", default="after")
+    p.add_argument("--format", choices=["markdown", "json", "csv"], default="markdown")
+    p.add_argument("--changes-only", action="store_true")
+    p.add_argument("--out", help="write report to a file")
+    p.add_argument("--summary-limit", type=int, help="limit Markdown rows for CI summaries")
+
     p = sub.add_parser("family", help="standard-family vignette")
     p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
     p.add_argument("--wage-multiplier", type=float, default=0.80)
@@ -277,6 +287,22 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--write", action="store_true", help="regenerate CREDITS.md")
 
     args = parser.parse_args(argv)
+    if args.cmd == "compare":
+        from .compare import compare_documents, load_documents, render_comparison
+
+        if args.summary_limit is not None and args.summary_limit < 0:
+            parser.error("--summary-limit must be nonnegative")
+        try:
+            report = compare_documents(load_documents(args.before), load_documents(args.after),
+                                       args.before_label, args.after_label)
+            rendered = render_comparison(report, args.format, args.changes_only, args.summary_limit)
+            if args.out:
+                Path(args.out).write_text(rendered, encoding="utf-8")
+            else:
+                print(rendered, end="")
+        except (OSError, ValueError) as exc:
+            parser.error(str(exc))
+        return 0
     parts = load_all(args.params)
     params = parts["params"]
 
