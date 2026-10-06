@@ -104,5 +104,5 @@ def test_block_ci_reports_seed_replicate_spread_deterministically():
     assert out["model_evals"] == 64 * 3 * 3  # one joint block: base * (1 + 2) sections per replicate
     assert all(b["S_total_sd"] >= 0 for b in out["blocks"])
     assert all(len(b["values"]) == 3 for b in out["blocks"])
-    with pytest.raises(ValueError, match="replicates must be >= 2"):
+    with pytest.raises(ValueError, match="replicates.*integer"):
         correlated_block_sobol_ci(**{**kwargs, "replicates": 1})

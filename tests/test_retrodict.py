@@ -3,10 +3,9 @@
 Each trap names the defect it hunts:
 - the bridge drifting from the transcribed ADH numbers
 - a non-monotone or inverted band (low > point > high must hold)
-- the miss being quietly flipped to a pass (the current honest state
-  is: measured point OUTSIDE the modeled band, model point INSIDE
-  the measured CI — if that ever changes it must be because the
-  EVIDENCE changed, not the code)
+- the miss being quietly flipped to a pass (the corrected five-phase
+  method misses both comparisons; evidence and documented method
+  corrections may change a verdict, never coefficient tuning for a pass)
 - refusals swallowing the one scored outcome
 """
 
@@ -39,14 +38,13 @@ def test_male_variant_exceeds_all_adults():
 
 
 def test_current_honest_verdict_state():
-    # VERDICT FLIPPED BY EVIDENCE v1.10 (2026-09-07): the S&vW Table 5
-    # pin widened the mortality bands (study SEs replace the abstract-
-    # derived band), and the measured ADH differential now falls INSIDE
-    # the modeled band. The point still overshoots. This is the flip
-    # mechanism working as designed: new pinned evidence, not code.
+    # Engine 0.3.0 aligns validation with the production five-phase
+    # timing. Fixed evidence now misses both comparisons; retain that
+    # result rather than tuning coefficients to restore the old verdict.
     all_adults = R["scored"][0]
-    assert all_adults["measured_inside_modeled_band"] is True
-    assert all_adults["modeled_point_inside_measured_ci"] is True
+    assert all_adults["mortality_contract"]["timing"] == "source_profile"
+    assert all_adults["measured_inside_modeled_band"] is False
+    assert all_adults["modeled_point_inside_measured_ci"] is False
     # the overshoot itself persists at the point level
     assert all_adults["modeled_excess_deaths_per100k"]["point"] > all_adults["measured_differential_per100k"]["point"]
 

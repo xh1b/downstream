@@ -78,11 +78,17 @@ def test_sobol_runs_on_the_real_child_line():
 
     from downstream.children import child_line
 
-    out = sobol_indices(
-        params, lambda ps: child_line(ps)["grandchild"].point, NODES, base=64, seed=3
-    )
-    assert len(out["indices"]) == len(params.parameters)
-    assert out["model_evals"] == 64 * (len(params.parameters) + 2)
+    calls = 0
+    def compute(ps):
+        nonlocal calls
+        calls += 1
+        return child_line(ps)["grandchild"].point
+    out = sobol_indices(params, compute, NODES, base=64, seed=3)
+    groups = [set(row["links"]) for row in out["indices"]]
+    assert set.union(*groups) == {p.link for p in params.parameters}
+    assert sum(map(len, groups)) == len(params.parameters)
+    assert {"child_earnings->grandchild_earnings", "grandchild_earnings->greatgrandchild_earnings"} in groups
+    assert out["model_evals"] == calls
     # the IGE transmission step must be among the leading drivers
     top3 = {r["link"] for r in out["indices"][:3]}
     assert "child_earnings->grandchild_earnings" in top3
