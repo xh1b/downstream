@@ -1,0 +1,22 @@
+name: Evidence or model proposal
+description: Propose a causal link, source extraction, or modeling improvement
+body:
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: Name the input, outcome, population, units, and intended use.
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Source and extraction
+      description: DOI/link, exact table/page/column, estimate, uncertainty, and study design; state gaps explicitly.
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: Expected impact and limitations
+      description: Which calculations change? What transport or composition assumptions are needed?

@@ -97,6 +97,7 @@ downstream validate                      # V0 consistency + V1 retrodiction
 | `validate` | V0 internal consistency and the V1 retrodiction target |
 | `citations` | citation coverage report |
 | `credits` | computed researcher and study credit |
+| `compare` | complete before/after inventory of saved outputs or parameter snapshots; Markdown, CSV, JSON |
 | `bundle` | exports a standalone engine and data bundle with checksums |
 | `forecast-register` | freezes a prospective forecast locally |
 | `forecast-score` | scores the forecast after the outcome window |
@@ -272,6 +273,22 @@ employer, county, state, and family surfaces. Integration is in progress. It is
 deferred while the team strengthens this model. This repo contains only the model, the
 parameters, and the paper. The database runner and its record-selection rules
 belong to the companion project.
+
+## Contributing and version comparisons
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, evidence rules, and PR checks.
+Pull requests produce a model comparison with before/after values, numerical
+deltas, and added or removed fields. The complete report is available as a
+workflow artifact, with a shorter change list in the job summary.
+
+```sh
+downstream compare --before old-result.json --after new-result.json
+downstream compare --before old-results/ --after new-results/ --format csv --out changes.csv
+```
+
+Run each version's own engine with identical inputs before comparing its
+saved JSON. See [version comparisons](docs/VERSION_COMPARISON.md) and the
+[release checklist](docs/OPEN_SOURCE_RELEASE.md).
 
 ## License
 

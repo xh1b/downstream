@@ -1,0 +1,22 @@
+name: Bug report
+description: Report incorrect calculations, installation problems, or regressions
+body:
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Exact command, minimal synthetic input, Python/OS, engine and parameter versions
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and actual behavior
+      description: Include the relevant output or traceback. Avoid private personal data.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Supporting evidence
+      description: For numerical issues, link the source and table/page/column if known.

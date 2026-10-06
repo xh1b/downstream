@@ -1,0 +1,101 @@
+name: model comparison
+
+on:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      before_ref:
+        description: Baseline tag or commit
+        required: true
+        type: string
+      after_ref:
+        description: Candidate tag or commit
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: comparison-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  snapshot:
+    name: snapshot (${{ matrix.side }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        side: [before, after]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.side == 'before' && (github.event.pull_request.base.sha || inputs.before_ref) || (github.event_name == 'pull_request' && github.sha || inputs.after_ref) }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      # Each version executes its own engine and data on a separate runner.
+      # Fixed commands live here so the baseline need not contain new scripts.
+      - name: Capture reproducible model outputs
+        env:
+          PYTHONPATH: src
+        run: |
+          mkdir results
+          python -m downstream.cli audit > results/audit.json
+          python -m downstream.cli export > results/parameters.json
+          python -m downstream.cli family > results/family.json
+          python -m downstream.cli scenario --workers 0 --draws 200 --seed 1901 > results/scenario-zero.json
+          python -m downstream.cli scenario --workers 1 --draws 200 --seed 1901 > results/scenario-person.json
+          python -m downstream.cli scenario --workers 1000 --net-tradable-jobs-lost 1000 --local-job-mix manufacturing --draws 200 --seed 1901 > results/scenario-cohort.json
+          python -m downstream.cli validate > results/validation.json
+          python -m downstream.cli transmissions > results/transmissions.json
+          python -m downstream.cli infer --outcome grandchild > results/inference.json
+          git rev-parse HEAD > results/commit.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: model-${{ matrix.side }}
+          path: results/
+          if-no-files-found: error
+          retention-days: 30
+
+  compare:
+    name: compare
+    needs: snapshot
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/download-artifact@v4
+        with:
+          name: model-before
+          path: before
+      - uses: actions/download-artifact@v4
+        with:
+          name: model-after
+          path: after
+      - name: Compare every saved field
+        env:
+          PYTHONPATH: src
+        run: |
+          mkdir reports
+          before_label=$(cat before/commit.txt)
+          after_label=$(cat after/commit.txt)
+          for format in json csv markdown; do
+            python -m downstream.cli compare --before before --after after --before-label "$before_label" --after-label "$after_label" --format "$format" --out "reports/comparison.$format"
+          done
+          python -m downstream.cli compare --before before --after after --before-label "$before_label" --after-label "$after_label" --changes-only --summary-limit 100 --out reports/summary.md
+          cat reports/summary.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: model-comparison
+          path: reports/
+          if-no-files-found: error
+          retention-days: 30
