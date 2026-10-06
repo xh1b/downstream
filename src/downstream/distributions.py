@@ -27,9 +27,9 @@ from __future__ import annotations
 
 import math
 import random
-from dataclasses import dataclass, replace
+from dataclasses import dataclass
 
-from .params import Parameter
+from .params import Parameter, ParameterSet
 
 NORMAL = "normal"
 UNIFORM = "uniform"
@@ -97,8 +97,10 @@ def materialize_parameter_set(params, nodes: dict, u_row: list[float], dists: li
         j = aliases[i]
         source = rows[j]
         lo, hi = sorted((source.low, source.high))
-        values.append(replace(p, point=sample_unit_interval(dists[j], u_row[j], lo, hi, point=source.point)))
-    return replace(params, version=f"{params.version.split('-sampled')[0]}-sampled", parameters=tuple(values))
+        value = sample_unit_interval(dists[j], u_row[j], lo, hi, point=source.point)
+        values.append(Parameter(p.link, p.from_node, p.to_node, value, p.low, p.high,
+                                p.tier, p.citation, p.population_scope, p.notes, p.dist, p.evidence_role))
+    return ParameterSet(f"{params.version.split('-sampled')[0]}-sampled", tuple(values))
 
 
 def shared_parameter_indices(params) -> list[int]:

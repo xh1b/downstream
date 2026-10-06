@@ -22,7 +22,7 @@ from .explanation import explain_child_line
 from .mc import simulate_chain
 from .params import ParameterSet, default_dir, load_all
 from .render import load_citations, render_text
-from .scenario import ScenarioInput, compute_counts
+from .scenario import BaselineMissing, ScenarioInput, compute_counts
 from .snapshot import dumps as snapshot_dumps
 from .snapshot import write as snapshot_write
 from .sensitivity import sobol_indices
@@ -33,8 +33,7 @@ DEFAULT_PARAMS_DIR = str(default_dir())
 
 
 def _dump(obj) -> None:
-    json.dump(obj, sys.stdout, indent=2)
-    print()
+    print(json.dumps(obj, indent=2, allow_nan=False))
 
 
 def _mortality_mix_arg(parser, raw: str | None) -> dict[str, float] | None:
@@ -76,7 +75,7 @@ def _county_mortality_arg(parser, params_dir: str, place_key: str | None):
         parser.error(f"cannot load county mortality table: {exc}")
 
 
-def main(argv: list[str] | None = None) -> int:
+def _run_main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="downstream")
     sub = parser.add_subparsers(dest="cmd", required=True)
 
@@ -460,7 +459,9 @@ def main(argv: list[str] | None = None) -> int:
             before = PolicyCase.from_dict(payload["baseline"])
             after = PolicyCase.from_dict(payload["policy"])
             out = compare_policies(params, parts["baselines"], before, after,
-                                   places=load_places(Path(args.params) / "places.csv"))
+                                   places=load_places(Path(args.params) / "places.csv"),
+                                   county_mortality=_county_mortality_arg(parser, args.params, before.place_key or after.place_key),
+                                   mortality_profiles=_mortality_profiles_arg(parser, args.params))
         except (OSError, ValueError, TypeError, KeyError) as exc:
             parser.error(str(exc))
         _dump(out)
@@ -502,7 +503,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     if args.cmd == "explain":
-        exp = explain_child_line(params, draws=args.draws)
+        exp = explain_child_line(params, draws=args.draws, nodes=parts["nodes"], params_dir=Path(args.params))
         if args.text:
             load_citations(parts["bib"])
             print(render_text(exp))
@@ -581,12 +582,12 @@ def main(argv: list[str] | None = None) -> int:
                 values = [float(v) for v in args.values.split(",")]
             except ValueError as exc:
                 parser.error(f"invalid --values: {exc}")
-            dump_sampling(knob_sweep(params, parts["baselines"], scenario, args.link, values, places=sampling_places, place_key=args.place))
+            dump_sampling(knob_sweep(params, parts["baselines"], scenario, args.link, values, places=sampling_places, place_key=args.place, county_mortality=_county_mortality_arg(parser, args.params, args.place)))
             return 0
         # voi: rank which knob is worth narrowing next
         if args.outcome == "excess_deaths":
             def outcome_fn(ps: ParameterSet) -> float:
-                out = compute_counts(ps, parts["baselines"], scenario, places=sampling_places, place_key=args.place)
+                out = compute_counts(ps, parts["baselines"], scenario, places=sampling_places, place_key=args.place, county_mortality=_county_mortality_arg(parser, args.params, args.place))
                 return out["modeled"]["excess_deaths"]["point"]
         else:
             outcome_fn = sampling_child
@@ -628,6 +629,7 @@ def main(argv: list[str] | None = None) -> int:
                 seed=args.seed,
                 kinds=kinds,
                 nodes=parts["nodes"],
+                params_dir=Path(args.params),
             )
         except (KeyError, ValueError) as exc:
             parser.error(str(exc))
@@ -817,12 +819,15 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     if args.cmd == "credits":
-        from .credits import attribution_sentences, collect, write_credits_md
+        from .credits import attribution_sentences, collect, write_credits_md, update_readme_attribution
         from pathlib import Path as _P
 
         data = collect(parts["bib"], _P(args.params))
         if args.write:
             text = write_credits_md(data, _P(args.params).parent / "CREDITS.md")
+            readme = _P(args.params).parent / "README.md"
+            if readme.exists():
+                update_readme_attribution(data, readme)
             print(text.splitlines()[2])
             print("written: CREDITS.md")
         else:
@@ -836,6 +841,14 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     return 2
+
+
+def main(argv: list[str] | None = None) -> int:
+    try:
+        return _run_main(argv)
+    except (ValueError, KeyError, TypeError, OverflowError, OSError, BaselineMissing) as exc:
+        print(f"downstream: error: {exc}", file=sys.stderr)
+        return 2
 
 
 if __name__ == "__main__":

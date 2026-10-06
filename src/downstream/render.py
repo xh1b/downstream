@@ -60,7 +60,7 @@ def render_text(exp: Explanation) -> str:
             f"  {i}. {s.sentence} "
             f"Applied: {_fmt(s.params)} — after this step: "
             f"{_fmt(s.after)} [{cites}; evidence tier {s.tier}; "
-            f"{s.population}]"
+            f"{s.population}; evidence role {s.evidence_role}; causal role {s.causal_role}]"
         )
     lines.append("")
 
@@ -95,7 +95,7 @@ def render_text(exp: Explanation) -> str:
     if exp.monte_carlo:
         mc = exp.monte_carlo
         stamp += (
-            f"; Monte Carlo {mc['draws']} draws (LHS), seed {mc['seed']}, "
+            f"; Monte Carlo {mc['draws']} draws ({mc['sampler']}), seed {mc['seed']}, "
             f"p05-p95 {_fmt((mc['p50'], mc['p05'], mc['p95']))} around p50"
         )
     lines.append(f"[{stamp}]")

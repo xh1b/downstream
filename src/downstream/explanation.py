@@ -39,6 +39,8 @@ class Step:
     tier: str
     population: str
     contribution: float                  # share of total log-effect
+    evidence_role: str = ""
+    causal_role: str = ""
 
     def as_dict(self) -> dict:
         return {
@@ -51,6 +53,7 @@ class Step:
             "tier": self.tier,
             "population": self.population,
             "contribution_share": round(self.contribution, 3),
+            "evidence_role": self.evidence_role, "causal_role": self.causal_role,
         }
 
 
@@ -69,6 +72,7 @@ class Explanation:
     falsify: list[str] = field(default_factory=list)
     parameter_set_version: str = ""
     monte_carlo: dict | None = None
+    projection_eligibility: dict = field(default_factory=dict)
 
     def as_dict(self) -> dict:
         return {
@@ -85,20 +89,26 @@ class Explanation:
             "falsify": self.falsify,
             "parameter_set_version": self.parameter_set_version,
             "monte_carlo": self.monte_carlo,
+            "projection_eligibility": self.projection_eligibility,
         }
 
 
-def explain_child_line(params: ParameterSet, draws: int = 4000, seed: int = 1901) -> Explanation:
+def explain_child_line(params: ParameterSet, draws: int = 4000, seed: int = 1901, *, nodes=None, params_dir=None) -> Explanation:
     """Worked explanation: what happens to the earnings line of a
     displaced father's family, three generations out."""
     from .mc import simulate
 
+    from pathlib import Path
+    from .params import default_dir, load_nodes, load_correlations
+    d = Path(params_dir) if params_dir is not None else default_dir()
+    if nodes is None:
+        nodes = load_nodes(d / "nodes.csv")
     child = child_line(params)
 
     steps: list[Step] = []
     prev = (1.0, 1.0, 1.0)
     contributions: list[float] = []
-    for key in ("child", "grandchild", "greatgrandchild"):
+    for key in ("child", "grandchild"):
         ledger = child[key]
         s = ledger.steps[-1]
         effect = math.log(max(ledger.point, 1e-9)) - math.log(max(prev[0], 1e-9))
@@ -113,7 +123,7 @@ def explain_child_line(params: ParameterSet, draws: int = 4000, seed: int = 1901
                 citations=s.citation.split(";"),
                 tier=s.tier,
                 population=_population_for(params, s.link),
-                contribution=effect,
+                contribution=effect, evidence_role=s.evidence_role, causal_role=s.causal_role,
             )
         )
         prev = (ledger.point, ledger.low, ledger.high)
@@ -124,12 +134,13 @@ def explain_child_line(params: ParameterSet, draws: int = 4000, seed: int = 1901
         # log-shares cancel across gap-space steps and mislead)
         st.contribution = abs(effect) / total
 
-    from .sensitivity import sobol_indices
+    from .sensitivity import correlated_block_sobol
 
     def _compute(ps: ParameterSet) -> float:
         return child_line(ps)["grandchild"].point
 
-    sob = sobol_indices(params, _compute, _load_nodes(), base=128, seed=seed)
+    correlations = load_correlations(d / "correlations.csv") if (d / "correlations.csv").exists() else []
+    sob = correlated_block_sobol(params, _compute, nodes, correlations, base=128, seed=seed)
 
     return Explanation(
         claim=(
@@ -141,13 +152,14 @@ def explain_child_line(params: ParameterSet, draws: int = 4000, seed: int = 1901
         unit="gap_multiplier",
         value=(child["grandchild"].point, child["grandchild"].low, child["grandchild"].high),
         horizon="adult outcomes, one and two generations after the shock",
-        population="children of US-style displaced tradable workers",
+        population="illustrative transport of a Canadian father-son firm-closure estimate; grandchildren are structural projections",
         steps=steps,
         drivers=_driver_sentences(sob)[:3],
         assumptions=[
             "transmission repeats the same IGE band across generations",
             "independent causes of one outcome are reported side by side, not composed",
-            "US-centric parameter population applied to US-style exposures",
+            "target population applicability has not been reviewed; the reference result is illustrative",
+            "grandchild persistence is a structural projection, not an identified displacement effect",
         ],
         falsify=[
             "long-run panels of displaced-worker children NOT showing "
@@ -158,29 +170,21 @@ def explain_child_line(params: ParameterSet, draws: int = 4000, seed: int = 1901
             "great-grandchild layer (weakest-identified)",
         ],
         parameter_set_version=params.version,
+        projection_eligibility=child["evidence_status"],
         monte_carlo=simulate(
-            params, _compute, draws=draws, seed=seed, nodes=_load_nodes()
+            params, _compute, draws=draws, seed=seed, nodes=nodes, params_dir=d
         ),
     )
 
 
 def _step_sentence(link: str, before: float, after: float) -> str:
-    delta_pct = (after - before) * 100
-    if "child_earnings" in link and "grandchild" not in link:
-        return (
-            f"Children of displaced fathers earn about {abs(delta_pct):.0f}% "
-            "less as adults (firm-closure quasi-experiment, 39k father-son pairs)."
-        )
-    if "grandchild" in link and "greatgrandchild" not in link:
-        return (
-            f"That gap transmits to the grandchild at roughly half strength: "
-            f"a further {abs(delta_pct):.1f}% down (intergenerational earnings "
-            "elasticity, US mobility literature)."
-        )
-    return (
-        f"The line continues one more generation at the same transmission "
-        f"strength: a further {abs(delta_pct):.1f}% down (weakest-identified layer)."
-    )
+    gap_pct = (1 - after) * 100
+    if "grandchild" not in link:
+        return (f"The modeled child earnings gap is {gap_pct:.2f}% below the no-displacement reference "
+                "(Canadian father-son firm-closure estimate; transport is conditional).")
+    attenuation = (after - before) * 100
+    return (f"Structural persistence leaves a {gap_pct:.2f}% earnings gap below the no-displacement reference; "
+            f"the gap narrows by {attenuation:.2f} percentage points from the preceding generation.")
 
 
 def _population_for(params: ParameterSet, link: str) -> str:
@@ -192,7 +196,8 @@ def _population_for(params: ParameterSet, link: str) -> str:
 
 def _driver_sentences(sob: dict) -> list[dict]:
     out = []
-    for row in sob["indices"][:3]:
+    for row in sob.get("indices", sob.get("blocks", []))[:3]:
+        row = {**row, "link": row.get("link", ", ".join(row.get("links", [])))}
         share = max(row["S_total"], 0.0)
         if share < 0.01:
             continue  # below 1% is estimator noise at our base sizes

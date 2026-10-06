@@ -46,11 +46,11 @@ class PolicyCase:
         return cls(**value)
 
 
-def compare_policies(params, baselines, baseline: PolicyCase, policy: PolicyCase, *, places=None):
+def compare_policies(params, baselines, baseline: PolicyCase, policy: PolicyCase, *, places=None, county_mortality=None, mortality_profiles=None):
     def evaluate(case):
-        point = compute_counts(params, baselines, case.scenario, places=places, place_key=case.place_key)
+        point = compute_counts(params, baselines, case.scenario, places=places, place_key=case.place_key, county_mortality=county_mortality, mortality_profiles=mortality_profiles)
         extremes = [compute_counts(params, baselines, replace(case.scenario, displaced_workers=n),
-                                   places=places, place_key=case.place_key)
+                                   places=places, place_key=case.place_key, county_mortality=county_mortality, mortality_profiles=mortality_profiles)
                     for n in case.exposure_band]
         combined = {}
         for key, row in point['modeled'].items():

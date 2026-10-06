@@ -34,7 +34,7 @@ from __future__ import annotations
 
 import csv
 import math
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 
 from .params import Baseline, ParameterSet, default_dir
@@ -276,7 +276,7 @@ def _county_mortality_override(
 def _baseline_from_mortality_posterior(
     outcome: str, base: Baseline, place: Place, override: dict,
 ) -> Baseline:
-    return Baseline(
+    return replace(base,
         outcome=outcome,
         unit=base.unit,
         population=base.population,
@@ -291,7 +291,7 @@ def _baseline_from_mortality_posterior(
             f"the national {override['prior_rate']} with "
             f"prior_person_years={override['prior_person_years']}, "
             f"weight={override['weight']}; same unit and population as the "
-            "national baseline — no conversion applied"
+            "national baseline — no conversion applied. " + base.notes
         ),
     )
 
@@ -381,7 +381,7 @@ def place_baselines(
             }
             continue
         shrunk, w = shrink(county_value, county_n, base.value, k)
-        out[outcome] = Baseline(
+        out[outcome] = replace(base,
             outcome=outcome,
             unit=base.unit,
             population=base.population,
@@ -394,7 +394,7 @@ def place_baselines(
                 f"(n={county_n}, citation: {place.citation}) shrunk toward the "
                 f"national {base.value} with k={k}, w={round(w, 6)}; "
                 "same unit and population as the national baseline — no "
-                "conversion applied"
+                "conversion applied. " + base.notes
             ),
         )
         overrides[outcome] = {

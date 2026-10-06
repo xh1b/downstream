@@ -50,7 +50,11 @@ def with_band(
     p = replace(base, low=low, high=high)
     if point is not None:
         p = replace(p, point=point)
-    rows = tuple(p if r.link == link else r for r in params.parameters)
+    from .distributions import shared_parameter_indices
+    aliases = shared_parameter_indices(params)
+    selected = next(i for i, row in enumerate(params.parameters) if row.link == link)
+    rows = tuple(replace(row, point=p.point, low=p.low, high=p.high) if aliases[i] == aliases[selected] else row
+                 for i, row in enumerate(params.parameters))
     base_version = params.version.split("-sampled")[0].split("-knob")[0]
     return ParameterSet(version=f"{base_version}-knob", parameters=rows)
 
@@ -82,6 +86,8 @@ def sweep(
     *,
     places: dict | None = None,
     place_key: str | None = None,
+    county_mortality: dict | None = None,
+    mortality_profiles: dict | None = None,
 ) -> dict:
     """Scenario counts at each pinned value of one knob.
 
@@ -95,7 +101,7 @@ def sweep(
     first: dict | None = None
     for v in values:
         ps = pin(params, link, v)
-        out = compute_counts(ps, baselines, scenario, places=places, place_key=place_key)
+        out = compute_counts(ps, baselines, scenario, places=places, place_key=place_key, county_mortality=county_mortality, mortality_profiles=mortality_profiles)
         flat = _flatten(out)
         if first is None:
             first = flat
@@ -155,7 +161,11 @@ def value_of_information(
     base_width = base["p95"] - base["p05"]
 
     rows = []
-    for p in params.parameters:
+    from .distributions import shared_parameter_indices
+    aliases = shared_parameter_indices(params)
+    for i, p in enumerate(params.parameters):
+        if aliases[i] != i:
+            continue
         lo, hi = sorted((p.low, p.high))
         if not lo <= p.point <= hi:
             raise ValueError(

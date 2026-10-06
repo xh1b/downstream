@@ -13,7 +13,7 @@ import math
 import random
 
 from . import __version__
-from .mortality import excess_deaths, excess_deaths_profile, rate_to_risk
+from .mortality import excess_deaths, excess_deaths_profile, rate_to_risk, SOURCE_PROFILE_DESCRIPTION, source_profile_contract
 
 from .children import child_line
 from .community import service_jobs_lost
@@ -40,15 +40,17 @@ class ScenarioInput:
     mortality_profile: str | None = None
     mortality_mix: dict[str, float] | None = None
     place_application: str = "initial_only"
+    target_population: dict[str, str] | None = None
+    applicability_decisions: dict[str, dict] | None = None
 
     def __post_init__(self):
         for name in ('displaced_workers', 'tradable_share', 'exposure_years'):
             value = getattr(self, name)
             if (isinstance(value, bool) or not isinstance(value, (int, float))
-                    or not math.isfinite(value) or value < 0):
+                    or abs(value) > float("1.7976931348623157e308") or not math.isfinite(value) or value < 0):
                 raise ValueError(f'{name} must be finite and nonnegative')
-        if isinstance(self.n_children, bool) or not isinstance(self.n_children, int) or self.n_children < 0:
-            raise ValueError('n_children must be a nonnegative integer')
+        if isinstance(self.n_children, bool) or not isinstance(self.n_children, int) or not 0 <= self.n_children <= 1_000_000:
+            raise ValueError('n_children must be an integer from 0 to 1000000')
         if self.tradable_share > 1:
             raise ValueError('tradable_share must be in [0, 1]')
         if self.net_tradable_jobs_lost is not None and (
@@ -62,7 +64,7 @@ class ScenarioInput:
                 "local_job_mix must be 'manufacturing' or 'high_tech' when supplied; "
                 "the published 1.6-5.0 span crosses job classes and is not uncertainty"
             )
-        if self.wage_multiplier is not None and (not math.isfinite(self.wage_multiplier) or self.wage_multiplier <= 0):
+        if self.wage_multiplier is not None and (isinstance(self.wage_multiplier, bool) or not isinstance(self.wage_multiplier, (int, float)) or not math.isfinite(self.wage_multiplier) or self.wage_multiplier <= 0):
             raise ValueError('wage_multiplier must be finite and positive')
         if self.mortality_method not in {'odds_survival', 'legacy_additive'}:
             raise ValueError('unknown mortality_method')
@@ -70,12 +72,24 @@ class ScenarioInput:
             raise ValueError('unknown mortality_timing')
         if self.mortality_profile is not None and (not isinstance(self.mortality_profile, str) or not self.mortality_profile):
             raise ValueError('mortality_profile must be a nonempty string when supplied')
-        if self.mortality_mix is not None and not isinstance(self.mortality_mix, dict):
+        if self.mortality_mix is not None and (not isinstance(self.mortality_mix, dict) or not self.mortality_mix):
             raise ValueError('mortality_mix must be an object when supplied')
         if self.mortality_profile is not None and self.mortality_mix is not None:
             raise ValueError('mortality_profile and mortality_mix are mutually exclusive')
         if self.place_application not in {'initial_only', 'legacy_repeated'}:
             raise ValueError('unknown place_application')
+        if self.target_population is not None:
+            required = {"sex", "age", "worker_tenure", "geography", "calendar_window", "exposure_type", "children_sex"}
+            if not isinstance(self.target_population, dict) or not required <= self.target_population.keys() or not all(isinstance(v, str) and v.strip() for v in self.target_population.values()):
+                raise ValueError(f"target_population requires nonempty string fields {sorted(required)}")
+        if self.applicability_decisions is not None:
+            if self.target_population is None or not isinstance(self.applicability_decisions, dict):
+                raise ValueError("applicability_decisions require a structured target_population")
+            for outcome, decision in self.applicability_decisions.items():
+                if outcome not in {"excess_deaths", "child_lifetime_earnings_lost_usd"} or not isinstance(decision, dict):
+                    raise ValueError("unknown applicability decision outcome")
+                if decision.get("status") != "reviewed" or not all(isinstance(decision.get(k), str) and decision[k].strip() for k in ("reviewer", "rationale", "citations")):
+                    raise ValueError("reviewed applicability decisions require reviewer, rationale and citations")
 
 
 
@@ -158,8 +172,7 @@ def compute_counts(
         "assumptions": {
             "mortality_method": scenario.mortality_method,
             "mortality_timing": (
-                "source-offset profile: displacement, +1, +2–3, +4–5, and +6+; "
-                "with displacement in follow-up year 1, offset +6 begins in follow-up year 7"
+                SOURCE_PROFILE_DESCRIPTION
                 if scenario.mortality_method == "odds_survival" and scenario.mortality_timing == "source_profile"
                 else "legacy incomplete profile: years 2–5 at baseline and offset +6 applied from follow-up year 6"
                 if scenario.mortality_method == "odds_survival" and scenario.mortality_timing == "source_aligned"
@@ -167,6 +180,7 @@ def compute_counts(
                 if scenario.mortality_method == "odds_survival"
                 else "legacy peak plus Y sustained years, linear rate approximation"
             ),
+            "mortality_contract": source_profile_contract() if scenario.mortality_timing == "source_profile" else None,
             "place_application": scenario.place_application,
             "place_counterfactual": (
                 "county child-dollar contrasts use a same-place loss scaling "
@@ -188,6 +202,8 @@ def compute_counts(
     }
 
     def rounded(value: float, digits: int) -> float:
+        if not math.isfinite(value):
+            raise ValueError("scenario produces a non-finite outcome; reduce the exposure or count inputs")
         return value if _raw else round(value, digits)
 
     # Moretti estimates net metro-level job changes, not worker replacement,
@@ -242,7 +258,7 @@ def compute_counts(
             baseline_info = {"profiles": [{"id": row.profile_id, "weight": weight,
                                              "sex": row.sex, "age": row.age, "years": row.years,
                                              "cause": row.cause, "geography": row.geography,
-                                             "status": row.status,
+                                             "status": row.status, "notes": row.notes,
                                              "annual_rate": row.annual_rate,
                                              "population": row.population_scope, "citation": row.citation}
                                             for row, weight in resolved],
@@ -275,7 +291,8 @@ def compute_counts(
                     scenario.mortality_method, timing=scenario.mortality_timing,
                 ) for attr in ("point", "low", "high")]
             baseline_info = {"value": rate, "annual_probability": baseline_probability,
-                             "unit": b.unit, "citation": b.citation, "population": b.population}
+                             "unit": b.unit, "citation": b.citation, "population": b.population, "notes": b.notes,
+                             "sex": b.sex, "age": b.age, "years": b.years, "cause": b.cause, "geography": b.geography}
         if scenario.mortality_method == "odds_survival" and scenario.mortality_timing == "source_profile":
             from .worker import mortality_profile
             profile = mortality_profile(params)
@@ -311,7 +328,7 @@ def compute_counts(
             "high": rounded(scenario.displaced_workers * scenario.n_children * (1 - child.low) * v, 2),
             "steps": [step.as_dict() for step in child.steps],
             "unit": "usd_2024",
-            "baseline": {"value": v, "citation": b.citation, "population": b.population},
+            "baseline": {"value": v, "unit": b.unit, "citation": b.citation, "population": b.population, "notes": b.notes},
         }
     except BaselineMissing as e:
         if strict:
@@ -329,6 +346,60 @@ def compute_counts(
         "greatgrandchild_earnings": _pt(line["greatgrandchild"]),
     }
     computed["projection_eligibility"] = line["evidence_status"]
+    computed["target_population"] = scenario.target_population
+    for outcome, row in computed["modeled"].items():
+        if outcome == "local_service_jobs_lost":
+            # Class-specific net-job input is distinct from displaced workers.
+            row["applicability"] = {"status": "conditional_net_job_model", "eligible_for_public_headline": False}
+            continue
+        decision = (scenario.applicability_decisions or {}).get(outcome)
+        assumptions = (["high-tenure male mass-layoff cohort, ages 45–54",
+                        "Pennsylvania early-1980s response transported to target place and calendar time",
+                        "fixed baseline age rate over follow-up; cohort aging is not modeled"]
+                       if outcome == "excess_deaths" else
+                       ["Canadian father-son firm-closure estimate transported to the target families",
+                        "US male synthetic career earnings convert a relative adult earnings effect to dollars",
+                        "lifetime dollars are undiscounted; this is not an annual loss"])
+        matched = True
+        if scenario.target_population is not None:
+            target = scenario.target_population
+            matched = (target['sex'] == 'Male' and target['age'] == '45-54 years' and target['worker_tenure'] == 'high-tenure') if outcome == 'excess_deaths' else target['sex'] == 'Male' and target['children_sex'] == 'Male'
+        eligible = bool(decision and matched and scenario.mortality_method == 'odds_survival' and scenario.mortality_timing == 'source_profile')
+        row["applicability"] = {
+            "status": "reviewed_conditional_transport" if eligible else "illustrative_reference_calculation",
+            "eligible_for_public_headline": eligible,
+            "target_population": scenario.target_population, "decision": decision,
+            "transport_assumptions": assumptions,
+            "reason": None if eligible else "Target cohort applicability and transport have not been established for this outcome; display as an illustrative reference calculation.",
+        }
+        row["interpretation"] = "Conditional modeled expected difference; parameter bands are support envelopes, not a confidence interval."
+        if not matched:
+            if strict:
+                raise BaselineMissing(f"{outcome}: target demographics do not match the admitted effect")
+            computed["blocked"].append({"outcome": outcome, "reason": "target demographics do not match the admitted effect"})
+    for blocked in computed["blocked"]:
+        if blocked["reason"] == "target demographics do not match the admitted effect":
+            computed["modeled"].pop(blocked["outcome"], None)
+    if place_block is not None and (scenario.mortality_profile is not None or scenario.mortality_mix is not None):
+        place_block["mortality_precedence"] = "explicit demographic profile or mixture overrides county mortality; county provenance is not the applied mortality baseline"
+        for override in (place_block.get("baseline_overrides") or {}).values():
+            if override.get("outcome") == "all_cause_mortality_annual":
+                override["applied"] = False
+                override["reason"] = "explicit mortality profile takes precedence"
+    # Local job counts also need a finite result; prevent nonstandard JSON anywhere.
+    if not _raw:
+        import hashlib
+        import json
+        from dataclasses import asdict
+        inputs = {"parameters": asdict(params), "baselines": {k: asdict(v) for k, v in baselines.items()},
+                  "scenario": asdict(scenario), "places": {k: asdict(v) for k, v in (places or {}).items()},
+                  "mortality_profiles": {k: asdict(v) for k, v in (mortality_profiles or {}).items()},
+                  "county_mortality": {k: asdict(v) for k, v in (county_mortality or {}).items()}}
+        computed["input_content_sha256"] = hashlib.sha256(json.dumps(inputs, sort_keys=True, allow_nan=False).encode()).hexdigest()
+        try:
+            json.dumps(computed, allow_nan=False)
+        except ValueError as exc:
+            raise ValueError("scenario produces a non-finite outcome") from exc
     return computed
 
 

@@ -34,6 +34,8 @@ def standard_family(
     places: dict | None = None,
     place_key: str | None = None,
 ) -> dict:
+    from .scenario import ScenarioInput
+    ScenarioInput(1, n_children=n_children, wage_multiplier=wage_multiplier)
     worker = worker_outcomes(params, wage_multiplier=wage_multiplier)
     modifier = None
     place_block: dict | None = None
@@ -71,7 +73,9 @@ def standard_family(
         "vignette": {
             "family": "standard family",
             "definition": (
-                "employed father, mother, three children (ages 3, 7, 12), "
+                f"employed father, mother, {n_children} children"
+                + (" (ages 3, 7, 12), " if n_children == DEFAULT_CHILDREN else " (ages unspecified), ")
+                + 
                 "median county; father displaced from a tradable job"
             ),
             "wage_multiplier": wage_multiplier,
