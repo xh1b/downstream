@@ -22,7 +22,7 @@ downstream compare --before family-before.json --after family-after.json \
 ```
 
 All fields appear by default. `--changes-only` omits unchanged fields.
-`--summary-limit 100` limits Markdown rows; CSV and JSON remain complete.
+Changed, added, and removed fields are shown in full without a row limit.
 `--out` writes a file instead of printing to standard output.
 
 ## A complete saved calculation inventory

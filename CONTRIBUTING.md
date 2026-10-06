@@ -70,8 +70,8 @@ identical inputs. It checks source parameters and fixed-input calculations.
 
 Open the **model comparison → compare** job summary and download the
 `model-comparison` artifact. Its complete JSON, CSV, and Markdown inventory
-includes unchanged fields, changes, additions, and removals. The summary shows
-at most 100 changed fields. Review the complete artifact when many fields change.
+includes unchanged fields, changes, additions, and removals. The job summary
+shows every changed, added, and removed field without truncation.
 Expected model changes are reported without failing the build; execution,
 audit, or comparison errors fail it. Explain meaningful changes in the PR.
 

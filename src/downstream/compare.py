@@ -113,8 +113,7 @@ def _display(value) -> str:
     return json.dumps(value, ensure_ascii=False, allow_nan=False)
 
 
-def render_comparison(report: dict, format: str = "markdown", changes_only: bool = False,
-                      limit: int | None = None) -> str:
+def render_comparison(report: dict, format: str = "markdown", changes_only: bool = False) -> str:
     rows = [row for row in report["rows"] if not changes_only or row["status"] != "unchanged"]
     if format == "json":
         return json.dumps({**report, "rows": rows}, indent=2, allow_nan=False) + "\n"
@@ -141,12 +140,9 @@ def render_comparison(report: dict, format: str = "markdown", changes_only: bool
              "Values include calculation outputs, inputs, and provenance; paths identify each field.",
              "", "| Field | Status | Before | After | Delta | Change (%) |",
              "| --- | --- | --- | --- | --- | --- |"]
-    shown = rows if limit is None else rows[:limit]
-    for row in shown:
+    for row in rows:
         values = (row["path"], row["status"], _display(row["before"]), _display(row["after"]),
                   "—" if row["delta"] is None else _display(row["delta"]),
                   "—" if row["percent_change"] is None else _display(row["percent_change"]))
         lines.append("| " + " | ".join(cell(value) for value in values) + " |")
-    if len(shown) < len(rows):
-        lines.extend(["", f"Showing {len(shown)} of {len(rows)} rows. Download the complete report artifact."])
     return "\n".join(lines) + "\n"

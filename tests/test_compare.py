@@ -93,7 +93,7 @@ def test_files_directories_missing_documents_and_empty_directory(tmp_path):
     assert load_documents(a / "family.json") == {"result": {"deaths": 1}}
 
 
-def test_render_formats_changes_only_and_summary_limit():
+def test_render_formats_and_changes_only():
     report = compare({"same": 2, "value": 1}, {"same": 2, "value": 2})
     doc = json.loads(render_comparison(report, "json", True))
     assert len(doc["rows"]) == 1
@@ -101,13 +101,24 @@ def test_render_formats_changes_only_and_summary_limit():
     rows = list(csv.DictReader(io.StringIO(render_comparison(report, "csv"))))
     assert len(rows) == 2
     assert rows[1]["delta"] == "1"
-    markdown = render_comparison(report, changes_only=True, limit=0)
-    assert "Showing 0 of 1" in markdown
+    markdown = render_comparison(report, changes_only=True)
     assert "| /same |" not in markdown
     assert "| /value | changed | 1 | 2 | 1 | 100.0 |" in render_comparison(report)
     assert "—" in render_comparison(compare({}, {"new": 2}))
     with pytest.raises(ValueError, match="unknown comparison format"):
         render_comparison(report, "invalid")
+
+
+def test_markdown_shows_all_changes_beyond_one_hundred_fields():
+    before = {f"field_{index:03d}": index for index in range(201)}
+    after = {name: value + 1 for name, value in before.items()}
+    before["removed"] = 7
+    after["added"] = 8
+    report = compare(before, after)
+    markdown = render_comparison(report, changes_only=True)
+    assert len([line for line in markdown.splitlines() if line.startswith("| /")]) == 203
+    for row in report["rows"]:
+        assert f"| {row['path']} | {row['status']} |" in markdown
 
 
 def test_markdown_escapes_untrusted_result_content():
@@ -128,9 +139,6 @@ def test_cli_compares_without_loading_local_parameters(tmp_path, monkeypatch, ca
     out = tmp_path / "report.csv"
     assert main(args + ["--format", "csv", "--out", str(out)]) == 0
     assert "calculated" in out.read_text()
-    with pytest.raises(SystemExit) as exc:
-        main(args + ["--summary-limit", "-1"])
-    assert exc.value.code == 2
     a.write_text("broken JSON")
     with pytest.raises(SystemExit) as exc:
         main(args)

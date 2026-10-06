@@ -91,7 +91,7 @@ jobs:
           for format in json csv markdown; do
             python -m downstream.cli compare --before before --after after --before-label "$before_label" --after-label "$after_label" --format "$format" --out "reports/comparison.$format"
           done
-          python -m downstream.cli compare --before before --after after --before-label "$before_label" --after-label "$after_label" --changes-only --summary-limit 100 --out reports/summary.md
+          python -m downstream.cli compare --before before --after after --before-label "$before_label" --after-label "$after_label" --changes-only --out reports/summary.md
           cat reports/summary.md >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
         with:

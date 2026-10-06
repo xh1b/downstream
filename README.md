@@ -279,7 +279,7 @@ belong to the companion project.
 See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, evidence rules, and PR checks.
 Pull requests produce a model comparison with before/after values, numerical
 deltas, and added or removed fields. The complete report is available as a
-workflow artifact, with a shorter change list in the job summary.
+workflow artifact, and every changed, added, and removed field appears in the job summary.
 
 ```sh
 downstream compare --before old-result.json --after new-result.json
