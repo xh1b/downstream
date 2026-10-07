@@ -33,7 +33,7 @@ jobs:
             docs/methods.html
           if-no-files-found: error
           retention-days: 90
-      - uses: softprops/action-gh-release@v2
+      - uses: softprops/action-gh-release@v3
         if: github.event_name == 'push'
         with:
           files: |
