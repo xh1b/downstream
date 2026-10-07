@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=77"]
+requires = ["setuptools>=84.0.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -14,13 +14,13 @@ dependencies = []
 
 [project.optional-dependencies]
 dev = [
-  "build>=1.2,<2",
-  "coverage[toml]>=7.6,<8",
-  "hypothesis>=6.120,<7",
-  "mutmut>=3.7,<4",
-  "pytest>=8,<9",
-  "ruff>=0.12,<1",
-  "vulture>=2.14,<3",
+  "build>=1.6.1,<2",
+  "coverage[toml]>=7.16.2,<8",
+  "hypothesis>=6.168.3,<7",
+  "mutmut>=3.8.0,<4",
+  "pytest>=9.1.1,<10",
+  "ruff>=0.16.10,<1",
+  "vulture>=2.16,<3",
 ]
 
 [project.scripts]
