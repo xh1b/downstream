@@ -54,7 +54,7 @@ jobs:
           python -m downstream.cli transmissions > results/transmissions.json
           python -m downstream.cli infer --outcome grandchild > results/inference.json
           git rev-parse HEAD > results/commit.txt
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: model-${{ matrix.side }}
           path: results/
@@ -93,7 +93,7 @@ jobs:
           done
           python -m downstream.cli compare --before before --after after --before-label "$before_label" --after-label "$after_label" --changes-only --out reports/summary.md
           cat reports/summary.md >> "$GITHUB_STEP_SUMMARY"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: model-comparison
           path: reports/

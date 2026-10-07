@@ -25,7 +25,7 @@ jobs:
         with:
           root_file: paper/downstream.tex
           args: -pdf -interaction=nonstopmode -halt-on-error -file-line-error
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: downstream-methods-paper-${{ github.sha }}
           path: |
