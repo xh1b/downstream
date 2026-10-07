@@ -78,7 +78,7 @@ jobs:
       - run: python -m build
       - shell: bash
         run: python scripts/check_distribution.py dist/*.whl
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: distribution-${{ matrix.os }}-${{ matrix.python }}
           path: dist/
@@ -99,7 +99,7 @@ jobs:
       - run: python -m coverage run -m pytest
       - run: python -m coverage json -o coverage.json
       - run: python scripts/quality_gate.py coverage.json
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         if: always()
         with:
           name: coverage-${{ github.run_id }}
@@ -122,7 +122,7 @@ jobs:
       - run: python -m mutmut run --max-children 4
       - run: python -m mutmut results --all true | tee mutmut-results.txt
       - run: python scripts/benchmark.py
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         if: always()
         with:
           name: mutation-and-benchmark-${{ github.run_id }}
