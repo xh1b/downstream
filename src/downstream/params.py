@@ -18,7 +18,7 @@ from .citations import parse_bib
 
 VALID_TIERS = {"EXACT", "EXACT-abstract", "EXACT-results", "canonical"}
 
-# Applicability roles from docs/STUDY_APPLICABILITY_AUDIT_2026-09-13.md.
+# Applicability roles for parameter evidence:
 # Every admitted row states how its study may be used:
 #   admitted    — the study estimates this link for the named input/outcome
 #   conditional — relevant but population/event/time/unit differ; transport

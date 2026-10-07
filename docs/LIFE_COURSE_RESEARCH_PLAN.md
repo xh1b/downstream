@@ -30,9 +30,9 @@ conversions, parameter sampling, analytic checks, sensitivity experiments, and
 partial external comparisons. It does not yet simulate a household's ordinary
 life course or establish arbitrary personalized treatment effects.
 
-The [September 10 review](REVIEW_2026-09-10.md) documents unresolved mortality
-timing, place-counterfactual, and county-likelihood issues. Correcting those
-is a prerequisite for using the affected outcomes as reliable headlines.
+The [model card](MODEL_CARD.md) documents population applicability,
+structural assumptions, and limits on independent validation. Public results
+must retain those qualifications and each outcome's applicability decision.
 The [related-work comparison](PRIOR_ATTEMPTS.md) identifies established models
 to learn from; openness and multi-domain simulation alone are not novelty.
 

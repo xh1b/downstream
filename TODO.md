@@ -15,7 +15,7 @@ remains recorded below. Every numerical claim retains provenance; misses publish
 Owner direction: improve this project and plan an eventual public calculator.
 The experience plan is `docs/WEBSITE_EXPERIENCE_PLAN.md`; website implementation
 and XH1B integration remain future work.
-See `docs/MATH_REVIEW.md` for reviewed arithmetic and remaining assumptions.
+See `docs/MODEL_CARD.md` for model limits and remaining assumptions.
 
 ## Forward goals
 
@@ -92,9 +92,8 @@ See `docs/MATH_REVIEW.md` for reviewed arithmetic and remaining assumptions.
 - **[OPEN/BLOCKED] V2 prospective validation:** still blocked on an external
   source providing BOTH a frozen-definition, event/geography/window-aligned
   displacement bridge AND independently estimated scored outcomes
-  (`docs/V2_SOURCE_REVIEW_2026-09-09.md` reviewed BRAC/NAFTA/auto-crisis
-  candidates; none qualified). The SIPP adoption (R2) is the candidate
-  path: if its panels clear the transition validation, re-evaluate SIPP
+  (BRAC/NAFTA/auto-crisis candidates were checked; none qualified). The SIPP
+  adoption (R2) is the candidate path: if its panels clear the transition validation, re-evaluate SIPP
   as the bridge. Re-check after R2's first weighted two-wave transition
   reproduces with held-out validation.
 - **[DONE 2026-09-10] Research positioning and product plan:** cited related work
@@ -104,12 +103,12 @@ See `docs/MATH_REVIEW.md` for reviewed arithmetic and remaining assumptions.
 ## Engine
 
 - **[DONE 2026-09-09] Math corrections, engine 0.2.0 / parameters v1.34** — odds-to-risk mortality and survival, one initial place adjustment, signed interval corners, clamped normal/lognormal moments, and refusal of reused uncertain parameters under independent-step inference. Legacy scenario methods remain selectable.
-- **[DONE 2026-09-09] Deep mathematics/code audit remediation** — public chains now enforce declared context-safe composition; V1/V2 mortality scoring shares the production survival kernel; all parameter materialization is point-aware; rank correlations use the Spearman-to-copula mapping; count quantiles use raw values; and source loaders reject duplicate/non-finite rows. See `docs/DEEP_MATHEMATICS_CODE_AUDIT_2026-09-09.md`.
+- **[DONE 2026-09-09] Deep mathematics/code audit remediation** — public chains now enforce declared context-safe composition; V1/V2 mortality scoring shares the production survival kernel; all parameter materialization is point-aware; rank correlations use the Spearman-to-copula mapping; count quantiles use raw values; and source loaders reject duplicate/non-finite rows.
 - **[DONE 2026-09-09] Property and coverage gate** — Hypothesis invariants cover ledger corners, mortality survival, and pooling convexity; Coverage.py records branches and `scripts/quality_gate.py` enforces 80% line / 70% branch floors. Full-suite baseline: 89.5% / 79.4%. See `docs/TESTING_QUALITY.md`.
 - **[DONE 2026-09-09] Direct public-CLI contracts** — every verb has in-process routing/output coverage plus explicit invalid-contract behavior; subprocess tests retain installed-user smoke coverage.
 - **[DONE 2026-09-09] Adversarial place-builder ingestion** — validates finite/ranged Atlas values, FIPS, and duplicate county keys; fixture tests pin territory filtering, weighted national aggregation, and byte-stable output.
 - **[DONE 2026-09-09] Adversarial lifecycle and V2 branch tests** — Hypothesis state machines cover immutable forecast registration and transactional bundle export/verification/tampering. Synthetic V2 fixtures cover valid scorecard creation and malformed bridge/outcome refusals; count endpoints accept both signed-loss and positive-count conventions.
-- **[DONE 2026-09-09] V2 external-source review** — reviewed independent BRAC, NAFTA, and auto-crisis candidate sources. None provides both a frozen-definition, event/geography/window-aligned displacement bridge and independently estimated scored outcome; V2 remains honestly blocked. See `docs/V2_SOURCE_REVIEW_2026-09-09.md`.
+- **[DONE 2026-09-09] V2 external-source review** — reviewed independent BRAC, NAFTA, and auto-crisis candidate sources. None provides both a frozen-definition, event/geography/window-aligned displacement bridge and independently estimated scored outcome; V2 remains honestly blocked.
 - **[DONE 2026-09-09] Conditional policy comparisons** — baseline/policy cases retain exposure provenance, exposure bounds, parameter envelopes, and conservative differences. This does not estimate policy-to-exposure effects.
 - **[DONE 2026-09-09] Reproducible bundle export** — engine, data, place inputs, correlations, assumptions, and content hashes. Standalone execution and tampering checks pass.
 - **[DONE 2026-09-09] BRAC exposure inventory** — 73 GAO Table 3 records reconcile to published totals. County/window alignment and the causal measured side remain pending.
@@ -180,11 +179,7 @@ truth; do not duplicate rows here.
   (18 conditional / 3 structural / 28 boundary; `admitted` reserved) that
   load refuses when missing, chains refuse when boundary, and vignette
   streams visibly block with role-named reasons. Landing v1.39; applicability
-  conditions themselves remain explicit assumptions. The audit document was
-  revised the same day to fold in the post-audit rows (Browning–Heinesen
-  cause-specific hazards, Marcus 2013 spouse mental health, Bingley–
-  Cappellari–Ovidi 2026 child education) and to mark release gate 2 done.
+  conditions themselves remain explicit assumptions.
 - **[DONE 2026-09-10] Numerical review repairs:** independent copula designs,
   connected custom chains, chain starting values, county predictive baselines,
-  and refusal of legacy additive predictive probabilities. Full findings and
-  acceptance criteria: `docs/REVIEW_2026-09-10.md`.
+  and refusal of legacy additive predictive probabilities.

@@ -311,16 +311,14 @@
 ## v1.39 — 2026-09-13 — machine-readable evidence_role on every parameter row
 
 - parameters.csv gains an evidence_role column classifying all 49 rows per
-  the four-status scheme in docs/STUDY_APPLICABILITY_AUDIT_2026-09-13.md:
+  the four-status evidence-role scheme:
   18 conditional (direct displacement/loss estimates with named transport
   conditions), 3 structural (IGE transmission x2, Chetty-Hendren same-place
   modifier), 28 boundary (separate input families or associational rows that
   must never start from generic worker displacement). `admitted` is reserved
   for future rows meeting the strict bar; no shipped row claims it yet. The
   four v1.38 rows (Browning & Heinesen cause-specific hazards, Marcus 2013
-  spouse mental health) postdate the audit document and are classified
-  conditional from their row metadata; fold them into the audit's pathway
-  table at its next revision.
+  spouse mental health) are classified conditional from their row metadata.
 - params.load refuses rows with blank or unknown evidence_role: an
   unclassified row cannot state how it may be used, so it is not support.
 - ledger.Step publishes evidence_role beside citation/population_scope;

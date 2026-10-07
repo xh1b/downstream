@@ -211,7 +211,8 @@ coefficient is currently applied from follow-up year 6 onward. The September
 10 source check found available early-year estimates and an offset error:
 source +6 corresponds to follow-up year 7 when displacement is year 1.
 `source_aligned` is therefore a historical option name for an incomplete
-profile, pending coherent re-extraction (see `docs/REVIEW_2026-09-10.md`).
+profile (see `docs/MORTALITY_SOURCE_RECONCILIATION_2026-09-10.md` for the
+current production profile).
 `immediate_sustained` backfills persistence as a sensitivity assumption.
 `legacy_additive` retains the
 historical linear formula. Pending baselines

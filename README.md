@@ -213,7 +213,7 @@ Website consumers must preserve outcome applicability, baseline derivation notes
 Engine 0.2.0 corrects mortality odds-to-risk conversion and survival timing. It
 scales optional place effects as a same-place displacement-loss contrast. It
 fixes signed uncertainty envelopes and normal/lognormal analytic moments. See
-`docs/MATH_REVIEW.md` for the findings and remaining assumptions. Correlated
+`docs/MODEL_CARD.md` for model limits and remaining assumptions. Correlated
 Monte Carlo results change at historical seeds after the copula repair. County
 results stay experimental until their population and window metadata enter
 through a validated integration bridge.
@@ -275,7 +275,7 @@ Key documents:
 - `docs/ATTRIBUTION.md` — how credit is given and kept exact
 - `docs/QUEUED_EXTRACTIONS.md` — modeled links that await their number
 - `docs/PRIOR_ATTEMPTS.md` — SimPaths, LifeSim, DYNASIM, the Future Elderly Model
-- `docs/MODEL_CARD.md`, `docs/MATH_REVIEW.md` — model limits and corrections
+- `docs/MODEL_CARD.md` — model scope, limits, and evaluation
 - Plans: `docs/LIFE_COURSE_RESEARCH_PLAN.md`, `docs/CAUSAL_GRAPH_PLAN.md`,
   `docs/WEBSITE_EXPERIENCE_PLAN.md`, `docs/LITERATURE_ACQUISITION_PLAN.md`
 

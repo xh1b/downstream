@@ -19,3 +19,7 @@ internal/
 
 # SIPP raw downloads: large redistributable Census files; schemas + manifest live in validation/sipp/
 data/
+
+# Keep standalone review and audit reports out of release documentation.
+/docs/*REVIEW*.md
+/docs/*AUDIT*.md
