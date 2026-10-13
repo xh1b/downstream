@@ -1,0 +1,674 @@
+{
+  "source": "CPS January 2024; validation/followthrough_sources.json",
+  "method": "Normalize weighted known-year displaced workers with lost-job tenure >=6 to 1000 hypothetical exposures; preserve single interview ages and sex.",
+  "transport_rationale": "Illustrative hypothetical onset-age composition only; interview age is not historical displacement age. Six-year tenure is a proxy for, not proof of, the source stable-employment history. Not an H-1B cohort.",
+  "projection_assumption": "constant_source_window_log_odds",
+  "follow_up_years": 20,
+  "strata": [
+    {
+      "sex": "Male",
+      "age_at_event": 22,
+      "workers": 0.3660639926795399,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 25,
+      "workers": 4.471050383592699,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 30,
+      "workers": 6.162245472703009,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 31,
+      "workers": 6.575112522666679,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 32,
+      "workers": 7.3992670404406224,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 33,
+      "workers": 6.900008581911727,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 34,
+      "workers": 20.55386250538535,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 35,
+      "workers": 4.281669041641535,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 36,
+      "workers": 2.9119368178326916,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 37,
+      "workers": 12.93837721952526,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 38,
+      "workers": 8.956148559343585,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 39,
+      "workers": 12.24101776553971,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 40,
+      "workers": 14.454119537257311,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 41,
+      "workers": 29.578926956707623,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 42,
+      "workers": 4.037864569166377,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 44,
+      "workers": 11.734251047278631,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 45,
+      "workers": 9.546630777766254,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 46,
+      "workers": 7.180949470451556,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 47,
+      "workers": 16.079476963717102,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 48,
+      "workers": 23.458766634373944,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 49,
+      "workers": 12.22136655887338,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 50,
+      "workers": 11.240340113026058,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 51,
+      "workers": 8.566564127991366,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 52,
+      "workers": 10.67162871150975,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 53,
+      "workers": 28.828854668842197,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 54,
+      "workers": 38.720308819187714,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 55,
+      "workers": 22.54650480340669,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 56,
+      "workers": 15.270225282571854,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 57,
+      "workers": 13.966770428897911,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 58,
+      "workers": 17.30569838512829,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 59,
+      "workers": 25.49675689092343,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 60,
+      "workers": 10.612235868666968,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 61,
+      "workers": 29.440413144970567,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 62,
+      "workers": 32.9006192934438,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 63,
+      "workers": 14.887185783926505,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 64,
+      "workers": 5.422852794125693,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 66,
+      "workers": 9.0021010031569,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 67,
+      "workers": 2.5813095374323343,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 68,
+      "workers": 0.3482144720258301,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 69,
+      "workers": 9.483236049864047,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 70,
+      "workers": 10.083267695717625,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 71,
+      "workers": 2.6526871959079994,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 72,
+      "workers": 2.3115819859395734,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 73,
+      "workers": 3.502474562220165,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 75,
+      "workers": 1.891152119560097,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 76,
+      "workers": 2.905215199013371,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Male",
+      "age_at_event": 79,
+      "workers": 0.7415262741601042,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 27,
+      "workers": 9.663297614789858,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 29,
+      "workers": 1.9854527933290127,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 30,
+      "workers": 10.712676938718374,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 31,
+      "workers": 4.189967564594202,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 32,
+      "workers": 6.788640251230428,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 33,
+      "workers": 12.472747279232141,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 34,
+      "workers": 20.879793272291256,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 35,
+      "workers": 7.926608759568019,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 36,
+      "workers": 4.346841085058093,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 37,
+      "workers": 7.064560470955088,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 38,
+      "workers": 9.043596276693139,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 39,
+      "workers": 13.457937757033617,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 40,
+      "workers": 5.663315115853927,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 41,
+      "workers": 13.636050097504164,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 42,
+      "workers": 13.22918400580164,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 43,
+      "workers": 2.602964179065699,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 44,
+      "workers": 2.8179414676358334,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 45,
+      "workers": 10.956791788874604,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 46,
+      "workers": 9.266807539662643,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 47,
+      "workers": 3.8489656523059375,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 48,
+      "workers": 7.268395664644966,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 49,
+      "workers": 3.882083567062365,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 50,
+      "workers": 1.8421519787758136,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 51,
+      "workers": 16.894491644593533,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 52,
+      "workers": 16.862021348134846,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 53,
+      "workers": 5.394073935810986,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 54,
+      "workers": 12.335581806852414,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 55,
+      "workers": 11.582274819982423,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 56,
+      "workers": 5.394674613205809,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 57,
+      "workers": 12.964398611348377,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 58,
+      "workers": 18.863474689030184,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 59,
+      "workers": 30.470956566174827,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 60,
+      "workers": 12.510304571032535,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 61,
+      "workers": 13.057451751002802,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 62,
+      "workers": 18.322543440040164,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 63,
+      "workers": 11.082148300921453,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 64,
+      "workers": 7.654569472458253,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 65,
+      "workers": 7.242191286381724,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 66,
+      "workers": 5.244775347777664,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 67,
+      "workers": 8.0862302614148,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 69,
+      "workers": 6.9294262657591705,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 70,
+      "workers": 8.67917417710007,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 71,
+      "workers": 1.9220589654736155,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 72,
+      "workers": 11.993925629766881,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 73,
+      "workers": 3.6098757634958196,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 74,
+      "workers": 6.261343880615431,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 78,
+      "workers": 6.267754567878718,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    },
+    {
+      "sex": "Female",
+      "age_at_event": 79,
+      "workers": 3.3986695325952607,
+      "tenure_years": 6,
+      "exposure_type": "mass layoff"
+    }
+  ]
+}

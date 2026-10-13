@@ -78,6 +78,9 @@ def _county_mortality_arg(parser, params_dir: str, place_key: str | None):
 def _run_main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="downstream")
     sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("mortality-cohort", help="exact age-stratum mortality with an explicit projection assumption")
+    p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
+    p.add_argument("--input", required=True)
 
     p = sub.add_parser("compare", help="compare saved outputs or parameter snapshots from two versions")
     p.add_argument("--before", required=True, help="JSON file or directory of JSON results")
@@ -306,6 +309,10 @@ def _run_main(argv: list[str] | None = None) -> int:
             parser.error(str(exc))
         return 0
     parts = load_all(args.params)
+    if args.cmd == "mortality-cohort":
+        from .mortality_strata import project_mortality_cohort
+        _dump(project_mortality_cohort(json.loads(Path(args.input).read_text()), Path(args.params)))
+        return 0
     params = parts["params"]
 
     sampling_places = None
