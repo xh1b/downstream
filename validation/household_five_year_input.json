@@ -1,0 +1,30 @@
+{
+  "transition_assumption": "reuse_2021_2022_conditional_transitions",
+  "follow_up_years": 5,
+  "allow_sparse_cells": true,
+  "members": [
+    {
+      "id": "worker",
+      "sex": "male",
+      "age": 40,
+      "employment_state": "E",
+      "annual_earnings_if_employed_usd_2024": 65000
+    },
+    {
+      "id": "partner",
+      "sex": "female",
+      "age": 38,
+      "employment_state": "E",
+      "annual_earnings_if_employed_usd_2024": 45000
+    }
+  ],
+  "children": [
+    11,
+    13
+  ],
+  "event": {
+    "kind": "involuntary_displacement",
+    "member_id": "worker",
+    "unemployed_years": 1
+  }
+}

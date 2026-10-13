@@ -1,0 +1,352 @@
+{
+  "schema": "downstream-household-comparison/1",
+  "eligible_for_public_headline": false,
+  "input": {
+    "transition_assumption": "reuse_2021_2022_conditional_transitions",
+    "follow_up_years": 5,
+    "allow_sparse_cells": true,
+    "members": [
+      {
+        "id": "worker",
+        "sex": "male",
+        "age": 40,
+        "employment_state": "E",
+        "annual_earnings_if_employed_usd_2024": 65000
+      },
+      {
+        "id": "partner",
+        "sex": "female",
+        "age": 38,
+        "employment_state": "E",
+        "annual_earnings_if_employed_usd_2024": 45000
+      }
+    ],
+    "children": [
+      11,
+      13
+    ],
+    "event": {
+      "kind": "involuntary_displacement",
+      "member_id": "worker",
+      "unemployed_years": 1
+    }
+  },
+  "annual": [
+    {
+      "year_after_event": 0,
+      "children_ages": [
+        11,
+        13
+      ],
+      "reference": {
+        "adults": [
+          {
+            "id": "worker",
+            "age": 40,
+            "state_probabilities": {
+              "E": 1.0,
+              "U": 0.0,
+              "N": 0.0
+            },
+            "expected_earnings_usd_2024": 65000.0
+          },
+          {
+            "id": "partner",
+            "age": 38,
+            "state_probabilities": {
+              "E": 1.0,
+              "U": 0.0,
+              "N": 0.0
+            },
+            "expected_earnings_usd_2024": 45000.0
+          }
+        ],
+        "expected_earnings_usd_2024": 110000.0
+      },
+      "displacement": {
+        "adults": [
+          {
+            "id": "worker",
+            "age": 40,
+            "state_probabilities": {
+              "E": 0.0,
+              "U": 1.0,
+              "N": 0.0
+            },
+            "expected_earnings_usd_2024": 0.0
+          },
+          {
+            "id": "partner",
+            "age": 38,
+            "state_probabilities": {
+              "E": 1.0,
+              "U": 0.0,
+              "N": 0.0
+            },
+            "expected_earnings_usd_2024": 45000.0
+          }
+        ],
+        "expected_earnings_usd_2024": 45000.0
+      },
+      "displacement_minus_reference": -65000.0
+    },
+    {
+      "year_after_event": 1,
+      "children_ages": [
+        12,
+        14
+      ],
+      "reference": {
+        "adults": [
+          {
+            "id": "worker",
+            "age": 41,
+            "state_probabilities": {
+              "E": 0.975886024113976,
+              "U": 0.009164990835009166,
+              "N": 0.01494898505101495
+            },
+            "expected_earnings_usd_2024": 63432.59156740844
+          },
+          {
+            "id": "partner",
+            "age": 39,
+            "state_probabilities": {
+              "E": 0.971933,
+              "U": 0.002972,
+              "N": 0.025095
+            },
+            "expected_earnings_usd_2024": 43736.985
+          }
+        ],
+        "expected_earnings_usd_2024": 107169.57656740844
+      },
+      "displacement": {
+        "adults": [
+          {
+            "id": "worker",
+            "age": 41,
+            "state_probabilities": {
+              "E": 0.655748,
+              "U": 0.21918,
+              "N": 0.125072
+            },
+            "expected_earnings_usd_2024": 42623.62
+          },
+          {
+            "id": "partner",
+            "age": 39,
+            "state_probabilities": {
+              "E": 0.971933,
+              "U": 0.002972,
+              "N": 0.025095
+            },
+            "expected_earnings_usd_2024": 43736.985
+          }
+        ],
+        "expected_earnings_usd_2024": 86360.60500000001
+      },
+      "displacement_minus_reference": -20808.97156740843
+    },
+    {
+      "year_after_event": 2,
+      "children_ages": [
+        13,
+        15
+      ],
+      "reference": {
+        "adults": [
+          {
+            "id": "worker",
+            "age": 42,
+            "state_probabilities": {
+              "E": 0.9617593576091582,
+              "U": 0.011568592597411994,
+              "N": 0.026672049793430037
+            },
+            "expected_earnings_usd_2024": 62514.358244595285
+          },
+          {
+            "id": "partner",
+            "age": 40,
+            "state_probabilities": {
+              "E": 0.9495826863860001,
+              "U": 0.004185593615,
+              "N": 0.046231719999
+            },
+            "expected_earnings_usd_2024": 42731.22088737
+          }
+        ],
+        "expected_earnings_usd_2024": 105245.57913196529
+      },
+      "displacement": {
+        "adults": [
+          {
+            "id": "worker",
+            "age": 42,
+            "state_probabilities": {
+              "E": 0.8120742611326914,
+              "U": 0.059202137850075595,
+              "N": 0.12872360101723296
+            },
+            "expected_earnings_usd_2024": 52784.82697362494
+          },
+          {
+            "id": "partner",
+            "age": 40,
+            "state_probabilities": {
+              "E": 0.9495826863860001,
+              "U": 0.004185593615,
+              "N": 0.046231719999
+            },
+            "expected_earnings_usd_2024": 42731.22088737
+          }
+        ],
+        "expected_earnings_usd_2024": 95516.04786099494
+      },
+      "displacement_minus_reference": -9729.531270970358
+    },
+    {
+      "year_after_event": 3,
+      "children_ages": [
+        14,
+        16
+      ],
+      "reference": {
+        "adults": [
+          {
+            "id": "worker",
+            "age": 43,
+            "state_probabilities": {
+              "E": 0.9522125799735551,
+              "U": 0.012448874914713349,
+              "N": 0.03533854511173192
+            },
+            "expected_earnings_usd_2024": 61893.817698281084
+          },
+          {
+            "id": "partner",
+            "age": 41,
+            "state_probabilities": {
+              "E": 0.9312583578914027,
+              "U": 0.004959846926482008,
+              "N": 0.06378179518211549
+            },
+            "expected_earnings_usd_2024": 41906.62610511312
+          }
+        ],
+        "expected_earnings_usd_2024": 103800.44380339421
+      },
+      "displacement": {
+        "adults": [
+          {
+            "id": "worker",
+            "age": 43,
+            "state_probabilities": {
+              "E": 0.8605552310216691,
+              "U": 0.02572134647851244,
+              "N": 0.1137234224998186
+            },
+            "expected_earnings_usd_2024": 55936.09001640849
+          },
+          {
+            "id": "partner",
+            "age": 41,
+            "state_probabilities": {
+              "E": 0.9312583578914027,
+              "U": 0.004959846926482008,
+              "N": 0.06378179518211549
+            },
+            "expected_earnings_usd_2024": 41906.62610511312
+          }
+        ],
+        "expected_earnings_usd_2024": 97842.7161215216
+      },
+      "displacement_minus_reference": -5957.7276818726095
+    },
+    {
+      "year_after_event": 4,
+      "children_ages": [
+        15,
+        17
+      ],
+      "reference": {
+        "adults": [
+          {
+            "id": "worker",
+            "age": 44,
+            "state_probabilities": {
+              "E": 0.9454419895481292,
+              "U": 0.012911335338122732,
+              "N": 0.04164667511374851
+            },
+            "expected_earnings_usd_2024": 61453.729320628394
+          },
+          {
+            "id": "partner",
+            "age": 42,
+            "state_probabilities": {
+              "E": 0.9161340538749261,
+              "U": 0.005557848457242783,
+              "N": 0.07830809766783134
+            },
+            "expected_earnings_usd_2024": 41226.032424371675
+          }
+        ],
+        "expected_earnings_usd_2024": 102679.76174500007
+      },
+      "displacement": {
+        "adults": [
+          {
+            "id": "worker",
+            "age": 44,
+            "state_probabilities": {
+              "E": 0.882504639438406,
+              "U": 0.018209421916373175,
+              "N": 0.09928593864522094
+            },
+            "expected_earnings_usd_2024": 57362.80156349639
+          },
+          {
+            "id": "partner",
+            "age": 42,
+            "state_probabilities": {
+              "E": 0.9161340538749261,
+              "U": 0.005557848457242783,
+              "N": 0.07830809766783134
+            },
+            "expected_earnings_usd_2024": 41226.032424371675
+          }
+        ],
+        "expected_earnings_usd_2024": 98588.83398786807
+      },
+      "displacement_minus_reference": -4090.927757131998
+    }
+  ],
+  "cumulative_earnings_difference_usd_2024": -105587.1582773834,
+  "source_sha256": "113561409acc078bf660154a73efadad092b35836cb11cd0c77594aa5885c0e3",
+  "used_transition_cells_n": {
+    "male|35-44|E": 470,
+    "female|35-44|E": 396,
+    "male|35-44|U": 15,
+    "male|35-44|N": 62,
+    "female|35-44|U": 16,
+    "female|35-44|N": 143
+  },
+  "sparse_cells": [
+    "male|35-44|U",
+    "female|35-44|U"
+  ],
+  "uncertainty": {
+    "intervals": null,
+    "reason": "Sparse conditional cells and survey design variance need replicate-weight estimation; no full household prediction interval is claimed."
+  },
+  "limitations": [
+    "Forced unemployment duration and any earnings scars are supplied scenario assumptions, not causal estimates from SIPP.",
+    "Baseline transitions are observed December-to-December 2021-2022 conditional shares, normalized only for stored rounding; reuse over five years assumes stationarity and a Markov process.",
+    "Recovery among observationally unemployed people may not transport to displaced workers.",
+    "Household resources here are gross earnings only; taxes, transfers, savings, marriage, fertility and protective interventions remain unmodeled.",
+    "Partner marginal expectations can be summed without identifying a joint distribution; cross-member dependence and responses are not estimated.",
+    "Children age but no educational or earnings effect is inferred from this household baseline."
+  ]
+}
