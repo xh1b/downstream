@@ -84,6 +84,9 @@ def _run_main(argv: list[str] | None = None) -> int:
     p = sub.add_parser("household", help="annual household earnings under a supplied displacement duration")
     p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
     p.add_argument("--input", required=True)
+    p = sub.add_parser("uncertainty", help="conditional parameter, exposure, baseline and process uncertainty budget")
+    p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
+    p.add_argument("--input", required=True)
 
     p = sub.add_parser("compare", help="compare saved outputs or parameter snapshots from two versions")
     p.add_argument("--before", required=True, help="JSON file or directory of JSON results")
@@ -314,6 +317,11 @@ def _run_main(argv: list[str] | None = None) -> int:
             parser.error(str(exc))
         return 0
     parts = load_all(args.params)
+    if args.cmd == "uncertainty":
+        from .uncertainty_budget import propagate_uncertainty
+        _dump(propagate_uncertainty(parts['params'],parts['baselines'],json.loads(Path(args.input).read_text()),
+                                   nodes=parts['nodes'],params_dir=Path(args.params)))
+        return 0
     if args.cmd == "household":
         from .household import household_comparison
         _dump(household_comparison(json.loads(Path(args.input).read_text()), Path(args.params)))

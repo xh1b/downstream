@@ -1,0 +1,25 @@
+{
+  "scenario": {
+    "displaced_workers": 1000
+  },
+  "draws": 2000,
+  "seed": 1901,
+  "exposure_model": {
+    "distribution": "integer_uniform_declared",
+    "low": 800,
+    "high": 1200,
+    "source": "illustrative sensitivity, not observed exposure uncertainty",
+    "method": "declared symmetric count support"
+  },
+  "baseline_counts": {
+    "events": 514314,
+    "person_years": 104024440,
+    "source": "validation/cdc_wonder_d76_national_year_age_sex_1999_2020.xml",
+    "method": "pooled CDC WONDER male 45-54 national counts 2015-2019",
+    "sex": "Male",
+    "age": "45-54 years",
+    "years": "2015-2019",
+    "cause": "All causes",
+    "geography": "US"
+  }
+}

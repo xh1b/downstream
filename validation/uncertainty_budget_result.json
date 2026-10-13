@@ -1,0 +1,555 @@
+{
+  "schema": "downstream-uncertainty-budget/1",
+  "eligible_for_public_headline": false,
+  "input": {
+    "scenario": {
+      "displaced_workers": 1000
+    },
+    "draws": 2000,
+    "seed": 1901,
+    "exposure_model": {
+      "distribution": "integer_uniform_declared",
+      "low": 800,
+      "high": 1200,
+      "source": "illustrative sensitivity, not observed exposure uncertainty",
+      "method": "declared symmetric count support"
+    },
+    "baseline_counts": {
+      "events": 514314,
+      "person_years": 104024440,
+      "source": "validation/cdc_wonder_d76_national_year_age_sex_1999_2020.xml",
+      "method": "pooled CDC WONDER male 45-54 national counts 2015-2019",
+      "sex": "Male",
+      "age": "45-54 years",
+      "years": "2015-2019",
+      "cause": "All causes",
+      "geography": "US"
+    }
+  },
+  "sampling": {
+    "draws": 2000,
+    "seed": 1901,
+    "sampler": "lhs+iman-conover",
+    "correlations_applied": 2,
+    "parameter_set_version": "v1.50-sampled"
+  },
+  "sampled_inputs": {
+    "sampled_workers": {
+      "p05": 819.0,
+      "p50": 1005.0,
+      "p95": 1183.0,
+      "mean": 1002.9005
+    },
+    "sampled_baseline_rate_per_100k": {
+      "p05": 493.2397,
+      "p50": 494.406,
+      "p95": 495.574,
+      "mean": 494.3999
+    }
+  },
+  "sampled_input_units": {
+    "sampled_workers": "workers",
+    "sampled_baseline_rate_per_100k": "events per 100000 person-years"
+  },
+  "expected_effect_intervals_90": {
+    "excess_deaths": {
+      "p05": 20.6626,
+      "p50": 29.0236,
+      "p95": 39.1331,
+      "mean": 29.3057
+    },
+    "child_lifetime_earnings_lost_usd": {
+      "p05": 152719685.4892,
+      "p50": 467520312.5781,
+      "p95": 815735068.34,
+      "mean": 468993848.4385
+    },
+    "mortality_no_sustained_excess": {
+      "p05": 14.7243,
+      "p50": 20.8316,
+      "p95": 27.9584,
+      "mean": 21.007
+    },
+    "mortality_persistence_difference": {
+      "p05": 2.8985,
+      "p50": 8.1382,
+      "p95": 14.0336,
+      "mean": 8.2988
+    }
+  },
+  "process_intervals_90": {
+    "realized_exposed_deaths": {
+      "p05": 94.0,
+      "p50": 123.0,
+      "p95": 154.0,
+      "mean": 123.4035
+    },
+    "realized_reference_deaths": {
+      "p05": 73.0,
+      "p50": 94.0,
+      "p95": 119.0,
+      "mean": 94.653
+    },
+    "realized_independent_cohort_difference": {
+      "p05": 5.0,
+      "p50": 28.0,
+      "p95": 55.0,
+      "mean": 28.7505
+    }
+  },
+  "fixed_input_reference": {
+    "label": "scenario",
+    "parameter_set_version": "v1.50",
+    "engine_version": "0.4.1",
+    "uncertainty": {
+      "band_kind": "parameter-support envelope, not a confidence interval",
+      "fixed_inputs": [
+        "exposure",
+        "baseline values",
+        "county measurements",
+        "pooling weights"
+      ],
+      "excluded": [
+        "exposure estimation error",
+        "baseline estimation error",
+        "unmodeled pathways"
+      ]
+    },
+    "assumptions": {
+      "mortality_method": "odds_survival",
+      "mortality_timing": "Source-offset profile: displacement, +1, +2\u20133, +4\u20135, and +6+; displacement is follow-up year 1, so offset +6 begins in follow-up year 7. Annual baseline rates use a constant-hazard rate-to-risk conversion; odds ratios modify annual risk, and survival compounds across phases. The selected baseline age rate is held fixed over the follow-up horizon.",
+      "mortality_contract": {
+        "method": "odds_survival",
+        "timing": "source_profile",
+        "baseline_conversion": "1-exp(-annual_rate)",
+        "phases": [
+          {
+            "phase": "displacement",
+            "start_offset": 0,
+            "duration_years": 1.0,
+            "first_follow_up_year": 1
+          },
+          {
+            "phase": "offset_1",
+            "start_offset": 1,
+            "duration_years": 1.0,
+            "first_follow_up_year": 2
+          },
+          {
+            "phase": "offsets_2_3",
+            "start_offset": 2,
+            "duration_years": 2.0,
+            "first_follow_up_year": 3
+          },
+          {
+            "phase": "offsets_4_5",
+            "start_offset": 4,
+            "duration_years": 2.0,
+            "first_follow_up_year": 5
+          },
+          {
+            "phase": "offset_6_plus",
+            "start_offset": 6,
+            "duration_years": null,
+            "first_follow_up_year": 7
+          }
+        ],
+        "description": "Source-offset profile: displacement, +1, +2\u20133, +4\u20135, and +6+; displacement is follow-up year 1, so offset +6 begins in follow-up year 7. Annual baseline rates use a constant-hazard rate-to-risk conversion; odds ratios modify annual risk, and survival compounds across phases. The selected baseline age rate is held fixed over the follow-up horizon."
+      },
+      "place_application": "initial_only",
+      "place_counterfactual": "national child-dollar result is the reference"
+    },
+    "exposure": {
+      "displaced_workers": 1000,
+      "n_children": 2,
+      "tradable_share": 1.0,
+      "net_tradable_jobs_lost": null,
+      "local_job_mix": null,
+      "exposure_years": 20.0
+    },
+    "modeled": {
+      "excess_deaths": {
+        "point": 28.73,
+        "low": 11.23,
+        "high": 50.08,
+        "unit": "deaths",
+        "baseline": {
+          "value": 0.004944,
+          "annual_probability": 0.004931798548274191,
+          "unit": "deaths_per_person_year",
+          "citation": "cdc_wonder D76 (Underlying Cause of Death, 1999-2020), Male 45-54 years, pooled 2015-2019: 514314 deaths / 104024440 person-years = 494.4 per 100k; pulled 2026-09-06 via scraper.cli wonder-mortality into warehouse wonder_mortality",
+          "population": "US prime-age men (45-54)",
+          "notes": "Pre-pandemic window: excludes 2020 (COVID-distorted; 2020 crude rate 601.5/100k). Single-year 2019 = 490.0/100k. Ages 45-54 match the Sullivan & von Wachter prime-age counterfactual population",
+          "sex": "Male",
+          "age": "45-54 years",
+          "years": "2015-2019",
+          "cause": "All causes",
+          "geography": "US"
+        },
+        "steps": [
+          {
+            "link": "earnings_shock->mortality_peak",
+            "phase": "displacement",
+            "point": 2.6696,
+            "low": 2.1151,
+            "high": 3.3696,
+            "citation": "sullivan2009",
+            "tier": "EXACT",
+            "population_scope": "US high-seniority displaced men",
+            "evidence_role": "conditional"
+          },
+          {
+            "link": "earnings_shock->mortality_offset_1",
+            "phase": "offset_1",
+            "point": 1.9838,
+            "low": 1.3672,
+            "high": 2.8777,
+            "citation": "sullivan2009",
+            "tier": "EXACT",
+            "population_scope": "US high-seniority displaced men",
+            "evidence_role": "conditional"
+          },
+          {
+            "link": "earnings_shock->mortality_offsets_2_3",
+            "phase": "offsets_2_3",
+            "point": 1.7316,
+            "low": 1.3244,
+            "high": 2.2641,
+            "citation": "sullivan2009",
+            "tier": "EXACT",
+            "population_scope": "US high-seniority displaced men",
+            "evidence_role": "conditional"
+          },
+          {
+            "link": "earnings_shock->mortality_offsets_4_5",
+            "phase": "offsets_4_5",
+            "point": 1.2712,
+            "low": 0.97,
+            "high": 1.6661,
+            "citation": "sullivan2009",
+            "tier": "EXACT",
+            "population_scope": "US high-seniority displaced men born 1930-1959",
+            "evidence_role": "conditional"
+          },
+          {
+            "link": "earnings_shock->mortality_sustained",
+            "phase": "offset_6_plus",
+            "point": 1.135,
+            "low": 1.033,
+            "high": 1.247,
+            "citation": "sullivan2009",
+            "tier": "EXACT",
+            "population_scope": "US high-seniority displaced men",
+            "evidence_role": "conditional"
+          }
+        ],
+        "components": {
+          "follow_up_years": 20.0,
+          "method": "odds_survival",
+          "timing": "source_profile"
+        },
+        "applicability": {
+          "status": "illustrative_reference_calculation",
+          "eligible_for_public_headline": false,
+          "target_population": null,
+          "decision": null,
+          "transport_assumptions": [
+            "high-tenure male mass-layoff cohort, ages 45\u201354",
+            "Pennsylvania early-1980s response transported to target place and calendar time",
+            "fixed baseline age rate over follow-up; cohort aging is not modeled"
+          ],
+          "reason": "Target cohort applicability and transport have not been established for this outcome; display as an illustrative reference calculation."
+        },
+        "interpretation": "Conditional modeled expected difference; parameter bands are support envelopes, not a confidence interval.",
+        "persistence_sensitivity": {
+          "available": true,
+          "status": "declared_structural_sensitivity",
+          "eligible_for_public_headline": false,
+          "unit": "deaths",
+          "variants": {
+            "source_profile": {
+              "point": 28.73,
+              "low": 11.23,
+              "high": 50.08,
+              "evidence_status": "source_profile_with_transport_assumptions",
+              "citations": [
+                "sullivan2009"
+              ],
+              "parameter_interval_90": {
+                "p05": 22.0359,
+                "p50": 29.1072,
+                "p95": 36.6732,
+                "mean": 29.23
+              }
+            },
+            "no_sustained_excess": {
+              "point": 20.52,
+              "low": 9.19,
+              "high": 35.37,
+              "evidence_status": "structural_assumption",
+              "motivating_citations": [
+                "eliasonstorrie2009"
+              ],
+              "assumption": "Retain source odds through offset +5; set offset +6 onward OR=1.",
+              "first_changed_follow_up_year": 7,
+              "fixed_late_odds_ratio": 1.0,
+              "parameter_interval_90": {
+                "p05": 15.7242,
+                "p50": 20.8483,
+                "p95": 26.478,
+                "mean": 20.9564
+              }
+            }
+          },
+          "source_minus_no_sustained_point": 8.21,
+          "structural_point_range": {
+            "low": 20.52,
+            "high": 28.73,
+            "interpretation": "Range of point estimates across these two assumptions; not a confidence interval or a bound on the true effect."
+          },
+          "shared_inputs": [
+            "exposure",
+            "resolved mortality baseline",
+            "follow-up horizon",
+            "source odds through offset +5"
+          ],
+          "limitations": [
+            "No probabilities or model-average weights are assigned to the structures.",
+            "A nonsignificant long-run estimate does not establish an exactly zero effect.",
+            "The Swedish study differs in population, design, effect scale and follow-up; this hybrid does not reproduce its estimates or substitute its hazard ratios for odds ratios.",
+            "The cutoff follows the source profile's offset +6 phase, not the Swedish study's windows; persistence beyond its 12-year follow-up is an assumption in either direction.",
+            "Baseline aging and target-population transport remain unresolved in both structures."
+          ],
+          "source_minus_no_sustained_parameter_interval_90": {
+            "p05": 2.9613,
+            "p50": 8.2147,
+            "p95": 13.8194,
+            "mean": 8.2735
+          },
+          "sampling": {
+            "draws": 2000,
+            "seed": 1901,
+            "comparison": "Both structures use the same parameter draw; the difference is calculated within each draw.",
+            "scope": "Parameter uncertainty conditional on each structure; fixed inputs and exclusions are the same as the parent scenario."
+          }
+        },
+        "parameter_interval_90": {
+          "p05": 22.0359,
+          "p50": 29.1072,
+          "p95": 36.6732,
+          "mean": 29.23
+        }
+      },
+      "child_lifetime_earnings_lost_usd": {
+        "point": 478894046.4,
+        "low": 124388064.0,
+        "high": 808522416.0,
+        "steps": [
+          {
+            "link": "displacement->child_earnings",
+            "kind": "direct",
+            "citation": "oreopoulos2008",
+            "tier": "EXACT",
+            "param_point": 0.9076,
+            "param_low": 0.844,
+            "param_high": 0.976,
+            "value_point": 0.9076,
+            "value_low": 0.844,
+            "value_high": 0.976,
+            "causal_role": "direct_displacement_estimate",
+            "population_scope": "Canada 39k father-son pairs firm closures",
+            "evidence_role": "conditional"
+          }
+        ],
+        "unit": "usd_2024",
+        "baseline": {
+          "value": 2591418.0,
+          "unit": "usd_2024",
+          "citation": "SSA Annual Statistical Supplement 2025, Table 4.B6 (CWHS/Master Earnings File, 1 percent sample): male median earnings by age, 2023 (preliminary) \u2014 synthetic career ages 20-64 = 5x(24218+42561+52485+60423+64962+67506+68160+64854)+2x60666+3x56666 = 2517175 usd_2023; CPI-U annual averages 304.702->313.689 (BLS series CUUR0000SA0, pulled 2026-09-06) -> 2591418 usd_2024; warehouse ssa_median_earnings (pulled via ssa-earnings-download)",
+          "population": "US male median lifetime earnings",
+          "notes": "Derivation declared: the cross-sectional age profile summed over a 45-year working life (ages 20-64) is a synthetic cohort \u2014 the sum of age-band medians approximates rather than equals the median of individual lifetime sums; median-of-workers semantics excludes non-working years; 2023 medians are preliminary (SSA replaces them with final data in a later edition)"
+        },
+        "applicability": {
+          "status": "illustrative_reference_calculation",
+          "eligible_for_public_headline": false,
+          "target_population": null,
+          "decision": null,
+          "transport_assumptions": [
+            "Canadian father-son firm-closure estimate transported to the target families",
+            "US male synthetic career earnings convert a relative adult earnings effect to dollars",
+            "lifetime dollars are undiscounted; this is not an annual loss"
+          ],
+          "reason": "Target cohort applicability and transport have not been established for this outcome; display as an illustrative reference calculation."
+        },
+        "interpretation": "Conditional modeled expected difference; parameter bands are support envelopes, not a confidence interval.",
+        "parameter_interval_90": {
+          "p05": 158288021.0661,
+          "p50": 466315691.415,
+          "p95": 774074263.8788,
+          "mean": 466454175.2209
+        }
+      }
+    },
+    "blocked": [
+      {
+        "outcome": "local_service_jobs_lost",
+        "reason": "requires a documented net local loss of tradable jobs; worker displacement alone is not this exposure"
+      }
+    ],
+    "place": null,
+    "multipliers": {
+      "worker_earnings": {
+        "point": 0.8,
+        "low": 0.75,
+        "high": 0.85
+      },
+      "mortality_sustained": {
+        "point": 1.135,
+        "low": 1.033,
+        "high": 1.247
+      },
+      "mortality_peak": {
+        "point": 2.6696,
+        "low": 2.1151,
+        "high": 3.3696
+      },
+      "child_earnings": {
+        "point": 0.9076,
+        "low": 0.844,
+        "high": 0.976
+      },
+      "grandchild_earnings": {
+        "point": 0.9492,
+        "low": 0.9064,
+        "high": 0.9904
+      },
+      "greatgrandchild_earnings": {
+        "point": 0.972,
+        "low": 0.9438,
+        "high": 0.9962
+      }
+    },
+    "projection_eligibility": {
+      "child": {
+        "status": "direct_estimate",
+        "eligible_for_validated_direct_contrast": true,
+        "reason": "direct displacement-to-child adult earnings estimate; transport still requires an applicability decision"
+      },
+      "grandchild": {
+        "status": "structural_projection",
+        "eligible_for_validated_direct_contrast": false,
+        "reason": "combines a direct child estimate with an intergenerational persistence assumption; not an identified displacement intervention effect"
+      },
+      "greatgrandchild": {
+        "status": "structural_projection",
+        "eligible_for_validated_direct_contrast": false,
+        "reason": "repeats an intergenerational persistence assumption beyond the identification core"
+      }
+    },
+    "target_population": null,
+    "child_applicability": {
+      "source": "oreopoulos2008",
+      "source_age_at_displacement": [
+        10,
+        14
+      ],
+      "source_child_sex": "Male",
+      "source_parent_sex": "Male",
+      "source_geography": "Canada",
+      "source_event": "father firm closure 1980-1982",
+      "target_child_profiles": null,
+      "incompatible_children": [],
+      "unknown_children": [],
+      "source_income_quartile": null,
+      "income_rank_definition": null,
+      "eligible_for_reviewed_transport": false,
+      "status": "unknown",
+      "limitations": [
+        "No response curve across child ages is identified by this narrow cohort.",
+        "Income groups refer to father's average pre-displacement income in 1978-1979; target rank mapping requires a transport argument.",
+        "A subgroup's nonsignificant coefficient is retained with its uncertainty, not replaced with zero."
+      ]
+    },
+    "input_content_sha256": "640c5c2cce174b2d3201b439c9593dbbc39a65d7f81a59a5b0b9f8edf465878d",
+    "parameter_uncertainty": {
+      "interval": "central 90% Monte Carlo interval (p05\u2013p95)",
+      "scope": "parameter uncertainty only",
+      "fixed": [
+        "documented exposure",
+        "baseline values",
+        "county measurements",
+        "pooling weights"
+      ],
+      "excluded": [
+        "exposure estimation error",
+        "baseline estimation error",
+        "structural uncertainty",
+        "unmodeled pathways"
+      ],
+      "draws": 2000,
+      "seed": 1901,
+      "sampler": "lhs+iman-conover",
+      "correlations_applied": 2,
+      "parameter_set_version": "v1.50-sampled",
+      "outcomes": {
+        "excess_deaths": {
+          "p05": 22.0359,
+          "p50": 29.1072,
+          "p95": 36.6732,
+          "mean": 29.23
+        },
+        "child_lifetime_earnings_lost_usd": {
+          "p05": 158288021.0661,
+          "p50": 466315691.415,
+          "p95": 774074263.8788,
+          "mean": 466454175.2209
+        }
+      }
+    },
+    "predictive_uncertainty": {
+      "available": true,
+      "interval": "central 90% posterior-predictive simulation interval (parameter draws + binomial cohort variation)",
+      "scope": "realized all-cause deaths in a new integer-sized cohort, conditional on the model's fixed baseline and timing assumptions",
+      "counterfactual_design": "independent exposed and counterfactual reference cohorts; their difference is not an observable paired individual causal contrast",
+      "cohort_workers": 1000,
+      "baseline_annual_probability": 0.004931798548274191,
+      "baseline_annual_rate": 0.004944,
+      "counterfactual_death_probability": 0.09414859632988004,
+      "exposed_deaths": {
+        "p05": 105,
+        "p50": 123,
+        "p95": 142,
+        "mean": 123.352
+      },
+      "counterfactual_deaths": {
+        "p05": 79,
+        "p50": 94,
+        "p95": 109,
+        "mean": 94.0625
+      },
+      "reference_cohort_difference": {
+        "p05": 6,
+        "p50": 29,
+        "p95": 53,
+        "mean": 29.2895
+      }
+    }
+  },
+  "included": [
+    "published parameter distributions",
+    "documented baseline count likelihood",
+    "declared integer exposure distribution",
+    "binomial variation for independent reference and exposed cohorts"
+  ],
+  "baseline_model": "Poisson counts conditional on person-time; Jeffreys rate prior gives Gamma(events+0.5, rate=person_years). Prior choice is declared.",
+  "exposure_model": "User-declared discrete uniform over the supplied count bounds, not an inferred confidence distribution.",
+  "dependence": "Parameter correlations retain their declared sampler; baseline, exposure and study parameters are assumed independent. Mortality structures share the same draw.",
+  "excluded": [
+    "target-population transport error",
+    "structural model probabilities",
+    "unmodeled pathways",
+    "baseline age/time trends",
+    "uncertainty in child structure and lifetime earnings profile"
+  ],
+  "interpretation": "Central 90% simulation intervals under the stated inputs and independence assumptions; process contrasts compare independent cohorts, not paired individual causal effects."
+}
