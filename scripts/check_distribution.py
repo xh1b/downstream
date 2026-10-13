@@ -25,8 +25,14 @@ def main() -> None:
         cli = binaries / ("downstream.exe" if os.name == "nt" else "downstream")
         subprocess.run([str(python), "-m", "pip", "install", "--no-deps", str(wheel)],
                        cwd=root, env=env, check=True)
+        validation = Path(subprocess.check_output(
+            [str(python), "-c", "from downstream.params import default_dir; print(default_dir().parent / 'validation')"],
+            cwd=root, env=env, text=True).strip())
         for command in (["audit"], ["export"], ["family"], ["validate"],
                         ["scenario", "--workers", "1000", "--draws", "20", "--seed", "1901"],
+                        ["mortality-cohort", "--input", str(validation / "cps2024_hypothetical_mortality_input.json")],
+                        ["household", "--input", str(validation / "household_five_year_input.json")],
+                        ["uncertainty", "--input", str(validation / "uncertainty_budget_input.json")],
                         ["bundle", "--out", str(root / "bundle")]):
             result = subprocess.run([str(cli), *command], cwd=root, env=env,
                                     capture_output=True, text=True)

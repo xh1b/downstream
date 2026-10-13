@@ -82,7 +82,7 @@ def test_mortality_profile_steps_carry_population_and_tier():
     assert {s["phase"] for s in steps} == {
         "displacement", "offset_1", "offsets_2_3", "offsets_4_5", "offset_6_plus"}
     for step in steps:
-        assert step["population_scope"] == "US high-seniority displaced men"
+        assert step["population_scope"] == parts["params"].by_link(step["link"]).population_scope
         assert step["tier"] == "EXACT"
 
 
