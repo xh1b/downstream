@@ -61,9 +61,11 @@ it remains citation-only). The Census Bureau's
 its place ([2026-09-13 SIPP assessment](SIPP_BASELINE_DATA_ASSESSMENT_2026-09-13.md)):
 public-domain, redistributable, LLM-compatible, with declared
 limitations — short panels, coarse public geography, higher attrition.
-No baseline transitions have been computed yet; the download, variable
-verification, and one held-out transition reproduction are the next R2
-steps.
+The first weighted December-to-December employment/earnings transitions
+were built and held-out checked on September 14, 2026
+([R2 artifact](BASELINE_TRANSITION_R2_2026-09-14.md)). They are validation
+artifacts, not an integrated life-course simulator. Pooling sparse cells,
+replicate-weight uncertainty and monthly transitions remain next R2 steps.
 
 ### 2. Separate three evidential roles
 

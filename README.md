@@ -1,9 +1,9 @@
 # downstream
 
-`downstream` calculates displacement impact through a causal consequence graph.
-You supply an initiating event, such as worker displacement. The engine
-composes published causal links and calculates how the event propagates through
-a person, their family, and their community over time. Every computed effect
+`downstream` estimates consequences of a supplied worker-displacement exposure.
+The current engine applies published response coefficients and declared
+composition rules to population-average worker, family and community scenarios.
+It does not yet simulate a household's ordinary life course. Every computed effect
 traces to cited research or an explicitly labeled structural assumption. Each result shows its uncertainty and
 the full path that produced it. The engine has no runtime dependencies.
 
@@ -11,9 +11,9 @@ Worker displacement is the first seed event. It is not the boundary. The
 long-term goal is a versioned graph of published causal evidence. Distant
 consequences then emerge from cited bridges, not from a hand-written narrative.
 The engine adds an effect only when the evidence supports the bridge, the
-bridge is compatible, and the uncertainty is explicit. The engine models
-synthetic people and populations. It does not predict the future of an
-identified person. See `SPEC.md` for the full design rules.
+bridge is compatible, and the uncertainty is explicit. Current results remain
+conditional on the supplied exposure and stated transport assumptions. They
+do not predict the future of an identified person. See `SPEC.md` for the full design rules.
 
 <!-- BEGIN GENERATED ATTRIBUTION -->
 The bibliography contains 110 sources and 216 named author records (people and organizations), 1979-2026.
@@ -49,8 +49,8 @@ python -m coverage json -o coverage.json
 python scripts/quality_gate.py coverage.json
 ```
 
-The gate requires at least 95% statement coverage and 90% branch coverage. The
-current parameter set measures 97.3% and 94.0%. The suite contains Hypothesis
+The gate requires at least 95% statement coverage and 90% branch coverage.
+Engine 0.4.0 verification measures 97.2% and 94.1%. The suite contains Hypothesis
 property tests for ledger envelopes, survival bounds, and county-pooling
 convexity. Deterministic fixtures cover citations, published coefficients, and
 regression examples.
@@ -199,6 +199,23 @@ and 6+ from Sullivan–von Wachter Table 5 column 3. Displacement occupies
 follow-up year 1, so +6 starts in year 7. `source_aligned` exists only to
 reproduce the former incomplete timing. `immediate_sustained` is a sensitivity
 assumption.
+
+## Mortality persistence comparison (0.4.0)
+
+Default scenario and entity mortality outputs now include
+`persistence_sensitivity`: the existing source profile beside a declared
+alternative with no excess annual risk from follow-up year seven onward.
+The alternative keeps the early profile and the same resolved baseline.
+Each structure has a separate parameter interval, and their difference uses
+shared parameter draws. Their point-estimate spread is not a confidence
+interval; neither structure receives a model-average weight.
+
+For 1,000 workers over 20 years, the reference point is 28.73 excess deaths
+and the alternative is 20.52. This prices the long-run persistence assumption
+without replacing the source anchor or treating a nonsignificant finding as
+proof of zero. Both retain the population-applicability and fixed-baseline
+limits. See [the method and reproducible example](docs/MORTALITY_PERSISTENCE_SENSITIVITY.md).
+Parameters remain v1.49; production website rendering needs integration.
 
 ## Website readiness repairs (0.3.0)
 

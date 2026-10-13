@@ -1,11 +1,11 @@
-# MODEL CARD — downstream engine 0.3.0 / parameters v1.49
+# MODEL CARD — downstream engine 0.4.0 / parameters v1.49
 
 Model card practice per Mitchell et al. 2019, "Model Cards for Model
 Reporting". This card travels with the model.
 
 ## Model details
 
-- Current implementation: deterministic, citation-locked microsimulation of
+- Current implementation: deterministic, citation-locked scenario propagation of
   downstream consequences of worker displacement, with Monte Carlo uncertainty
   propagation (LHS + log-space ratio sampling + optional declared rank
   correlation).
@@ -18,6 +18,12 @@ Reporting". This card travels with the model.
   loss) additionally carry jointly sampled central 90% intervals for
   **parameter uncertainty only**. Their support envelopes are retained
   and explicitly not presented as confidence intervals.
+- Source-profile mortality scenarios also publish a declared null-persistence
+  alternative: early odds retained, offset +6 onward OR=1. Parameter intervals
+  are conditional on each structure; the difference uses shared draws. This
+  hybrid sensitivity is not a Swedish-study replication, a pooled coefficient,
+  or a transported causal estimate. The unweighted point spread is not a
+  confidence interval. See `MORTALITY_PERSISTENCE_SENSITIVITY.md`.
 - Parameter set v1.49: 67 parameter rows, each with point, band,
   precision tier, bib keys, and population scope.
 - Version stamping: params/VERSION; every output carries the version

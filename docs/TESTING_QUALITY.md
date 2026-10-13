@@ -2,8 +2,15 @@
 
 ## Current gate
 
+Engine 0.4.0 verification on 2026-10-14 measured **97.2% statement coverage**
+and **94.1% branch coverage**, with 100% of statements and branches in the
+new mortality-persistence module covered. The full suite was followed by a
+generated-methods refresh and a passing rerun of all 42 affected release and
+persistence checks. Ruff, vulture, and the evidence audit also passed.
+These are numerical/software checks, not independent causal validation.
+
 The repository now uses branch-aware Coverage.py and Hypothesis. The measured
-baseline is **97.3% statement coverage** and **94.0% branch coverage** from a
+previous baseline was **97.3% statement coverage** and **94.0% branch coverage** from a
 clean 827-passing run on 2026-09-13 (two transient failures belonged to an
 in-flight parameter-set landing by another worker, not to code defects).
 `scripts/quality_gate.py` fails below 95% statements or 90% branches. The

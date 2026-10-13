@@ -1,3 +1,3 @@
-"""downstream — citation-calibrated microsimulation of displacement consequences."""
+"""downstream — citation-calibrated scenario model of displacement consequences."""
 
-__version__ = "0.3.0"
+__version__ = "0.4.0"

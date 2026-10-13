@@ -23,7 +23,7 @@ Acceptance standard: improve estimates symmetrically when evidence supports
 smaller, larger, null, or beneficial effects. Better presentation and more
 simulation draws do not establish causal validity or transportability.
 
-- **[IN PROGRESS / engine 0.4.0] Mortality persistence robustness:** publish
+- **[DONE / engine 0.4.0] Mortality persistence robustness:** publish
   the source-profile result beside a declared no-sustained-excess alternative
   (offset +6 onward at OR=1), motivated by the Eliason–Storrie long-run
   divergence already recorded in the evidence. Preserve the early profile,
@@ -40,6 +40,8 @@ simulation draws do not establish causal validity or transportability.
 - **[P1] Admit effects by stratum before heterogeneous mortality:** separate
   baseline-risk variation from evidence of effect modification; source
   age/sex-compatible response profiles before expanding admissible cohorts.
+  Reconcile original study inclusion ages and tenure with the engine's
+  reference-baseline age band; they must not be conflated as one restriction.
   Evaluate annual aging baselines against fixed-baseline sensitivity.
   Compare exact weighted-stratum aggregation with any sampled implementation.
 - **[P1] Child eligibility and heterogeneity:** record age at displacement,
@@ -129,13 +131,16 @@ simulation draws do not establish causal validity or transportability.
   all 2,748 posteriors and the v1.41 build-places places.csv columns that
   key off k = 2000, so it needs an explicit fresh decision.
   (`docs/DATA_SOURCES.md` county row.)
-- **[IN PROGRESS 0.4.0] Sustained-mortality alternative:** Eliason & Storrie 2009 find
-  NO long-run all-cause effect (5-8y HR 0.98, 9-12y 0.91, n.s., 12y
+- **[DONE 0.4.0] Sustained-mortality alternative:** Eliason & Storrie 2009 find
+  no statistically significant long-run all-cause effect (5-8y HR 0.98, 9-12y 0.91, n.s., 12y
   follow-up) against the SvW 1.135 sustained anchor; v1.43 records the
   divergence as declared notes on `earnings_shock->mortality_sustained`
-  and never averages (CITING 5). The next-version robustness comparison
+  and never averages (CITING 5). The robustness comparison
   exposes a named null-persistence assumption without changing that anchor
   or claiming the two studies share an estimand.
+  See `docs/MORTALITY_PERSISTENCE_SENSITIVITY.md`; default scenario/entity
+  results expose the two structures and scenario Monte Carlo uses shared
+  draws for the contrast. Source parameters remain v1.49.
 - **[OPEN] Promote the v1.43 streams to headline claims:** fertility
   (`annual_birth_response`), child mental health (`child_depression_
   anxiety`), and spousal labor supply (`spouse_participation_elasticity`)

@@ -380,6 +380,19 @@ def compute_counts(
     for blocked in computed["blocked"]:
         if blocked["reason"] == "target demographics do not match the admitted effect":
             computed["modeled"].pop(blocked["outcome"], None)
+    mortality = computed["modeled"].get("excess_deaths")
+    if mortality is not None:
+        if scenario.mortality_method == "odds_survival" and scenario.mortality_timing == "source_profile":
+            from .mortality_robustness import persistence_sensitivity
+
+            mortality["persistence_sensitivity"] = persistence_sensitivity(
+                params, mortality, scenario.displaced_workers, scenario.exposure_years, raw=_raw,
+            )
+        else:
+            mortality["persistence_sensitivity"] = {
+                "available": False,
+                "reason": "Persistence comparison requires the complete source_profile odds-survival method.",
+            }
     if place_block is not None and (scenario.mortality_profile is not None or scenario.mortality_mix is not None):
         place_block["mortality_precedence"] = "explicit demographic profile or mixture overrides county mortality; county provenance is not the applied mortality baseline"
         for override in (place_block.get("baseline_overrides") or {}).values():
@@ -433,17 +446,36 @@ def sample_counts(
                             mortality_profiles=mortality_profiles,
                             county_mortality=county_mortality)
     names = tuple(result["modeled"])
+    sensitivity = result["modeled"].get("excess_deaths", {}).get("persistence_sensitivity", {})
+    alternate_key = "mortality_no_sustained_excess"
+    difference_key = "mortality_source_minus_no_sustained"
 
     def outcomes(sampled: ParameterSet) -> dict[str, float]:
         sampled_result = compute_counts(sampled, baselines, scenario, strict=strict,
                                          places=places, place_key=place_key,
                                          mortality_profiles=mortality_profiles,
                                          county_mortality=county_mortality, _raw=True)
-        return {name: sampled_result["modeled"][name]["point"] for name in names}
+        values = {name: sampled_result["modeled"][name]["point"] for name in names}
+        if sensitivity.get("available"):
+            comparison = sampled_result["modeled"]["excess_deaths"]["persistence_sensitivity"]
+            values[alternate_key] = comparison["variants"]["no_sustained_excess"]["point"]
+            values[difference_key] = comparison["source_minus_no_sustained_point"]
+        return values
 
     sampling = simulate_many(params, outcomes, draws=draws, seed=seed, nodes=nodes,
                              params_dir=params_dir, include_samples=True)
     raw_samples = sampling.pop("_raw_samples")
+    if sensitivity.get("available"):
+        sensitivity["variants"]["source_profile"]["parameter_interval_90"] = sampling["outcomes"]["excess_deaths"]
+        sensitivity["variants"]["no_sustained_excess"]["parameter_interval_90"] = sampling["outcomes"].pop(alternate_key)
+        sensitivity["source_minus_no_sustained_parameter_interval_90"] = sampling["outcomes"].pop(difference_key)
+        sensitivity["sampling"] = {
+            "draws": draws, "seed": seed,
+            "comparison": "Both structures use the same parameter draw; the difference is calculated within each draw.",
+            "scope": "Parameter uncertainty conditional on each structure; fixed inputs and exclusions are the same as the parent scenario.",
+        }
+        raw_samples.pop(alternate_key)
+        raw_samples.pop(difference_key)
     result["parameter_uncertainty"] = {
         "interval": "central 90% Monte Carlo interval (p05–p95)",
         "scope": "parameter uncertainty only",

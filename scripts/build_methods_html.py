@@ -22,6 +22,7 @@ def build(params_dir=None):
     parts = load_all(directory)
     params = parts['params']
     result = compute_counts(params, parts['baselines'], ScenarioInput(1000))
+    persistence = result['modeled']['excess_deaths']['persistence_sensitivity']
     h = escape
     rows = []
     for p in params.parameters:
@@ -48,7 +49,7 @@ caption{{text-align:left;font-weight:600}}summary{{cursor:pointer;font-size:.9em
 </style></head><body><a href="#main">Skip to methods</a><header><h1>Downstream methods and evidence</h1>
 <p>Engine {h(__version__)} · parameter set {h(params.version)}. Reproducible reference calculations for displacement consequences.</p>
 <nav aria-label="Methods sections"><a href="#scope">Scope</a><a href="#counts">Count calculations</a><a href="#uncertainty">Uncertainty</a>
-<a href="#validation">Validation</a><a href="#parameters">Parameters</a><a href="#baselines">Baselines</a><a href="#references">Sources</a></nav></header>
+<a href="#persistence">Mortality persistence</a><a href="#validation">Validation</a><a href="#parameters">Parameters</a><a href="#baselines">Baselines</a><a href="#references">Sources</a></nav></header>
 <main id="main" tabindex="-1"><section id="scope"><h2>Scope and interpretation</h2><p class="notice">Default results are illustrative reference calculations.
 They are conditional modeled expected differences, not forecasts about identified people, observed attributable counts, or identified policy effects.
 Target-cohort applicability requires structured demographics and a reviewed transport decision. Grandchild and later earnings outcomes are structural projections.</p>
@@ -80,6 +81,18 @@ unmodeled pathways and structural uncertainty are excluded. Latin hypercube samp
 Repeated relationship aliases share exactly one draw. Sobol attribution groups them, and dependent parameters are reported as joint blocks.
 Independent-step analytic moments refuse repeated shared variables. Predictive mortality, where available, adds binomial cohort variation in separately simulated exposed and counterfactual cohorts;
 their contrast is not an observable paired individual causal effect.</p></section>
+<section id="persistence"><h2>Mortality persistence sensitivity</h2>
+<p>The default source-profile calculation also reports a declared alternative that retains the early odds ratios and sets source offset +6 onward to OR=1,
+first changing follow-up year seven. Both structures use the same resolved baseline, exposure and horizon.
+For the 1,000-worker, 20-year national reference, the source profile gives {persistence['variants']['source_profile']['point']:,.2f} expected excess deaths
+and the no-sustained-excess alternative gives {persistence['variants']['no_sustained_excess']['point']:,.2f}.</p>
+<p>The alternative is motivated by the long-run divergence recorded for <a href="#source-eliasonstorrie2009">Eliason–Storrie</a>.
+It is a hybrid structural assumption, not a reproduction of the Swedish study or a substitution of its hazard ratios for
+<a href="#source-sullivan2009">Sullivan–von Wachter</a> odds ratios. A nonsignificant estimate does not establish an exactly zero effect.
+The cutoff follows the source profile, not the Swedish study's windows; persistence beyond its 12-year follow-up remains an assumption.</p>
+<p>Scenario Monte Carlo reports separate parameter-only intervals within each structure and a difference calculated on shared parameter draws.
+The range across their point estimates is not a confidence interval or a bound on the true effect; no probabilities or averaging weights are assigned to the structures.
+The source estimate remains unchanged. Both structures retain fixed-baseline aging and population-transport limits, and the sensitivity report is ineligible for a validated public headline.</p></section>
 <section id="validation"><h2>Validation status</h2><p>V0 checks internal consistency; it does not validate the model against an independent event.
 V1 historical transport diagnostics use the same five-phase mortality calculation as production, but population differences and fit failures remain visible.
 Independent-event V2 and prospective V3 validation have not been established. Code repairs and passing tests do not supply missing empirical validation.</p></section>
