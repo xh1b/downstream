@@ -6,7 +6,6 @@ or H-1B target composition is inferred.
 """
 from collections import defaultdict
 import json
-from pathlib import Path
 from zipfile import ZipFile
 
 from build_displaced_cohort import decode, ROOT
