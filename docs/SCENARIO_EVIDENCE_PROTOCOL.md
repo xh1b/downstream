@@ -73,6 +73,22 @@ same event held out. Retain misses and publish amendments as new versions.
 
 ## Current execution status
 
+### Acquisition amendment — 2026-10-14
+
+The v0.5.0 acquisition round expands the initial fourteen contrasts from two
+samples to twenty-three contrasts from three samples. Browning–Heinesen's
+2011 AKF working-paper Table 6.1 contributes seven all-cause cumulative
+hazard ratios and two cancer contrasts, including null-compatible estimates.
+Standard errors are explicitly approximate, reconstructed from rounded
+published 95% limits on the log scale. These cumulative hazard ratios are
+incompatible with the annual odds-ratio phases and remain separate.
+The Eliason–Storrie full-text acquisition returned HTTP 429; its previously
+recorded long-run null finding remains visible, without inventing a new SE
+or treating it as zero. The screening log records this missing extraction.
+This amendment records results already inspected, not a prospective forecast.
+The original evaluation is retained; the expanded-library execution is saved
+as `validation/followthrough_evaluation_v050.json` with this protocol's hash.
+
 The published-cohort reproduction and SIPP held-out baseline checks are
 executed software/data checks. China-shock comparisons remain diagnostic,
 including misses. The repository's V2 registry still has no external source

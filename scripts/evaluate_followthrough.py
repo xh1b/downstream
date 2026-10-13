@@ -1,5 +1,6 @@
 """Publish all available checks and explicit independent-event refusals."""
 from collections import defaultdict
+import argparse
 import hashlib
 import json
 from pathlib import Path
@@ -12,6 +13,9 @@ ROOT=Path(__file__).resolve().parents[1]
 
 
 def main():
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--out',type=Path,default=ROOT/'validation/followthrough_evaluation.json')
+    args=parser.parse_args()
     protocol=ROOT/'docs/SCENARIO_EVIDENCE_PROTOCOL.md'
     cohort=json.loads((ROOT/'validation/cps2024_displaced_cohort.json').read_text())
     sipp=json.loads((ROOT/'validation/sipp/r2_transitions/coverage_and_calibration.json').read_text())
@@ -32,7 +36,7 @@ def main():
                            'independent matched outcome estimates and uncertainty',
                            'counterfactual and horizon compatibility for each comparator'],
                 'interpretation':'No new causal validation score is invented; prospective execution follows the frozen protocol.'}}
-    destination=ROOT/'validation/followthrough_evaluation.json'
+    destination=args.out
     with destination.open('x') as handle:
         json.dump(report,handle,indent=2,allow_nan=False)
         handle.write('\n')
