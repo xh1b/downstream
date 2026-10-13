@@ -1,0 +1,40 @@
+{
+  "sources": {
+    "cps2024": {
+      "source_id": "cps2024",
+      "url": "https://www2.census.gov/programs-surveys/cps/datasets/2024/supp/jan24pub.zip",
+      "path": "data/followthrough/jan24pub.zip",
+      "sha256": "22b94a94371197f905ef0b814940e4819aaad6f33cb9e0b3a41d129a895da86a",
+      "bytes": 12785928,
+      "retrieved_at": "2026-10-13T22:04:57.845454+00:00",
+      "status": "acquired_not_parameter_admitted"
+    },
+    "cps2024_dictionary": {
+      "source_id": "cps2024_dictionary",
+      "url": "https://www2.census.gov/programs-surveys/cps/techdocs/cpsjan24.pdf",
+      "path": "data/followthrough/cpsjan24.pdf",
+      "sha256": "feb1f5eac7a27aa3604c850360b6d3c4789432d261dd7d498f0da032e0715fab",
+      "bytes": 1971629,
+      "retrieved_at": "2026-10-13T22:05:00.203203+00:00",
+      "status": "acquired_not_parameter_admitted"
+    },
+    "oreopoulos2008": {
+      "source_id": "oreopoulos2008",
+      "url": "https://poverty.ucdavis.edu/sites/main/files/file-attachments/stevens_2008jole.pdf",
+      "path": "data/followthrough/oreopoulos2008.pdf",
+      "sha256": "ff990236c8e3aa19faff574f9f21af47665b2726f31f1d47fbc6ee9f89b7439c",
+      "bytes": 233847,
+      "retrieved_at": "2026-10-13T22:05:02.165700+00:00",
+      "status": "acquired_not_parameter_admitted"
+    },
+    "sullivan2007": {
+      "source_id": "sullivan2007",
+      "url": "https://www.nber.org/system/files/working_papers/w13626/w13626.pdf",
+      "path": "data/followthrough/sullivan2007.pdf",
+      "sha256": "20617cbe3924c8b58f6d3888cb0a0ea26ca908d60486f4aad304398dd6ef9c8f",
+      "bytes": 410576,
+      "retrieved_at": "2026-10-13T22:05:06.733824+00:00",
+      "status": "acquired_not_parameter_admitted"
+    }
+  }
+}
