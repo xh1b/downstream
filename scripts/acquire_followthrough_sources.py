@@ -19,6 +19,8 @@ SOURCES = {
     "cps2024_dictionary": ("https://www2.census.gov/programs-surveys/cps/techdocs/cpsjan24.pdf", "cpsjan24.pdf"),
     "oreopoulos2008": ("https://poverty.ucdavis.edu/sites/main/files/file-attachments/stevens_2008jole.pdf", "oreopoulos2008.pdf"),
     "sullivan2007": ("https://www.nber.org/system/files/working_papers/w13626/w13626.pdf", "sullivan2007.pdf"),
+    "browning2011": ("https://www.vive.dk/media/pure/yxd91ozg/2078384", "browning2011.pdf"),
+    "eliason2009": ("https://citeseerx.ist.psu.edu/document?doi=4ac77bd406711c5906c0b113650198430b8fae35&repid=rep1&type=pdf", "eliason2009.pdf"),
 }
 
 

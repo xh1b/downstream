@@ -35,6 +35,15 @@
       "bytes": 410576,
       "retrieved_at": "2026-10-13T22:05:06.733824+00:00",
       "status": "acquired_not_parameter_admitted"
+    },
+    "browning2011": {
+      "source_id": "browning2011",
+      "url": "https://www.vive.dk/media/pure/yxd91ozg/2078384",
+      "path": "data/followthrough/browning2011.pdf",
+      "sha256": "85465f4715493cce44be9fb78ddc1ecf08e838bc69b74858575e2fc6724ca164",
+      "bytes": 572920,
+      "retrieved_at": "2026-10-13T22:45:51.205266+00:00",
+      "status": "acquired_not_parameter_admitted"
     }
   }
 }

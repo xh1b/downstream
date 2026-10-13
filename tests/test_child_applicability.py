@@ -13,12 +13,12 @@ from downstream.params import default_dir
 
 def test_source_library_keeps_subgroups_and_phases_separate():
     rows = load_library()
-    assert len(rows) == 14
+    assert len(rows) == 23
     assert rows['sullivan2007_offsets_4_5']['standard_error'] == .138
     assert rows['oreopoulos2008_q3']['point'] == .007
     result = synthesize(load_study_estimates(default_dir() / 'study_estimates.csv'))
     assert not result['reports']
-    assert len(result['blocked']) == 14
+    assert len(result['blocked']) == 23
 
 
 @pytest.mark.parametrize('age,sex', [(0,'Male'), (20,'Male'), (12,'Female')])

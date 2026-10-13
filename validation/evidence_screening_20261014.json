@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-14",
+  "library_contrasts": 23,
+  "independent_study_samples": 3,
+  "observations": [
+    {
+      "study": "browningheinesen2012",
+      "source_version": "2011 AKF working paper",
+      "status": "source_table_extracted_with_explicit_log_CI_SE_approximation",
+      "library_rows": 9,
+      "pooling": "cumulative hazard ratio, not an annual odds ratio; overlapping horizons retained separately; cancer is not additive to all-cause mortality"
+    },
+    {
+      "study": "eliasonstorrie2009",
+      "status": "previous_long_run_divergence_retained; new PDF acquisition rate-limited HTTP429",
+      "source": "https://swopec.hhs.se/gunwpe/abs/gunwpe0153.htm",
+      "action": "Do not invent a standard error or discard the previously recorded null-compatible finding; source null-persistence sensitivity remains available."
+    },
+    {
+      "study": "huttunen2019",
+      "status": "existing cross-check preserved in parameters.csv; independent full-text SE/version re-extraction not completed in this round",
+      "pooling": "absolute EUR at age 30 is not the Canadian log earnings contrast; no mechanical conversion into a like-for-like pool"
+    }
+  ]
+}
