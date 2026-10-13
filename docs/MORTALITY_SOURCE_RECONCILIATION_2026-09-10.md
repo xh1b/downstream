@@ -2,6 +2,15 @@
 
 ## Decision
 
+Correction verified 2026-10-14 (parameters v1.50): Table 5 column 3,
+offsets +4–5 reports beta 0.240, **SE 0.138**, not 0.077. The latter
+belongs to column 6 offsets +2–3. Visual inspection of PDF page 54 at the
+registry-pinned SHA-256 confirms the correction. The OR point is unchanged;
+its 95% band is now [0.9700, 1.6661]. Columns 1–3 use men born 1930–59 in
+stable employment 1974–79 with employers over 50 workers. The engine's
+45–54 baseline is an operational reference restriction, not that source's
+entire inclusion-age definition.
+
 The production `source_profile` continues to use the directly reported,
 mutually exclusive phase coefficients from Sullivan and von Wachter's NBER
 Working Paper 13626 (2007), Table 5 column 3. The published QJE article is

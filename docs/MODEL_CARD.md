@@ -1,4 +1,4 @@
-# MODEL CARD — downstream engine 0.4.0 / parameters v1.49
+# MODEL CARD — downstream engine 0.4.1 / parameters v1.50
 
 Model card practice per Mitchell et al. 2019, "Model Cards for Model
 Reporting". This card travels with the model.

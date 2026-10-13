@@ -1,3 +1,13 @@
+## v1.50 — 2026-10-14 — correct mortality offset +4–5 uncertainty
+
+- Table 5 column 3 reports beta 0.240, SE 0.138. Correct the former 0.077
+  copied from column 6 offsets +2–3. The OR point remains 1.2712; its 95%
+  band widens to [0.9700, 1.6661]. Visually checked against the hash-pinned
+  working-paper PDF page 54. The interval now includes a protective effect.
+- Source birth cohort 1930–59 and stable-employment inclusion are recorded
+  separately from the operational male 45–54 reference baseline.
+- Engine 0.4.1; no other coefficient or baseline value changes.
+
 ## v1.49 — 2026-10-07 — enforce mortality baseline compatibility
 
 - Add structured sex, age, time window, cause and geography to the national mortality baseline. County builders and consumers verify observation scope and posterior arithmetic; audits include optional mortality registries. Numeric baseline and parameter estimates are unchanged.

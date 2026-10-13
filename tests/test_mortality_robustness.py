@@ -195,7 +195,7 @@ def test_entity_and_cli_publish_the_comparison(parts, capsys):
     assert result["modeled"]["excess_deaths"]["persistence_sensitivity"]["available"]
     assert main(["scenario", "--workers", "1000", "--draws", "2"]) == 0
     cli = json.loads(capsys.readouterr().out)
-    assert cli["engine_version"] == "0.4.0"
+    assert cli["engine_version"] == "0.4.1"
     assert cli["modeled"]["excess_deaths"]["persistence_sensitivity"]["sampling"]["draws"] == 2
 
 
