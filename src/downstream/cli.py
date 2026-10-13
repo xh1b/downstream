@@ -99,6 +99,9 @@ def _run_main(argv: list[str] | None = None) -> int:
     p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
     p.add_argument("--workers", type=float, required=True)
     p.add_argument("--children", type=int, default=2)
+    p.add_argument("--child-profiles", help="JSON file: child age_at_displacement and sex, one per child")
+    p.add_argument("--child-income-quartile", type=int, choices=(1, 2, 3, 4))
+    p.add_argument("--income-rank-definition", help="definition and transport rationale for father's pre-displacement income rank")
     p.add_argument("--tradable-share", type=float, default=1.0)
     p.add_argument("--net-tradable-jobs-lost", type=float, default=None,
                    help="documented net metro-level loss of tradable jobs; required for local service jobs")
@@ -178,6 +181,9 @@ def _run_main(argv: list[str] | None = None) -> int:
     p.add_argument("--input", required=True, help="JSON documented exposure or warehouse row")
     p.add_argument("--input-format", choices=["exposure", "warehouse"], default="exposure")
     p.add_argument("--children", type=int, default=2)
+    p.add_argument("--child-profiles", help="JSON file: child age_at_displacement and sex")
+    p.add_argument("--child-income-quartile", type=int, choices=(1, 2, 3, 4))
+    p.add_argument("--income-rank-definition")
     p.add_argument("--exposure-years", type=float, default=20.0)
     p.add_argument("--tradable-share", type=float, default=1.0)
     p.add_argument("--mortality-profile", default=None,
@@ -425,6 +431,9 @@ def _run_main(argv: list[str] | None = None) -> int:
                 ScenarioInput(
                     displaced_workers=args.workers,
                     n_children=args.children,
+                    child_profiles=json.loads(Path(args.child_profiles).read_text()) if args.child_profiles else None,
+                    child_income_quartile=args.child_income_quartile,
+                    income_rank_definition=args.income_rank_definition,
                     tradable_share=args.tradable_share,
                     net_tradable_jobs_lost=args.net_tradable_jobs_lost,
                     local_job_mix=args.local_job_mix,
@@ -490,6 +499,9 @@ def _run_main(argv: list[str] | None = None) -> int:
             result = compute_entity_counts(
                 params, parts["baselines"], exposure,
                 ScenarioInput(0, n_children=args.children, exposure_years=args.exposure_years,
+                              child_profiles=json.loads(Path(args.child_profiles).read_text()) if args.child_profiles else None,
+                              child_income_quartile=args.child_income_quartile,
+                              income_rank_definition=args.income_rank_definition,
                               tradable_share=args.tradable_share,
                               mortality_profile=args.mortality_profile,
                               mortality_mix=mortality_mix),

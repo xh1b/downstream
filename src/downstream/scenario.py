@@ -42,8 +42,14 @@ class ScenarioInput:
     place_application: str = "initial_only"
     target_population: dict[str, str] | None = None
     applicability_decisions: dict[str, dict] | None = None
+    child_profiles: list[dict] | None = None
+    child_income_quartile: int | None = None
+    income_rank_definition: str | None = None
 
     def __post_init__(self):
+        from .child_applicability import validate_child_inputs
+        validate_child_inputs(self.child_profiles, self.n_children,
+                              self.child_income_quartile, self.income_rank_definition)
         for name in ('displaced_workers', 'tradable_share', 'exposure_years'):
             value = getattr(self, name)
             if (isinstance(value, bool) or not isinstance(value, (int, float))
@@ -135,6 +141,10 @@ def compute_counts(
     place key, county mortality swaps in via the strict Gamma-Poisson
     contract instead of staying national.
     """
+    from .child_applicability import child_scope, select_child_contrast
+    params = select_child_contrast(params, scenario.child_income_quartile)
+    child_applicability = child_scope(scenario.child_profiles, scenario.child_income_quartile,
+                                      scenario.income_rank_definition)
     place_block: dict | None = None
     modifier = None
     if place_key is not None:
@@ -347,6 +357,7 @@ def compute_counts(
     }
     computed["projection_eligibility"] = line["evidence_status"]
     computed["target_population"] = scenario.target_population
+    computed["child_applicability"] = child_applicability
     for outcome, row in computed["modeled"].items():
         if outcome == "local_service_jobs_lost":
             # Class-specific net-job input is distinct from displaced workers.
@@ -365,6 +376,9 @@ def compute_counts(
             target = scenario.target_population
             matched = (target['sex'] == 'Male' and target['age'] == '45-54 years' and target['worker_tenure'] == 'high-tenure' and target['exposure_type'] in {'mass layoff', 'firm closure'}) if outcome == 'excess_deaths' else target['sex'] == 'Male' and target['children_sex'] == 'Male' and target['exposure_type'] == 'firm closure'
         eligible = bool(decision and matched and (outcome != 'excess_deaths' or (scenario.mortality_method == 'odds_survival' and scenario.mortality_timing == 'source_profile')))
+        if outcome == "child_lifetime_earnings_lost_usd":
+            matched = matched and child_applicability["status"] != "incompatible"
+            eligible = eligible and child_applicability["eligible_for_reviewed_transport"]
         row["applicability"] = {
             "status": "reviewed_conditional_transport" if eligible else "illustrative_reference_calculation",
             "eligible_for_public_headline": eligible,
@@ -439,6 +453,8 @@ def sample_counts(
     """
     if isinstance(draws, bool) or not isinstance(draws, int) or draws < 2:
         raise ValueError("draws must be an integer of at least 2")
+    from .child_applicability import select_child_contrast
+    params = select_child_contrast(params, scenario.child_income_quartile)
     from .mc import simulate_many
 
     result = compute_counts(params, baselines, scenario, strict=strict,

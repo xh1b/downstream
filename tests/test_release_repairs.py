@@ -180,7 +180,13 @@ def test_reviewed_applicability_requires_matching_event_and_demographics():
                  for name in ('excess_deaths', 'child_lifetime_earnings_lost_usd')}
     exposure = DocumentedExposure('example', 'employer', 1000, 'document', 'supplied', target, decisions)
     result = compute_entity_counts(parts['params'], parts['baselines'], exposure)
-    assert all(row['applicability']['eligible_for_public_headline'] for row in result['modeled'].values())
+    assert result['modeled']['excess_deaths']['applicability']['eligible_for_public_headline']
+    assert not result['modeled']['child_lifetime_earnings_lost_usd']['applicability']['eligible_for_public_headline']
+    family = ScenarioInput(0, child_profiles=[{'age_at_displacement': 11, 'sex': 'Male'},
+                                             {'age_at_displacement': 13, 'sex': 'Male'}],
+                           income_rank_definition='source population distribution, reviewed for target')
+    reviewed = compute_entity_counts(parts['params'], parts['baselines'], exposure, family)
+    assert reviewed['modeled']['child_lifetime_earnings_lost_usd']['applicability']['eligible_for_public_headline']
     wrong = {**target, 'sex': 'Female'}
     with pytest.raises(BaselineMissing, match='demographics'):
         compute_counts(parts['params'], parts['baselines'], ScenarioInput(1000, target_population=wrong), strict=True)

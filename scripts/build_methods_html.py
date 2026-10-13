@@ -69,6 +69,9 @@ and a Gamma–Poisson posterior verified against deaths and person-years. Suppre
 <h3>Child lifetime earnings</h3><p>Undiscounted lifetime loss = displaced workers × children per worker × relative adult earnings gap × the cited US male synthetic career earnings baseline.
 This is a lifetime dollar amount in 2024 dollars, not an annual loss. The baseline sums cross-sectional age-band medians and approximates individual lifetime sums;
 it excludes nonworking years. The Canadian father-son effect and US dollar conversion each require a transport decision.</p>
+<p>The source child cohort is boys aged 10–14 at paternal displacement. Known age/sex mismatches block the child-dollar count;
+unknown child profiles cannot qualify for reviewed headline use. Optional income-quartile contrasts retain every reported coefficient and its uncertainty,
+including null and beneficial possibilities. Quartiles refer to father's average pre-displacement income in 1978–1979 and require an explicit target-rank definition.</p>
 <h3>Local service jobs</h3><p>Local service jobs lost = T × ℓ, where T is independently documented net local loss of tradable jobs and ℓ is the multiplier for a declared job class.
 Manufacturing and high-tech multipliers represent different classes, not endpoints of one uncertainty interval. The tradable-share field is metadata and does not infer T from displaced workers.</p>
 <h3>Reference example</h3><p>For 1,000 displaced workers, two children per worker and 20 years of mortality follow-up,

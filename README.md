@@ -200,6 +200,18 @@ follow-up year 1, so +6 starts in year 7. `source_aligned` exists only to
 reproduce the former incomplete timing. `immediate_sustained` is a sensitivity
 assumption.
 
+## Child scope and income contrasts
+
+Child scenarios can supply `--child-profiles children.json` (one object with
+`age_at_displacement` and `sex` per child), plus `--child-income-quartile 1|2|3|4`
+and `--income-rank-definition`. Known children outside the source's male
+10–14 cohort block the child count; unknown profiles remain illustrative.
+Income contrasts use Oreopoulos Table 8, preserve signed effects and include
+null/beneficial possibilities. They do not identify an age-response curve or
+a constant effect over a whole career. `params/study_estimates.csv` contains
+hash-pinned source contrasts and overlap metadata; these are not automatically
+pooled or admitted as universal effects.
+
 ## Mortality persistence comparison (0.4.0)
 
 Default scenario and entity mortality outputs now include
