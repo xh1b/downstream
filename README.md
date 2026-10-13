@@ -3,7 +3,8 @@
 `downstream` estimates consequences of a supplied worker-displacement exposure.
 The current engine applies published response coefficients and declared
 composition rules to population-average worker, family and community scenarios.
-It does not yet simulate a household's ordinary life course. Every computed effect
+Its experimental annual household comparison is limited to employment-state
+probabilities and gross earnings under declared assumptions. Every computed effect
 traces to cited research or an explicitly labeled structural assumption. Each result shows its uncertainty and
 the full path that produced it. The engine has no runtime dependencies.
 
@@ -50,10 +51,16 @@ python scripts/quality_gate.py coverage.json
 ```
 
 The gate requires at least 95% statement coverage and 90% branch coverage.
-Engine 0.4.0 verification measures 97.2% and 94.1%. The suite contains Hypothesis
+Engine 0.5.0 verification measures 96.8% and 93.1%. The suite contains Hypothesis
 property tests for ledger envelopes, survival bounds, and county-pooling
 convexity. Deterministic fixtures cover citations, published coefficients, and
 regression examples.
+
+Version 0.5.0 adds reproducible reference cohorts, sourced subgroup scenarios,
+age-timed child present values, household earnings comparisons, and a separate
+baseline/exposure/process uncertainty budget. See the
+[release record](docs/RELEASE_0_5.md) for the source correction, verification,
+and research dependencies that remain open.
 
 Additional checks:
 
@@ -79,6 +86,9 @@ downstream simulate --outcome child --place national --draws 1000
 downstream explain --text                # one claim, from headline to citations
 downstream audit                         # parameter, citation, DAG, unit checks
 downstream validate                      # V0 consistency + V1 retrodiction
+downstream mortality-cohort --input validation/cps2024_hypothetical_mortality_input.json
+downstream household --input validation/household_five_year_input.json
+downstream uncertainty --input validation/uncertainty_budget_input.json
 ```
 
 ## Command reference
@@ -89,6 +99,9 @@ downstream validate                      # V0 consistency + V1 retrodiction
 | `scenario` | effect envelopes for a worker cohort; parameter-only and predictive intervals |
 | `entity` | accepts a computed displacement exposure from a JSON file |
 | `policy` | compares supplied baseline and policy exposures |
+| `mortality-cohort` | exact sourced age-stratum aggregation; aging/fixed-baseline comparison; uncovered workers stay unknown |
+| `household` | annual employment and gross-earnings comparison under a supplied displacement duration |
+| `uncertainty` | documented baseline-count, declared exposure, parameter and process uncertainty kept separate |
 | `simulate` | Monte Carlo simulation for an outcome and place |
 | `sensitivity` | Sobol analysis of the result range; `--ci` adds seed-replicate design noise |
 | `knobs` | sweeps one parameter, or ranks parameters by value of information |
@@ -234,7 +247,9 @@ and the alternative is 20.52. This prices the long-run persistence assumption
 without replacing the source anchor or treating a nonsignificant finding as
 proof of zero. Both retain the population-applicability and fixed-baseline
 limits. See [the method and reproducible example](docs/MORTALITY_PERSISTENCE_SENSITIVITY.md).
-Parameters remain v1.49; production website rendering needs integration.
+Parameters v1.50 correct the offset +4–5 source standard error to 0.138,
+widening intervals while preserving the point estimate. Production website
+rendering needs integration.
 
 ## Website readiness repairs (0.3.0)
 

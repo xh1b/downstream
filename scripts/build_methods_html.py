@@ -49,7 +49,7 @@ caption{{text-align:left;font-weight:600}}summary{{cursor:pointer;font-size:.9em
 </style></head><body><a href="#main">Skip to methods</a><header><h1>Downstream methods and evidence</h1>
 <p>Engine {h(__version__)} · parameter set {h(params.version)}. Reproducible reference calculations for displacement consequences.</p>
 <nav aria-label="Methods sections"><a href="#scope">Scope</a><a href="#counts">Count calculations</a><a href="#uncertainty">Uncertainty</a>
-<a href="#persistence">Mortality persistence</a><a href="#validation">Validation</a><a href="#parameters">Parameters</a><a href="#baselines">Baselines</a><a href="#references">Sources</a></nav></header>
+<a href="#persistence">Mortality persistence</a><a href="#cohorts">Cohorts and households</a><a href="#validation">Validation</a><a href="#parameters">Parameters</a><a href="#baselines">Baselines</a><a href="#references">Sources</a></nav></header>
 <main id="main" tabindex="-1"><section id="scope"><h2>Scope and interpretation</h2><p class="notice">Default results are illustrative reference calculations.
 They are conditional modeled expected differences, not forecasts about identified people, observed attributable counts, or identified policy effects.
 Target-cohort applicability requires structured demographics and a reviewed transport decision. Grandchild and later earnings outcomes are structural projections.</p>
@@ -100,6 +100,17 @@ The cutoff follows the source profile, not the Swedish study's windows; persiste
 <p>Scenario Monte Carlo reports separate parameter-only intervals within each structure and a difference calculated on shared parameter draws.
 The range across their point estimates is not a confidence interval or a bound on the true effect; no probabilities or averaging weights are assigned to the structures.
 The source estimate remains unchanged. Both structures retain fixed-baseline aging and population-transport limits, and the sensitivity report is ineligible for a validated public headline.</p></section>
+<section id="cohorts"><h2>Cohorts, aging and household comparisons</h2>
+<p>The pinned CPS January-2024 reference reproduces the published BLS known-year displacement total and includes separate three- and six-year-tenure cohorts.
+Interview age and household composition are not historical event characteristics, and these reference cohorts do not identify H-1B displacement.</p>
+<p>The mortality-cohort command aggregates sourced male age-group contrasts exactly and compares aging age-band baselines with fixed baselines.
+It requires a declared constant projection of a source-window response. Uncovered workers remain unknown; partial coverage never becomes a whole-cohort total.</p>
+<p>The household command compares annual employment-state probabilities and gross earnings under a supplied unemployment duration.
+It uses observed SIPP 2021–2022 conditional transitions, not an identified displacement recovery curve. Sparse cells require explicit acceptance;
+joint household outcomes, taxes/transfers, marriage and protective interventions remain unmodeled.</p>
+<p>The uncertainty command adds documented national baseline count uncertainty, a declared integer exposure distribution and binomial variation to parameter draws.
+It states the Poisson/Gamma model and component-independence assumptions. Transport error and structural model probabilities remain excluded;
+parameter-only results and independent-cohort process contrasts retain separate labels.</p></section>
 <section id="validation"><h2>Validation status</h2><p>V0 checks internal consistency; it does not validate the model against an independent event.
 V1 historical transport diagnostics use the same five-phase mortality calculation as production, but population differences and fit failures remain visible.
 Independent-event V2 and prospective V3 validation have not been established. Code repairs and passing tests do not supply missing empirical validation.</p></section>

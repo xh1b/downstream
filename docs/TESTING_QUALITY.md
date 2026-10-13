@@ -2,11 +2,13 @@
 
 ## Current gate
 
-Engine 0.4.0 verification on 2026-10-14 measured **97.2% statement coverage**
-and **94.1% branch coverage**, with 100% of statements and branches in the
-new mortality-persistence module covered. The full suite was followed by a
-generated-methods refresh and a passing rerun of all 42 affected release and
-persistence checks. Ruff, vulture, and the evidence audit also passed.
+Engine 0.5.0 verification on 2026-10-14 measured **96.8% statement coverage**
+and **93.1% branch coverage**. The full coverage run was followed by a passing
+rerun of 82 affected release, provenance, child-applicability, CLI and
+persistence checks, including correction of an obsolete source-population
+assertion. Ruff, vulture, and the evidence audit also passed.
+The final complete rerun passes all 997 tests. An isolated installation of the
+0.5.0 wheel passes the three new commands and the existing distribution checks.
 These are numerical/software checks, not independent causal validation.
 
 The repository now uses branch-aware Coverage.py and Hypothesis. The measured

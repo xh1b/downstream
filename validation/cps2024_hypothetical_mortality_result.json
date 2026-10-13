@@ -718,7 +718,8 @@
         "age_max": "39",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": 0.12237484625089179,
@@ -801,7 +802,8 @@
         "age_max": "39",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": 0.13722682027417737,
@@ -884,7 +886,8 @@
         "age_max": "39",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": 0.1618557972587414,
@@ -967,7 +970,8 @@
         "age_max": "39",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": 0.1578076242039859,
@@ -1050,7 +1054,8 @@
         "age_max": "39",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": 0.4903925005143053,
@@ -1133,7 +1138,8 @@
         "age_max": "39",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": 0.1063540229940118,
@@ -1216,7 +1222,8 @@
         "age_max": "39",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": 0.07992692703601102,
@@ -1299,7 +1306,8 @@
         "age_max": "39",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": 0.38816416775400764,
@@ -1382,7 +1390,8 @@
         "age_max": "39",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": 0.2910671844744787,
@@ -1465,7 +1474,8 @@
         "age_max": "39",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": 0.42774213487905716,
@@ -1548,7 +1558,8 @@
         "age_max": "49",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": 0.44918229984144875,
@@ -1631,7 +1642,8 @@
         "age_max": "49",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": 0.9770627217306408,
@@ -1714,7 +1726,8 @@
         "age_max": "49",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": 0.14110937351472103,
@@ -1797,7 +1810,8 @@
         "age_max": "49",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": 0.45355092093577687,
@@ -1880,7 +1894,8 @@
         "age_max": "49",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": 0.386107267175672,
@@ -1963,7 +1978,8 @@
         "age_max": "49",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": 0.31452698546398583,
@@ -2046,7 +2062,8 @@
         "age_max": "49",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": 0.7559257321355548,
@@ -2129,7 +2146,8 @@
         "age_max": "49",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": 1.174899639328244,
@@ -2212,7 +2230,8 @@
         "age_max": "49",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": 0.6479735150623008,
@@ -2295,7 +2314,8 @@
         "age_max": "59",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": 0.5079979864635319,
@@ -2378,7 +2398,8 @@
         "age_max": "59",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": 0.4059308271269856,
@@ -2461,7 +2482,8 @@
         "age_max": "59",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": 0.528017601780609,
@@ -2544,7 +2566,8 @@
         "age_max": "59",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": 1.4840097191491195,
@@ -2627,7 +2650,8 @@
         "age_max": "59",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": 2.0669698986146794,
@@ -2710,7 +2734,8 @@
         "age_max": "59",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": 1.2445212778223436,
@@ -2793,7 +2818,8 @@
         "age_max": "59",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": 0.902563928319501,
@@ -2876,7 +2902,8 @@
         "age_max": "59",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": 0.8736759807442015,
@@ -2959,7 +2986,8 @@
         "age_max": "59",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": 1.1348177064364218,
@@ -3042,7 +3070,8 @@
         "age_max": "59",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": 1.7388852719180008,
@@ -3125,7 +3154,8 @@
         "age_max": "69",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": -0.016321212119669994,
@@ -3208,7 +3238,8 @@
         "age_max": "69",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": -0.04674886840768901,
@@ -3291,7 +3322,8 @@
         "age_max": "69",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": -0.05367343612489482,
@@ -3374,7 +3406,8 @@
         "age_max": "69",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": -0.024843730542887337,
@@ -3457,7 +3490,8 @@
         "age_max": "69",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": -0.009222032985747359,
@@ -3540,7 +3574,8 @@
         "age_max": "69",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": -0.01590142012272033,
@@ -3623,7 +3658,8 @@
         "age_max": "69",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": -0.0045775429184123865,
@@ -3706,7 +3742,8 @@
         "age_max": "69",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": -0.0006110809031155201,
@@ -3789,7 +3826,8 @@
         "age_max": "69",
         "sex": "Male",
         "tenure_min_years": "6",
-        "projection_status": "window_averaged_annual_logit_requires_projection_assumption"
+        "projection_status": "window_averaged_annual_logit_requires_projection_assumption",
+        "standard_error_method": "reported standard error"
       },
       "aging_bands": {
         "point": -0.01628153101658294,

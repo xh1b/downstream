@@ -1,0 +1,81 @@
+# Downstream 0.5.0 — review follow-through
+
+Engine 0.5.0 / parameters v1.50, 2026-10-14. This release implements the
+review's scenario improvements and records unresolved empirical requirements
+in `TODO.md`. Software correctness and source reproduction do not establish
+that the effects transport to a particular policy or population.
+
+## Source correction
+
+Re-extraction of Sullivan–von Wachter's Table 5 found that the offset 4–5
+standard error had been copied from a different column/phase: .077 becomes
+the source column's .138. The coefficient point remains .240. The corrected
+odds-ratio band is [0.9700, 1.6661], including the null. Source population
+labels now distinguish the study cohort from the 45–54 reference baseline.
+The mortality persistence alternative remains separately reported.
+
+## Completed scenario capabilities
+
+- Reproduce January-2024 CPS displaced-worker composition under explicit
+  known-year and tenure restrictions. The >=3-year weighted total is
+  2,578,128, matching the BLS rounded 2,578,000 publication. A separate
+  >=6-year reference is available. Neither identifies an H-1B cohort.
+- Compare exact age-stratum mortality with aging versus fixed age-band
+  baselines, using sourced male age-at-event contrasts and an explicit
+  constant-source-window-response projection. Unsupported strata stay
+  unknown and prevent a whole-cohort mortality total.
+- Apply sourced child age/sex eligibility and income-quartile contrasts.
+  Preserve null-compatible estimates and the positive third-quartile earnings
+  coefficient. Unknown child profiles cannot qualify for reviewed headlines.
+- Add explicit real discount rates, event/valuation years and annual earnings
+  schedules. Keep undiscounted totals, observed-adult-age-window projections
+  and constant-career-gap extrapolations separately labeled.
+- Compare annual household employment probabilities and gross earnings
+  under a supplied unemployment duration and observed SIPP transitions.
+  Sparse cells require explicit acceptance. Partner marginal earnings and
+  children's ages are tracked; causal recovery and partner responses are
+  not identified by these observational transitions.
+- Propagate documented mortality-baseline counts, a declared integer exposure
+  distribution, coefficients and independent-cohort binomial process variation.
+  Keep fixed-input parameter intervals separate; transport error, structural
+  model probabilities and unknown dependence remain outside this budget.
+
+Reproducible inputs and results are committed in `validation/`. The new
+`mortality-cohort`, `household` and `uncertainty` CLI commands accept those
+inputs directly; `scenario` accepts the child eligibility and valuation flags.
+
+## Evidence and evaluation
+
+The source library retains 23 contrasts from three study samples. Repeated
+horizons and subgroups are overlapping observations, not independent studies.
+Danish cumulative hazard ratios cannot be pooled with annual odds ratios.
+Their SEs are explicitly approximate, reconstructed from rounded 95% limits.
+No compatible independent pool is claimed. A rate-limited Swedish full-text
+request and the incomplete Finnish re-extraction remain in the screening log.
+The previously recorded Swedish long-run null-compatible finding remains
+visible; missing uncertainty is not invented.
+
+`SCENARIO_EVIDENCE_PROTOCOL.md` freezes inclusion and scoring rules and records
+the subsequent acquisition amendment. These are locally reproducible records,
+not an independently timestamped prospective forecast. The original evaluation
+is retained; `validation/followthrough_evaluation_v050.json` executes the
+expanded-library checks. Held-out SIPP transition discrepancies and existing
+China-shock diagnostic misses remain visible.
+
+Independent causal evaluation of the new paths still requires a matched
+external displacement bridge and independently measured outcomes. Wider
+age/sex admission, target-specific exposure/composition, monthly and joint
+household dynamics, and a defensible transport-error model remain research
+dependencies. The software refuses unsupported totals rather than filling
+these gaps with zero or presenting conditional intervals as full certainty.
+
+## Verification
+
+Coverage: 96.8% statements and 93.1% branches, above the unchanged 95%/90%
+gates. Focused checks cover source arithmetic, signed subgroup effects,
+eligibility, unsupported strata, zero-rate valuation equivalence, zero-duration
+household equivalence, uncertainty input compatibility and CLI routing.
+The final full suite passes all **997 tests** after the saved examples and
+methods refresh. Ruff and vulture pass; the evidence audit reports zero errors
+and zero warnings. The built wheel passes an isolated-install check for all
+three new commands plus audit, export, family, validate, scenario and bundle.

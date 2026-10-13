@@ -32,47 +32,82 @@ simulation draws do not establish causal validity or transportability.
   Do not treat a nonsignificant HR as proof of zero, substitute an HR for an
   OR, reproduce the Swedish study with a hybrid profile, average unlike
   studies, or promote the alternative to a validated headline.
-- **[P1] Define the target displaced cohort:** pin survey release, weighted
+- **[DONE reference / target-specific bridge pending] Define the displaced cohort:** pin survey release, weighted
   inclusion rules, age, sex, tenure, industry, earnings and family structure;
   distinguish generic displacement from any H-1B-specific exposure bridge.
   Reproduce weighted cohort summaries before individual simulation. The
   review's 31.8 deaths per 1,000 remains unverified without its data/code.
-- **[P1] Admit effects by stratum before heterogeneous mortality:** separate
+  Implemented CPS January-2024 known-year >=3/6-year-tenure reference
+  summaries, with source hashes and BLS total reproduction (2,578,128 versus
+  published rounded 2,578,000). Interview age/family structure are not relabeled
+  as historical event characteristics. `scripts/build_displaced_cohort.py`.
+- **[DONE conditional path / wider admission pending] Effects by mortality stratum:** separate
   baseline-risk variation from evidence of effect modification; source
   age/sex-compatible response profiles before expanding admissible cohorts.
   Reconcile original study inclusion ages and tenure with the engine's
   reference-baseline age band; they must not be conflated as one restriction.
   Evaluate annual aging baselines against fixed-baseline sensitivity.
   Compare exact weighted-stratum aggregation with any sampled implementation.
-- **[P1] Child eligibility and heterogeneity:** record age at displacement,
+  Table 7 source contrasts for male event ages 30–69 are extracted separately
+  from Table 5 phases. `mortality-cohort` compares exact age-band aging/fixed
+  baselines under an explicit constant-window-response projection. Incompatible
+  strata remain unknown; no whole-cohort total is emitted if coverage is partial.
+  Single-age hazards, women/other age responses, and transport validation remain open.
+- **[DONE source scope / wider evidence pending] Child eligibility and heterogeneity:** record age at displacement,
   child sex and family-income scope; refuse or explicitly flag unsupported
   extrapolations. Extract age/income contrasts from primary sources before
   introducing response curves. A childhood estimate does not establish
   the same effect for a fetus, adult child, or every family-income group.
-- **[P1] Populate the coefficient synthesis library:** predeclare search and
+  Source Table 8 quartile contrasts retain signed estimates and uncertainty.
+  Known child age/sex mismatches block counts; unknown profiles cannot qualify
+  for reviewed headlines. Income-rank mapping is explicit. Further countries,
+  childhood ages and parent restrictions still require source admission.
+- **[PARTIAL / compatible independent pools pending] Coefficient synthesis library:** predeclare search and
   inclusion rules; retain nulls, protective effects and conflicts. Extract
   compatible treatment/comparison, population, scale, horizon, uncertainty,
   and sample-overlap records. Existing synthesis code is not a pooled
   evidence library; study-level heterogeneity is not a target transport model.
-- **[P1] Matched independent evaluation:** freeze event bridges and scored
+  Twenty-three hash-pinned Table 5/7, Table 2/8 and Danish cumulative-hazard contrasts now ship in
+  `params/study_estimates.csv`. These are three study samples, not twenty-three
+  independent studies. Current groups are singleton/overlapping and are
+  deliberately not pooled. Search/inclusion and overlap rules are frozen in
+  `docs/SCENARIO_EVIDENCE_PROTOCOL.md`; independent full-text extraction remains open.
+- **[BLOCKED external data] Matched independent evaluation:** freeze event bridges and scored
   endpoints; compare direct-effect and stratified baselines with the expanded
   model; report every preregistered result, subgroup miss and interval scope.
   Existing China-shock diagnostics and SIPP baseline checks remain visible;
   they do not establish H-1B-specific causal validation.
-- **[P2] Household dynamics and displacement duration:** build on R2 SIPP
+  Executed all available diagnostics in `validation/followthrough_evaluation_v050.json`
+  (the original `followthrough_evaluation.json` is retained).
+  No new source provides a matched event exposure bridge plus independently
+  estimated outcomes. The new paths have not passed causal event validation;
+  no score or prospective timestamp is fabricated.
+- **[DONE annual prototype / monthly and joint model pending] Household dynamics and displacement duration:** build on R2 SIPP
   transitions, linked households, recovery, partner resources and child ages.
   Distinguish baseline transitions from causal event responses and prevent
   double counting. Joint outcomes need evidenced/declared dependence;
   microsimulation alone does not identify it.
-- **[P2] Child-dollar valuation:** retain undiscounted lifetime totals and add
+  `household` advances supported E/U/N probabilities, linked adult gross
+  earnings and child ages under a supplied unemployment duration. Sparse
+  cells require explicit acceptance; observational recovery is not a causal
+  displacement response. Taxes/transfers, monthly timing, replicate-weight
+  intervals, membership changes and joint outcomes remain open.
+- **[DONE conditional valuation] Child-dollar valuation:** retain undiscounted lifetime totals and add
   separately labeled present values with explicit real discount rate,
   valuation date, child age and annual earnings profile. Test zero-rate
   equivalence and supported timing; do not relabel an adult annual effect
   as an identified constant effect across the whole career.
-- **[P2] Uncertainty coverage:** extend beyond existing parameter Monte Carlo
+  Known child ages + real discount rate + valuation/event year produce annual
+  schedules, separate observed-age and career projections, undiscounted totals
+  and parameter intervals. Zero-rate equivalence and signed subgroup gains pass.
+- **[PARTIAL / transport model pending] Uncertainty coverage:** extend beyond existing parameter Monte Carlo
   and declared correlations to exposure, baseline, transport, structural and
   process uncertainty where a defensible joint model exists. Keep unknown
   components named; do not call parameter intervals full prediction intervals.
+  `uncertainty` adds a metadata-matched Poisson baseline-count model, declared
+  integer exposure distribution and independent-cohort binomial variation;
+  parameter-only results remain separate. Transport, structural probabilities,
+  cross-component dependence and earnings-profile uncertainty remain excluded.
 
 ## Forward milestones
 

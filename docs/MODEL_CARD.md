@@ -1,4 +1,4 @@
-# MODEL CARD — downstream engine 0.4.1 / parameters v1.50
+# MODEL CARD — downstream engine 0.5.0 / parameters v1.50
 
 Model card practice per Mitchell et al. 2019, "Model Cards for Model
 Reporting". This card travels with the model.
@@ -24,7 +24,7 @@ Reporting". This card travels with the model.
   hybrid sensitivity is not a Swedish-study replication, a pooled coefficient,
   or a transported causal estimate. The unweighted point spread is not a
   confidence interval. See `MORTALITY_PERSISTENCE_SENSITIVITY.md`.
-- Parameter set v1.49: 67 parameter rows, each with point, band,
+- Parameter set v1.50: 67 parameter rows, each with point, band,
   precision tier, bib keys, and population scope.
 - Version stamping: params/VERSION; every output carries the version
   it used; sampled outputs mark `-sampled`.
@@ -34,6 +34,20 @@ Reporting". This card travels with the model.
 - Scenario results carry input content hashes. Bundles additionally hash engine code and exported files; engine and parameter version labels alone are insufficient cache keys.
 
 ## Intended use
+
+- Engine 0.5.0 adds sourced child income contrasts and eligibility, exact
+  age-stratum mortality with explicit constant-response projection, optional
+  real-dollar child valuation, and annual household gross-earnings scenarios
+  using observed SIPP transition probabilities. These are conditional
+  comparisons, not newly identified individual or policy effects.
+- `uncertainty` propagates documented national baseline counts, declared
+  integer exposure bounds, coefficient draws and independent-cohort binomial
+  variation. Baseline/exposure/parameter independence and a Jeffreys Poisson
+  rate prior are explicit. Transport and structural model probabilities are
+  excluded. This does not establish a full uncertainty model.
+- The source library records twenty-three contrasts from three study samples,
+  with within-study overlap. Compatible independent pools are not yet available. Independent
+  validation of the new paths remains blocked on matched external data.
 
 - Present: population-level, place-resolved modeling of displacement
   consequences for transparent public reporting: workers, children (three
