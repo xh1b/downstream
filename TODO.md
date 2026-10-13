@@ -17,7 +17,62 @@ The experience plan is `docs/WEBSITE_EXPERIENCE_PLAN.md`; website implementation
 and XH1B integration remain future work.
 See `docs/MODEL_CARD.md` for model limits and remaining assumptions.
 
-## Forward goals
+## Next version — review follow-through (2026-10-14)
+
+Acceptance standard: improve estimates symmetrically when evidence supports
+smaller, larger, null, or beneficial effects. Better presentation and more
+simulation draws do not establish causal validity or transportability.
+
+- **[IN PROGRESS / engine 0.4.0] Mortality persistence robustness:** publish
+  the source-profile result beside a declared no-sustained-excess alternative
+  (offset +6 onward at OR=1), motivated by the Eliason–Storrie long-run
+  divergence already recorded in the evidence. Preserve the early profile,
+  actual selected baseline, exposure and horizon. Show parameter intervals
+  within each structure separately from the unweighted structural spread.
+  Do not treat a nonsignificant HR as proof of zero, substitute an HR for an
+  OR, reproduce the Swedish study with a hybrid profile, average unlike
+  studies, or promote the alternative to a validated headline.
+- **[P1] Define the target displaced cohort:** pin survey release, weighted
+  inclusion rules, age, sex, tenure, industry, earnings and family structure;
+  distinguish generic displacement from any H-1B-specific exposure bridge.
+  Reproduce weighted cohort summaries before individual simulation. The
+  review's 31.8 deaths per 1,000 remains unverified without its data/code.
+- **[P1] Admit effects by stratum before heterogeneous mortality:** separate
+  baseline-risk variation from evidence of effect modification; source
+  age/sex-compatible response profiles before expanding admissible cohorts.
+  Evaluate annual aging baselines against fixed-baseline sensitivity.
+  Compare exact weighted-stratum aggregation with any sampled implementation.
+- **[P1] Child eligibility and heterogeneity:** record age at displacement,
+  child sex and family-income scope; refuse or explicitly flag unsupported
+  extrapolations. Extract age/income contrasts from primary sources before
+  introducing response curves. A childhood estimate does not establish
+  the same effect for a fetus, adult child, or every family-income group.
+- **[P1] Populate the coefficient synthesis library:** predeclare search and
+  inclusion rules; retain nulls, protective effects and conflicts. Extract
+  compatible treatment/comparison, population, scale, horizon, uncertainty,
+  and sample-overlap records. Existing synthesis code is not a pooled
+  evidence library; study-level heterogeneity is not a target transport model.
+- **[P1] Matched independent evaluation:** freeze event bridges and scored
+  endpoints; compare direct-effect and stratified baselines with the expanded
+  model; report every preregistered result, subgroup miss and interval scope.
+  Existing China-shock diagnostics and SIPP baseline checks remain visible;
+  they do not establish H-1B-specific causal validation.
+- **[P2] Household dynamics and displacement duration:** build on R2 SIPP
+  transitions, linked households, recovery, partner resources and child ages.
+  Distinguish baseline transitions from causal event responses and prevent
+  double counting. Joint outcomes need evidenced/declared dependence;
+  microsimulation alone does not identify it.
+- **[P2] Child-dollar valuation:** retain undiscounted lifetime totals and add
+  separately labeled present values with explicit real discount rate,
+  valuation date, child age and annual earnings profile. Test zero-rate
+  equivalence and supported timing; do not relabel an adult annual effect
+  as an identified constant effect across the whole career.
+- **[P2] Uncertainty coverage:** extend beyond existing parameter Monte Carlo
+  and declared correlations to exposure, baseline, transport, structural and
+  process uncertainty where a defensible joint model exists. Keep unknown
+  components named; do not call parameter intervals full prediction intervals.
+
+## Forward milestones
 
 - **[R0-R1] Correct and classify:** resolve current review findings; distinguish
   baseline transitions, causal effects, and structural assumptions in evidence records.
@@ -74,13 +129,13 @@ See `docs/MODEL_CARD.md` for model limits and remaining assumptions.
   all 2,748 posteriors and the v1.41 build-places places.csv columns that
   key off k = 2000, so it needs an explicit fresh decision.
   (`docs/DATA_SOURCES.md` county row.)
-- **[OPEN] Sustained-mortality alternate band:** Eliason & Storrie 2009 find
+- **[IN PROGRESS 0.4.0] Sustained-mortality alternative:** Eliason & Storrie 2009 find
   NO long-run all-cause effect (5-8y HR 0.98, 9-12y 0.91, n.s., 12y
   follow-up) against the SvW 1.135 sustained anchor; v1.43 records the
   divergence as declared notes on `earnings_shock->mortality_sustained`
-  and never averages (CITING 5). Decide whether the row should additionally
-  carry a named alternate band holding the ES position, or keep the single
-  SvW anchor. User decision.
+  and never averages (CITING 5). The next-version robustness comparison
+  exposes a named null-persistence assumption without changing that anchor
+  or claiming the two studies share an estimand.
 - **[OPEN] Promote the v1.43 streams to headline claims:** fertility
   (`annual_birth_response`), child mental health (`child_depression_
   anxiety`), and spousal labor supply (`spouse_participation_elasticity`)
