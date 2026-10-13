@@ -105,6 +105,8 @@ def _run_main(argv: list[str] | None = None) -> int:
     p.add_argument("--child-profiles", help="JSON file: child age_at_displacement and sex, one per child")
     p.add_argument("--child-income-quartile", type=int, choices=(1, 2, 3, 4))
     p.add_argument("--income-rank-definition", help="definition and transport rationale for father's pre-displacement income rank")
+    p.add_argument("--real-discount-rate", type=float)
+    p.add_argument("--valuation-year", type=int)
     p.add_argument("--tradable-share", type=float, default=1.0)
     p.add_argument("--net-tradable-jobs-lost", type=float, default=None,
                    help="documented net metro-level loss of tradable jobs; required for local service jobs")
@@ -441,6 +443,8 @@ def _run_main(argv: list[str] | None = None) -> int:
                     child_profiles=json.loads(Path(args.child_profiles).read_text()) if args.child_profiles else None,
                     child_income_quartile=args.child_income_quartile,
                     income_rank_definition=args.income_rank_definition,
+                    real_discount_rate=args.real_discount_rate,
+                    valuation_year=args.valuation_year,
                     tradable_share=args.tradable_share,
                     net_tradable_jobs_lost=args.net_tradable_jobs_lost,
                     local_job_mix=args.local_job_mix,

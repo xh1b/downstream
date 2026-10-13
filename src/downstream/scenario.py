@@ -45,11 +45,23 @@ class ScenarioInput:
     child_profiles: list[dict] | None = None
     child_income_quartile: int | None = None
     income_rank_definition: str | None = None
+    real_discount_rate: float | None = None
+    valuation_year: int | None = None
 
     def __post_init__(self):
         from .child_applicability import validate_child_inputs
         validate_child_inputs(self.child_profiles, self.n_children,
                               self.child_income_quartile, self.income_rank_definition)
+        if (self.real_discount_rate is None) != (self.valuation_year is None):
+            raise ValueError("discount rate and valuation year must be supplied together")
+        if self.real_discount_rate is not None:
+            if (isinstance(self.real_discount_rate,bool) or not isinstance(self.real_discount_rate,(int,float)) or
+                    not math.isfinite(self.real_discount_rate) or self.real_discount_rate <= -1):
+                raise ValueError("real_discount_rate must be finite and greater than -1")
+            if isinstance(self.valuation_year,bool) or not isinstance(self.valuation_year,int) or not 1900 <= self.valuation_year <= 2200:
+                raise ValueError("valuation_year must be an integer 1900-2200")
+            if self.child_profiles is None or any(c['age_at_displacement'] is None for c in self.child_profiles):
+                raise ValueError("discounting requires known child profiles and ages at the event")
         for name in ('displaced_workers', 'tradable_share', 'exposure_years'):
             value = getattr(self, name)
             if (isinstance(value, bool) or not isinstance(value, (int, float))
@@ -395,6 +407,15 @@ def compute_counts(
         if blocked["reason"] == "target demographics do not match the admitted effect":
             computed["modeled"].pop(blocked["outcome"], None)
     mortality = computed["modeled"].get("excess_deaths")
+    if scenario.real_discount_rate is not None:
+        if "child_lifetime_earnings_lost_usd" in computed["modeled"]:
+            from .valuation import child_valuation
+            computed["child_valuation"] = child_valuation(
+                line["child"], require_baseline(baselines,"median_male_lifetime_earnings"),
+                scenario.displaced_workers, scenario.child_profiles,
+                scenario.real_discount_rate, scenario.valuation_year)
+        else:
+            computed["child_valuation"] = {"available":False,"reason":"child earnings outcome is blocked"}
     if mortality is not None:
         if scenario.mortality_method == "odds_survival" and scenario.mortality_timing == "source_profile":
             from .mortality_robustness import persistence_sensitivity
@@ -465,6 +486,7 @@ def sample_counts(
     sensitivity = result["modeled"].get("excess_deaths", {}).get("persistence_sensitivity", {})
     alternate_key = "mortality_no_sustained_excess"
     difference_key = "mortality_source_minus_no_sustained"
+    valuations = result.get("child_valuation", {}).get("projections", {})
 
     def outcomes(sampled: ParameterSet) -> dict[str, float]:
         sampled_result = compute_counts(sampled, baselines, scenario, strict=strict,
@@ -476,11 +498,17 @@ def sample_counts(
             comparison = sampled_result["modeled"]["excess_deaths"]["persistence_sensitivity"]
             values[alternate_key] = comparison["variants"]["no_sustained_excess"]["point"]
             values[difference_key] = comparison["source_minus_no_sustained_point"]
+        for name in valuations:
+            values[f"child_valuation_{name}"] = sampled_result["child_valuation"]["projections"][name]["point"]
         return values
 
     sampling = simulate_many(params, outcomes, draws=draws, seed=seed, nodes=nodes,
                              params_dir=params_dir, include_samples=True)
     raw_samples = sampling.pop("_raw_samples")
+    for name, projection in valuations.items():
+        key = f"child_valuation_{name}"
+        projection["parameter_interval_90"] = sampling["outcomes"].pop(key)
+        raw_samples.pop(key)
     if sensitivity.get("available"):
         sensitivity["variants"]["source_profile"]["parameter_interval_90"] = sampling["outcomes"]["excess_deaths"]
         sensitivity["variants"]["no_sustained_excess"]["parameter_interval_90"] = sampling["outcomes"].pop(alternate_key)

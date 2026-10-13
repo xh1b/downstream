@@ -212,6 +212,13 @@ a constant effect over a whole career. `params/study_estimates.csv` contains
 hash-pinned source contrasts and overlap metadata; these are not automatically
 pooled or admitted as universal effects.
 
+With known child ages, `--real-discount-rate 0.03 --valuation-year 2026`
+adds a separate `child_valuation` report. It preserves undiscounted dollars,
+shows real present values at the event date, and separates the observed
+adult-age window (25–33) from a declared constant-gap career projection
+(20–64). The latter is an extrapolation, not an identified annual effect path.
+Zero-rate career valuation reproduces the existing undiscounted count.
+
 ## Mortality persistence comparison (0.4.0)
 
 Default scenario and entity mortality outputs now include
