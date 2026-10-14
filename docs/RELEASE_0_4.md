@@ -160,7 +160,8 @@ zero warnings. The final wheel passed all eleven isolated CLI checks, including
 receiving-community. It contains the new consumer/receiving APIs and parameter
 set v1.52; the source archive includes all calculator assets. Generator checks
 for calculator, evidence classification, pool readiness and consumer fixtures
-pass. The paper builds without LaTeX warnings; its current source digest was
+pass. The paper has no LaTeX Warning entries or overfull boxes. One underfull
+hbox diagnostic has no visible layout defect. Its current source digest was
 recomputed from the final manifest and matches. Changed pages and the full
 page overview were inspected for layout defects.
 
