@@ -2,7 +2,7 @@
 title: R0-R1 - Correct and classify evidence
 area: evidence
 priority: P1
-assignee:
+assignee: eli
 due:
 blocked-by: []
 expected-paths: []
