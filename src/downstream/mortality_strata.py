@@ -54,7 +54,8 @@ def project_mortality_cohort(payload: dict, params_dir: Path | None = None) -> d
         total += workers
         if not math.isfinite(total):
             raise ValueError('cohort exposure overflows')
-        if row['sex'] != 'Male' or not 30 <= age <= 69 or tenure < 6 or row.get('exposure_type') not in ('mass layoff','firm closure'):
+        if (row['sex'] != 'Male' or not 30 <= age <= 69 or tenure < 6
+                or row.get('exposure_type') not in ('mass layoff','firm closure')):
             unsupported.append({'stratum':index,'workers':workers,'reason':'no compatible source mortality response'})
             continue
         low = age // 10 * 10
@@ -63,6 +64,8 @@ def project_mortality_cohort(payload: dict, params_dir: Path | None = None) -> d
                          sex='Male', age_min=str(low), age_max=str(low+9), tenure_min_years='6',
                          time_horizon='calendar mortality follow-up 1980-2002; displacement 1980-1986',
                          outcome_definition='annual all-cause death odds',
+                         treatment='worker displaced in mass layoff 1980-1986',
+                         comparison='worker not displaced',
                          projection_status='window_averaged_annual_logit_requires_projection_assumption')
 
         def baseline_for(attained_age):
@@ -85,7 +88,28 @@ def project_mortality_cohort(payload: dict, params_dir: Path | None = None) -> d
 
         supported.append({'stratum':index,'workers':workers,'age_at_event':age,
                           'source_contrast':source,'aging_bands':evaluate(True),
-                          'fixed_baseline':evaluate(False)})
+                          'fixed_baseline':evaluate(False),
+                          'applicability': {
+                              'status': 'conditional_source_stratum_projection',
+                              'eligible_for_public_headline': False,
+                              'source_restrictions': {
+                                  'sex': 'Male', 'age_at_displacement': [low, low+9],
+                                  'minimum_tenure_years': 6,
+                                  'employment_history': 'stable employment 1974-1979',
+                                  'employer_size': 'more than 50 employees',
+                                  'geography': 'Pennsylvania',
+                                  'displacement_window': '1980-1986',
+                                  'treatment': source['treatment'],
+                                  'comparison': source['comparison'],
+                              },
+                              'remaining_transport_assumptions': [
+                                  'Stable source employment history is not established by tenure alone.',
+                                  'Employer-size scope and its measurement timing have not been verified for the target.',
+                                  'Source recession, geography, calendar time and event design transport to the target cohort.',
+                                  'Firm closure uses the mass-layoff response by conditional transport, not a separately identified closure coefficient.',
+                                  'Source-window response is held constant as survivors age; baseline aging does not identify response aging.',
+                              ],
+                          }})
         covered += workers
     totals = {mode:{bound:sum(r[mode][bound] for r in supported) for bound in ('point','low','high')}
               for mode in ('aging_bands','fixed_baseline')}
