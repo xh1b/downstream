@@ -1,1 +1,2 @@
 - 2026-10-14 22:24 codex: Owner requested focused analysis; no default change is assumed.
+- 2026-10-14 22:24 codex: claimed (ready -> active)

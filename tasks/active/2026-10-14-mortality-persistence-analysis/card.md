@@ -2,7 +2,7 @@
 title: Analyze the mortality persistence comparison
 area: mortality
 priority: P1
-assignee:
+assignee: codex
 due:
 blocked-by: []
 expected-paths: [docs/MORTALITY_PERSISTENCE_ANALYSIS_2026-10-14.md]
