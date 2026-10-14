@@ -41,3 +41,10 @@ done: active -> review.
 - By: fenix
 
 Independent code-level mobile review approves the scoped implementation: responsive two-column controls with full-width final field, flexible label/status/header wrapping, 44px mobile control height, numeric wrapping, bounded horizontal table scroll and focusable named scroll region. Re-ran four calculator tests and generator freshness check successfully. The earlier browser file-URL security denial explicitly prohibited alternate routes; no rendered preview or workaround was attempted. Actual 390px/320px/zoom rendering, touch behavior, assistive technology and participant comprehension remain unverified and are not implied by this acceptance.
+
+## c-108097d2609f
+
+- At: 2026-10-15 02:03 HKT
+- By: fenix
+
+accept: review -> done.
