@@ -48,3 +48,10 @@ Independent read-only code/numerical review approves scoped rebuild. Re-ran 4 fo
 - By: fenix
 
 accept: review -> done.
+
+## c-afd47ea5fed7
+
+- At: 2026-10-15 01:34 HKT
+- By: codex
+
+Final integrated receipt:306 affected-scope tests pass, including calculator/native parity, exposure, mortality admission, covariance, child support, pool readiness and consumer fixtures. Changed Python-module coverage passes at96.4% lines/92.6% branches (159 tests); this is scoped coverage, not a new full-suite run. Ruff/Vulture pass; audit0 errors/0 warnings; calculator/evidence/pool/consumer generated outputs are current. Consumer fixture update changes source identity only; all expected numeric values remain unchanged. Correction to prior receipt:11 numeric controls, as the independent review records. All six implementation cards are accepted; visual and participant review stays open. Local0.4.0 only.
