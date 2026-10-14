@@ -36,3 +36,10 @@ done: active -> review.
 - By: eli
 
 Independent read-only review of acd04ec: approved. Ran tests/test_consumer_fixtures.py (16 passed in 4.67s) and fixture builder --check (current). Inspected native/raw fractional precision, signed child effects, result-only scaling, variance squared scaling and zero-index handling; all active components contribute to persistence/removal/endpoint experiments, eligibility requires every active component, blocked components cannot become zero contributions, and quantile/variance mixture claims remain withheld. Docs clearly distinguish offline acceptance from companion integration or deployment; synthetic reviewed fields and 128-draw design are appropriately qualified. No blocking defect found.
+
+## c-b7932e0ca419
+
+- At: 2026-10-15 01:00 HKT
+- By: eli
+
+accept: review -> done.
