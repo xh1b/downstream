@@ -1,0 +1,175 @@
+#!/usr/bin/env python3
+"""Report source-contrast compatibility; never compute or admit a pooled effect."""
+from __future__ import annotations
+
+import argparse
+from collections import Counter
+import hashlib
+from itertools import combinations
+import json
+from pathlib import Path
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
+
+REQUIRED = ("link", "scale", "population_scope", "design", "time_horizon", "treatment",
+            "comparison", "outcome_definition", "overlap_group", "standard_error_method")
+MATCH_FIELDS = ("link", "scale", "population_scope", "design", "time_horizon", "treatment",
+                "comparison", "outcome_definition", "income_quartile", "age_min", "age_max",
+                "sex", "tenure_min_years", "projection_status")
+
+
+def compare(left: dict, right: dict) -> dict:
+    """Conservative exact-metadata screen; text harmonization needs human review."""
+    reasons = []
+    for field in REQUIRED:
+        if any(not isinstance(row.get(field), str) or not row[field].strip()
+               for row in (left, right)):
+            reasons.append(f"missing:{field}")
+    for field in MATCH_FIELDS:
+        if left.get(field, "") != right.get(field, ""):
+            reasons.append(f"mismatch:{field}")
+    groups = (left.get("overlap_group"), right.get("overlap_group"))
+    if all(groups) and groups[0] == groups[1]:
+        reasons.append("same_overlap_group:dependence_model_required")
+        independence = "shared_sample"
+    elif all(groups):
+        independence = "declared_distinct_groups; independence_not_verified"
+    else:
+        independence = "unknown"
+    warnings = []
+    if left.get("source_sha256") and left.get("source_sha256") == right.get("source_sha256"):
+        warnings.append("same_source_document; review whether samples or estimates overlap")
+    return {"left": left["study_id"], "right": right["study_id"],
+            "independence": independence, "refusal_reasons": reasons, "warnings": warnings,
+            "mechanical_screen_pass": not reasons, "automatic_pooling_allowed": False,
+            "next_step": ("Manual causal compatibility and sample-independence review before synthesis."
+                          if not reasons else "Resolve exclusions, harmonization or dependence before synthesis.")}
+
+
+def build(params_dir=ROOT / "params") -> dict:
+    from downstream.study_library import load_library
+
+    params_dir = Path(params_dir)
+    library = load_library(params_dir / "study_estimates.csv")
+    rows = [library[key] for key in sorted(library)]
+    contrasts = []
+    for row in rows:
+        point, se = row["point"], row["standard_error"]
+        contrasts.append({**row, "coefficient_sign": "negative" if point < 0 else "positive" if point > 0 else "zero",
+                          "normal_95_interval": [point - 1.96*se, point + 1.96*se],
+                          "interval_includes_zero": point - 1.96*se <= 0 <= point + 1.96*se})
+    pairs = [compare(a, b) for a, b in combinations(rows, 2)]
+    source_paths = [params_dir / "study_estimates.csv", params_dir / "VERSION",
+                    ROOT / "docs/SCENARIO_EVIDENCE_PROTOCOL.md",
+                    ROOT / "src/downstream/study_library.py", Path(__file__)]
+    hashes = {str(p.relative_to(ROOT)) if p.is_relative_to(ROOT) else str(p):
+              hashlib.sha256(p.read_bytes()).hexdigest() for p in source_paths}
+    return {"schema": "downstream-pool-readiness/1",
+            "parameter_set_version": (params_dir / "VERSION").read_text().strip(),
+            "policy": "Exact metadata screen; no source sign/significance selection; no pooled effects or automatic admission.",
+            "screen_fields": list(MATCH_FIELDS), "required_metadata": list(REQUIRED),
+            "summary": {"contrasts": len(rows),
+                        "declared_overlap_groups": len({r["overlap_group"] for r in rows}),
+                        "pair_comparisons": len(pairs),
+                        "shared_sample_pairs": sum(p["independence"] == "shared_sample" for p in pairs),
+                        "mechanical_screen_pass_pairs": sum(p["mechanical_screen_pass"] for p in pairs),
+                        "automatically_admitted_pools": 0,
+                        "refusal_counts": dict(sorted(Counter(reason for p in pairs
+                                                              for reason in p["refusal_reasons"]).items()))},
+            "contrasts": contrasts, "pairs": pairs, "source_sha256": hashes}
+
+
+def _cell(value):
+    return str(value).replace("|", "\\|").replace("\n", " ")
+
+
+def _table(headers, rows):
+    return ["| " + " | ".join(headers) + " |", "| " + " | ".join("---" for _ in headers) + " |",
+            *("| " + " | ".join(_cell(v) for v in row) + " |" for row in rows)]
+
+
+def render(report):
+    summary = report["summary"]
+    lines = ["# Independent coefficient pool readiness for 0.4", "",
+             "Generated by `python3 scripts/build_pool_readiness.py`; freshness check: `--check`.",
+             "For every pair and full metadata, run `--format json --out /tmp/downstream-pool-readiness.json`.", "",
+             f"Current library: **{summary['contrasts']} contrasts, {summary['declared_overlap_groups']} declared sample-overlap groups**.",
+             f"Of {summary['pair_comparisons']} pair comparisons, {summary['shared_sample_pairs']} share a sample group and",
+             f"**{summary['mechanical_screen_pass_pairs']} pass the conservative mechanical screen**.",
+             "No effects are pooled or automatically admitted. This is a readiness diagnostic, not a new",
+             "source extraction, causal validation, target transport model or proof that a future pool is valid.", "",
+             "## Rules and interpretation", "",
+             "The [evidence protocol](SCENARIO_EVIDENCE_PROTOCOL.md) governs selection. No source is",
+             "excluded because its sign differs or its interval includes zero. Original coefficients,",
+             "uncertainty and source locators remain inspectable; null-compatible rows are never set to zero.", "",
+             "The screen requires exact agreement on link, effect scale, population, design, horizon,",
+             "treatment, comparison, outcome definition and supplied age/sex/tenure/income subgroup and",
+             "projection metadata. Text mismatches mean harmonization/review is needed, not that the",
+             "studies can never be synthesized. Differing scales are not converted by guessing a baseline.",
+             "In particular, cumulative hazard ratios cannot be substituted for annual odds ratios.", "",
+             "Rows with a common overlap group require an explicit dependence model. Different declared",
+             "groups are a necessary screening signal, not proof of independence: registry reuse, shared",
+             "controls and duplicate papers still need review. Same-document pairs are flagged. A mechanically",
+             "compatible pair would still require manual causal compatibility and independence review.", "",
+             "Age strata, income subgroups, time offsets and cumulative windows are distinct contrasts;",
+             "they do not manufacture additional independent studies. Approximate SEs reconstructed from",
+             "rounded confidence limits retain their source method; this report does not improve their precision.", "",
+             "## Preserved contrasts", "",
+             "Intervals below are the diagnostic normal `point ± 1.96 SE` on the stated source scale.",
+             "They do not supply a target prediction interval. Coefficient sign is mathematical, not a",
+             "universal harm/protection label; outcome direction matters (earnings differs from mortality).", ""]
+    lines += _table(["Contrast", "Overlap group", "Scale", "Point", "SE", "Interval includes zero"],
+                    ((r["study_id"], r["overlap_group"], r["scale"], r["point"], r["standard_error"],
+                      r["interval_includes_zero"]) for r in report["contrasts"]))
+    lines += ["", "## Refusal counts across all pairs", "",
+              "A pair can have several reasons. Counts are not independent studies or model weights.", ""]
+    lines += _table(["Reason", "Pairs"], summary["refusal_counts"].items())
+    lookup = {r["study_id"]: r for r in report["contrasts"]}
+    within = [p for p in report["pairs"] if lookup[p["left"]]["link"] == lookup[p["right"]]["link"]]
+    lines += ["", "## Same-link pair receipts", "",
+              "All same-link pairs are shown; the JSON export additionally preserves every cross-link",
+              "comparison with source metadata. Absence of a pooled number is the intended outcome.", ""]
+    lines += _table(["Left", "Right", "Refusal reasons"],
+                    ((p["left"], p["right"], "; ".join(p["refusal_reasons"]) or "Manual review required")
+                     for p in within))
+    lines += ["", "## Next extraction decisions", "",
+              "Acquire independent source-version-pinned contrasts with aligned treatment/comparison,",
+              "population, outcomes, scale, follow-up and uncertainty. Preserve divergent/null estimates.",
+              "If a desired comparison has different scales/windows or populations, declare a translation",
+              "or transport model for review; do not average the original rows as though they matched.",
+              "The parent coefficient-library task remains open: this report does not extract new studies.", "",
+              "[Readiness tests](../tests/test_pool_readiness.py) check independent matching synthetic rows,",
+              "overlap refusal, scale/window/subgroup mismatches and preservation of null/protective rows.", "",
+              "## Input identity", "",
+              f"Parameter set: `{report['parameter_set_version']}`.", ""]
+    lines += _table(["File", "SHA-256"], report["source_sha256"].items())
+    return "\n".join(lines) + "\n"
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--params-dir", type=Path, default=ROOT / "params")
+    parser.add_argument("--format", choices=("markdown", "json"), default="markdown")
+    parser.add_argument("--out", type=Path)
+    parser.add_argument("--check", action="store_true")
+    args = parser.parse_args(argv)
+    if args.format == "json" and args.out is None:
+        parser.error("JSON export requires --out so the Markdown report is not overwritten")
+    out = args.out or ROOT / "docs/POOL_READINESS_0_4.md"
+    report = build(args.params_dir)
+    text = (render(report) if args.format == "markdown" else
+            json.dumps(report, indent=2, allow_nan=False) + "\n")
+    if args.check:
+        if not out.exists() or out.read_text() != text:
+            print(f"stale pool-readiness report: {out}", file=sys.stderr)
+            return 1
+    else:
+        out.write_text(text)
+    print(out)
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
