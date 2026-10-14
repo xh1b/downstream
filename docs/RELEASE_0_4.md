@@ -171,6 +171,7 @@ The browser URL policy explicitly denies the local file preview and alternate
 routes; rendered mobile, zoom, assistive technology and participant checks are
 still unverified. No companion repin, deployment or independent causal
 validation is claimed.
+
 ## Calculator app and local server — 2026-10-15 follow-up
 
 The calculator now lives in `calculator/`. `make serve` builds current source
