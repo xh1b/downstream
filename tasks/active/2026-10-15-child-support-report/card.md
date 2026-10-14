@@ -4,6 +4,8 @@ area: children
 priority: P2
 assignee: mira
 blocked-by: []
+parent: 2026-10-14-child-heterogeneity
+expected-paths: [src/downstream/child_support.py, tests/test_child_support.py, scripts/inspect_child_support.py, docs/CHILD_SUPPORT_0_4.md]
 ---
 
 # Inspectable child source-support report
@@ -18,7 +20,7 @@ age-response curves or new country-specific evidence.
 
 ## Acceptance
 
-- [ ] Report source child age/sex, parent/event/income conditions, country and outcome window with source provenance.
-- [ ] Preserve signed overall/quartile estimates, source uncertainty and null-crossing intervals.
-- [ ] Test matched, unknown, refused and conditional transport states, including custom source contract refusal.
-- [ ] Document use and limits; keep the wider evidence-extraction parent open.
+- [x] Report source child age/sex, parent/event/income conditions, country and outcome window with source provenance. [structured report](../../../src/downstream/child_support.py)
+- [x] Preserve signed overall/quartile estimates, source uncertainty and null-crossing intervals. [source contrast tests](../../../tests/test_child_support.py)
+- [x] Test matched, unknown, refused and conditional transport states, including custom source contract refusal. [38 contract checks](../../../tests/test_child_support.py)
+- [x] Document use and limits; keep the wider evidence-extraction parent open. [scope and usage](../../../docs/CHILD_SUPPORT_0_4.md)
