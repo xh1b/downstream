@@ -29,7 +29,8 @@ def main() -> None:
             [str(python), "-c", "from downstream.params import default_dir; print(default_dir().parent / 'validation')"],
             cwd=root, env=env, text=True).strip())
         for command in (["audit"], ["export"], ["family"], ["validate"],
-                        ["scenario", "--workers", "1000", "--draws", "20", "--seed", "1901"],
+                        ["scenario", "--workers", "1000", "--draws", "20", "--seed", "1901",
+                         "--sensitivity-base", "8"],
                         ["mortality-cohort", "--input", str(validation / "cps2024_hypothetical_mortality_input.json")],
                         ["household", "--input", str(validation / "household_five_year_input.json")],
                         ["uncertainty", "--input", str(validation / "uncertainty_budget_input.json")],
@@ -39,7 +40,11 @@ def main() -> None:
             if result.returncode:
                 raise RuntimeError(f"Installed-wheel {command[0]} failed:\n"
                                    f"{result.stdout}\n{result.stderr}")
-            json.loads(result.stdout)
+            payload = json.loads(result.stdout)
+            if command[0] == "scenario":
+                report = payload["modeled"]["excess_deaths"]["sensitivity"]
+                if len(report["effect_drivers"]) != 5 or not report["variance_attribution"]["available"]:
+                    raise RuntimeError("Installed-wheel scenario lacks complete sensitivity output")
             print(f"Installed-wheel check passed: {command[0]}")
 
 
