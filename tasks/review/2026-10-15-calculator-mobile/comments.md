@@ -27,3 +27,10 @@ claim: ready -> active.
 - By: codex
 
 Implementationcd816cd aligns wrapped labels via shared row height and gives the final field full width below520px. Mobile controls have44px minimum height; the risk table has a named focusable local scroll region. Large numeric results use scientific notation and retain raw receipt precision. Calculator interactions/native parity pass; Fenix independently reviewed CSS and found no code defect. The browser denial explicitly prohibits file:// and alternate routes for this action; the user supplied that same path. No rendered phone/zoom/screen-reader claim is made. Source receipt regenerated forv1.52 after receiving correction.
+
+## c-33d9243e58f4
+
+- At: 2026-10-15 02:02 HKT
+- By: codex
+
+done: active -> review.
