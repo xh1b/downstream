@@ -1,0 +1,770 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Downstream · Reference explorer</title>
+  <style>:root{font-family:system-ui,-apple-system,sans-serif;color:#243932;background:#f6f4ef;line-height:1.55;--accent:#245e4d;--muted:#52655d;--line:#cbd2ca}
+*{box-sizing:border-box}body{margin:0}header,footer{padding:24px 5vw;display:flex;justify-content:space-between;gap:20px;border-bottom:1px solid var(--line);font-size:.85rem}.wordmark{font-weight:750;font-size:1.25rem;letter-spacing:-.05em}main{max-width:1240px;margin:auto;padding:48px 28px}.intro{max-width:770px}.eyebrow{font-size:.72rem;letter-spacing:.15em;font-weight:750;color:var(--accent);margin:0 0 12px}h1{font-family:Georgia,serif;font-size:clamp(2.25rem,4.7vw,4rem);line-height:1.1;letter-spacing:-.035em;font-weight:500;margin:0 0 24px}h2{font-size:1.6rem;line-height:1.25;letter-spacing:-.025em;margin:0 0 18px}h3{font-size:1rem;margin:0 0 10px}p{margin:0 0 16px}.intro>p:last-child{font-size:1.1rem;color:var(--muted)}.direction{border:0;padding:0;margin:32px 0}.direction legend{font-size:.8rem;font-weight:650;margin-bottom:10px}.direction label{display:inline-flex;gap:8px;align-items:center;border:1px solid var(--line);padding:12px 16px;border-radius:8px;margin:0 8px 8px 0;background:#fff;cursor:pointer}.workspace{display:grid;grid-template-columns:270px minmax(0,1fr);gap:48px;margin-top:28px}aside{align-self:start;position:sticky;top:20px;border-top:3px solid var(--accent);padding-top:22px}aside>label{display:block;font-weight:650;font-size:.85rem;margin-bottom:8px}input[type=number],select{width:100%;font:inherit;border:1px solid #82948a;border-radius:5px;padding:12px;background:white;color:inherit}#exposure{font-size:1.4rem;font-variant-numeric:tabular-nums}#exposure-help,.fixed{font-size:.84rem;color:var(--muted);margin:12px 0 26px}.fixed{border-top:1px solid var(--line);padding-top:20px}button{font:inherit;padding:10px 14px;background:#fff;border:1px solid #82948a;border-radius:5px;color:inherit;cursor:pointer}button:hover{background:#e9efe8}:focus-visible{outline:3px solid #a34d13;outline-offset:4px}.skip{position:absolute;top:-100px;left:20px;padding:12px;background:#fff}.skip:focus{top:10px;z-index:3}.results{display:flex;flex-direction:column;min-width:0}.scope{padding:18px 22px;background:#e7ece4;border-left:3px solid var(--accent);margin-bottom:28px;font-size:.85rem}.scope p{margin:5px 0 0}section{padding:30px 0;border-top:1px solid var(--line)}#comparison{order:0}#sensitivity{order:1}.results>section:not(#comparison):not(#sensitivity){order:2}.comparison-values{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0}.comparison-values>div{border:1px solid var(--line);border-radius:8px;padding:18px}.comparison-values>div:last-child{background:#fff;border-color:var(--accent)}.comparison-values span{display:block;font-size:.85rem;max-width:230px;min-height:3em}.comparison-values strong{display:block;font-size:clamp(1.8rem,4vw,2.8rem);letter-spacing:-.05em;margin-top:10px;font-variant-numeric:tabular-nums}.difference{font-weight:650;font-size:1.1rem}.range{background:#edece5;padding:18px;border-radius:5px;font-size:.85rem}.range p{margin:5px 0}.driver{padding:20px 0;border-bottom:1px solid var(--line)}.driver-head{display:flex;justify-content:space-between;gap:16px;align-items:baseline}.driver-head h3{margin:0}.driver-head strong{white-space:nowrap}.driver p{font-size:.85rem;margin:8px 0 0}.driver-meter{height:7px;background:#dce2da;border-radius:10px;margin:12px 0}.driver-meter span{display:block;height:100%;background:var(--accent);border-radius:10px}.driver details{font-size:.85rem;margin-top:10px}summary{cursor:pointer;font-weight:650}a{color:var(--accent);text-underline-offset:3px}li{margin-bottom:12px}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:.72rem;background:#eaece6;padding:16px;max-height:400px;overflow:auto}footer{border-top:1px solid var(--line);border-bottom:0;color:var(--muted)}[hidden]{display:none!important}#input-error{color:#973e19;font-weight:600}body[data-direction=sensitivity]{background:#eef2f6;color:#1e344b;--accent:#244e83;--muted:#4d6178;--line:#c7d0dc}body[data-direction=sensitivity] h1{font-family:system-ui,sans-serif;font-weight:650;font-size:clamp(2.1rem,4.1vw,3.5rem)}body[data-direction=sensitivity] .scope{background:#dfe8f3}body[data-direction=sensitivity] #sensitivity{order:0}body[data-direction=sensitivity] #comparison{order:1}body[data-direction=sensitivity] .range{background:#e2e8f0}body[data-direction=sensitivity] .driver-meter{background:#d6dfeb}body[data-direction=sensitivity] .driver{padding:22px;background:#fff;margin:14px 0;border:1px solid var(--line);border-radius:8px}body[data-direction=sensitivity] pre{background:#e2e8f0}
+@media(max-width:760px){header,footer{padding:18px 22px;flex-wrap:wrap}main{padding:30px 22px}.workspace{grid-template-columns:1fr;gap:24px}aside{position:static}.fixed{margin-bottom:16px}.comparison-values{grid-template-columns:1fr}.comparison-values span{min-height:0}.driver-head{display:block}.driver-head strong{display:block;margin-top:8px}.direction label{display:flex}.intro h1 br{display:none}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body data-direction="comparison">
+<a class="skip" href="#results">Skip to results</a>
+<header><span class="wordmark">downstream<span aria-hidden="true"> ↘</span></span><span>Local prototype · <span id="version"></span></span></header>
+<main>
+  <div class="intro"><p class="eyebrow">REFERENCE EXPLORER</p><h1>Understand the estimate.<br>Then test what drives it.</h1><p>Explore a fixed research reference at different exposure scales. These are illustrative cohort calculations, not a prediction for you or an identified workforce.</p></div>
+  <fieldset class="direction"><legend>Choose a visual direction</legend><label><input type="radio" name="direction" value="comparison" checked> A · Comparison first</label><label><input type="radio" name="direction" value="sensitivity"> B · Sensitivity first</label></fieldset>
+  <div class="workspace">
+  <aside aria-labelledby="inputs-heading"><h2 id="inputs-heading">Your comparison</h2>
+    <label for="exposure">Worker-equivalent exposure</label><input id="exposure" type="number" min="0" max="1000000" step="any" value="1000" aria-describedby="exposure-help input-error">
+    <p id="exposure-help">A scaling input, not a count of unique displaced people. Enter 0–1,000,000; fractional values are allowed.</p><p id="input-error" role="alert" hidden></p>
+    <label for="outcome">Explore an outcome</label><select id="outcome"><option value="excess_deaths">Additional expected deaths</option><option value="child_lifetime_earnings_lost_usd">Children’s lifetime earnings loss</option></select>
+    <div class="fixed"><h3>Held fixed</h3><p id="fixed-description"></p><p>Only exposure changes. There is no inference of age, sex, household composition or job-loss causation from your input.</p></div>
+    <button id="reset" type="button">Reset reference</button>
+  </aside>
+  <div id="results" tabindex="-1" class="results">
+    <div class="scope"><strong>Illustrative reference calculation</strong><p id="applicability"></p></div>
+    <section id="comparison" aria-labelledby="comparison-heading"><p class="eyebrow">THE COMPARISON</p><h2 id="comparison-heading"></h2><p id="scenario-line"></p>
+      <div class="comparison-values"><div><span>Without the specified displacement effect</span><strong id="reference-value"></strong></div><div><span>With the source response applied</span><strong id="event-value"></strong></div></div>
+      <p id="difference" class="difference" aria-live="polite" aria-atomic="true"></p><p id="comparison-note"></p>
+      <div class="range"><strong>Parameter-support envelope</strong><p id="support"></p><p>All source endpoints varied together; this is not a confidence interval or a range of individual futures. Exposure and baseline uncertainty are excluded.</p></div>
+    </section>
+    <section id="sensitivity" aria-labelledby="sensitivity-heading"><p class="eyebrow">WHAT CHANGES THE ANSWER?</p><h2 id="sensitivity-heading">Inspect every modeled effect</h2><p>Each row reruns one effect while holding the others fixed. Removing an effect is a hypothetical experiment, not another study’s finding or a real-world intervention.</p>
+      <div id="driver-list"></div><p>Removal impacts can interact and do not add up to the total. Source-range spans are not shares of uncertainty. Variance attribution was not requested for this prototype.</p>
+    </section>
+    <section aria-labelledby="coverage-heading"><p class="eyebrow">COVERAGE</p><h2 id="coverage-heading">Unavailable does not mean zero</h2><ul id="blocked"></ul><p>This prototype does not calculate annual earnings paths, household budgets, protective interventions or personal mortality probabilities.</p></section>
+    <section aria-labelledby="evidence-heading"><p class="eyebrow">EVIDENCE & REPRODUCIBILITY</p><h2 id="evidence-heading">Keep the assumptions in view</h2><div id="sources"></div>
+      <details><summary>Inspect the complete engine receipt</summary><p>The receipt is the generated 1,000-worker-equivalent reference. Displayed outcomes scale linearly with the exposure control; source odds ratios and fixed assumptions do not change.</p><pre id="receipt"></pre></details>
+    </section>
+  </div></div>
+</main><footer>Local research prototype. No profile is sent or saved. Human comprehension testing is pending.</footer>
+<noscript><p>This calculator requires JavaScript to display its generated reference. Run it in a browser; the embedded engine receipt remains in the HTML source.</p></noscript>
+<script id="engine-data" type="application/json">{
+  "reference_exposure": 1000,
+  "result": {
+    "assumptions": {
+      "mortality_contract": {
+        "baseline_conversion": "1-exp(-annual_rate)",
+        "description": "Source-offset profile: displacement, +1, +2\u20133, +4\u20135, and +6+; displacement is follow-up year 1, so offset +6 begins in follow-up year 7. Annual baseline rates use a constant-hazard rate-to-risk conversion; odds ratios modify annual risk, and survival compounds across phases. The selected baseline age rate is held fixed over the follow-up horizon.",
+        "method": "odds_survival",
+        "phases": [
+          {
+            "duration_years": 1.0,
+            "first_follow_up_year": 1,
+            "phase": "displacement",
+            "start_offset": 0
+          },
+          {
+            "duration_years": 1.0,
+            "first_follow_up_year": 2,
+            "phase": "offset_1",
+            "start_offset": 1
+          },
+          {
+            "duration_years": 2.0,
+            "first_follow_up_year": 3,
+            "phase": "offsets_2_3",
+            "start_offset": 2
+          },
+          {
+            "duration_years": 2.0,
+            "first_follow_up_year": 5,
+            "phase": "offsets_4_5",
+            "start_offset": 4
+          },
+          {
+            "duration_years": null,
+            "first_follow_up_year": 7,
+            "phase": "offset_6_plus",
+            "start_offset": 6
+          }
+        ],
+        "timing": "source_profile"
+      },
+      "mortality_method": "odds_survival",
+      "mortality_timing": "Source-offset profile: displacement, +1, +2\u20133, +4\u20135, and +6+; displacement is follow-up year 1, so offset +6 begins in follow-up year 7. Annual baseline rates use a constant-hazard rate-to-risk conversion; odds ratios modify annual risk, and survival compounds across phases. The selected baseline age rate is held fixed over the follow-up horizon.",
+      "place_application": "initial_only",
+      "place_counterfactual": "national child-dollar result is the reference"
+    },
+    "blocked": [
+      {
+        "outcome": "local_service_jobs_lost",
+        "reason": "requires a documented net local loss of tradable jobs; worker displacement alone is not this exposure"
+      }
+    ],
+    "child_applicability": {
+      "eligible_for_reviewed_transport": false,
+      "income_rank_definition": null,
+      "incompatible_children": [],
+      "limitations": [
+        "No response curve across child ages is identified by this narrow cohort.",
+        "Income groups refer to father's average pre-displacement income in 1978-1979; target rank mapping requires a transport argument.",
+        "A subgroup's nonsignificant coefficient is retained with its uncertainty, not replaced with zero."
+      ],
+      "source": "oreopoulos2008",
+      "source_age_at_displacement": [
+        10,
+        14
+      ],
+      "source_child_sex": "Male",
+      "source_event": "father firm closure 1980-1982",
+      "source_geography": "Canada",
+      "source_income_quartile": null,
+      "source_parent_sex": "Male",
+      "status": "unknown",
+      "target_child_profiles": null,
+      "unknown_children": []
+    },
+    "engine_version": "0.4.0",
+    "exposure": {
+      "displaced_workers": 1000,
+      "exposure_years": 20.0,
+      "local_job_mix": null,
+      "n_children": 2,
+      "net_tradable_jobs_lost": null,
+      "tradable_share": 1.0
+    },
+    "input_content_sha256": "f541bc8747e0df88990d1d048c1909e2c927f702b12922f3b183c779457a6c0d",
+    "label": "Fixed national reference; exposure scaling only",
+    "modeled": {
+      "child_lifetime_earnings_lost_usd": {
+        "applicability": {
+          "decision": null,
+          "eligible_for_public_headline": false,
+          "reason": "Target cohort applicability and transport have not been established for this outcome; display as an illustrative reference calculation.",
+          "status": "illustrative_reference_calculation",
+          "target_population": null,
+          "transport_assumptions": [
+            "Canadian father-son firm-closure estimate transported to the target families",
+            "US male synthetic career earnings convert a relative adult earnings effect to dollars",
+            "lifetime dollars are undiscounted; this is not an annual loss"
+          ]
+        },
+        "baseline": {
+          "citation": "SSA Annual Statistical Supplement 2025, Table 4.B6 (CWHS/Master Earnings File, 1 percent sample): male median earnings by age, 2023 (preliminary) \u2014 synthetic career ages 20-64 = 5x(24218+42561+52485+60423+64962+67506+68160+64854)+2x60666+3x56666 = 2517175 usd_2023; CPI-U annual averages 304.702->313.689 (BLS series CUUR0000SA0, pulled 2026-09-06) -> 2591418 usd_2024; warehouse ssa_median_earnings (pulled via ssa-earnings-download)",
+          "notes": "Derivation declared: the cross-sectional age profile summed over a 45-year working life (ages 20-64) is a synthetic cohort \u2014 the sum of age-band medians approximates rather than equals the median of individual lifetime sums; median-of-workers semantics excludes non-working years; 2023 medians are preliminary (SSA replaces them with final data in a later edition)",
+          "population": "US male median lifetime earnings",
+          "unit": "usd_2024",
+          "value": 2591418.0
+        },
+        "high": 808522416.0,
+        "interpretation": "Conditional modeled expected difference; parameter bands are support envelopes, not a confidence interval.",
+        "low": 124388064.0,
+        "point": 478894046.4,
+        "sensitivity": {
+          "effect_drivers": [
+            {
+              "citation": "oreopoulos2008",
+              "effect_removed": {
+                "change_from_reference": -478894046.40000015,
+                "input_value": 1.0,
+                "point": 0.0,
+                "reference_minus_variant": 478894046.40000015
+              },
+              "evidence_role": "conditional",
+              "input_id": "displacement->child_earnings",
+              "input_unit": "earnings_ratio",
+              "input_value": 0.9076,
+              "population_scope": "Canada 39k father-son pairs firm closures",
+              "supported_range": {
+                "at_input_high": {
+                  "change_from_reference": -354505982.40000004,
+                  "input_value": 0.976,
+                  "point": 124388064.0000001,
+                  "reference_minus_variant": 354505982.40000004
+                },
+                "at_input_low": {
+                  "change_from_reference": 329628369.59999996,
+                  "input_value": 0.844,
+                  "point": 808522416.0000001,
+                  "reference_minus_variant": -329628369.59999996
+                },
+                "endpoint_span": 684134352.0,
+                "input_high": 0.976,
+                "input_low": 0.844,
+                "outcome_high": 808522416.0000001,
+                "outcome_low": 124388064.0000001,
+                "scope": "One input at its source endpoints; all others fixed."
+              },
+              "tier": "EXACT"
+            }
+          ],
+          "fixed_input_ranges": {
+            "available": false,
+            "reason": "No sensitivity ranges supplied for these inputs; no distributions inferred."
+          },
+          "fixed_inputs": {
+            "child_income_quartile": null,
+            "child_profiles": null,
+            "children_per_worker": 2,
+            "displaced_workers": 1000,
+            "income_rank_definition": null,
+            "lifetime_baseline": {
+              "citation": "SSA Annual Statistical Supplement 2025, Table 4.B6 (CWHS/Master Earnings File, 1 percent sample): male median earnings by age, 2023 (preliminary) \u2014 synthetic career ages 20-64 = 5x(24218+42561+52485+60423+64962+67506+68160+64854)+2x60666+3x56666 = 2517175 usd_2023; CPI-U annual averages 304.702->313.689 (BLS series CUUR0000SA0, pulled 2026-09-06) -> 2591418 usd_2024; warehouse ssa_median_earnings (pulled via ssa-earnings-download)",
+              "notes": "Derivation declared: the cross-sectional age profile summed over a 45-year working life (ages 20-64) is a synthetic cohort \u2014 the sum of age-band medians approximates rather than equals the median of individual lifetime sums; median-of-workers semantics excludes non-working years; 2023 medians are preliminary (SSA replaces them with final data in a later edition)",
+              "population": "US male median lifetime earnings",
+              "unit": "usd_2024",
+              "value": 2591418.0
+            },
+            "place": null
+          },
+          "interpretation": "Signed changes under declared input experiments; not causal shares or confidence intervals.",
+          "limitations": [
+            "Removal experiments may lie outside source support and are hypothetical, not new study estimates.",
+            "Other inputs are fixed; individual removal changes need not sum to the total because effects interact.",
+            "Endpoint spans measure range sensitivity, not shares of uncertainty or output variance.",
+            "Baseline, exposure, demographic, timing and transport uncertainty are not quantified here."
+          ],
+          "method": "one-input-at-a-time engine refits",
+          "reference_point": 478894046.40000015,
+          "schema": "downstream-result-sensitivity/1",
+          "unit": "usd_2024",
+          "variance_attribution": {
+            "available": false,
+            "reason": "Not requested.",
+            "request": "scenario --sensitivity-base N"
+          }
+        },
+        "steps": [
+          {
+            "causal_role": "direct_displacement_estimate",
+            "citation": "oreopoulos2008",
+            "evidence_role": "conditional",
+            "kind": "direct",
+            "link": "displacement->child_earnings",
+            "param_high": 0.976,
+            "param_low": 0.844,
+            "param_point": 0.9076,
+            "population_scope": "Canada 39k father-son pairs firm closures",
+            "tier": "EXACT",
+            "value_high": 0.976,
+            "value_low": 0.844,
+            "value_point": 0.9076
+          }
+        ],
+        "unit": "usd_2024"
+      },
+      "excess_deaths": {
+        "applicability": {
+          "decision": null,
+          "eligible_for_public_headline": false,
+          "reason": "Target cohort applicability and transport have not been established for this outcome; display as an illustrative reference calculation.",
+          "status": "illustrative_reference_calculation",
+          "target_population": null,
+          "transport_assumptions": [
+            "high-tenure male mass-layoff cohort, ages 45\u201354",
+            "Pennsylvania early-1980s response transported to target place and calendar time",
+            "fixed baseline age rate over follow-up; cohort aging is not modeled"
+          ]
+        },
+        "baseline": {
+          "age": "45-54 years",
+          "annual_probability": 0.004931798548274205,
+          "cause": "All causes",
+          "citation": "cdc_wonder D76 (Underlying Cause of Death, 1999-2020), Male 45-54 years, pooled 2015-2019: 514314 deaths / 104024440 person-years = 494.4 per 100k; pulled 2026-09-06 via scraper.cli wonder-mortality into warehouse wonder_mortality",
+          "geography": "US",
+          "notes": "Pre-pandemic window: excludes 2020 (COVID-distorted; 2020 crude rate 601.5/100k). Single-year 2019 = 490.0/100k. Ages 45-54 match the Sullivan & von Wachter prime-age counterfactual population",
+          "population": "US prime-age men (45-54)",
+          "sex": "Male",
+          "unit": "deaths_per_person_year",
+          "value": 0.004944,
+          "years": "2015-2019"
+        },
+        "components": {
+          "follow_up_years": 20.0,
+          "method": "odds_survival",
+          "timing": "source_profile"
+        },
+        "high": 50.1,
+        "interpretation": "Conditional modeled expected difference; parameter bands are support envelopes, not a confidence interval.",
+        "low": 11.26,
+        "persistence_sensitivity": {
+          "available": true,
+          "eligible_for_public_headline": false,
+          "limitations": [
+            "No probabilities or model-average weights are assigned to the structures.",
+            "A nonsignificant long-run estimate does not establish an exactly zero effect.",
+            "The Swedish study differs in population, design, effect scale and follow-up; this hybrid does not reproduce its estimates or substitute its hazard ratios for odds ratios.",
+            "The cutoff follows the source profile's offset +6 phase, not the Swedish study's windows; persistence beyond its 12-year follow-up is an assumption in either direction.",
+            "Baseline aging and target-population transport remain unresolved in both structures."
+          ],
+          "shared_inputs": [
+            "exposure",
+            "resolved mortality baseline",
+            "follow-up horizon",
+            "source odds through offset +5"
+          ],
+          "source_minus_no_sustained_point": 8.24,
+          "status": "declared_structural_sensitivity",
+          "structural_point_range": {
+            "high": 28.76,
+            "interpretation": "Range of point estimates across these two assumptions; not a confidence interval or a bound on the true effect.",
+            "low": 20.52
+          },
+          "unit": "deaths",
+          "variants": {
+            "no_sustained_excess": {
+              "assumption": "Retain source odds through offset +5; set offset +6 onward OR=1.",
+              "evidence_status": "structural_assumption",
+              "first_changed_follow_up_year": 7,
+              "fixed_late_odds_ratio": 1.0,
+              "high": 35.36,
+              "low": 9.19,
+              "motivating_citations": [
+                "eliasonstorrie2009"
+              ],
+              "point": 20.52
+            },
+            "source_profile": {
+              "citations": [
+                "sullivan2009"
+              ],
+              "evidence_status": "source_profile_with_transport_assumptions",
+              "high": 50.1,
+              "low": 11.26,
+              "point": 28.76
+            }
+          }
+        },
+        "point": 28.76,
+        "sensitivity": {
+          "effect_drivers": [
+            {
+              "citation": "sullivan2009",
+              "effect_removed": {
+                "change_from_reference": -8.235377289672858,
+                "input_value": 1.0,
+                "point": 20.52335161286114,
+                "reference_minus_variant": 8.235377289672858
+              },
+              "evidence_role": "conditional",
+              "input_id": "earnings_shock->mortality_sustained",
+              "input_unit": "odds_ratio",
+              "input_value": 1.1354,
+              "population_scope": "US high-seniority displaced men born 1930-1959",
+              "supported_range": {
+                "at_input_high": {
+                  "change_from_reference": 6.750105729435045,
+                  "input_value": 1.2474,
+                  "point": 35.508834631969044,
+                  "reference_minus_variant": -6.750105729435045
+                },
+                "at_input_low": {
+                  "change_from_reference": -6.190136730502694,
+                  "input_value": 1.0335,
+                  "point": 22.568592172031305,
+                  "reference_minus_variant": 6.190136730502694
+                },
+                "endpoint_span": 12.940242459937739,
+                "input_high": 1.2474,
+                "input_low": 1.0335,
+                "outcome_high": 35.508834631969044,
+                "outcome_low": 22.568592172031305,
+                "scope": "One input at its source endpoints; all others fixed."
+              },
+              "tier": "canonical"
+            },
+            {
+              "citation": "sullivan2009",
+              "effect_removed": {
+                "change_from_reference": -7.222960985925575,
+                "input_value": 1.0,
+                "point": 21.535767916608425,
+                "reference_minus_variant": 7.222960985925575
+              },
+              "evidence_role": "conditional",
+              "input_id": "earnings_shock->mortality_peak",
+              "input_unit": "odds_ratio",
+              "input_value": 2.6698,
+              "population_scope": "US high-seniority displaced men born 1930-1959",
+              "supported_range": {
+                "at_input_high": {
+                  "change_from_reference": 2.998510459534952,
+                  "input_value": 3.3711,
+                  "point": 31.75723936206895,
+                  "reference_minus_variant": -2.998510459534952
+                },
+                "at_input_low": {
+                  "change_from_reference": -2.3893311336438146,
+                  "input_value": 2.1144,
+                  "point": 26.369397768890185,
+                  "reference_minus_variant": 2.3893311336438146
+                },
+                "endpoint_span": 5.387841593178766,
+                "input_high": 3.3711,
+                "input_low": 2.1144,
+                "outcome_high": 31.75723936206895,
+                "outcome_low": 26.369397768890185,
+                "scope": "One input at its source endpoints; all others fixed."
+              },
+              "tier": "canonical"
+            },
+            {
+              "citation": "sullivan2009",
+              "effect_removed": {
+                "change_from_reference": -6.339832961675636,
+                "input_value": 1.0,
+                "point": 22.418895940858363,
+                "reference_minus_variant": 6.339832961675636
+              },
+              "evidence_role": "conditional",
+              "input_id": "earnings_shock->mortality_offsets_2_3",
+              "input_unit": "odds_ratio",
+              "input_value": 1.7315,
+              "population_scope": "US high-seniority displaced men born 1930-1959",
+              "supported_range": {
+                "at_input_high": {
+                  "change_from_reference": 4.579994357201695,
+                  "input_value": 2.2649,
+                  "point": 33.338723259735694,
+                  "reference_minus_variant": -4.579994357201695
+                },
+                "at_input_low": {
+                  "change_from_reference": -3.5250415678110585,
+                  "input_value": 1.3238,
+                  "point": 25.23368733472294,
+                  "reference_minus_variant": 3.5250415678110585
+                },
+                "endpoint_span": 8.105035925012753,
+                "input_high": 2.2649,
+                "input_low": 1.3238,
+                "outcome_high": 33.338723259735694,
+                "outcome_low": 25.23368733472294,
+                "scope": "One input at its source endpoints; all others fixed."
+              },
+              "tier": "canonical"
+            },
+            {
+              "citation": "sullivan2009",
+              "effect_removed": {
+                "change_from_reference": -4.255568941162764,
+                "input_value": 1.0,
+                "point": 24.503159961371235,
+                "reference_minus_variant": 4.255568941162764
+              },
+              "evidence_role": "conditional",
+              "input_id": "earnings_shock->mortality_offset_1",
+              "input_unit": "odds_ratio",
+              "input_value": 1.9838,
+              "population_scope": "US high-seniority displaced men born 1930-1959",
+              "supported_range": {
+                "at_input_high": {
+                  "change_from_reference": 3.8120118124581133,
+                  "input_value": 2.8732,
+                  "point": 32.57074071499211,
+                  "reference_minus_variant": -3.8120118124581133
+                },
+                "at_input_low": {
+                  "change_from_reference": -2.6515436915443296,
+                  "input_value": 1.3697,
+                  "point": 26.10718521098967,
+                  "reference_minus_variant": 2.6515436915443296
+                },
+                "endpoint_span": 6.463555504002443,
+                "input_high": 2.8732,
+                "input_low": 1.3697,
+                "outcome_high": 32.57074071499211,
+                "outcome_low": 26.10718521098967,
+                "scope": "One input at its source endpoints; all others fixed."
+              },
+              "tier": "canonical"
+            },
+            {
+              "citation": "sullivan2009",
+              "effect_removed": {
+                "change_from_reference": -2.347798557181772,
+                "input_value": 1.0,
+                "point": 26.410930345352227,
+                "reference_minus_variant": 2.347798557181772
+              },
+              "evidence_role": "conditional",
+              "input_id": "earnings_shock->mortality_offsets_4_5",
+              "input_unit": "odds_ratio",
+              "input_value": 1.2712,
+              "population_scope": "US high-seniority displaced men born 1930-1959",
+              "supported_range": {
+                "at_input_high": {
+                  "change_from_reference": 3.4019025047338154,
+                  "input_value": 1.6661,
+                  "point": 32.160631407267815,
+                  "reference_minus_variant": -3.4019025047338154
+                },
+                "at_input_low": {
+                  "change_from_reference": -2.608089717395874,
+                  "input_value": 0.97,
+                  "point": 26.150639185138125,
+                  "reference_minus_variant": 2.608089717395874
+                },
+                "endpoint_span": 6.009992222129689,
+                "input_high": 1.6661,
+                "input_low": 0.97,
+                "outcome_high": 32.160631407267815,
+                "outcome_low": 26.150639185138125,
+                "scope": "One input at its source endpoints; all others fixed."
+              },
+              "tier": "canonical"
+            }
+          ],
+          "fixed_input_ranges": {
+            "available": false,
+            "reason": "No sensitivity ranges supplied for these inputs; no distributions inferred."
+          },
+          "fixed_inputs": {
+            "displaced_workers": 1000,
+            "follow_up_years": 20.0,
+            "mortality_method": "odds_survival",
+            "mortality_timing": "source_profile",
+            "resolved_baseline": {
+              "age": "45-54 years",
+              "annual_probability": 0.004931798548274205,
+              "cause": "All causes",
+              "citation": "cdc_wonder D76 (Underlying Cause of Death, 1999-2020), Male 45-54 years, pooled 2015-2019: 514314 deaths / 104024440 person-years = 494.4 per 100k; pulled 2026-09-06 via scraper.cli wonder-mortality into warehouse wonder_mortality",
+              "geography": "US",
+              "notes": "Pre-pandemic window: excludes 2020 (COVID-distorted; 2020 crude rate 601.5/100k). Single-year 2019 = 490.0/100k. Ages 45-54 match the Sullivan & von Wachter prime-age counterfactual population",
+              "population": "US prime-age men (45-54)",
+              "sex": "Male",
+              "unit": "deaths_per_person_year",
+              "value": 0.004944,
+              "years": "2015-2019"
+            },
+            "target_population": null
+          },
+          "interpretation": "Signed changes under declared input experiments; not causal shares or confidence intervals.",
+          "limitations": [
+            "Removal experiments may lie outside source support and are hypothetical, not new study estimates.",
+            "Other inputs are fixed; individual removal changes need not sum to the total because effects interact.",
+            "Endpoint spans measure range sensitivity, not shares of uncertainty or output variance.",
+            "Baseline, exposure, demographic, timing and transport uncertainty are not quantified here."
+          ],
+          "method": "one-input-at-a-time engine refits",
+          "reference_point": 28.758728902534,
+          "schema": "downstream-result-sensitivity/1",
+          "unit": "deaths",
+          "variance_attribution": {
+            "available": false,
+            "reason": "Not requested.",
+            "request": "scenario --sensitivity-base N"
+          }
+        },
+        "steps": [
+          {
+            "citation": "sullivan2009",
+            "evidence_role": "conditional",
+            "high": 3.3711,
+            "link": "earnings_shock->mortality_peak",
+            "low": 2.1144,
+            "phase": "displacement",
+            "point": 2.6698,
+            "population_scope": "US high-seniority displaced men born 1930-1959",
+            "tier": "canonical"
+          },
+          {
+            "citation": "sullivan2009",
+            "evidence_role": "conditional",
+            "high": 2.8732,
+            "link": "earnings_shock->mortality_offset_1",
+            "low": 1.3697,
+            "phase": "offset_1",
+            "point": 1.9838,
+            "population_scope": "US high-seniority displaced men born 1930-1959",
+            "tier": "canonical"
+          },
+          {
+            "citation": "sullivan2009",
+            "evidence_role": "conditional",
+            "high": 2.2649,
+            "link": "earnings_shock->mortality_offsets_2_3",
+            "low": 1.3238,
+            "phase": "offsets_2_3",
+            "point": 1.7315,
+            "population_scope": "US high-seniority displaced men born 1930-1959",
+            "tier": "canonical"
+          },
+          {
+            "citation": "sullivan2009",
+            "evidence_role": "conditional",
+            "high": 1.6661,
+            "link": "earnings_shock->mortality_offsets_4_5",
+            "low": 0.97,
+            "phase": "offsets_4_5",
+            "point": 1.2712,
+            "population_scope": "US high-seniority displaced men born 1930-1959",
+            "tier": "canonical"
+          },
+          {
+            "citation": "sullivan2009",
+            "evidence_role": "conditional",
+            "high": 1.2474,
+            "link": "earnings_shock->mortality_sustained",
+            "low": 1.0335,
+            "phase": "offset_6_plus",
+            "point": 1.1354,
+            "population_scope": "US high-seniority displaced men born 1930-1959",
+            "tier": "canonical"
+          }
+        ],
+        "unit": "deaths"
+      }
+    },
+    "multipliers": {
+      "child_earnings": {
+        "high": 0.976,
+        "low": 0.844,
+        "point": 0.9076
+      },
+      "grandchild_earnings": {
+        "high": 0.9904,
+        "low": 0.9064,
+        "point": 0.9492
+      },
+      "greatgrandchild_earnings": {
+        "high": 0.9962,
+        "low": 0.9438,
+        "point": 0.972
+      },
+      "mortality_peak": {
+        "high": 3.3711,
+        "low": 2.1144,
+        "point": 2.6698
+      },
+      "mortality_sustained": {
+        "high": 1.2474,
+        "low": 1.0335,
+        "point": 1.1354
+      },
+      "worker_earnings": {
+        "high": 0.85,
+        "low": 0.75,
+        "point": 0.8
+      }
+    },
+    "parameter_set_version": "v1.51",
+    "place": null,
+    "projection_eligibility": {
+      "child": {
+        "eligible_for_validated_direct_contrast": true,
+        "reason": "direct displacement-to-child adult earnings estimate; transport still requires an applicability decision",
+        "status": "direct_estimate"
+      },
+      "grandchild": {
+        "eligible_for_validated_direct_contrast": false,
+        "reason": "combines a direct child estimate with an intergenerational persistence assumption; not an identified displacement intervention effect",
+        "status": "structural_projection"
+      },
+      "greatgrandchild": {
+        "eligible_for_validated_direct_contrast": false,
+        "reason": "repeats an intergenerational persistence assumption beyond the identification core",
+        "status": "structural_projection"
+      }
+    },
+    "target_population": null,
+    "uncertainty": {
+      "band_kind": "parameter-support envelope, not a confidence interval",
+      "excluded": [
+        "exposure estimation error",
+        "baseline estimation error",
+        "unmodeled pathways"
+      ],
+      "fixed_inputs": [
+        "exposure",
+        "baseline values",
+        "county measurements",
+        "pooling weights"
+      ]
+    }
+  }
+}</script>
+<script>"use strict";
+const payload = JSON.parse(document.getElementById("engine-data").textContent);
+const receipt = payload.result;
+const byId = id => document.getElementById(id);
+const number = x => x.toLocaleString("en-US", {minimumFractionDigits: 2, maximumFractionDigits: 2});
+const names = {
+  "earnings_shock->mortality_peak": "Displacement year",
+  "earnings_shock->mortality_offset_1": "Follow-up year 2",
+  "earnings_shock->mortality_offsets_2_3": "Follow-up years 3–4",
+  "earnings_shock->mortality_offsets_4_5": "Follow-up years 5–6",
+  "earnings_shock->mortality_sustained": "Follow-up years 7–20",
+  "displacement->child_earnings": "Father-to-son adult earnings response"
+};
+const citations = {
+  sullivan2009: {name:"Sullivan & von Wachter · Job Displacement and Mortality", url:"https://doi.org/10.1162/qjec.2009.124.3.1265"},
+  oreopoulos2008: {name:"Oreopoulos, Page & Stevens · The Intergenerational Effects of Worker Displacement",url:"https://poverty.ucdavis.edu/sites/main/files/file-attachments/stevens_2008jole.pdf"}
+};
+function text(tag, value, className) {
+  const element = document.createElement(tag);
+  element.textContent = value;
+  if (className) element.className = className;
+  return element;
+}
+function render() {
+  const input = byId("exposure");
+  const exposure = input.value.trim() === "" ? NaN : Number(input.value);
+  const valid = Number.isFinite(exposure) && exposure >= 0 && exposure <= 1000000;
+  byId("input-error").hidden = valid;
+  byId("input-error").textContent = valid ? "" : "Enter a finite exposure from 0 to 1,000,000. Results below retain the last valid input.";
+  input.setAttribute("aria-invalid", String(!valid));
+  if (!valid) return;
+  const key = byId("outcome").value;
+  const row = receipt.modeled[key];
+  const mortality = key === "excess_deaths";
+  const scale = exposure / payload.reference_exposure;
+  const value = x => mortality ? number(x * scale) : "$" + number(x * scale);
+  const unit = mortality ? "additional expected deaths over 20 years" : "lifetime earnings loss, USD 2024, undiscounted";
+  byId("comparison-heading").textContent = mortality ? "Mortality difference over 20 years" : "Children’s lifetime earnings difference";
+  byId("scenario-line").textContent = `${number(exposure)} worker equivalents · ${mortality ? "20-year follow-up" : "2 children per worker equivalent; lifetime outcome"} · fixed national reference`;
+  byId("fixed-description").textContent = mortality ? "US male mortality baseline, ages 45–54, pooled 2015–2019; fixed for 20 years without cohort aging. Pennsylvania high-tenure male displacement response." : "Two children per worker equivalent. Canadian father-to-son response converted using US synthetic male lifetime earnings. Child ages and sex are unknown; eligibility for a target household is not established.";
+  byId("applicability").textContent = row.applicability.reason;
+  byId("reference-value").textContent = value(0);
+  byId("event-value").textContent = value(row.sensitivity.reference_point);
+  byId("difference").textContent = `${value(row.sensitivity.reference_point)} ${unit}`;
+  byId("comparison-note").textContent = mortality ? "These values count only the additional deaths attributed to the displacement response. Ordinary baseline deaths are excluded from both displayed values; zero is not zero total deaths." : "Zero means no earnings loss attributed to this specified displacement effect. The display is a difference in lifetime totals, not annual income, household resources or discounted present value.";
+  byId("support").textContent = `${value(row.low)} to ${value(row.high)} ${unit}`;
+  const drivers = row.sensitivity.effect_drivers;
+  const max = Math.max(...drivers.map(d => Math.abs(d.effect_removed.reference_minus_variant)), 1e-12);
+  byId("driver-list").replaceChildren();
+  for (const driver of drivers) {
+    const item = text("article", "", "driver");
+    const head = text("div", "", "driver-head");
+    head.append(text("h3", names[driver.input_id] || driver.input_id), text("strong", `${value(driver.effect_removed.reference_minus_variant)} removal impact`));
+    const meter = text("div", "", "driver-meter");
+    meter.setAttribute("aria-hidden", "true");
+    const fill = text("span", "");
+    fill.style.width = `${100 * Math.abs(driver.effect_removed.reference_minus_variant) / max}%`;
+    meter.append(fill);
+    item.append(head, meter, text("p", `Effect removed: ${value(driver.effect_removed.point)} ${unit}. Removal impact = reference minus this variant; a positive value means removal lowers the estimate.`));
+    const details = text("details", "");
+    const range = driver.supported_range;
+    details.append(text("summary", "Source input and supported-range experiment"), text("p", `Current ${driver.input_unit}: ${driver.input_value}. Source endpoints: ${range.input_low}–${range.input_high}. Removal sets it to ${driver.effect_removed.input_value}.`), text("p", `Changing this input alone across its source range gives ${value(range.outcome_low)}–${value(range.outcome_high)} ${unit}.`), text("p", `Source: ${driver.citation}; ${driver.population_scope}. Evidence role: ${driver.evidence_role}; extraction tier: ${driver.tier}.`));
+    item.append(details);
+    byId("driver-list").append(item);
+  }
+  byId("sources").replaceChildren();
+  const ids = [...new Set(drivers.map(d => d.citation))];
+  for (const id of ids) {
+    const citation = citations[id];
+    const paragraph = text("p", "");
+    if (citation) {const link = text("a", citation.name); link.href = citation.url; paragraph.append(link);} else paragraph.textContent = id;
+    byId("sources").append(paragraph);
+  }
+  byId("sources").append(text("p", `Baseline: ${row.baseline.citation}`), text("p", row.applicability.transport_assumptions.join(". ") + "."));
+}
+byId("version").textContent = `Engine ${receipt.engine_version} · parameters ${receipt.parameter_set_version}`;
+byId("receipt").textContent = JSON.stringify(receipt, null, 2);
+for (const row of receipt.blocked) byId("blocked").append(text("li", `${row.outcome.replaceAll("_", " ")}: ${row.reason}.`));
+byId("blocked").append(text("li", "Target-population transport: no reviewed target-cohort decision supplied; both displayed outcomes remain illustrative."));
+byId("exposure").addEventListener("input", render);
+byId("outcome").addEventListener("change", render);
+document.querySelectorAll("input[name=direction]").forEach(input => input.addEventListener("change", () => {
+  document.body.dataset.direction = input.value;
+  // Move the actual DOM so keyboard and screen-reader order matches visual order.
+  const first = byId(input.value === "sensitivity" ? "sensitivity" : "comparison");
+  byId("results").insertBefore(first, byId("results").children[1]);
+}));
+byId("reset").addEventListener("click", () => {byId("exposure").value = String(payload.reference_exposure); render();});
+render();
+</script>
+</body></html>

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Downstream · Reference explorer</title>
+  <style>/* CALCULATOR_STYLE */</style>
+</head>
+<body data-direction="comparison">
+<a class="skip" href="#results">Skip to results</a>
+<header><span class="wordmark">downstream<span aria-hidden="true"> ↘</span></span><span>Local prototype · <span id="version"></span></span></header>
+<main>
+  <div class="intro"><p class="eyebrow">REFERENCE EXPLORER</p><h1>Understand the estimate.<br>Then test what drives it.</h1><p>Explore a fixed research reference at different exposure scales. These are illustrative cohort calculations, not a prediction for you or an identified workforce.</p></div>
+  <fieldset class="direction"><legend>Choose a visual direction</legend><label><input type="radio" name="direction" value="comparison" checked> A · Comparison first</label><label><input type="radio" name="direction" value="sensitivity"> B · Sensitivity first</label></fieldset>
+  <div class="workspace">
+  <aside aria-labelledby="inputs-heading"><h2 id="inputs-heading">Your comparison</h2>
+    <label for="exposure">Worker-equivalent exposure</label><input id="exposure" type="number" min="0" max="1000000" step="any" value="1000" aria-describedby="exposure-help input-error">
+    <p id="exposure-help">A scaling input, not a count of unique displaced people. Enter 0–1,000,000; fractional values are allowed.</p><p id="input-error" role="alert" hidden></p>
+    <label for="outcome">Explore an outcome</label><select id="outcome"><option value="excess_deaths">Additional expected deaths</option><option value="child_lifetime_earnings_lost_usd">Children’s lifetime earnings loss</option></select>
+    <div class="fixed"><h3>Held fixed</h3><p id="fixed-description"></p><p>Only exposure changes. There is no inference of age, sex, household composition or job-loss causation from your input.</p></div>
+    <button id="reset" type="button">Reset reference</button>
+  </aside>
+  <div id="results" tabindex="-1" class="results">
+    <div class="scope"><strong>Illustrative reference calculation</strong><p id="applicability"></p></div>
+    <section id="comparison" aria-labelledby="comparison-heading"><p class="eyebrow">THE COMPARISON</p><h2 id="comparison-heading"></h2><p id="scenario-line"></p>
+      <div class="comparison-values"><div><span>Without the specified displacement effect</span><strong id="reference-value"></strong></div><div><span>With the source response applied</span><strong id="event-value"></strong></div></div>
+      <p id="difference" class="difference" aria-live="polite" aria-atomic="true"></p><p id="comparison-note"></p>
+      <div class="range"><strong>Parameter-support envelope</strong><p id="support"></p><p>All source endpoints varied together; this is not a confidence interval or a range of individual futures. Exposure and baseline uncertainty are excluded.</p></div>
+    </section>
+    <section id="sensitivity" aria-labelledby="sensitivity-heading"><p class="eyebrow">WHAT CHANGES THE ANSWER?</p><h2 id="sensitivity-heading">Inspect every modeled effect</h2><p>Each row reruns one effect while holding the others fixed. Removing an effect is a hypothetical experiment, not another study’s finding or a real-world intervention.</p>
+      <div id="driver-list"></div><p>Removal impacts can interact and do not add up to the total. Source-range spans are not shares of uncertainty. Variance attribution was not requested for this prototype.</p>
+    </section>
+    <section aria-labelledby="coverage-heading"><p class="eyebrow">COVERAGE</p><h2 id="coverage-heading">Unavailable does not mean zero</h2><ul id="blocked"></ul><p>This prototype does not calculate annual earnings paths, household budgets, protective interventions or personal mortality probabilities.</p></section>
+    <section aria-labelledby="evidence-heading"><p class="eyebrow">EVIDENCE & REPRODUCIBILITY</p><h2 id="evidence-heading">Keep the assumptions in view</h2><div id="sources"></div>
+      <details><summary>Inspect the complete engine receipt</summary><p>The receipt is the generated 1,000-worker-equivalent reference. Displayed outcomes scale linearly with the exposure control; source odds ratios and fixed assumptions do not change.</p><pre id="receipt"></pre></details>
+    </section>
+  </div></div>
+</main><footer>Local research prototype. No profile is sent or saved. Human comprehension testing is pending.</footer>
+<noscript><p>This calculator requires JavaScript to display its generated reference. Run it in a browser; the embedded engine receipt remains in the HTML source.</p></noscript>
+<script id="engine-data" type="application/json">/* CALCULATOR_DATA */</script>
+<script>/* CALCULATOR_APP */</script>
+</body></html>
