@@ -16,7 +16,7 @@ structural assumptions and assess the evidence before changing defaults.
 
 ## Acceptance
 
-- [ ] Reproduce both counts, annual risks, cumulative paths and paired differences.
-- [ ] Revisit primary evidence for persistence, including the meaning of null-compatible estimates.
-- [ ] Explain baseline, timing, transport and survival interpretation limits.
-- [ ] Record conclusions and concrete research steps without changing model defaults.
+- [x] Reproduce both counts, annual risks, cumulative paths and paired differences.
+- [x] Revisit primary evidence for persistence, including the meaning of null-compatible estimates.
+- [x] Explain baseline, timing, transport and survival interpretation limits.
+- [x] Record conclusions and concrete research steps without changing model defaults.
