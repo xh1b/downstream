@@ -40,7 +40,7 @@ def test_paper_generation_matches_engine_and_is_deterministic(tmp_path, monkeypa
                   row['modeled_excess_deaths_per100k']['high'] for row in scored)
     assert f'{covered} of {len(scored)} mortality variants' in summary
     assert '0 of 3 mortality variants' in summary
-    assert '18.77 [5.51, 42.87]' in summary and 'against 4.27' in summary
+    assert '18.78 [5.51, 42.87]' in summary and 'against 4.27' in summary
     manuscript = (ROOT / 'paper/downstream.tex').read_text()
     assert r'\input{generated/mortality_summary}' in manuscript
     assert 'The pooled-adult row covers the observed point' not in manuscript

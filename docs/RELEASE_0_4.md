@@ -1,6 +1,6 @@
 # Downstream 0.4.0 — pending update and review follow-through
 
-Engine 0.4.0 / parameters v1.50, 2026-10-14. This pending update implements the
+Engine 0.4.0 / parameters v1.51, 2026-10-14. This pending update implements the
 review's scenario improvements and records unresolved empirical requirements
 in the `tasks/` board. Software correctness and source reproduction do not establish
 that the effects transport to a particular policy or population.
@@ -18,6 +18,20 @@ the source column's .138. The coefficient point remains .240. The corrected
 odds-ratio band is [0.9700, 1.6661], including the null. Source population
 labels now distinguish the study cohort from the 45–54 reference baseline.
 The mortality persistence alternative remains separately reported.
+
+The release audit additionally re-executes all five Table 5 transformations
+at four decimals (v1.51). The 1,000-worker, 20-year point changes from 28.73
+to 28.76 expected deaths; the null-persistence alternative remains 20.52.
+Working-paper rows now use canonical publication tier. Danish cumulative
+hazard ratios retain their different scale/window and 2011 source version;
+the MI-or-stroke 20-year cross-check is corrected to 1.09 [0.97, 1.23].
+Source coefficients and baseline values are unchanged; the derived OR values
+and some support endpoints are corrected, with prior values retained in Git.
+
+The code audit fixes custom subgroup-source handling across all scenario
+adapters, verifies consumed source scales/windows, preserves signed near-null
+mortality calculations, and refuses incompatible child-dollar baseline units.
+Marginal source ranges are not described as simultaneous confidence bands.
 
 ## Completed scenario capabilities
 
@@ -76,11 +90,17 @@ these gaps with zero or presenting conditional intervals as full certainty.
 
 ## Verification
 
-Coverage: 96.8% statements and 93.1% branches, above the unchanged 95%/90%
+Coverage: 96.8% statements and 93.2% branches, above the unchanged 95%/90%
 gates. Focused checks cover source arithmetic, signed subgroup effects,
 eligibility, unsupported strata, zero-rate valuation equivalence, zero-duration
 household equivalence, uncertainty input compatibility and CLI routing.
-The final full suite passes all **997 tests** after the saved examples and
+The final full suite passes all **1,065 tests** after the saved examples and
 methods refresh. Ruff and vulture pass; the evidence audit reports zero errors
 and zero warnings. The built wheel passes an isolated-install check for all
 three new commands plus audit, export, family, validate, scenario and bundle.
+
+The final release audit rechecked 23 source-library contrasts and nine existing
+parameter links against primary tables, alongside the 67-row mechanical audit
+and existing extraction regressions. It does not claim a fresh primary-paper
+re-extraction of the other 58 links. The current audit receipts are in
+`tasks/review/2026-10-14-audit-04-release/card.md`.

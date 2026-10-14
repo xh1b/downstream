@@ -153,6 +153,10 @@ def compute_counts(
     county_rates.load_county_mortality_posteriors — under a matching
     place key, county mortality swaps in via the strict Gamma-Poisson
     contract instead of staying national.
+
+    params_dir supplies study_estimates.csv for optional child income
+    contrasts. Custom callers must pass their directory; no missing custom
+    library is replaced with bundled subgroup coefficients.
     """
     from .child_applicability import child_scope, select_child_contrast
     params = select_child_contrast(params, scenario.child_income_quartile, params_dir)

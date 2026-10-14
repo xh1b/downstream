@@ -1,4 +1,4 @@
-# MODEL CARD — downstream engine 0.4.0 / parameters v1.50
+# MODEL CARD — downstream engine 0.4.0 / parameters v1.51
 
 Model card practice per Mitchell et al. 2019, "Model Cards for Model
 Reporting". This card travels with the model.
@@ -24,8 +24,12 @@ Reporting". This card travels with the model.
   hybrid sensitivity is not a Swedish-study replication, a pooled coefficient,
   or a transported causal estimate. The unweighted point spread is not a
   confidence interval. See `MORTALITY_PERSISTENCE_SENSITIVITY.md`.
-- Parameter set v1.50: 67 parameter rows, each with point, band,
+- Parameter set v1.51: 67 parameter rows, each with point, band,
   precision tier, bib keys, and population scope.
+- The five default mortality phase transformations are reproduced from the
+  pinned working-paper beta/SE values at four decimals. Working-paper source
+  rows use canonical publication tier; published-version reconciliation
+  remains open. Cumulative hazard ratios are not annual odds-ratio replications.
 - Version stamping: params/VERSION; every output carries the version
   it used; sampled outputs mark `-sampled`.
 

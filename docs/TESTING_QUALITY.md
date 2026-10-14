@@ -2,13 +2,16 @@
 
 ## Current gate
 
-Engine 0.4.0 verification on 2026-10-14 measured **96.8% statement coverage**
-and **93.1% branch coverage**. The full coverage run was followed by a passing
-rerun of 82 affected release, provenance, child-applicability, CLI and
-persistence checks, including correction of an obsolete source-population
-assertion. Ruff, vulture, and the evidence audit also passed.
-The final complete rerun passes all 997 tests. An isolated installation of the
-0.4.0 wheel passes the three new commands and the existing distribution checks.
+Engine 0.4.0 / parameters v1.51 verification on 2026-10-14 measured
+**96.8% statement coverage** and **93.2% branch coverage**. The complete
+coverage run passes all **1,065 tests**. New regressions cover custom study
+libraries across APIs/CLI, consumed source scale/window/population compatibility,
+wrong currency baselines, source-table arithmetic and signed near-null mortality
+against independent high-precision decimal calculations.
+Ruff and vulture pass; the evidence audit reports zero errors and zero warnings.
+The wheel built from the source distribution passes isolated installation checks,
+including all three experimental commands. The 20-page paper was rebuilt and
+visually inspected; its generated scorecard retains every validation miss.
 These are numerical/software checks, not independent causal validation.
 
 The repository now uses branch-aware Coverage.py and Hypothesis. The measured

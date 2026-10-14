@@ -132,7 +132,8 @@ Interview age and household composition are not historical event characteristics
 Its response support is men aged 30–69 at mass layoff or firm closure with at least six years of tenure.
 It requires a declared constant projection of Table 7 source-window annual-logit responses, distinct from the default Table 5 phase profile.
 Event age selects the response, which stays fixed as survivors age through 2015–2019 period-rate bands.
-Uncovered workers remain unknown; partial coverage never becomes a whole-cohort total. These coefficient-support envelopes exclude baseline
+Uncovered workers remain unknown; partial coverage never becomes a whole-cohort total. These are Cartesian envelopes of marginal coefficient ranges,
+not simultaneous confidence bands. They exclude baseline
 variance, exposure error, cross-coefficient covariance and transport error, and are ineligible for public headlines.</p>
 <p>The household command compares annual employment-state probabilities and gross earnings under a supplied unemployment duration.
 It calculates member marginal expectations exactly over one to five years, reusing observed SIPP 2021–2022 conditional transitions under

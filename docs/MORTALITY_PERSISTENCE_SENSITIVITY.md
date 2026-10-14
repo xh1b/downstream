@@ -29,7 +29,7 @@ the parameter bibliography retains its working-paper extraction provenance.
 
 | Structure | Early phases | Source offset +6 onward |
 | --- | --- | --- |
-| `source_profile` | Existing source odds ratios | Existing sustained odds ratio, point 1.135 |
+| `source_profile` | Existing source odds ratios | Existing sustained odds ratio, point 1.1354 |
 | `no_sustained_excess` | Identical source odds ratios | Declared OR=1 |
 
 Displacement is follow-up year one, so the alternative first changes
@@ -53,21 +53,21 @@ does not erase the earlier cumulative mortality difference.
 downstream scenario --workers 1000 --draws 2000 --seed 1901
 ```
 
-For parameters v1.50, the default two-children scenario and 20-year mortality
+For parameters v1.51, the default two-children scenario and 20-year mortality
 follow-up produce:
 
 | Structure | Expected excess deaths | 90% parameter-only interval | Parameter support envelope |
 | --- | ---: | ---: | ---: |
-| `source_profile` | 28.73 | 22.04–36.67 | 11.23–50.08 |
-| `no_sustained_excess` | 20.52 | 15.72–26.48 | 9.19–35.37 |
+| `source_profile` | 28.76 | 22.04–36.68 | 11.26–50.10 |
+| `no_sustained_excess` | 20.52 | 15.73–26.46 | 9.19–35.36 |
 
-The point difference is 8.21 deaths. Its 90% parameter-only interval is
-2.96–13.82. Each pair of results uses the same parameter draw, and the
+The point difference is 8.24 deaths. Its 90% parameter-only interval is
+2.99–13.84. Each pair of results uses the same parameter draw, and the
 difference is computed within the draw; it is not the subtraction of
 separately calculated quantile endpoints. The alternative's late OR is
 fixed at one, while uncertainty in its early phases is retained.
 
-The 20.52–28.73 range across point estimates is a structural comparison,
+The 20.52–28.76 range across point estimates is a structural comparison,
 not a confidence interval or a bound on the true effect. No probability
 or averaging weight is assigned to either structure. A protective source
 effect is preserved, so the null-persistence alternative is not guaranteed
@@ -75,7 +75,9 @@ to be the lower result for arbitrary parameters.
 
 Adding this comparison leaves the default source estimate unchanged.
 Parameter v1.50 separately corrects the offset +4–5 SE to 0.138, widening
-its band and the scenario intervals; the source point remains unchanged.
+its band and the scenario intervals; that correction did not change the source point.
+Parameter v1.51 re-executes every phase transformation consistently and corrects
+working-paper publication tiers and cross-study interpretation notes.
 The new comparison stays separate from the original modeled
 outcome list and parameter-uncertainty outcome map. Its report is explicitly
 ineligible for a validated public headline. Both structures retain the

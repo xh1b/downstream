@@ -51,7 +51,7 @@ python scripts/quality_gate.py coverage.json
 ```
 
 The gate requires at least 95% statement coverage and 90% branch coverage.
-Engine 0.4.0 verification measures 96.8% and 93.1%. The suite contains Hypothesis
+Engine 0.4.0 verification measures 96.8% and 93.2%. The suite contains Hypothesis
 property tests for ledger envelopes, survival bounds, and county-pooling
 convexity. Deterministic fixtures cover citations, published coefficients, and
 regression examples.
@@ -232,6 +232,10 @@ shows real present values at the event date, and separates the observed
 adult-age window (25–33) from a declared constant-gap career projection
 (20–64). The latter is an extrapolation, not an identified annual effect path.
 Zero-rate career valuation reproduces the existing undiscounted count.
+Custom `--params` directories supply the subgroup study library as well as
+parameters and baselines. API callers pass `params_dir` for the same behavior.
+Selected contrasts must match the consumed effect scale, population and window;
+missing custom libraries fail. Child-dollar baselines must use `usd_2024`.
 
 ## Mortality persistence comparison (0.4.0)
 
@@ -243,14 +247,16 @@ Each structure has a separate parameter interval, and their difference uses
 shared parameter draws. Their point-estimate spread is not a confidence
 interval; neither structure receives a model-average weight.
 
-For 1,000 workers over 20 years, the reference point is 28.73 excess deaths
+For 1,000 workers over 20 years, the reference point is 28.76 excess deaths
 and the alternative is 20.52. This prices the long-run persistence assumption
 without replacing the source anchor or treating a nonsignificant finding as
 proof of zero. Both retain the population-applicability and fixed-baseline
 limits. See [the method and reproducible example](docs/MORTALITY_PERSISTENCE_SENSITIVITY.md).
 Parameters v1.50 correct the offset +4–5 source standard error to 0.138,
-widening intervals while preserving the point estimate. Production website
-rendering needs integration.
+widening intervals while preserving the point estimate. The current v1.51
+re-executes all five source transformations, corrects working-paper tiers and
+cross-study provenance, and yields the reference values above. Production
+website rendering needs integration.
 
 ## Website readiness repairs (0.3.0)
 

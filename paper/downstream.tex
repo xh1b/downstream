@@ -249,6 +249,14 @@ formula remains available as \texttt{legacy\_additive}. Current V1 and
 scoreable V2 mortality calculations use the production survival kernel and
 the source-offset profile by default.
 
+The implementation evaluates small survival differences with log-survival
+ratios and \texttt{expm1}, preserving signed near-null effects instead of
+subtracting nearly equal probabilities. Parameter revision v1.51 re-executes
+the five Table 5 coefficient/standard-error transformations consistently at
+four decimals. Working-paper numerical extractions retain canonical
+publication tier pending published-version reconciliation; a precise
+transcription is not evidence of peer-reviewed version equivalence.
+
 Default source-profile scenarios also report a persistence sensitivity
 that retains the early phases but sets the offset +6 onward odds ratio to
 one, first changing follow-up year 7. Both alternatives use the same
@@ -310,7 +318,10 @@ and their uncertainty are retained, including null-compatible and
 beneficial estimates. No response curve across child ages is inferred.
 
 The original count $E$ is an undiscounted synthetic career loss in 2024
-dollars. With known child ages, a supplied real discount rate $r$, and an
+dollars. Its baseline must be finite, nonnegative, and denominated in 2024
+US dollars. Custom parameter directories also supply the subgroup study
+library, whose selected scale, population, and outcome window must match
+the consuming calculation. With known child ages, a supplied real discount rate $r$, and an
 event/valuation year, the optional valuation report instead computes
 \begin{equation}
  E_{\mathrm{PV}}=N(1-g_c)\sum_{i=1}^{C}\sum_{a\in A_i}
@@ -344,8 +355,9 @@ within strata before exact weighted aggregation. These are piecewise
 period rates, not single-age hazards or a forecast of future mortality
 trends. Unsupported strata remain unknown: if any positive exposure lacks
 a supported response, no whole-cohort total is reported. The reported
-bands are simultaneous coefficient-support envelopes, not cohort
-confidence intervals; baseline variance, exposure error, cross-coefficient
+bands are Cartesian envelopes of marginal coefficient ranges, not
+simultaneous confidence bands or cohort confidence intervals. Marginal
+ranges do not establish joint coverage; baseline variance, exposure error, cross-coefficient
 covariance, and transport error remain excluded. The projection is
 experimental and ineligible for public headlines.
 

@@ -680,14 +680,14 @@
   "unmodeled_workers": 475.49618177831974,
   "covered_expected_excess_deaths": {
     "aging_bands": {
-      "point": 18.362459824061688,
+      "point": 18.362459824061713,
       "low": 8.46383200357175,
-      "high": 28.891913390574157
+      "high": 28.891913390574278
     },
     "fixed_baseline": {
-      "point": 9.959413928445349,
+      "point": 9.959413928445587,
       "low": 4.450158998411114,
-      "high": 15.920204828099543
+      "high": 15.920204828099578
     }
   },
   "whole_cohort_excess_deaths": null,
@@ -722,9 +722,9 @@
         "standard_error_method": "reported standard error"
       },
       "aging_bands": {
-        "point": 0.12237484625089179,
+        "point": 0.1223748462508952,
         "low": 0.049067596601640784,
-        "high": 0.20853567517496088,
+        "high": 0.2085356751749677,
         "annual_baseline_rates": [
           0.0017508455302591578,
           0.0017508455302591578,
@@ -749,7 +749,7 @@
         ]
       },
       "fixed_baseline": {
-        "point": 0.07599482437472559,
+        "point": 0.07599482437473927,
         "low": 0.03038873902581231,
         "high": 0.12991692782538652,
         "annual_baseline_rates": [
@@ -806,9 +806,9 @@
         "standard_error_method": "reported standard error"
       },
       "aging_bands": {
-        "point": 0.13722682027417737,
+        "point": 0.1372268202741803,
         "low": 0.05504293978469641,
-        "high": 0.23374241347427527,
+        "high": 0.23374241347428185,
         "annual_baseline_rates": [
           0.0017508455302591578,
           0.0017508455302591578,
@@ -833,7 +833,7 @@
         ]
       },
       "fixed_baseline": {
-        "point": 0.08108643571852645,
+        "point": 0.08108643571854104,
         "low": 0.03242476778988548,
         "high": 0.1386212903778381,
         "annual_baseline_rates": [
@@ -890,9 +890,9 @@
         "standard_error_method": "reported standard error"
       },
       "aging_bands": {
-        "point": 0.1618557972587414,
+        "point": 0.16185579725874388,
         "low": 0.064945643032868,
-        "high": 0.27557395265764495,
+        "high": 0.2755739526576515,
         "annual_baseline_rates": [
           0.0017508455302591578,
           0.0017508455302591578,
@@ -917,7 +917,7 @@
         ]
       },
       "fixed_baseline": {
-        "point": 0.09125017848296306,
+        "point": 0.09125017848297949,
         "low": 0.03648903570464461,
         "high": 0.1559967135862936,
         "annual_baseline_rates": [
@@ -974,9 +974,9 @@
         "standard_error_method": "reported standard error"
       },
       "aging_bands": {
-        "point": 0.1578076242039859,
+        "point": 0.15780762420398742,
         "low": 0.06334438827792972,
-        "high": 0.2685654835410931,
+        "high": 0.26856548354110005,
         "annual_baseline_rates": [
           0.0017508455302591578,
           0.0017508455302591578,
@@ -1001,7 +1001,7 @@
         ]
       },
       "fixed_baseline": {
-        "point": 0.08509316006466608,
+        "point": 0.0850931600646814,
         "low": 0.03402697295984309,
         "high": 0.14547098470869,
         "annual_baseline_rates": [
@@ -1058,9 +1058,9 @@
         "standard_error_method": "reported standard error"
       },
       "aging_bands": {
-        "point": 0.4903925005143053,
+        "point": 0.49039250051430755,
         "low": 0.19691633500693875,
-        "high": 0.8342172298650942,
+        "high": 0.834217229865117,
         "annual_baseline_rates": [
           0.0017508455302591578,
           0.0024532462231081067,
@@ -1085,7 +1085,7 @@
         ]
       },
       "fixed_baseline": {
-        "point": 0.2534769473624793,
+        "point": 0.2534769473625249,
         "low": 0.10136012374310802,
         "high": 0.4333314346975808,
         "annual_baseline_rates": [
@@ -1144,7 +1144,7 @@
       "aging_bands": {
         "point": 0.1063540229940118,
         "low": 0.042721750539179766,
-        "high": 0.18084358174184195,
+        "high": 0.1808435817418467,
         "annual_baseline_rates": [
           0.0024532462231081067,
           0.0024532462231081067,
@@ -1171,7 +1171,7 @@
       "fixed_baseline": {
         "point": 0.07273225396195847,
         "low": 0.02913126884037813,
-        "high": 0.12410031828604796,
+        "high": 0.12410031828605747,
         "annual_baseline_rates": [
           0.0024532462231081067,
           0.0024532462231081067,
@@ -1226,9 +1226,9 @@
         "standard_error_method": "reported standard error"
       },
       "aging_bands": {
-        "point": 0.07992692703601102,
+        "point": 0.0799269270360107,
         "low": 0.03213988546271898,
-        "high": 0.1357385162651335,
+        "high": 0.13573851626513642,
         "annual_baseline_rates": [
           0.0024532462231081067,
           0.0024532462231081067,
@@ -1255,7 +1255,7 @@
       "fixed_baseline": {
         "point": 0.04946475920861609,
         "low": 0.01981199701833032,
-        "high": 0.08439986426025899,
+        "high": 0.08439986426026545,
         "annual_baseline_rates": [
           0.0024532462231081067,
           0.0024532462231081067,
@@ -1310,9 +1310,9 @@
         "standard_error_method": "reported standard error"
       },
       "aging_bands": {
-        "point": 0.38816416775400764,
+        "point": 0.38816416775400475,
         "low": 0.15624767738792725,
-        "high": 0.6584115791534317,
+        "high": 0.6584115791534418,
         "annual_baseline_rates": [
           0.0024532462231081067,
           0.0024532462231081067,
@@ -1339,7 +1339,7 @@
       "fixed_baseline": {
         "point": 0.2197828296942232,
         "low": 0.08802907031686681,
-        "high": 0.37500720289965467,
+        "high": 0.3750072028996834,
         "annual_baseline_rates": [
           0.0024532462231081067,
           0.0024532462231081067,
@@ -1394,9 +1394,9 @@
         "standard_error_method": "reported standard error"
       },
       "aging_bands": {
-        "point": 0.2910671844744787,
+        "point": 0.2910671844744767,
         "low": 0.11728201426988939,
-        "high": 0.4931236205634586,
+        "high": 0.49312362056346354,
         "annual_baseline_rates": [
           0.0024532462231081067,
           0.0024532462231081067,
@@ -1423,7 +1423,7 @@
       "fixed_baseline": {
         "point": 0.15213713745830942,
         "low": 0.06093510939756711,
-        "high": 0.25958589419735945,
+        "high": 0.2595858941973793,
         "annual_baseline_rates": [
           0.0024532462231081067,
           0.0024532462231081067,
@@ -1478,9 +1478,9 @@
         "standard_error_method": "reported standard error"
       },
       "aging_bands": {
-        "point": 0.42774213487905716,
+        "point": 0.4277421348790517,
         "low": 0.17252615270981475,
-        "high": 0.7238220084413107,
+        "high": 0.7238220084413148,
         "annual_baseline_rates": [
           0.0024532462231081067,
           0.0024532462231081067,
@@ -1507,7 +1507,7 @@
       "fixed_baseline": {
         "point": 0.20793685925214433,
         "low": 0.0832844332291194,
-        "high": 0.3547948676262557,
+        "high": 0.35479486762628293,
         "annual_baseline_rates": [
           0.0024532462231081067,
           0.0024532462231081067,
@@ -1562,9 +1562,9 @@
         "standard_error_method": "reported standard error"
       },
       "aging_bands": {
-        "point": 0.44918229984144875,
+        "point": 0.4491822998414552,
         "low": 0.24463461305532952,
-        "high": 0.6741673014830907,
+        "high": 0.6741673014830956,
         "annual_baseline_rates": [
           0.0024532462231081067,
           0.0024532462231081067,
@@ -1589,9 +1589,9 @@
         ]
       },
       "fixed_baseline": {
-        "point": 0.2039127381496409,
+        "point": 0.203912738149673,
         "low": 0.11049363738087688,
-        "high": 0.3077820836425891,
+        "high": 0.30778208364261794,
         "annual_baseline_rates": [
           0.0024532462231081067,
           0.0024532462231081067,
@@ -1646,9 +1646,9 @@
         "standard_error_method": "reported standard error"
       },
       "aging_bands": {
-        "point": 0.9770627217306408,
+        "point": 0.9770627217306539,
         "low": 0.5324622378813112,
-        "high": 1.4654334833350935,
+        "high": 1.4654334833351033,
         "annual_baseline_rates": [
           0.0024532462231081067,
           0.0024532462231081067,
@@ -1673,9 +1673,9 @@
         ]
       },
       "fixed_baseline": {
-        "point": 0.41728726344925227,
+        "point": 0.417287263449318,
         "low": 0.22611430747099365,
-        "high": 0.6298456123308698,
+        "high": 0.6298456123309288,
         "annual_baseline_rates": [
           0.0024532462231081067,
           0.0024532462231081067,
@@ -1730,9 +1730,9 @@
         "standard_error_method": "reported standard error"
       },
       "aging_bands": {
-        "point": 0.14110937351472103,
+        "point": 0.14110937351472236,
         "low": 0.0769469782548037,
-        "high": 0.21149506658248174,
+        "high": 0.2114950665824831,
         "annual_baseline_rates": [
           0.0024532462231081067,
           0.0024532462231081067,
@@ -1757,9 +1757,9 @@
         ]
       },
       "fixed_baseline": {
-        "point": 0.056964522706055606,
+        "point": 0.05696452270606457,
         "low": 0.030867210026078108,
-        "high": 0.08598118808697998,
+        "high": 0.08598118808698804,
         "annual_baseline_rates": [
           0.0024532462231081067,
           0.0024532462231081067,
@@ -1814,9 +1814,9 @@
         "standard_error_method": "reported standard error"
       },
       "aging_bands": {
-        "point": 0.45355092093577687,
+        "point": 0.4535509209357782,
         "low": 0.2476259914991561,
-        "high": 0.6788548508520682,
+        "high": 0.6788548508520695,
         "annual_baseline_rates": [
           0.0024532462231081067,
           0.004944165044291514,
@@ -1841,9 +1841,9 @@
         ]
       },
       "fixed_baseline": {
-        "point": 0.16554195881791547,
+        "point": 0.1655419588179415,
         "low": 0.08970176819225364,
-        "high": 0.2498659449997848,
+        "high": 0.24986594499980824,
         "annual_baseline_rates": [
           0.0024532462231081067,
           0.0024532462231081067,
@@ -3160,7 +3160,7 @@
       "aging_bands": {
         "point": -0.016321212119669994,
         "low": -0.24274197152561008,
-        "high": 0.21726905322276222,
+        "high": 0.2172690532227634,
         "annual_baseline_rates": [
           0.011118733708556794,
           0.011118733708556794,
@@ -3187,7 +3187,7 @@
       "fixed_baseline": {
         "point": -0.009376487693676739,
         "low": -0.1379009337998757,
-        "high": 0.12631233778164203,
+        "high": 0.126312337781622,
         "annual_baseline_rates": [
           0.011118733708556794,
           0.011118733708556794,
@@ -3244,7 +3244,7 @@
       "aging_bands": {
         "point": -0.04674886840768901,
         "low": -0.6962786302667092,
-        "high": 0.6213877156988339,
+        "high": 0.6213877156988371,
         "annual_baseline_rates": [
           0.011118733708556794,
           0.011118733708556794,
@@ -3271,7 +3271,7 @@
       "fixed_baseline": {
         "point": -0.026012206566725184,
         "low": -0.38256410000577445,
-        "high": 0.3504150732814169,
+        "high": 0.35041507328136134,
         "annual_baseline_rates": [
           0.011118733708556794,
           0.011118733708556794,
@@ -3328,7 +3328,7 @@
       "aging_bands": {
         "point": -0.05367343612489482,
         "low": -0.8005481282425988,
-        "high": 0.7123628927783602,
+        "high": 0.7123628927783638,
         "annual_baseline_rates": [
           0.011118733708556794,
           0.011118733708556794,
@@ -3355,7 +3355,7 @@
       "fixed_baseline": {
         "point": -0.029069486933489153,
         "low": -0.4275278253620286,
-        "high": 0.39160024229094886,
+        "high": 0.39160024229088675,
         "annual_baseline_rates": [
           0.011118733708556794,
           0.011118733708556794,
@@ -3412,7 +3412,7 @@
       "aging_bands": {
         "point": -0.024843730542887337,
         "low": -0.37107202563598635,
-        "high": 0.3292399490821669,
+        "high": 0.3292399490821727,
         "annual_baseline_rates": [
           0.011118733708556794,
           0.011118733708556794,
@@ -3439,7 +3439,7 @@
       "fixed_baseline": {
         "point": -0.013153638500309775,
         "low": -0.19345186506051315,
-        "high": 0.17719500985738934,
+        "high": 0.17719500985736125,
         "annual_baseline_rates": [
           0.011118733708556794,
           0.011118733708556794,
@@ -3496,7 +3496,7 @@
       "aging_bands": {
         "point": -0.009222032985747359,
         "low": -0.13793651070666507,
-        "high": 0.1220335222360065,
+        "high": 0.12203352223600951,
         "annual_baseline_rates": [
           0.011118733708556794,
           0.021881924707227322,
@@ -3523,7 +3523,7 @@
       "fixed_baseline": {
         "point": -0.004791385445820019,
         "low": -0.0704673806183629,
-        "high": 0.06454560776340597,
+        "high": 0.06454560776339573,
         "annual_baseline_rates": [
           0.011118733708556794,
           0.011118733708556794,
@@ -3580,7 +3580,7 @@
       "aging_bands": {
         "point": -0.01590142012272033,
         "low": -0.23923804361334147,
-        "high": 0.2091365052463758,
+        "high": 0.2091365052463813,
         "annual_baseline_rates": [
           0.021881924707227322,
           0.021881924707227322,
@@ -3664,7 +3664,7 @@
       "aging_bands": {
         "point": -0.0045775429184123865,
         "low": -0.06916818605124546,
-        "high": 0.05993341898810933,
+        "high": 0.05993341898811077,
         "annual_baseline_rates": [
           0.021881924707227322,
           0.021881924707227322,
@@ -3748,7 +3748,7 @@
       "aging_bands": {
         "point": -0.0006110809031155201,
         "low": -0.009272935833521864,
-        "high": 0.007965625101526264,
+        "high": 0.007965625101526399,
         "annual_baseline_rates": [
           0.021881924707227322,
           0.021881924707227322,
@@ -3832,7 +3832,7 @@
       "aging_bands": {
         "point": -0.01628153101658294,
         "low": -0.24810424074316792,
-        "high": 0.2113154593961839,
+        "high": 0.211315459396186,
         "annual_baseline_rates": [
           0.021881924707227322,
           0.021881924707227322,
@@ -4173,7 +4173,7 @@
     }
   ],
   "uncertainty": {
-    "band": "simultaneous coefficient-support envelope, not a cohort confidence interval",
+    "band": "Cartesian envelope of marginal coefficient ranges, not a simultaneous confidence band or cohort confidence interval",
     "fixed": [
       "exposure",
       "age composition",
@@ -4193,6 +4193,7 @@
     "Aging uses piecewise age-band 2015-2019 period rates, not single-age hazards or a forecast of future mortality trends.",
     "Source age is age at displacement; the response is held fixed as survivors age.",
     "Source-window annual logit contrasts are projected constantly by explicit assumption, not a recovered phase-specific effect.",
+    "Marginal plus/minus 1.96-SE ranges do not establish simultaneous coverage or cross-age coefficient covariance.",
     "Unmodeled strata are unknown, never zero or silently omitted from a whole-cohort total."
   ]
 }
