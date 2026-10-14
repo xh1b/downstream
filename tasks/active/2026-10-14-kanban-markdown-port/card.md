@@ -2,7 +2,7 @@
 title: Port XH1B task references and Markdown workflow
 area: tooling
 priority: P2
-assignee:
+assignee: kanban-port
 blocked-by: []
 expected-paths: [scripts/tasks.py, tests/test_tasks_board.py, tasks/AGENTS.md]
 ---
