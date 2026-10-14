@@ -146,11 +146,11 @@ rows already displayed. A new general rendering framework is not required.
 | Order | Work and concrete result | Existing or proposed cards |
 |:---|:---|:---|
 | 1 | Specify exposure units, timing, overlap, unknown composition and admissible conversion claims. | `exposure-semantics-contract`, `target-displaced-cohort` |
-| 2 | Export and verify consumer fixtures, including scale/mix behavior and every required 0.4 field. | `consumer-contract-fixtures`, `xh1b-handoff` |
+| 2 | Verify consumer fixtures, scaling, mixtures and required 0.4 fields. | `consumer-contract-fixtures`, `xh1b-handoff` |
 | 3 | Carry mortality persistence alternatives through runner, cache, HTML and Markdown. | `mortality-persistence`, `sustained-mortality-alternative` |
-| 4 | Audit independent response evidence and target applicability; retain null and beneficial estimates. | `coefficient-library`, `mortality-applicability`, `mortality-strata` |
-| 5 | Specify supported child scenarios, valuation labels and unavailable composition. | `child-heterogeneity`, `child-present-values`, `target-displaced-cohort` |
-| 6 | Improve SIPP held-out accuracy and survey uncertainty before promoting household trajectories. | `sipp-trajectories`, `household-dynamics`, `full-comparison` |
+| 4 | Audit independent evidence, target fit and signed effects. | `coefficient-library`, `mortality-applicability`, `mortality-strata` |
+| 5 | Specify child scenarios, valuation and unknown composition. | `child-heterogeneity`, `child-present-values`, `target-displaced-cohort` |
+| 6 | Improve SIPP accuracy and survey uncertainty. | `sipp-trajectories`, `household-dynamics`, `full-comparison` |
 | 7 | Qualify the fixed candidate, regenerate companion materials and check actual cache/page coverage. | `release-04-readiness`, `xh1b-handoff` |
 
 Card ids in this table have prefix `2026-10-14-`. New proposed cards are in
