@@ -72,3 +72,12 @@ See [the dated qualification](../../../docs/RELEASE_0_4.md#final-local-qualifica
 - By: mira
 
 Independent final review approved 41d5065 and the recovered-run qualification. Recomputed paper source_manifest with the generator path+NUL+bytes rule: digest 4652964eccfd0e54415bdd23098fae94d7fcdca0b08658f3146df677f5a3b3ac matches generated JSON and the PDF; v1.52 and the Bianchi 2010 working-paper/published-reconciliation distinction are explicit. Consumer fixture source hashes are current, methods HTML equals its generator, calculator/evidence/pool freshness checks pass, and default 28.76/20.52 mortality and 478894046.4 child-dollar values are invariant. Inspected final PDF pages 2/3 without clipping. Saved coverage confirms 97.2% statements/94.1% branches, audit reports zero errors/warnings, and wheel consumer/receiving/household bytes match source with v1.52 data. Release wording preserves the 1389-pass plus one concurrent board failure and separate 29-test repaired board rerun; it does not claim one all-green integrated run. One nonblocking underfull-box diagnostic remains in the build log; no visible defect found. No rebuilds or edits made during review.
+
+## c-b4ee420858ce
+
+- At: 2026-10-15 02:19 HKT
+- By: mira
+
+accept: review -> done.
+
+Accepted after independent source/artifact review recorded above and root final receipt task:2026-10-15-receiving-release-sync#c-4286c76a3aec. Fresh paper/fixture identities, typed source roles/windows, unchanged defaults and truthful recovered-run scope are verified. Local-only pending release; rendered mobile/assistive/participant checks and empirical target validation remain open.
