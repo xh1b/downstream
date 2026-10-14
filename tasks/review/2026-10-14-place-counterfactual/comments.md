@@ -15,3 +15,10 @@ claim: ready -> active.
 - By: eli
 
 Verified current same-place rule 1-M(1-g), null displacement invariant and national-reference identity; no core change needed. [Analysis and 83-test receipt](../../../docs/PLACE_COUNTERFACTUAL.md). The interaction remains explicitly exploratory structural bridging.
+
+## c-f50fe36ff753
+
+- At: 2026-10-15 00:47 HKT
+- By: eli
+
+done: active -> review.
