@@ -22,9 +22,9 @@ that a metadata contract itself supplies the missing empirical bridge.
 
 ## Acceptance
 
-- [ ] Specify exposure kind, components, method version, record window and overlap limits.
-- [ ] Preserve supplied conversion assumptions and distinguish reference equivalents from an admitted cohort.
-- [ ] Define event-time requirements; historical sums cannot silently become calendar-specific forecasts.
-- [ ] Keep missing demographics and family composition unknown; generic CPS is not an H-1B bridge.
-- [ ] Define fractional reference scaling separately from integer-cohort process uncertainty.
-- [ ] Add meaningful contract checks and documentation without changing the companion exposure formula.
+- [x] Specify exposure kind, components, method version, record window and overlap limits. [contract](../../../docs/EXPOSURE_SEMANTICS_0_4.md) [tests](../../../tests/test_exposure_semantics.py)
+- [x] Preserve supplied conversion assumptions and distinguish reference equivalents from an admitted cohort. [contract](../../../docs/EXPOSURE_SEMANTICS_0_4.md) [tests](../../../tests/test_exposure_semantics.py)
+- [x] Define event-time requirements; historical sums cannot silently become calendar-specific forecasts. [contract](../../../docs/EXPOSURE_SEMANTICS_0_4.md) [tests](../../../tests/test_exposure_semantics.py)
+- [x] Keep missing demographics and family composition unknown; generic CPS is not an H-1B bridge. [contract](../../../docs/EXPOSURE_SEMANTICS_0_4.md) [tests](../../../tests/test_exposure_semantics.py)
+- [x] Define fractional reference scaling separately from integer-cohort process uncertainty. [contract](../../../docs/EXPOSURE_SEMANTICS_0_4.md) [tests](../../../tests/test_exposure_semantics.py)
+- [x] Add meaningful contract checks and documentation without changing the companion exposure formula. [contract](../../../docs/EXPOSURE_SEMANTICS_0_4.md) [tests](../../../tests/test_exposure_semantics.py)
