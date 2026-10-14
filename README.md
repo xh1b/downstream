@@ -104,6 +104,7 @@ downstream uncertainty --input validation/uncertainty_budget_input.json
 | `household` | annual employment and gross-earnings comparison under a supplied displacement duration |
 | `uncertainty` | documented baseline-count, declared exposure, parameter and process uncertainty kept separate |
 | `simulate` | Monte Carlo simulation for an outcome and place |
+| `child-gaps` | Side-by-side child and descendant earnings gaps; structural projections stay separate |
 | `sensitivity` | Sobol analysis of the result range; `--ci` adds seed-replicate design noise |
 | `knobs` | sweeps one parameter, or ranks parameters by value of information |
 | `infer` | exact moments and normal bands; `--action closure` checks band coverage |
@@ -377,3 +378,14 @@ saved JSON. See [version comparisons](docs/VERSION_COMPARISON.md) and the
 ## License
 
 MIT. See `LICENSE`.
+
+## Local 0.4 review tools
+
+- [Calculator prototype](examples/calculator/index.html): comparison-first and
+  sensitivity-first views backed by generated engine results. Human and visual
+  testing remain pending; see [the test protocol](docs/CALCULATOR_PROTOTYPE.md).
+- [Child-gap view](docs/CHILD_GAP_VIEW.md): `downstream child-gaps --workers 1000`.
+- [Evidence classification](docs/EVIDENCE_CLASSIFICATION_0_4.md): inspect source
+  applicability separately from structural runtime use.
+- [Consumer fixtures](docs/CONSUMER_FIXTURES_0_4.md): normalization and mixture
+  expectations for the pending companion handoff.
