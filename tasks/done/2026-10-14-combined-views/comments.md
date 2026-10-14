@@ -40,3 +40,10 @@ done: active -> review.
 accept: review -> done.
 
 Reviewed the report, signed/refusal cases and CLI integration (c78afbb). Generation gaps remain separate; housing total stays unavailable with explicit bridge requirements. Focused view and CLI checks pass.
+
+## c-4b4bde45ce19
+
+- At: 2026-10-15 01:01 HKT
+- By: codex
+
+Integration follow-up: c78afbb exposes downstream child-gaps and retains optional child valuation; six CLI checks cover three generations, benefits, place, valuation, incompatibility and parser errors. Installed-wheel checker now exercises the command (90d12d6).
