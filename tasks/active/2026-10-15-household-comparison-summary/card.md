@@ -2,7 +2,7 @@
 title: Expose reconciled annual household comparison summaries
 area: households
 priority: P2
-assignee:
+assignee: mira
 blocked-by: []
 ---
 
