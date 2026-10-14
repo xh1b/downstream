@@ -12,7 +12,7 @@ Related: task:2026-10-14-consumer-contract-fixtures.
 
 ## Acceptance
 
-- [ ] Expose scaling and weighted-mixture helpers in the package and reuse them from the fixture builder.
-- [ ] Preserve signed results, source/applicability metadata, nested alternatives and zero-exposure variance behavior.
-- [ ] Refuse malformed weights/units and preserve unavailable positive-weight components and joint uncertainty.
-- [ ] Validate existing fixtures and record the API contract without repinning the companion.
+- [x] Expose scaling and weighted-mixture helpers in the package and reuse them from the fixture builder. [package API](../../../src/downstream/consumer.py)
+- [x] Preserve signed results, source/applicability metadata, nested alternatives and zero-exposure variance behavior. [native fixtures](../../../tests/test_consumer_fixtures.py)
+- [x] Refuse malformed weights/units and preserve unavailable positive-weight components and joint uncertainty. [API guards](../../../tests/test_consumer_api.py)
+- [x] Validate existing fixtures and record the API contract without repinning the companion. [contract](../../../docs/CONSUMER_FIXTURES_0_4.md)
