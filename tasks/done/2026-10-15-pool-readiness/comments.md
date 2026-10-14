@@ -34,3 +34,12 @@ Added [readiness report](../../../docs/POOL_READINESS_0_4.md), [deterministic bu
 - By: eli
 
 done: active -> review.
+
+## c-819f32c97885
+
+- At: 2026-10-15 01:34 HKT
+- By: codex
+
+accept: review -> done.
+
+Reviewed exact metadata screen, overlap/refusal reasons, preserved null/conflicting signs and distinction between different sample labels and verified independence. Freshness and focused/integration checks pass. No automated pooling; parent independent-extraction work remains open.
