@@ -1,4 +1,5 @@
-"""The local UI must preserve engine data and edit only its linear exposure scale."""
+"""Browser equations must match native engine refits, including custom inputs."""
+from dataclasses import replace
 import importlib.util
 import json
 from pathlib import Path
@@ -13,122 +14,141 @@ DIRECTORY = ROOT / "examples" / "calculator"
 
 
 def generated():
-    spec = importlib.util.spec_from_file_location(
-        "calculator_builder", ROOT / "scripts" / "build_calculator_prototype.py")
+    spec = importlib.util.spec_from_file_location("calculator_builder", ROOT / "scripts/build_calculator_prototype.py")
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module.build()
 
 
 def payload(html):
-    return json.loads(re.search(
-        r'<script id="engine-data" type="application/json">(.*?)</script>', html, re.S)[1])
+    return json.loads(re.search(r'<script id="engine-data" type="application/json">(.*?)</script>', html, re.S)[1])
 
 
-def test_generated_html_matches_current_engine_and_preserves_full_receipt():
+def node(code, *args):
+    result = subprocess.run(["node", "-e", code, *map(str, args)], capture_output=True, text=True)
+    assert result.returncode == 0, result.stdout + result.stderr
+    return result.stdout
+
+
+def test_generated_data_freshness_source_identity_and_small_surface():
     html = generated()
     assert (DIRECTORY / "index.html").read_text() == html
     data = payload(html)
-    result = data["result"]
-    assert data["reference_exposure"] == result["exposure"]["displaced_workers"] == 1000
-    assert result["engine_version"] == "0.4.0"
-    assert len(result["modeled"]["excess_deaths"]["sensitivity"]["effect_drivers"]) == 5
-    assert result["blocked"]
-    assert all(not row["applicability"]["eligible_for_public_headline"]
-               for row in result["modeled"].values())
-    assert result["input_content_sha256"]
+    assert data["result"]["engine_version"] == "0.4.0"
+    assert data["result"]["input_content_sha256"]
+    assert len(data["phases"]) == 5
+    assert data["child_presets"]["q3"]["point"] > 1
+    assert data["browser_math_sha256"]
+    assert all(not row["applicability"]["eligible_for_public_headline"] for row in data["result"]["modeled"].values())
     assert "not a confidence interval" in html
-    assert "Human comprehension testing is pending" in html
+    assert "Visual and participant tests remain open" in html
+    assert "Choose a visual direction" not in html
+    assert "Understand the estimate" not in html
     assert not re.search(r'<(?:script|link)[^>]+(?:src|href)="https?://', html)
+    template = (DIRECTORY / "template.html").read_text()
+    # Short main surface; method and raw source receipt remain available on demand.
+    main = template.split('<details>')[0]
+    assert len(re.findall(r"[A-Za-z]+", re.sub(r"<[^>]*>", " ", main))) < 160
 
 
-def test_controls_have_labels_and_sources_are_embedded():
+def test_numeric_controls_labels_keyboard_and_mobile_provisions():
     html = generated()
-    for control in ("exposure", "outcome"):
+    for control in ("workers", "years", "rate", "children", "gap", "earnings"):
         assert f'for="{control}"' in html
         assert f'id="{control}"' in html
-    assert 'role="alert"' in html
-    assert 'aria-live="polite"' in html
-    assert 'prefers-reduced-motion' in html
-    assert 'max-width:760px' in html
-
-
-@pytest.mark.parametrize("exposure", [0, .125, 500, 1000000])
-def test_exposure_scaling_matches_independent_engine_refits(exposure):
-    from downstream.params import load_all
-    from downstream.scenario import ScenarioInput, compute_counts
-
-    seed = payload(generated())["result"]
-    parts = load_all()
-    refit = compute_counts(parts["params"], parts["baselines"], ScenarioInput(exposure))
-    scale = exposure / 1000
-    for outcome, source in seed["modeled"].items():
-        actual = refit["modeled"][outcome]["sensitivity"]
-        expected = source["sensitivity"]
-        assert actual["reference_point"] == pytest.approx(expected["reference_point"] * scale)
-        actual_drivers = {driver["input_id"]: driver for driver in actual["effect_drivers"]}
-        for source_driver in expected["effect_drivers"]:
-            actual_driver = actual_drivers[source_driver["input_id"]]
-            assert actual_driver["input_value"] == source_driver["input_value"]
-            for key in ("point", "reference_minus_variant"):
-                assert actual_driver["effect_removed"][key] == pytest.approx(
-                    source_driver["effect_removed"][key] * scale)
-            for key in ("outcome_low", "outcome_high"):
-                assert actual_driver["supported_range"][key] == pytest.approx(
-                    source_driver["supported_range"][key] * scale)
+    for text in ('role="alert"', 'aria-live="polite"', 'prefers-reduced-motion', 'max-width:760px', 'aria-label="Father income group"'):
+        assert text in html
 
 
 @pytest.mark.skipif(shutil.which("node") is None, reason="Node not installed")
-def test_js_controls_scaling_invalid_input_direction_and_coverage():
-    # Unit-level DOM double: verifies event behavior, not visual/browser accessibility.
+def test_browser_math_matches_independent_native_refits():
+    from downstream.params import load_all
+    from downstream.scenario import ScenarioInput, compute_counts
+    from downstream.worker import mortality_profile
+    data = payload(generated())
+    defaults = {**data["defaults"], "odds": [p["point"] for p in data["phases"]]}
+    cases = [{**defaults, **change} for change in (
+        {}, {"workers": 0}, {"workers": .125}, {"workers": 1e-8}, {"years": 0},
+        {"years": .125}, {"years": 1}, {"years": 2}, {"years": 4}, {"years": 6}, {"years": 7},
+        {"workers": 1e6, "years": 100, "rate": 1}, {"rate": 0}, {"rate": 1e-15},
+        {"odds": [1]*5}, {"workers": 1e6, "years": 100, "rate": .003, "odds": [1e-20]*5}, {"odds": [.2, .5, .9, .8, .7]}, {"odds": [.5, 2, .7, 4, .9]},
+        {"gap": 1.2, "earnings": 1e6, "children": 3}, {"children": 0}, {"earnings": 0},
+        {"gap": data["child_presets"]["q3"]["point"]},
+    )]
+    out = json.loads(node('const m=require(process.argv[1]); console.log(JSON.stringify(JSON.parse(process.argv[2]).map(x=>m.calculate(x))));', DIRECTORY / 'math.js', json.dumps(cases)))
+    parts = load_all()
+    links = [p.link for p in mortality_profile(parts["params"]).values()]
+    for x, actual in zip(cases, out):
+        params = parts["params"]
+        for link, odds in zip(links, x["odds"]):
+            params = params.with_param(link, odds)
+        params = replace(params, parameters=tuple(
+            replace(p, point=x["gap"], low=x["gap"], high=x["gap"])
+            if p.link == "displacement->child_earnings" else p for p in params.parameters))
+        baselines = dict(parts["baselines"])
+        baselines["all_cause_mortality_annual"] = replace(baselines["all_cause_mortality_annual"], value=x["rate"])
+        baselines["median_male_lifetime_earnings"] = replace(baselines["median_male_lifetime_earnings"], value=x["earnings"])
+        scenario = ScenarioInput(x["workers"], n_children=x["children"], exposure_years=x["years"])
+        expected = compute_counts(params, baselines, scenario, _raw=True)
+        assert actual["difference"] == pytest.approx(expected["modeled"]["excess_deaths"]["point"], rel=2e-10, abs=1e-18)
+        assert actual["childLoss"] == pytest.approx(expected["modeled"]["child_lifetime_earnings_lost_usd"]["point"])
+        from downstream.mortality import rate_to_risk
+        import math
+        assert actual["exposed"] >= 0
+        assert actual["baseline"] == pytest.approx(x["workers"] * -math.expm1(-x["rate"] * x["years"]))
+        assert actual["annualRisk"] == pytest.approx(rate_to_risk(x["rate"]))
+        for i, driver in enumerate(actual["drivers"]):
+            variant = compute_counts(params.with_param(links[i], 1), baselines, scenario, _raw=True)["modeled"]["excess_deaths"]["point"]
+            assert driver["variant"] == pytest.approx(variant, rel=2e-10, abs=1e-18)
+            assert driver["impact"] == pytest.approx(actual["difference"] - variant, rel=1e-8, abs=1e-12)
+
+
+@pytest.mark.skipif(shutil.which("node") is None, reason="Node not installed")
+def test_interactions_recalculate_and_refuse_invalid_inputs():
     harness = r'''
-const fs = require("fs"), vm = require("vm"), assert = require("assert");
+const fs=require("fs"),vm=require("vm"),assert=require("assert"),ids={};
 class Element {
-  constructor() {this.children=[];this.events={};this.style={};this.dataset={};this.attributes={};this.value="";this.textContent="";}
-  append(...items) {this.children.push(...items);}
-  replaceChildren(...items) {this.children=items;}
-  setAttribute(k,v) {this.attributes[k]=v;}
-  addEventListener(k,fn) {this.events[k]=fn;}
-  insertBefore(item,before) {this.children=this.children.filter(x=>x!==item);this.children.splice(this.children.indexOf(before),0,item);}
+ constructor(){this.children=[];this.events={};this.attributes={};this.value="";this.textContent="";}
+ set id(v){this._id=v;ids[v]=this;} get id(){return this._id;}
+ append(...xs){this.children.push(...xs);} setAttribute(k,v){this.attributes[k]=v;}
+ addEventListener(k,v){this.events[k]=v;}
 }
-const html=fs.readFileSync(process.argv[1],"utf8"), app=fs.readFileSync(process.argv[2],"utf8");
-const ids={};for(const m of html.matchAll(/id="([^"]+)"/g)) ids[m[1]]=new Element();
+const html=fs.readFileSync(process.argv[1],"utf8");
+for(const m of html.matchAll(/id="([^"]+)"/g)){const e=new Element();e.id=m[1];}
 ids["engine-data"].textContent=html.match(/<script id="engine-data" type="application\/json">([\s\S]*?)<\/script>/)[1];
-ids.exposure.value="1000";ids.outcome.value="excess_deaths";
-const radios=[new Element(),new Element()];radios[0].value="comparison";radios[1].value="sensitivity";
-ids.results.children=[new Element(),ids.comparison,ids.sensitivity,new Element()];
-const document={getElementById:id=>ids[id],createElement:()=>new Element(),querySelectorAll:()=>radios,body:new Element()};
-vm.runInNewContext(app,{document,console});
-const reference=JSON.parse(ids["engine-data"].textContent).result;
-const format=x=>x!==0&&Math.abs(x)<.01 ? (Math.abs(x)<.000001 ? x.toExponential(2) : x.toLocaleString("en-US",{minimumSignificantDigits:3,maximumSignificantDigits:3})) : x.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
-assert.equal(ids["event-value"].textContent,format(reference.modeled.excess_deaths.sensitivity.reference_point));
-assert.equal(ids["driver-list"].children.length,5);
-ids.exposure.value="0";ids.exposure.events.input();assert.equal(ids["event-value"].textContent,"0.00");
-ids.exposure.value="0.125";ids.exposure.events.input();
-assert.equal(ids["event-value"].textContent,format(reference.modeled.excess_deaths.sensitivity.reference_point*.125/1000));
-assert.ok(Number(ids["event-value"].textContent)>0);
-assert.ok(ids["scenario-line"].textContent.startsWith("0.125 worker equivalents"));
-for(const driver of ids["driver-list"].children) {
- assert.ok(parseFloat(driver.children[0].children[1].textContent)>0,"Nonzero removal impact must stay visible");
- assert.ok(parseFloat(driver.children[2].textContent.replace("Effect removed: ",""))>0,"Nonzero variant must stay visible");
+const data=JSON.parse(ids["engine-data"].textContent);
+const document={getElementById:id=>ids[id],createElement:()=>new Element()};
+const context=vm.createContext({document,console});
+vm.runInContext(fs.readFileSync(process.argv[2],"utf8"),context);
+vm.runInContext(fs.readFileSync(process.argv[3],"utf8"),context);
+const run=()=>JSON.parse(ids.receipt.textContent).current_calculation;
+assert.ok(run().results.baseline>0);assert.ok(run().results.exposed>run().results.baseline);
+assert.ok(Math.abs(run().results.difference-data.result.modeled.excess_deaths.sensitivity.reference_point)<1e-9);
+assert.equal(ids["risk-rows"].children.length,5);assert.equal(ids.basis.textContent,"Reference assumptions");
+ids.workers.value="0.125";ids.workers.events.input();
+assert.ok(Number(ids["excess-deaths"].textContent)>0);assert.ok(ids.horizon.textContent.startsWith("0.125 ×"));
+assert.ok(run().results.drivers.every(d=>d.impact>0));
+ids.years.value="1";ids.years.events.input();assert.equal(run().results.phaseYears[4],0);
+assert.equal(ids["impact-4"].textContent,"0.00");
+ids.reset.events.click();const original=run().results.difference;
+ids.rate.value="10";ids.rate.events.input();assert.notEqual(run().results.difference,original);
+assert.ok(ids["baseline-basis"].textContent.startsWith("Custom λ"));
+assert.equal(ids.basis.textContent,"Custom assumptions");
+ids["tail-null"].events.click();assert.equal(run().inputs.odds[4],1);
+ids.neutral.events.click();assert.equal(run().results.difference,0);assert.equal(run().results.baseline,run().results.exposed);
+ids.reset.events.click();ids.quartile.value="q3";ids.quartile.events.change();assert.ok(run().results.childLoss<0);
+assert.equal(run().selected_child_source.source.study_id,"oreopoulos2008_q3");
+ids.children.value="0";ids.children.events.input();assert.equal(run().results.childLoss,0);
+ids.reset.events.click();
+for(const [field,bad] of [["workers",""],["workers","-1"],["years","101"],["rate","Infinity"],["gap","0"],["children",".5"],["odds-0","0"]]) {
+ const old=ids.receipt.textContent;ids[field].value=bad;ids[field].events.input();
+ assert.equal(ids.receipt.textContent,old);assert.equal(ids[field].attributes["aria-invalid"],"true");assert.equal(ids["input-error"].hidden,false);
+ ids.reset.events.click();
 }
-ids.exposure.value="1e-8";ids.exposure.events.input();
-assert.ok(parseFloat(ids["event-value"].textContent)>0);
-assert.ok(ids["scenario-line"].textContent.startsWith("1e-8 worker equivalents"));
-assert.ok(ids["event-value"].textContent.includes("e-"));
-for(const invalid of ["", "-1", "Infinity", "1000001"]) {
- const old=ids["event-value"].textContent;ids.exposure.value=invalid;ids.exposure.events.input();
- assert.equal(ids["event-value"].textContent,old);assert.equal(ids.exposure.attributes["aria-invalid"],"true");assert.equal(ids["input-error"].hidden,false);
-}
-ids.reset.events.click();assert.equal(ids.exposure.value,"1000");assert.equal(ids["input-error"].hidden,true);
-radios[1].events.change();assert.equal(document.body.dataset.direction,"sensitivity");assert.equal(ids.results.children[1],ids.sensitivity);
-radios[0].events.change();assert.equal(ids.results.children[1],ids.comparison);
-ids.outcome.value="child_lifetime_earnings_lost_usd";ids.outcome.events.change();
-assert.ok(ids["event-value"].textContent.startsWith("$"));assert.equal(ids["driver-list"].children.length,1);
-assert.ok(ids["fixed-description"].textContent.includes("unknown"));
-assert.ok(ids.blocked.children.length>1);assert.equal(JSON.parse(ids.receipt.textContent).engine_version,"0.4.0");
-console.log("DOM control checks pass");
+ids.workers.value="1e-8";ids.workers.events.input();assert.ok(ids["excess-deaths"].textContent.includes("e-"));
+assert.equal(run().inputs.workers,1e-8);assert.ok(ids["death-curve"].attributes.points.length>100);
+assert.equal(JSON.parse(ids.receipt.textContent).source_receipt.input_content_sha256,data.result.input_content_sha256);
+assert.ok(ids.blocked.children.length>0);
+console.log("interaction checks pass");
 '''
-    result = subprocess.run(["node", "-e", harness, str(DIRECTORY / "index.html"),
-                             str(DIRECTORY / "app.js")], capture_output=True, text=True)
-    assert result.returncode == 0, result.stdout + result.stderr
+    node(harness, DIRECTORY / "index.html", DIRECTORY / "math.js", DIRECTORY / "app.js")

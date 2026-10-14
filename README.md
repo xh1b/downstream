@@ -381,9 +381,9 @@ MIT. See `LICENSE`.
 
 ## Local 0.4 review tools
 
-- [Calculator prototype](examples/calculator/index.html): comparison-first and
-  sensitivity-first views backed by generated engine results. Human and visual
-  testing remain pending; see [the test protocol](docs/CALCULATOR_PROTOTYPE.md).
+- [Calculator](examples/calculator/index.html): edit exposure, timing, baseline,
+  odds ratios and child earnings inputs. Survival and sensitivity recalculate in
+  the browser. See [method and checks](docs/CALCULATOR_PROTOTYPE.md).
 - [Child-gap view](docs/CHILD_GAP_VIEW.md): `downstream child-gaps --workers 1000`.
 - [Evidence classification](docs/EVIDENCE_CLASSIFICATION_0_4.md): inspect source
   applicability separately from structural runtime use.
