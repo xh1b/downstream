@@ -100,6 +100,16 @@ def test_missing_custom_library_never_falls_back_to_bundled_coefficients(custom)
         sample_counts(parts['params'],parts['baselines'],scenario(),draws=8,params_dir=directory)
 
 
+def test_selected_subgroup_carries_its_own_citation(custom):
+    from downstream.child_applicability import select_child_contrast
+    directory,parts=custom
+    params=parts['params']
+    params=replace(params,parameters=tuple(replace(row,citation='jacobson1993')
+        if row.link=='displacement->child_earnings' else row for row in params.parameters))
+    selected=select_child_contrast(params,3,directory)
+    assert selected.by_link('displacement->child_earnings').citation=='oreopoulos2008'
+
+
 def change_contrast(directory, key, field, value):
     path=directory/'study_estimates.csv'
     with path.open(newline='') as handle:
