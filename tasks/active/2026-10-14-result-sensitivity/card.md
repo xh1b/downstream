@@ -2,7 +2,7 @@
 title: Attach input sensitivity reports to scenario results
 area: uncertainty
 priority: P1
-assignee:
+assignee: codex
 due:
 blocked-by: []
 expected-paths: [src/downstream/scenario.py, src/downstream/result_sensitivity.py, tests/test_result_sensitivity.py]
