@@ -45,8 +45,9 @@ cannot identify a per-worker coefficient by division.
 
 The mixture contract requires a common declared displaced-worker denominator.
 Mortality also requires the same follow-up duration, method and phase timing.
-Mismatched bases fail; missing bases stay unavailable. Normalize source totals
-with their declared exposures before mixing. Scaling a mixture is supported;
+Mismatched bases fail; missing bases stay unavailable. Refit components at the
+same declared worker basis before mixing. A row-only display transform retains
+its original source basis and must not be relabeled as a native refit. Scaling a mixture is supported;
 all alternatives and sensitivity comparisons scale together, while original
 component provenance retains its input basis.
 
