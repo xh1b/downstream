@@ -2,7 +2,7 @@
 title: Promote calculator app and add local web server
 area: calculator
 priority: P1
-assignee:
+assignee: codex
 blocked-by: []
 ---
 
