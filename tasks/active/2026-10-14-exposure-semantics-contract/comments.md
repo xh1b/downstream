@@ -13,3 +13,10 @@ triage: inbox -> ready.
 - By: eli
 
 claim: ready -> active.
+
+## c-b46b43ff58a6
+
+- At: 2026-10-15 01:27 HKT
+- By: eli
+
+Implementation 2fc4e1c adds backward-compatible exposure_semantics, validated unknown/default fields, authoritative warehouse components, distinct reference-equivalent versus unique-person count basis, event-time limits and exposure provenance fingerprint. Existing engine numbers and outcome applicability unchanged; metadata does not admit a cohort or calendar forecast. [Contract](../../../docs/EXPOSURE_SEMANTICS_0_4.md), [tests](../../../tests/test_exposure_semantics.py). Focused adapter/CLI/warehouse suite 54 passed in 0.54s; Ruff passes. No scenario.py, companion or parameter changes.
