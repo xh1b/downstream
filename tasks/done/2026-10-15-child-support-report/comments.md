@@ -34,3 +34,12 @@ Implemented source-support API and standalone JSON inspection script with all fi
 - By: mira
 
 done: active -> review.
+
+## c-0e41c776f099
+
+- At: 2026-10-15 01:34 HKT
+- By: codex
+
+accept: review -> done.
+
+Reviewed current-source report, exact contracts, signed income contrasts, source/target distinctions and parent-tenure unknowns. Inspection remains ineligible for headlines and supplies no invented age curve or fresh extraction. Focused and integration tests pass; wider-evidence parent remains open.
