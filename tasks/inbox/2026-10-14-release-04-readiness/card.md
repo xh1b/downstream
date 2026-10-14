@@ -33,11 +33,11 @@ release acceptance; it does not authorize deployment or remote operations.
 
 ## Acceptance
 
-- [ ] Audit new calculation paths; fix confirmed defects and retain numerical/source receipts.
+- [x] Audit new calculation paths; fix confirmed defects and retain numerical/source receipts.
 - [ ] Record SIPP held-out accuracy, survey uncertainty and the supported household prototype scope.
 - [ ] Document admitted cohort and exposure requirements, including how missing target information is handled.
-- [ ] Recheck source coefficients, scales, windows, overlap and null/beneficial estimates used by the release.
-- [ ] Resolve the paper-review findings and check agreement among paper, HTML, model card and saved examples.
+- [x] Recheck source coefficients, scales, windows, overlap and null/beneficial estimates used by the release.
+- [x] Resolve the paper-review findings and check agreement among paper, HTML, model card and saved examples.
 - [ ] Prepare consumer fixtures and a version/hash/cache handoff checklist for the companion project.
 - [ ] Run full tests, coverage, audit, lint, wheel/sdist installation and previous-version comparisons.
 - [ ] Publish changed results, known validation misses, unmodeled uncertainty and unresolved research dependencies.
@@ -65,3 +65,12 @@ separate scope decisions; they are not implicit acceptance requirements here.
 The migrated place-counterfactual card appears implemented: current code scales
 the displacement gap, and tests/test_place.py includes a null-effect regression.
 Verify its current receipts and move it through review before calling it open work.
+
+## Selected work completed - 2026-10-14
+
+Owner-selected items 1, 4 and 5 are implemented and verified in
+`2026-10-14-audit-04-release`. Its card records defects, primary-table audit
+coverage and remaining scientific limits. Engine stays 0.4.0; corrected
+source transforms/provenance are parameters v1.51. Full suite: 1,065 tests;
+coverage 96.8% statements / 93.2% branches. This is not a release decision
+or completion of the remaining SIPP, cohort and XH1B handoff scope.
