@@ -1,0 +1,50 @@
+{
+  "schema": "downstream-receiving-source-unit-recheck/1",
+  "verified_on": "2026-10-15",
+  "parameter_version_transition": [
+    "v1.51",
+    "v1.52"
+  ],
+  "engine_version": "0.4.0",
+  "sources": [
+    {
+      "citation": "lightmiller2018",
+      "url": "https://www.antoniocasella.eu/nume/LIGHT_Miller_2018.pdf",
+      "sha256": "4af68d79d437943601cac72ba25692fbe999588e4fda88792d5729dfc0114df9",
+      "matches_original_corpus": true,
+      "pages": 32,
+      "version": "published Criminology2018",
+      "locator": "Table1 p377; focal measure p379; Table2 Model4 p386; interpretation p384",
+      "point": -0.12,
+      "standard_error": 0.03,
+      "regressor": "undocumented residents / total population, percentage points, unlogged",
+      "outcome": "log violent-crime rate per100000",
+      "time_contract": "annual state panel; independent variables lagged one year",
+      "correction": "semi-log slope, not log-log immigrant-stock elasticity; FE coefficient is not the IV coefficient"
+    },
+    {
+      "citation": "bianchibuonannopinotti2012",
+      "url": "https://www.antoniocasella.eu/nume/Bianchi_Buonanno_Pinotti_2010.PDF",
+      "sha256": "4857b7f55b25466dccb4df477191bdaee433d129c087fb68472a2884e2239daf",
+      "matches_original_corpus": false,
+      "pages": 37,
+      "version": "2010 working-paper mirror",
+      "locator": "Eq3 p7; Table5 col3 p33",
+      "point": 0.105,
+      "standard_error": 0.187,
+      "regressor": "log valid residence permits / total province population",
+      "outcome": "log total-crime incidents / total province population",
+      "time_contract": "1991-2001 endpoint differences, not cumulative incidents",
+      "prior_source": {
+        "url": "https://shs.hal.science/halshs-00670036/document",
+        "sha256": "02442aa8b0c716be00cc598ba5948dce31e835ad2b19bd60cd1ea598a45e5c66",
+        "pages": 38,
+        "table_locator": "Table4 col3; prior version not re-downloaded in this recheck"
+      },
+      "tier": "canonical",
+      "published_version_reconciliation": "queued; not claimed"
+    }
+  ],
+  "point_and_support_changes": "none; exposure units, links, source version and application corrected",
+  "transport": "no receiving-target/H1B bridge established; distinct source margins retained"
+}

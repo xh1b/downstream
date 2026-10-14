@@ -213,3 +213,16 @@ by the model's owner.
 - Mental-health anchor: Shin 2026 (IZA DP 18586, Jeju Island
   quasi-experiment) — working-paper tier; re-check for journal
   publication before screening.
+
+### Receiving-source unit correction and published-version queue — 2026-10-15
+
+v1.52 retires the generic stock-elasticity links described in the historical
+v1.48 receipt above. Light–Miller is a semi-log slope per percentage-point
+undocumented population share; its coefficient and SE were rechecked in the
+published PDF. Bianchi uses log valid-residence-permit share, with both total
+population denominators. The 2010 mirror's Table 5 column 3 reproduces .105
+(SE .187); the prior HAL draft's Table 4 locator is a different version.
+Published JEEA table reconciliation remains **queued**, and the current
+coefficient is canonical under the working-paper rule. This duplicate-version
+recheck is not a fourth independent crime study. See
+[the source-unit receipt](../validation/receiving_source_units_20261015.json).

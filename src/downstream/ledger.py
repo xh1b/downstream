@@ -229,12 +229,10 @@ CHAIN_KINDS = {
     "infant_birth_weight->child_earnings": GAP_LOG,
     "infant_birth_weight->adult_type2_diabetes_hazard": GAP_LOG,
     "infant_birth_weight->adult_cardiovascular_disease_hazard": GAP_LOG,
-    # Receiving-community stream (v1.48): both rows are log-log
-    # elasticities of a local crime rate w.r.t. the local immigrant
-    # population, so the incoming multiplier (1.0 = no influx) is
-    # raised to the estimated elasticity.
-    "immigrant_influx->receiving_violent_crime_rate": GAP_LOG,
-    "immigrant_influx->receiving_total_crime_rate": GAP_LOG,
+    # Receiving-community total-crime source uses a ratio of regular
+    # immigrant SHARES. The violent source is semi-log per percentage
+    # point and is only applied by its explicit share adapter.
+    "regular_immigrant_share_ratio->receiving_total_crime_rate": GAP_LOG,
 }
 
 # Composition has a different epistemic status from its arithmetic. These
@@ -257,8 +255,8 @@ CHAIN_CAUSAL_ROLES = {
     # The receiving-community rows are separately identified causal
     # estimates (they are NOT effects of displacement), so they carry
     # their own role rather than borrowing the displacement one.
-    "immigrant_influx->receiving_violent_crime_rate": "direct_receiving_community_estimate",
-    "immigrant_influx->receiving_total_crime_rate": "direct_receiving_community_estimate",
+    "undocumented_share_change_pp->receiving_violent_crime_log_rate": "direct_receiving_community_estimate",
+    "regular_immigrant_share_ratio->receiving_total_crime_rate": "direct_receiving_community_estimate",
 }
 
 
@@ -268,6 +266,9 @@ def validate_chain(params, links: list[str], kinds: list[str], nodes: dict) -> N
         raise ValueError("links and kinds must be the same length")
     previous = None
     for link, kind in zip(links, kinds):
+        if link in {"immigrant_influx->receiving_violent_crime_rate",
+                    "immigrant_influx->receiving_total_crime_rate"}:
+            raise ValueError("legacy immigrant_influx linkage retired: use the receiving-community adapter with source-specific population shares")
         parameter = params.by_link(link)
         if parameter.evidence_role == "boundary":
             raise ValueError(

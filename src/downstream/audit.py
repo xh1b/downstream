@@ -225,7 +225,7 @@ def audit(params_dir: str | Path | None = None) -> list[Finding]:
         "youth_violent_crime_conviction_share",
         # The receiving-community exposure: like displacement_event, a
         # scenario entry, not something the displacement DAG produces.
-        "immigrant_influx",
+        "undocumented_share_change_pp", "regular_immigrant_share_ratio",
         # v1.47 divorce-transmission stream: the node's own description
         # declares it an entry population ("married-worker couples
         # followed over the displacement window"); completing the

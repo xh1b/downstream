@@ -1,3 +1,19 @@
+## v1.52 — 2026-10-15 — correct receiving-community exposure units
+
+- Retire generic immigrant-stock receiving links. Light–Miller Table 2 is a
+  semi-log coefficient per percentage-point undocumented population share,
+  not a log-log stock elasticity. Rechecked b=-.12, SE=.03 against the original
+  hash-pinned published PDF; point and rounded coefficient support unchanged.
+- Type Bianchi's exposure as the ratio of regular-resident population shares,
+  including changing total-population denominators. Rechecked b=.105, SE=.187
+  in the accessible 2010 working-paper mirror; distinguish its Table 5 from
+  the prior HAL-draft Table 4. Downgrade to canonical working-paper tier;
+  published-version reconciliation remains open.
+- Source margins and windows stay separate. Endpoint crime-rate contrasts
+  cannot become cumulative incidents or inferred replacement-worker inflows.
+- Correct findings, nodes and generic-chain migration/refusal semantics.
+  No mortality/child coefficient or baseline value changed. Engine stays 0.4.0.
+
 ## v1.51 — 2026-10-14 — reproduce mortality transforms and correct source provenance
 
 - Recheck Danish mortality Tables 6.1/6.2 against the hash-pinned 2011 AKF

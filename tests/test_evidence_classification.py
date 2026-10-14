@@ -53,8 +53,8 @@ def test_boundary_evidence_has_no_generic_chain_permission(data):
 
 def test_receiving_estimate_is_not_labeled_a_displacement_effect(data):
     rows = {row["link"]: row for row in data["parameters"]}
-    for link in ("immigrant_influx->receiving_violent_crime_rate",
-                 "immigrant_influx->receiving_total_crime_rate"):
+    for link in ("undocumented_share_change_pp->receiving_violent_crime_log_rate",
+                 "regular_immigrant_share_ratio->receiving_total_crime_rate"):
         assert rows[link]["runtime_use"] == "direct_receiving_community_estimate"
         assert rows[link]["evidence_role"] == "conditional"
 

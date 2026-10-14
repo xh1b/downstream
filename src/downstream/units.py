@@ -18,6 +18,8 @@ RATE_RATIO = "rate_ratio"     # relative rate vs counterfactual (applied to a ba
 ODDS_RATIO = "odds_ratio"     # relative odds vs counterfactual
 LEVEL_RATIO = "level_ratio"   # jobs per job, dollars per dollar: a LEVEL, never a chain link
 PERCENT_DELTA = "percent_delta"
+PERCENTAGE_POINT_DELTA = "percentage_point_delta"
+LOG_DELTA = "log_delta"
 SD_DELTA = "sd_delta"          # change in standard-deviation units (achievement scales)
 LIFE_YEARS = "life_years"      # life-expectancy change in years
 LOG_ELASTICITY = "log_elasticity"  # elasticity of ln(outcome); signed, samples linear
@@ -44,6 +46,7 @@ class Node:
 #   level_ratio : n * param                (count conversion, additive in n)
 #   elasticity  : pct_delta = param * pct_input
 COMPOSITION = {
+    (PERCENTAGE_POINT_DELTA, LOG_DELTA): "linear_shift",  # named semi-log share adapter
     (PERSONS, GAP): "level",             # displacement -> worker_earnings (JLS band)
     (GAP, ODDS_RATIO): "rate",           # mortality odds, recorded before risk conversion
     (GAP, RATE_RATIO): "rate",           # earnings shock -> mortality

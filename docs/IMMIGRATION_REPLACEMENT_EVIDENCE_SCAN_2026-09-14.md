@@ -223,3 +223,13 @@ governed by the admission contract, not by motive:
   (e.g., "replacement → native displacement from housing") stays
   without admissible evidence, the engine keeps reporting it as
   unmodeled rather than filling the gap with an assumption.
+
+## Source-unit correction — 2026-10-15
+
+The v1.48 crime-link interpretation above is historical and superseded by
+v1.52. Light–Miller is semi-log per percentage-point undocumented population
+share, not log-log immigrant-stock growth. Bianchi's exposure is the ratio of
+regular-resident population shares, not stock alone. Typed source inputs,
+refusals and source-version limits are recorded in
+[the receiving adapter contract](RECEIVING_COMMUNITY_0_4.md); the historical
+independence gate does not remove these unit, design or transport conditions.

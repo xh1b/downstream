@@ -74,6 +74,7 @@ adult_cardiovascular_disease_hazard,odds_ratio,relative odds of adult cardiovasc
 child_divorce_hazard,rate_ratio,"child's own divorce hazard vs counterfactual (offspring of disrupted marriages; walk generation 3 — the parent's own divorce hazard transmits only through the share of marriages that actually dissolve)"
 married_cohort,probability,"married-worker couples followed over the displacement window (the population whose dissolution share feeds the divorce transmission mixture)"
 parental_dissolution_share,probability,"share of the cohort's marriages dissolved over the follow-up window (counterfactual population constant for the conditional-mixture divorce transmission)"
-immigrant_influx,gap_multiplier,"local immigrant population vs baseline (1.0 = no net inflow; 1.10 = a +10% influx; the receiving-community exposure)"
-receiving_violent_crime_rate,gap_multiplier,"local violent-crime rate vs the counterfactual absent the influx (1.0 = unchanged; composed as a log-log elasticity from immigrant_influx)"
-receiving_total_crime_rate,gap_multiplier,"local total-crime rate vs the counterfactual absent the influx (1.0 = unchanged; composed as a log-log elasticity from immigrant_influx; work-access margin only)"
+receiving_total_crime_rate,gap_multiplier,"endpoint total-crime rate ratio from regular immigrant share ratio; 1991-2001 source contrast, not cumulative incidents"
+undocumented_share_change_pp,percentage_point_delta,change in undocumented residents / total population in percentage points; distinct from immigrant stock growth
+receiving_violent_crime_log_rate,log_delta,log violent-crime rate response to a lagged undocumented-share percentage-point change; exponentiate at named adapter boundary
+regular_immigrant_share_ratio,gap_multiplier,post/reference ratio of valid residence-permit residents / total population; includes both population denominators

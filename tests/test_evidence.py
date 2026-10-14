@@ -35,11 +35,11 @@ def _write_findings(tmp_path, row):
 
 def test_acquired_corpus_is_hash_pinned_and_not_misrepresented_as_extracted():
     records = load_corpus(ROOT / "params" / "evidence_corpus.csv")
-    assert len(records) == 106
+    assert len(records) == 107
     assert all(record.retrieval_status == "verified_pdf" for record in records)
-    assert sum(record.text_extractable for record in records) == 102
+    assert sum(record.text_extractable for record in records) == 103
     assert all(record.source_url for record in records)
-    assert sum(record.screening_status == "screened" for record in records) == 73
+    assert sum(record.screening_status == "screened" for record in records) == 74
     assert all(record.screening_status in {"screened", "unreviewed"} for record in records)
     assert all(len(record.sha256) == 64 for record in records)
 
