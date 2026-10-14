@@ -2,7 +2,7 @@
 title: Synchronize pending 0.4 artifacts after receiving-unit repair
 area: release
 priority: P1
-assignee:
+assignee: codex
 blocked-by: []
 ---
 
