@@ -2,7 +2,7 @@
 title: Plan Downstream priorities from current XH1B usage
 area: integration
 priority: P1
-assignee:
+assignee: codex
 due:
 blocked-by: []
 expected-paths: [docs/XH1B_USAGE_PLAN_0_4.md]
