@@ -2,7 +2,7 @@
 title: Synchronize the methods paper with current code
 area: docs
 priority: P1
-assignee:
+assignee: paper-sync
 blocked-by: []
 expected-paths: [paper/downstream.tex, paper/build_tables.py, tests/test_paper_tables.py, scripts/build_methods_html.py]
 ---
