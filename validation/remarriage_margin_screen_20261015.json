@@ -1,0 +1,100 @@
+{
+  "schema": "downstream-evidence-screen/1",
+  "screened_on": "2026-10-15",
+  "task": "2026-10-14-remarriage-margin",
+  "candidate_origin": "V1 displacement->divorce_hazard cites rege2007 and charles2004; the original task names no specific remarriage table",
+  "screening_status": "complete_with_supported_refusal",
+  "admission": {
+    "eligible": false,
+    "decision": "refuse_remarriage_coefficient",
+    "reason": "Neither checked anchor identifies displacement effects on entry into a subsequent union. Divorce outcomes and marital-history controls are different estimands.",
+    "target_link": "displacement->remarriage",
+    "estimate": null,
+    "standard_error": null,
+    "interval": null,
+    "effect_is_zero": false,
+    "missing": ["identified remarriage transition", "eligible post-separation population", "follow-up and competing-risk definition", "source estimate with uncertainty", "transport argument"]
+  },
+  "sources": {
+    "rege2007": {
+      "title": "Plant Closure and Marital Dissolution",
+      "version": "Statistics Norway Discussion Paper 514, September 2007",
+      "url": "https://www.ssb.no/a/publikasjoner/pdf/DP/dp514.pdf",
+      "sha256": "c429f80c3ea93cde98a6b6c161c1d928051e7cbf0b8ecaa58197631206fe3243",
+      "locators": ["PDF page 13, Table 2 Model 3", "PDF pages 10-11, sample definition", "PDF page 21, Cherlin bibliography entry"],
+      "method": "Covariate-adjusted OLS with neighborhood fixed effects; plant-closure versus stable-plant exposure",
+      "population": "Norwegian married couples at baseline 1995; husband attached to employment; source restrictions include husband <=55, plant >=10 FTEs, marriage by 1992",
+      "exposure_window": [1995, 2000],
+      "outcome_window": [1995, 2003],
+      "remarriage_finding": "No remarriage transition coefficient found. Remarriage appears in a cited book title, not an estimated outcome."
+    },
+    "charles2004": {
+      "title": "Job Displacement, Disability, and Divorce",
+      "version": "April 2002 author draft; not the 2004 published version of record",
+      "url": "https://sites.lsa.umich.edu/mstep/wp-content/uploads/sites/930/2021/06/divorce_final.pdf",
+      "sha256": "b9c064029ab09939a1d036bea46ba697fbfdb8e6f7bc42165e113adfbb468632",
+      "locators": ["PDF page 13, printed page 12, footnote 9", "PDF page 42, Appendix Table 1, first estimate/SE pair", "PDF pages 11-12, sample definition", "PDF page 35, Table 3 outcome and observations"],
+      "method": "Pooled probit divorce model with marital-history controls; standard errors clustered within couples",
+      "population": "US PSID nationally representative sample; unique husband-wife pairs with available marital histories; first and later marriages included",
+      "data_window": [1968, 1993],
+      "dissolution_follow_up_window": [1985, 1993],
+      "remarriage_finding": "Footnote 9 excludes same-pair re-marriages while allowing a person to appear in a different unique spouse pair; it does not estimate a union-formation hazard."
+    }
+  },
+  "adjacent_estimates": [
+    {
+      "source": "rege2007",
+      "locator": "Table 2 Model 3, Husband PDR>.9",
+      "exposure": "husband baseline plant closes or downsizes by more than 90 percent",
+      "outcome": "divorced_by_2003",
+      "contrast": "closing versus stable husband plants",
+      "scale": "probability_difference",
+      "estimate": 0.00783,
+      "standard_error": 0.00210,
+      "uncertainty_kind": "reported robust SE clustered within husband plant",
+      "observations": 80962,
+      "admit_as_remarriage": false,
+      "refusal": "Different outcome: marital dissolution, not subsequent union formation"
+    },
+    {
+      "source": "charles2004",
+      "locator": "Appendix Table 1, first estimate/SE pair, Husband's Second Marriage?",
+      "exposure": "husband already in second marriage",
+      "outcome": "marriage_ends_by_next_year",
+      "contrast": "second versus omitted first marriage, conditional on model controls",
+      "scale": "probit_index_coefficient",
+      "estimate": 0.220,
+      "standard_error": 0.083,
+      "uncertainty_kind": "reported robust SE clustered within couples",
+      "observations": 14083,
+      "admit_as_remarriage": false,
+      "refusal": "Observational prior-marriage control; neither displacement treatment nor remarriage outcome"
+    },
+    {
+      "source": "charles2004",
+      "locator": "Appendix Table 1, first estimate/SE pair, Wife's Second Marriage?",
+      "exposure": "wife already in second marriage",
+      "outcome": "marriage_ends_by_next_year",
+      "contrast": "second versus omitted first marriage, conditional on model controls",
+      "scale": "probit_index_coefficient",
+      "estimate": 0.252,
+      "standard_error": 0.083,
+      "uncertainty_kind": "reported robust SE clustered within couples",
+      "observations": 14083,
+      "admit_as_remarriage": false,
+      "refusal": "Observational prior-marriage control; neither displacement treatment nor remarriage outcome"
+    }
+  ],
+  "admission_contract": {
+    "source_class": "Draft and working-paper source copies; no precision-tier upgrade or coefficient admission",
+    "estimand_match": false,
+    "causal_identification_for_remarriage": false,
+    "window_match_for_remarriage": false,
+    "uncertainty_for_target_effect": "unavailable",
+    "transport_for_target_effect": "not established",
+    "overlap_rule": "Do not reuse divorce incidence as remarriage incidence or add a marital-history control as a new displacement pathway",
+    "future_requirement": "Obtain a primary study of first subsequent union after dissolution, with a defined origin population, time since event, same-pair reunions versus new partners, marriage versus cohabitation, death/censoring treatment, effect scale and uncertainty"
+  },
+  "production_changes": false,
+  "scope_limit": "Screens the two V1 divorce anchors only; not a systematic review or evidence that displacement has no effect on remarriage"
+}
