@@ -32,3 +32,10 @@ were not rewritten.
   Those historical files were preserved.
 
 Implementation: `396e6e5` (see git log for the definitive port revision).
+
+## c-d48efa01d5b8
+
+- At: 2026-10-15 00:02 HKT
+- By: kanban-port
+
+Correction to the preceding receipt: the implementation commit is `66658d1`. The earlier revision was a transcription error.
