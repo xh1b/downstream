@@ -34,3 +34,12 @@ Source repair d8f1bc8; adapter/CLI ccb34d9. [Contract](../../../docs/RECEIVING_C
 - By: eli
 
 done: active -> review.
+
+## c-534cbcbde3ce
+
+- At: 2026-10-15 02:06 HKT
+- By: codex
+
+request-changes: review -> active.
+
+Independent review found Bianchi log(post)-log(reference) cancels adjacent signed share changes to zero. Use stable log1p near equal shares with an extreme-ratio fallback and add positive/negative adjacent-share regressions before acceptance.
