@@ -19,4 +19,8 @@ and structural assumptions in evidence records.
 
 ## Acceptance
 
-- [ ] Resolve review findings and classify baseline transitions, causal effects and structural assumptions.
+- [x] Resolve classification ambiguities and classify baseline transitions, direct/conditional effects, structural assumptions and boundary evidence. [generated inventory](../../../docs/EVIDENCE_CLASSIFICATION_0_4.md) [admission/use checks](../../../tests/test_evidence_classification.py)
+
+## Scope disposition
+
+The existing calculation/source corrections are recorded in task:2026-10-14-audit-04-release. This unit makes current evidence roles and runtime use inspectable without claiming a new primary-source review or closing the separate applicability, published-profile, SIPP and external-validation tasks. The generated report names those remaining scientific questions.
