@@ -2,7 +2,7 @@
 title: Review mortality applicability before admitting other strata
 area: mortality
 priority: P1
-assignee:
+assignee: mira
 due:
 blocked-by: []
 expected-paths: []
