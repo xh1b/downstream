@@ -116,3 +116,10 @@ sensitivity base, when those reports are stored. XH1B integration remains pendin
 uses the command above. Tests check direct survival refits, null and beneficial
 estimates, source selection, place inputs, blocked outcomes, class-specific
 jobs, valuation, entity/policy delivery, correlated blocks and CLI routing.
+
+The regression rerun passes 1,101 tests after regenerating the methods HTML
+provenance footer. The final sensitivity test file passes 19 checks, including
+one county check added after full-suite collection. Measured coverage is 96.9%
+statements / 93.4% branches, above unchanged 95% / 90% gates. CI-scope Ruff,
+the new test file, vulture and the evidence audit pass. A wheel built from the
+sdist passes isolated installed CLI checks, including the new variance option.
