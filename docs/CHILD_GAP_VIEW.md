@@ -126,3 +126,12 @@ than treating unavailable pathways as zero.
 
 Implementation: [child_gap_view.py](../src/downstream/child_gap_view.py).
 Contracts and refusal examples: [test_child_gap_view.py](../tests/test_child_gap_view.py).
+
+## CLI
+
+Run `downstream child-gaps --workers 1000` for the side-by-side report.
+Optional `--child-profiles`, `--child-income-quartile`, `--income-rank-definition`,
+`--place` and `--place-application` retain the scenario's input contracts.
+`--real-discount-rate` and `--valuation-year` preserve the separate
+`child_valuation` report when compatible child ages are supplied.
+The view does not combine those projections with undiscounted child totals.

@@ -122,6 +122,7 @@ def child_gap_view(
         "target_population": deepcopy(result["target_population"]),
         "child_applicability": deepcopy(result["child_applicability"]),
         "child_transport": eligibility,
+        "child_valuation": deepcopy(result.get("child_valuation")),
         "place": deepcopy(result["place"]),
         "place_application": scenario.place_application,
         "rows": rows,

@@ -137,6 +137,18 @@ def _run_main(argv: list[str] | None = None) -> int:
     p.add_argument("--place", default=None, metavar="KEY",
                    help="places.csv key — applies shrunk baselines + the mobility modifier")
 
+    p = sub.add_parser("child-gaps", help="child and descendant earnings gaps side by side")
+    p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
+    p.add_argument("--workers", type=float, required=True)
+    p.add_argument("--children", type=int, default=2)
+    p.add_argument("--child-profiles", help="JSON file with child ages and sexes at displacement")
+    p.add_argument("--child-income-quartile", type=int, choices=(1, 2, 3, 4))
+    p.add_argument("--income-rank-definition")
+    p.add_argument("--real-discount-rate", type=float)
+    p.add_argument("--valuation-year", type=int)
+    p.add_argument("--place", default=None)
+    p.add_argument("--place-application", choices=["initial_only", "legacy_repeated"], default="initial_only")
+
     p = sub.add_parser("forecast-register", help="freeze a prospective forecast locally")
     p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
     p.add_argument("--input", required=True)
@@ -434,6 +446,27 @@ def _run_main(argv: list[str] | None = None) -> int:
                                  "suppressed_count": parsed["suppressed_count"],
                                  "query": parsed["query"]}
         _dump(out)
+        return 0
+
+    if args.cmd == "child-gaps":
+        from .child_gap_view import child_gap_view
+        from .place import load_places
+
+        try:
+            places = load_places(Path(args.params) / "places.csv") if args.place else None
+            if args.place and not places:
+                parser.error("places.csv is required for a child-gap place comparison")
+            scenario = ScenarioInput(
+                args.workers, n_children=args.children,
+                child_profiles=json.loads(Path(args.child_profiles).read_text()) if args.child_profiles else None,
+                child_income_quartile=args.child_income_quartile,
+                income_rank_definition=args.income_rank_definition,
+                real_discount_rate=args.real_discount_rate, valuation_year=args.valuation_year,
+                place_application=args.place_application)
+            _dump(child_gap_view(params, parts["baselines"], scenario, places=places,
+                                 place_key=args.place, params_dir=Path(args.params)))
+        except (OSError, KeyError, ValueError) as exc:
+            parser.error(str(exc))
         return 0
 
     if args.cmd == "scenario":
