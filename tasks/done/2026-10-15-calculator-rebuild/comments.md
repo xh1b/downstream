@@ -41,3 +41,10 @@ done: active -> review.
 - By: fenix
 
 Independent read-only code/numerical review approves scoped rebuild. Re-ran 4 focused calculator tests and generator freshness check successfully. Verified actual recalculation of 11 numeric controls (six main plus five odds), correct phase durations and signed child contrasts. Confirmed precision fix: exact extreme-protective reproduction now returns nonnegative D1=3.0045045033770258e-15; swept 1000 rates with the same profile without negative or nonfinite D1. Source and current receipts stay separate, selected Q3 source includes locator/hash, edited lambda is labelled custom and target-not-reviewed status remains visible. Earlier negative-D1 finding is resolved. Visual/browser/mobile/screen-reader and human participant review remain explicitly pending; this acceptance covers implementation, tested equations and source contracts only.
+
+## c-f4b133bb62a6
+
+- At: 2026-10-15 01:33 HKT
+- By: fenix
+
+accept: review -> done.
