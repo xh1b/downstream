@@ -2,7 +2,7 @@
 
 Engine 0.4.0 / parameters v1.50, 2026-10-14. This pending update implements the
 review's scenario improvements and records unresolved empirical requirements
-in `TODO.md`. Software correctness and source reproduction do not establish
+in the `tasks/` board. Software correctness and source reproduction do not establish
 that the effects transport to a particular policy or population.
 
 This work remains in the 0.4 development cycle and has not been applied to

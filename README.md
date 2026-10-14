@@ -318,8 +318,12 @@ timestamp to establish public preregistration.
 | `tests/` | the compute checks (`pytest`) |
 | `paper/` | the methods paper (`make -C paper`) |
 | `CREDITS.md` | every researcher, study, and DOI, computed from the bibliography |
-| `scripts/` | quality gate, benchmarks, data acquisition |
+| `scripts/` | quality gate, benchmarks, data acquisition, task board CLI |
+| `tasks/` | task cards and agent workflow; `python3 scripts/tasks.py list` |
 | `docs/` | plans and binding rules; see below |
+
+Current work is tracked in [the task board](tasks/README.md), using the XH1B card format.
+Run `python3 scripts/tasks.py next` to see claimable work.
 
 Key documents:
 

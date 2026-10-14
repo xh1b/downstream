@@ -115,3 +115,12 @@ on `master`.
   `git commit` is fine and expected; sharing with the remote is a separate,
   explicit decision each time. If unsure whether something counts as remote,
   treat it as remote and ask first.
+
+## Task tracking
+
+Use `tasks/` for all work tracking, following `tasks/AGENTS.md`. The root
+TODO.md has been converted to task cards and is no longer the backlog.
+Read the board with `python3 scripts/tasks.py list` or `next`; claim ready
+work before starting it and record findings/receipts in the card thread.
+Initial migration is a bootstrap import. The dated TODO in `docs/history/`
+is historical context only. Do not recreate a competing TODO list.
