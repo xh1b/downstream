@@ -389,3 +389,11 @@ MIT. See `LICENSE`.
   applicability separately from structural runtime use.
 - [Consumer fixtures](docs/CONSUMER_FIXTURES_0_4.md): normalization and mixture
   expectations for the pending companion handoff.
+
+- [Exposure semantics](docs/EXPOSURE_SEMANTICS_0_4.md): caller-owned quantity,
+  event time, overlap and provenance contract.
+- [Child source support](docs/CHILD_SUPPORT_0_4.md): current eligibility and signed
+  income contrasts; `python scripts/inspect_child_support.py`.
+- [Pool readiness](docs/POOL_READINESS_0_4.md): compatibility and sample overlap.
+- [Mortality covariance](docs/MORTALITY_COVARIANCE_0_4.md): additive phase precision
+  bounds with unknown covariance.
