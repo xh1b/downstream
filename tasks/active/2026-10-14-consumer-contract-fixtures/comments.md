@@ -15,3 +15,10 @@ Owner authorized low-hanging work. Prepare engine-backed consumer fixtures and n
 - By: codex
 
 claim: ready -> active.
+
+## c-5ca846c921e0
+
+- At: 2026-10-15 00:59 HKT
+- By: codex
+
+Implemented acd04ec: raw totals with public provenance, complete scaling expectations, weighted persistence/removal/endpoints, explicit unavailable mixture quantiles and blocked positive-weight outcomes. Sixteen focused tests, deterministic fixture freshness and scoped Ruff pass. Companion parser/worker/cache/HTML/Markdown acceptance remains documented for XH1B; no repin or deployment. Eli is independently reviewing this unit.
