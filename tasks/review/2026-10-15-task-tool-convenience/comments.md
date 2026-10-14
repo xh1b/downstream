@@ -43,3 +43,17 @@ Implementation, tests and instructions are committed in `bf38e75`. Board status 
 The [tool](../../../scripts/tasks.py), [workflow tests](../../../tests/test_tasks_workflow.py), [board tests](../../../tests/test_tasks_board.py) and [instructions](../../AGENTS.md) contain the change. The runtime stays standard-library-only and uses installed Git. Existing cards and prior comments remain unchanged by this implementation. Other agents' changes remain outside these commits. No simulation tests or remote operation occur.
 
 The implementation is ready for independent review. Commit the evidence checklist before `done`, as this board requires. Then send the task to `review/` without accepting it.
+
+## c-851011612bb6
+
+- At: 2026-10-15 02:14 HKT
+- By: codex-task-tooling
+
+done: active -> review.
+
+Send the tooling change to independent review
+
+Implementation and instructions: `bf38e75`.
+Verification receipt: task:2026-10-15-task-tool-convenience#c-adcf752daa00.
+
+All 29 affected tests pass. Board validation, migration preservation, Ruff and documentation checks pass. Review the historical summary, full messages, stable-ID view and explicit-path commit guidance. This handoff does not accept the task.
