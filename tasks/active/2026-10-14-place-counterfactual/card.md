@@ -2,7 +2,7 @@
 title: Resolve the same-place exposure counterfactual
 area: places
 priority: P1
-assignee:
+assignee: eli
 due:
 blocked-by: []
 expected-paths: []
