@@ -48,6 +48,13 @@ names, based on [ASD-STE100](https://asd-ste100.org/). Symbols and units label
 calculations. A formal controlled-dictionary compliance audit is not claimed.
 The source receipt preserves original evidence text.
 
+Input labels share the row height. Wrapped labels do not shift numeric controls.
+Below 520 px, each input group uses two columns; its last field spans the row.
+This gives the rate unit and lifetime earnings field more space. Mobile controls
+have a 44 px minimum height. The mortality table scrolls inside a named keyboard
+focusable region. Large results use scientific notation; the data panel keeps
+full numeric precision. Long source text can wrap within the page.
+
 ## Build and verify
 
 ```sh

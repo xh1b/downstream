@@ -148,6 +148,9 @@ for(const [field,bad] of [["workers",""],["workers","-1"],["years","101"],["rate
 ids.workers.value="1e-8";ids.workers.events.input();assert.ok(ids["excess-deaths"].textContent.includes("e-"));
 assert.equal(run().inputs.workers,1e-8);assert.ok(ids["death-curve"].attributes.points.length>100);
 assert.equal(JSON.parse(ids.receipt.textContent).source_receipt.input_content_sha256,data.result.input_content_sha256);
+ids.workers.value="1000000";ids.workers.events.input();
+assert.ok(ids["child-loss"].textContent.includes("e+"));
+assert.equal(run().inputs.workers,1000000);
 assert.ok(ids.blocked.children.length>0);
 console.log("interaction checks pass");
 '''

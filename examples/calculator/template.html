@@ -11,9 +11,9 @@
 <header><h1>Downstream</h1><span id="version"></span><button id="reset" type="button" aria-label="Reset source inputs" title="Reset source inputs">↺</button></header>
 <form id="calculator" novalidate>
 <div class="inputs">
-<label for="workers">N · worker equivalents<input id="workers" type="number" min="0" max="1000000" step="any"></label>
-<label for="years">T · years<input id="years" type="number" min="0" max="100" step="any"></label>
-<label for="rate">λ · deaths / 1,000 person-years<input id="rate" type="number" min="0" max="1000" step="any"></label>
+<label for="workers"><span>N · worker equivalents</span><input id="workers" type="number" min="0" max="1000000" step="any"></label>
+<label for="years"><span>T · years</span><input id="years" type="number" min="0" max="100" step="any"></label>
+<label for="rate"><span>λ · deaths / 1,000 person-years</span><input id="rate" type="number" min="0" max="1000" step="any"></label>
 </div>
 <p id="input-error" role="alert" hidden></p>
 <div class="status"><span id="basis"></span><span id="baseline-basis"></span><span>Target: not reviewed</span></div>
@@ -23,15 +23,15 @@
 <table class="totals"><thead><tr><th scope="col">D₀</th><th scope="col">D₁</th><th scope="col">ΔD · deaths</th></tr></thead><tbody><tr><td id="baseline-deaths"></td><td id="exposed-deaths"></td><td><output id="excess-deaths" aria-live="polite"></output></td></tr></tbody></table>
 <div class="plot"><svg id="curve" viewBox="0 0 900 130" role="img" aria-label="Additional expected deaths by follow-up year"><title>Additional expected deaths by follow-up year</title><line id="zero-line" x1="8" x2="892"></line><polyline id="death-curve" fill="none"></polyline></svg><div class="plot-labels"><span>0</span><span id="curve-scale"></span><span id="curve-end"></span></div></div>
 <div class="section-head"><h3>θ · odds ratio</h3><div><button type="button" id="neutral">θ = 1</button><button type="button" id="tail-null">θ₊₆ = 1</button></div></div>
-<div class="table-scroll"><table id="risk-table"><thead><tr><th scope="col">Offset</th><th scope="col">Years</th><th scope="col">θ</th><th scope="col">Source θ</th><th scope="col">ΔD(θlow…high)</th><th scope="col">ΔD − ΔD(θᵢ=1)</th></tr></thead><tbody id="risk-rows"></tbody></table></div>
+<div class="table-scroll" role="region" aria-label="Mortality inputs and sensitivity" tabindex="0"><table id="risk-table"><thead><tr><th scope="col">Offset</th><th scope="col">Years</th><th scope="col">θ</th><th scope="col">Source θ</th><th scope="col">ΔD(θlow…high)</th><th scope="col">ΔD − ΔD(θᵢ=1)</th></tr></thead><tbody id="risk-rows"></tbody></table></div>
 <p class="note">Removal effects do not sum. Each ΔD range is a support envelope, not a confidence interval.</p>
 </section>
 <section aria-labelledby="child-heading">
 <div class="section-head"><h2 id="child-heading">Child earnings</h2><select id="quartile" aria-label="Father income group"><option value="overall">All income</option><option value="q1">Q1</option><option value="q2">Q2</option><option value="q3">Q3</option><option value="q4">Q4</option></select></div>
 <div class="inputs">
-<label for="children">c · children / worker<input id="children" type="number" min="0" max="100" step="1"></label>
-<label for="gap">g · earnings multiplier<input id="gap" type="number" min="0.000001" max="10" step="any"></label>
-<label for="earnings">E · lifetime USD 2024<input id="earnings" type="number" min="0" max="1000000000" step="any"></label>
+<label for="children"><span>c · children / worker</span><input id="children" type="number" min="0" max="100" step="1"></label>
+<label for="gap"><span>g · earnings multiplier</span><input id="gap" type="number" min="0.000001" max="10" step="any"></label>
+<label for="earnings"><span>E · lifetime USD 2024</span><input id="earnings" type="number" min="0" max="1000000000" step="any"></label>
 </div>
 <div class="equation">ΔE = Nc(1 − g)E</div>
 <table class="totals"><thead><tr><th scope="col">1 − g · %</th><th scope="col">ΔE · lifetime USD 2024</th></tr></thead><tbody><tr><td id="child-gap"></td><td><output id="child-loss"></output></td></tr></tbody></table>

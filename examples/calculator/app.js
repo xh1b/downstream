@@ -2,7 +2,7 @@
 const payload = JSON.parse(document.getElementById("engine-data").textContent);
 const source = payload.result;
 const byId = id => document.getElementById(id);
-const number = x => x !== 0 && Math.abs(x) < .01
+const number = x => Math.abs(x) >= 1e9 ? x.toExponential(3) : x !== 0 && Math.abs(x) < .01
   ? (Math.abs(x) < 1e-6 ? x.toExponential(2) : x.toLocaleString("en-US", {maximumSignificantDigits:3}))
   : x.toLocaleString("en-US", {minimumFractionDigits:2, maximumFractionDigits:2});
 const text = (tag, value) => {const el = document.createElement(tag); el.textContent = value; return el;};
