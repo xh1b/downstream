@@ -31,3 +31,12 @@ Implemented child_gap_view.v1 in afc626f; documentation and 14 focused contract 
 - By: mira
 
 done: active -> review.
+
+## c-c05f367357ca
+
+- At: 2026-10-15 00:59 HKT
+- By: codex
+
+accept: review -> done.
+
+Reviewed the report, signed/refusal cases and CLI integration (c78afbb). Generation gaps remain separate; housing total stays unavailable with explicit bridge requirements. Focused view and CLI checks pass.
