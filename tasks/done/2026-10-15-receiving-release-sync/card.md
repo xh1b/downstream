@@ -15,4 +15,4 @@ Related: task:2026-10-15-receiving-community-adapter, task:2026-10-14-release-04
 - [x] Update current release/model documentation for typed share exposures and new local calculation APIs. [current release](../../../docs/RELEASE_0_4.md)
 - [x] Regenerate calculator, evidence, pool, consumer and paper/method outputs from the fixed candidate. [candidate fixtures](../../../validation/consumer_fixtures_0_4.json)
 - [x] Run relevant source/CLI/consumer checks and the full regression and coverage gates. [scoped qualification receipt](../../../docs/RELEASE_0_4.md#final-local-qualification--2026-10-15)
-- [x] Record local-only version, independent reviews and unresolved empirical/mobile-preview limits. [remaining limits](../../../docs/CALCULATOR_PROTOTYPE.md)
+- [x] Record local-only version, independent reviews and unresolved empirical/mobile-preview limits. [remaining limits](../../../docs/CALCULATOR.md)
