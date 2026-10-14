@@ -74,3 +74,14 @@ coverage and remaining scientific limits. Engine stays 0.4.0; corrected
 source transforms/provenance are parameters v1.51. Full suite: 1,065 tests;
 coverage 96.8% statements / 93.2% branches. This is not a release decision
 or completion of the remaining SIPP, cohort and XH1B handoff scope.
+
+## Integration-informed sequencing - 2026-10-14
+
+The owner requested a current XH1B usage review. Follow
+`docs/XH1B_USAGE_PLAN_0_4.md` for the next implementation order: exposure
+semantics, then consumer fixtures and preservation of structural comparisons.
+The current companion adapter uses reference counts and does not consume the
+household prototype. Retain SIPP scope and held-out misses in release acceptance,
+but qualify that prototype separately from the count consumer. A repin alone
+loses persistence metadata and miscombines nested alternatives in employer mixes.
+The local inspection does not establish deployed state or authorize integration.
