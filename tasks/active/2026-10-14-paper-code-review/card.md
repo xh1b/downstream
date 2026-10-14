@@ -2,7 +2,7 @@
 title: Review paper against current code
 area: docs
 priority: P2
-assignee:
+assignee: paper-review
 blocked-by: []
 expected-paths: [tasks/active/2026-10-14-paper-code-review]
 ---
