@@ -5,7 +5,7 @@ priority: P1
 assignee: mira
 due:
 blocked-by: []
-expected-paths: []
+expected-paths: [src/downstream/mortality_strata.py, tests/test_mortality_admission_0_4.py, docs/MORTALITY_APPLICABILITY_0_4.md]
 ---
 
 # Review mortality applicability before admitting other strata
@@ -19,5 +19,12 @@ causal response. Adding other strata requires separately admitted effect estimat
 
 ## Acceptance
 
-- [ ] Require separately admitted compatible response estimates for demographic expansion.
-- [ ] Review the new conditional mortality-stratum path without treating baseline variation as effect modification.
+- [x] Require separately admitted compatible response estimates for demographic expansion. [source-contract and baseline-gate tests](../../../tests/test_mortality_admission_0_4.py)
+- [x] Review the new conditional mortality-stratum path without treating baseline variation as effect modification. [review and scope](../../../docs/MORTALITY_APPLICABILITY_0_4.md)
+
+## Outcome
+
+Existing age/sex/tenure/event gates and separate Table 7 age-contrast admission
+are retained. The source treatment/comparator contract is now enforced, and
+each supported stratum carries conditional scope and remaining transport
+assumptions. No new effects, strata or numerical defaults are admitted.
