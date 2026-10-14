@@ -4,7 +4,8 @@ import math
 
 import pytest
 
-from scripts.build_consumer_fixtures import build, mix_expected, scale_outcome
+from downstream.consumer import mix_expected, scale_outcome
+from scripts.build_consumer_fixtures import build
 
 
 @pytest.fixture(scope="module")

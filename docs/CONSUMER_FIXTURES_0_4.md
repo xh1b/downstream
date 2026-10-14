@@ -23,6 +23,39 @@ These small designs test contracts; they are not precision-qualified research
 intervals. Keep parameter intervals separate from support envelopes, structural
 alternatives and broader uncertainty budgets.
 
+## Package API
+
+```python
+from downstream.consumer import scale_outcome, mix_expected
+
+# A row is one outcome from result["modeled"]. The caller supplies its factor.
+displayed = scale_outcome(row, displayed_workers / source_workers)
+combined = mix_expected([county_result, national_result], [0.6, 0.4], "excess_deaths")
+```
+
+The fixture builder uses these package functions. They return independent copies;
+they do not modify the source result. Each mixture records the active component
+weights, source indices, model/input identity, baseline, applicability and source
+steps separately. A first-component baseline or eligibility is never inherited.
+Missing identity metadata remains unknown. Headline eligibility must be Boolean.
+Factors and weights must be finite and
+nonnegative. Weights must sum to one. Scaling overflow produces an explicit error.
+The source denominator must be declared and positive. A zero-source scenario
+cannot identify a per-worker coefficient by division.
+
+The mixture contract requires a common declared displaced-worker denominator.
+Mortality also requires the same follow-up duration, method and phase timing.
+Mismatched bases fail; missing bases stay unavailable. Normalize source totals
+with their declared exposures before mixing. Scaling a mixture is supported;
+all alternatives and sensitivity comparisons scale together, while original
+component provenance retains its input basis.
+
+The mixture contract needs outcome points, support endpoints, units and
+applicability from each active component. Missing sensitivity reports keep the
+point calculation available but withhold sensitivity comparisons. Positive-weight
+blocked outcomes remain unavailable. Joint quantiles and variance attribution
+remain unavailable. These transforms do not estimate exposure or target transport.
+
 ## Required result contract
 
 Retain engine/parameter versions, source steps, units, baseline population,
