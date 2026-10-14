@@ -50,3 +50,18 @@ See [final qualification](../../../docs/RELEASE_0_4.md#final-local-qualification
 - By: codex
 
 done: active -> review.
+
+## c-4286c76a3aec
+
+- At: 2026-10-15 02:18 HKT
+- By: codex
+
+Final verification receipt
+
+- Engine 0.4.0; parameters v1.52. The main mortality and child reference values are unchanged.
+- The integrated run had 1,389 passes and one failure during a concurrent task-board edit. After that task landed, all 29 board and workflow checks passed. Model coverage passed at 97.2% statements and 94.1% branches.
+- The focused suite passed 137 tests. The final wheel passed 11 CLI checks. Ruff, Vulture, the evidence audit and generated-file freshness checks passed.
+- The paper source digest matches the final manifest. The rebuilt pages were inspected. The mobile code and interactions pass review; actual phone, zoom, screen-reader and participant checks remain unverified because file-preview access is blocked.
+- All changes are local commits on master. No companion repin or deployment occurred. Evidence and external-validation work remains open.
+
+See [the dated qualification](../../../docs/RELEASE_0_4.md#final-local-qualification--2026-10-15) for the full scope.
