@@ -59,3 +59,10 @@ Resolved precision review: exposure 0.125 now stays exactly 0.125 in the scenari
 - By: fenix
 
 Correction to previous receipt: the actual precision-fix commit is e68b100, not b3bc743. Generated HTML SHA-256 is e284ff0bbdf1b07a622d3b5fc7bebe266a4a905efba2918f7503a8f43281411d.
+
+## c-871dc051023b
+
+- At: 2026-10-15 00:55 HKT
+- By: fenix
+
+done: active -> review.
