@@ -45,3 +45,10 @@ done: active -> review.
 request-changes: review -> active.
 
 Review found two precision defects: at 0.125 exposure the mortality value rounds to 0.00, and the scenario label rounds the supplied exposure to 0.13. Preserve small nonzero counts with significant digits and display the exact input exposure; add DOM assertions for both. Keep previous visual-review limitation explicit.
+
+## c-f10e601539eb
+
+- At: 2026-10-15 00:55 HKT
+- By: fenix
+
+Resolved precision review: exposure 0.125 now stays exactly 0.125 in the scenario label, mortality displays 0.00359 instead of 0.00, and every nonzero mortality removal/variant value stays visible. Values below 0.01 use three significant digits; below 0.000001 use scientific notation. DOM assertions verify positive displayed values for all five drivers at 0.125, exact exposure labels at 0.125 and 1e-8, and nonzero scientific-notation results. Seven tests, freshness check, node syntax check and scoped Ruff pass. Fix commit b3bc743 (see actual commit receipt if hash differs). Visual/mobile/screen-reader and human comprehension checks remain pending.
