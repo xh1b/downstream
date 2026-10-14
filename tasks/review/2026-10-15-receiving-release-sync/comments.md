@@ -65,3 +65,10 @@ Final verification receipt
 - All changes are local commits on master. No companion repin or deployment occurred. Evidence and external-validation work remains open.
 
 See [the dated qualification](../../../docs/RELEASE_0_4.md#final-local-qualification--2026-10-15) for the full scope.
+
+## c-06d0e6cf21bf
+
+- At: 2026-10-15 02:19 HKT
+- By: mira
+
+Independent final review approved 41d5065 and the recovered-run qualification. Recomputed paper source_manifest with the generator path+NUL+bytes rule: digest 4652964eccfd0e54415bdd23098fae94d7fcdca0b08658f3146df677f5a3b3ac matches generated JSON and the PDF; v1.52 and the Bianchi 2010 working-paper/published-reconciliation distinction are explicit. Consumer fixture source hashes are current, methods HTML equals its generator, calculator/evidence/pool freshness checks pass, and default 28.76/20.52 mortality and 478894046.4 child-dollar values are invariant. Inspected final PDF pages 2/3 without clipping. Saved coverage confirms 97.2% statements/94.1% branches, audit reports zero errors/warnings, and wheel consumer/receiving/household bytes match source with v1.52 data. Release wording preserves the 1389-pass plus one concurrent board failure and separate 29-test repaired board rerun; it does not claim one all-green integrated run. One nonblocking underfull-box diagnostic remains in the build log; no visible defect found. No rebuilds or edits made during review.
