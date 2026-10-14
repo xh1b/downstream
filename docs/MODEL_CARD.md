@@ -24,6 +24,11 @@ Reporting". This card travels with the model.
   hybrid sensitivity is not a Swedish-study replication, a pooled coefficient,
   or a transported causal estimate. The unweighted point spread is not a
   confidence interval. See `MORTALITY_PERSISTENCE_SENSITIVITY.md`.
+- Scenario counts and child valuation projections include one-input-at-a-time
+  effect-removal and supported-endpoint refits. Optional scenario variance
+  attribution retains declared correlated blocks. Fixed-input uncertainty is
+  not inferred; removal changes are not additive causal shares.
+  See `RESULT_SENSITIVITY.md`.
 - Parameter set v1.51: 67 parameter rows, each with point, band,
   precision tier, bib keys, and population scope.
 - The five default mortality phase transformations are reproduced from the

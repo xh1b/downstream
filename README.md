@@ -237,6 +237,15 @@ parameters and baselines. API callers pass `params_dir` for the same behavior.
 Selected contrasts must match the consumed effect scale, population and window;
 missing custom libraries fail. Child-dollar baselines must use `usd_2024`.
 
+## Per-result sensitivity (0.4.0)
+
+Scenario counts and child present-value projections now include `sensitivity`:
+each applied coefficient's value/source, its removal experiment and refits at
+supported endpoints. Fixed inputs and unavailable ranges remain explicit.
+Entity results and policy-arm scenario records inherit these reports.
+Add `--sensitivity-base 512` to `scenario` for a separate correlation-aware
+parameter variance breakdown. See [the result contract and example](docs/RESULT_SENSITIVITY.md).
+
 ## Mortality persistence comparison (0.4.0)
 
 Default scenario and entity mortality outputs now include

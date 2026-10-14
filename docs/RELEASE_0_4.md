@@ -104,3 +104,15 @@ parameter links against primary tables, alongside the 67-row mechanical audit
 and existing extraction regressions. It does not claim a fresh primary-paper
 re-extraction of the other 58 links. The current audit receipts are in
 `tasks/review/2026-10-14-audit-04-release/card.md`.
+
+## Per-result sensitivity - 2026-10-15
+
+Scenario counts and child valuation projections now carry per-coefficient
+removal experiments and supported-endpoint refits, with sources, units and
+signed changes from the unrounded reference. Entity and policy-arm scenario
+records inherit them. Reports retain fixed inputs and unavailable ranges;
+they do not invent baseline, exposure or transport uncertainty. Optional
+`scenario --sensitivity-base N` adds correlation-aware block variance
+attribution separately from deterministic sensitivity and parameter intervals.
+See `RESULT_SENSITIVITY.md` and the saved 2026-10-15 reference. Main estimates
+and parameter versions are unchanged. Consumer rendering remains pending.
