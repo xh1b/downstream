@@ -29,3 +29,12 @@ Screen completed with supported refusal, implementation5efce20. Checked both V1 
 - By: fenix
 
 done: active -> review.
+
+## c-f95633aec791
+
+- At: 2026-10-15 02:02 HKT
+- By: codex
+
+accept: review -> done.
+
+Reviewed source-limited screening and adjacent estimates. Divorce outcomes and prior-marriage controls do not identify displacement-to-remarriage. Accepted the supported refusal with null target estimate/uncertainty, explicitly distinct from zero and from a systematic literature review.
