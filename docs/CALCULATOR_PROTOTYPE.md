@@ -31,6 +31,9 @@ does not implement survival, draw new coefficients, infer demographics, combine
 county mixtures or create annual earnings trajectories. Exposure is a nonnegative
 finite scaling input, allowed from zero to one million, including fractional values.
 Invalid edits keep the previous result and display an error. Reset restores 1,000.
+Scenario labels retain the exact exposure entered. Nonzero results below 0.01 use
+three significant digits, with scientific notation below 0.000001, so small
+fractional expected counts and driver impacts do not appear as zero.
 
 ## Scope and interpretation
 

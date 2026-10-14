@@ -2,7 +2,14 @@
 const payload = JSON.parse(document.getElementById("engine-data").textContent);
 const receipt = payload.result;
 const byId = id => document.getElementById(id);
-const number = x => x.toLocaleString("en-US", {minimumFractionDigits: 2, maximumFractionDigits: 2});
+const number = x => {
+  // A fractional expected count is still nonzero; never round it away.
+  if (x !== 0 && Math.abs(x) < 0.01) {
+    return Math.abs(x) < 0.000001 ? x.toExponential(2)
+      : x.toLocaleString("en-US", {minimumSignificantDigits: 3, maximumSignificantDigits: 3});
+  }
+  return x.toLocaleString("en-US", {minimumFractionDigits: 2, maximumFractionDigits: 2});
+};
 const names = {
   "earnings_shock->mortality_peak": "Displacement year",
   "earnings_shock->mortality_offset_1": "Follow-up year 2",
@@ -36,7 +43,7 @@ function render() {
   const value = x => mortality ? number(x * scale) : "$" + number(x * scale);
   const unit = mortality ? "additional expected deaths over 20 years" : "lifetime earnings loss, USD 2024, undiscounted";
   byId("comparison-heading").textContent = mortality ? "Mortality difference over 20 years" : "Children’s lifetime earnings difference";
-  byId("scenario-line").textContent = `${number(exposure)} worker equivalents · ${mortality ? "20-year follow-up" : "2 children per worker equivalent; lifetime outcome"} · fixed national reference`;
+  byId("scenario-line").textContent = `${input.value.trim()} worker equivalents · ${mortality ? "20-year follow-up" : "2 children per worker equivalent; lifetime outcome"} · fixed national reference`;
   byId("fixed-description").textContent = mortality ? "US male mortality baseline, ages 45–54, pooled 2015–2019; fixed for 20 years without cohort aging. Pennsylvania high-tenure male displacement response." : "Two children per worker equivalent. Canadian father-to-son response converted using US synthetic male lifetime earnings. Child ages and sex are unknown; eligibility for a target household is not established.";
   byId("applicability").textContent = row.applicability.reason;
   byId("reference-value").textContent = value(0);

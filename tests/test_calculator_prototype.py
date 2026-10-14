@@ -100,12 +100,22 @@ ids.results.children=[new Element(),ids.comparison,ids.sensitivity,new Element()
 const document={getElementById:id=>ids[id],createElement:()=>new Element(),querySelectorAll:()=>radios,body:new Element()};
 vm.runInNewContext(app,{document,console});
 const reference=JSON.parse(ids["engine-data"].textContent).result;
-const format=x=>x.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+const format=x=>x!==0&&Math.abs(x)<.01 ? (Math.abs(x)<.000001 ? x.toExponential(2) : x.toLocaleString("en-US",{minimumSignificantDigits:3,maximumSignificantDigits:3})) : x.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
 assert.equal(ids["event-value"].textContent,format(reference.modeled.excess_deaths.sensitivity.reference_point));
 assert.equal(ids["driver-list"].children.length,5);
 ids.exposure.value="0";ids.exposure.events.input();assert.equal(ids["event-value"].textContent,"0.00");
 ids.exposure.value="0.125";ids.exposure.events.input();
 assert.equal(ids["event-value"].textContent,format(reference.modeled.excess_deaths.sensitivity.reference_point*.125/1000));
+assert.ok(Number(ids["event-value"].textContent)>0);
+assert.ok(ids["scenario-line"].textContent.startsWith("0.125 worker equivalents"));
+for(const driver of ids["driver-list"].children) {
+ assert.ok(parseFloat(driver.children[0].children[1].textContent)>0,"Nonzero removal impact must stay visible");
+ assert.ok(parseFloat(driver.children[2].textContent.replace("Effect removed: ",""))>0,"Nonzero variant must stay visible");
+}
+ids.exposure.value="1e-8";ids.exposure.events.input();
+assert.ok(parseFloat(ids["event-value"].textContent)>0);
+assert.ok(ids["scenario-line"].textContent.startsWith("1e-8 worker equivalents"));
+assert.ok(ids["event-value"].textContent.includes("e-"));
 for(const invalid of ["", "-1", "Infinity", "1000001"]) {
  const old=ids["event-value"].textContent;ids.exposure.value=invalid;ids.exposure.events.input();
  assert.equal(ids["event-value"].textContent,old);assert.equal(ids.exposure.attributes["aria-invalid"],"true");assert.equal(ids["input-error"].hidden,false);
