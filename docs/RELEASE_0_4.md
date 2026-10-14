@@ -1,9 +1,14 @@
-# Downstream 0.5.0 — review follow-through
+# Downstream 0.4.0 — pending update and review follow-through
 
-Engine 0.5.0 / parameters v1.50, 2026-10-14. This release implements the
+Engine 0.4.0 / parameters v1.50, 2026-10-14. This pending update implements the
 review's scenario improvements and records unresolved empirical requirements
 in `TODO.md`. Software correctness and source reproduction do not establish
 that the effects transport to a particular policy or population.
+
+This work remains in the 0.4 development cycle and has not been applied to
+XH1B. The initial 0.5 label was premature and has been corrected; implementation
+and numerical results are retained. Future release numbering follows the
+owner's release decision, rather than each batch of model changes.
 
 ## Source correction
 
@@ -58,7 +63,7 @@ visible; missing uncertainty is not invented.
 `SCENARIO_EVIDENCE_PROTOCOL.md` freezes inclusion and scoring rules and records
 the subsequent acquisition amendment. These are locally reproducible records,
 not an independently timestamped prospective forecast. The original evaluation
-is retained; `validation/followthrough_evaluation_v050.json` executes the
+is retained; `validation/followthrough_evaluation_expanded_20261014.json` executes the
 expanded-library checks. Held-out SIPP transition discrepancies and existing
 China-shock diagnostic misses remain visible.
 

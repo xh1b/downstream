@@ -1,4 +1,4 @@
-# MODEL CARD — downstream engine 0.5.0 / parameters v1.50
+# MODEL CARD — downstream engine 0.4.0 / parameters v1.50
 
 Model card practice per Mitchell et al. 2019, "Model Cards for Model
 Reporting". This card travels with the model.
@@ -35,7 +35,7 @@ Reporting". This card travels with the model.
 
 ## Intended use
 
-- Engine 0.5.0 adds sourced child income contrasts and eligibility, exact
+- Engine 0.4.0 adds sourced child income contrasts and eligibility, exact
   age-stratum mortality with explicit constant-response projection, optional
   real-dollar child valuation, and annual household gross-earnings scenarios
   using observed SIPP transition probabilities. These are conditional

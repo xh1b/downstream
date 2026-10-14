@@ -51,16 +51,17 @@ python scripts/quality_gate.py coverage.json
 ```
 
 The gate requires at least 95% statement coverage and 90% branch coverage.
-Engine 0.5.0 verification measures 96.8% and 93.1%. The suite contains Hypothesis
+Engine 0.4.0 verification measures 96.8% and 93.1%. The suite contains Hypothesis
 property tests for ledger envelopes, survival bounds, and county-pooling
 convexity. Deterministic fixtures cover citations, published coefficients, and
 regression examples.
 
-Version 0.5.0 adds reproducible reference cohorts, sourced subgroup scenarios,
+The pending 0.4.0 update adds reproducible reference cohorts, sourced subgroup scenarios,
 age-timed child present values, household earnings comparisons, and a separate
 baseline/exposure/process uncertainty budget. See the
-[release record](docs/RELEASE_0_5.md) for the source correction, verification,
+[update record](docs/RELEASE_0_4.md) for the source correction, verification,
 and research dependencies that remain open.
+These changes have not yet been applied to XH1B.
 
 Additional checks:
 

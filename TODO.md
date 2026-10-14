@@ -77,7 +77,7 @@ simulation draws do not establish causal validity or transportability.
   model; report every preregistered result, subgroup miss and interval scope.
   Existing China-shock diagnostics and SIPP baseline checks remain visible;
   they do not establish H-1B-specific causal validation.
-  Executed all available diagnostics in `validation/followthrough_evaluation_v050.json`
+  Executed all available diagnostics in `validation/followthrough_evaluation_expanded_20261014.json`
   (the original `followthrough_evaluation.json` is retained).
   No new source provides a matched event exposure bridge plus independently
   estimated outcomes. The new paths have not passed causal event validation;

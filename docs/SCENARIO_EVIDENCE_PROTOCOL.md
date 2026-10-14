@@ -75,7 +75,7 @@ same event held out. Retain misses and publish amendments as new versions.
 
 ### Acquisition amendment — 2026-10-14
 
-The v0.5.0 acquisition round expands the initial fourteen contrasts from two
+The 2026-10-14 acquisition round expands the initial fourteen contrasts from two
 samples to twenty-three contrasts from three samples. Browning–Heinesen's
 2011 AKF working-paper Table 6.1 contributes seven all-cause cumulative
 hazard ratios and two cancer contrasts, including null-compatible estimates.
@@ -87,7 +87,10 @@ recorded long-run null finding remains visible, without inventing a new SE
 or treating it as zero. The screening log records this missing extraction.
 This amendment records results already inspected, not a prospective forecast.
 The original evaluation is retained; the expanded-library execution is saved
-as `validation/followthrough_evaluation_v050.json` with this protocol's hash.
+as `validation/followthrough_evaluation_expanded_20261014.json` with this protocol's hash.
+The pending update remains in the 0.4 development cycle. Correcting the
+premature 0.5 label changes version metadata and filenames, not the evaluation
+results; the expanded snapshot's protocol hash reflects this amendment.
 
 The published-cohort reproduction and SIPP held-out baseline checks are
 executed software/data checks. China-shock comparisons remain diagnostic,
