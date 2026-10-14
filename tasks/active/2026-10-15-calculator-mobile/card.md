@@ -2,7 +2,7 @@
 title: Align calculator controls and improve narrow-screen layout
 area: calculator
 priority: P1
-assignee:
+assignee: codex
 blocked-by: []
 ---
 
