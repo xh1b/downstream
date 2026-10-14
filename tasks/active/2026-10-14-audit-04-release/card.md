@@ -2,7 +2,7 @@
 title: Audit 0.4 calculations, sources and release documentation
 area: release
 priority: P1
-assignee:
+assignee: codex
 due:
 blocked-by: []
 expected-paths: [src/downstream/, params/study_estimates.csv, paper/, docs/]
