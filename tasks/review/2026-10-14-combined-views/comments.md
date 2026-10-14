@@ -24,3 +24,10 @@ claim: ready -> active.
 - By: mira
 
 Implemented child_gap_view.v1 in afc626f; documentation and 14 focused contract tests cover signed q3 benefits/null crossing, exact null, child/target incompatibility (including absent dollar baseline), unknown child scope, reviewed child-only transport, zero exposure, both county modifier modes, custom missing-library refusal and unavailable housing totals. `.venv/bin/python -m pytest -q tests/test_child_gap_view.py`: 14 passed. Focused coverage: 100% statements and branches for child_gap_view.py. Ruff and git diff --check pass. Checklist evidence recorded in f4df6cf. No defaults changed; no additive child/housing total introduced.
+
+## c-b72bbfcbacab
+
+- At: 2026-10-15 00:50 HKT
+- By: mira
+
+done: active -> review.
