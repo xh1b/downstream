@@ -36,3 +36,12 @@ Delivered examples/calculator/index.html with comparison-first and sensitivity-f
 - By: fenix
 
 done: active -> review.
+
+## c-e41f68821388
+
+- At: 2026-10-15 00:54 HKT
+- By: codex
+
+request-changes: review -> active.
+
+Review found two precision defects: at 0.125 exposure the mortality value rounds to 0.00, and the scenario label rounds the supplied exposure to 0.13. Preserve small nonzero counts with significant digits and display the exact input exposure; add DOM assertions for both. Keep previous visual-review limitation explicit.
