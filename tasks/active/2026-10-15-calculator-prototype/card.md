@@ -2,7 +2,7 @@
 title: Build two inspectable calculator prototype directions
 area: calculator
 priority: P2
-assignee:
+assignee: fenix
 blocked-by: []
 ---
 
