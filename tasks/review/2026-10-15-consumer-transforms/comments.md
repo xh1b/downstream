@@ -34,3 +34,10 @@ Independent read-only review approved implementation commits 13f5572 and 7622333
 - By: codex
 
 Implementation13f5572 and guard fix7622333 expose package transforms, refactor fixtures to reuse them, preserve per-component source/applicability context, support scale(mix(...)), reject invalid scalars/overflow/truthy eligibility and mismatched bases, and withhold unknown mortality contracts/joint uncertainty. Forty focused consumer tests pass. Mira independently reviewed both fixes (c-3b9c08b312de). Fixtures regenerated on the finalv1.52 core candidate; full integrated checks are running under release-sync.
+
+## c-6d513f9063c8
+
+- At: 2026-10-15 02:02 HKT
+- By: codex
+
+done: active -> review.
