@@ -2,7 +2,7 @@
 title: Rebuild calculator as a minimal calculation surface
 area: calculator
 priority: P1
-assignee:
+assignee: codex
 blocked-by: []
 ---
 
