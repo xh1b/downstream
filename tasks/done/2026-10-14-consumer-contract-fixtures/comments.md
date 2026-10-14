@@ -43,3 +43,10 @@ Independent read-only review of acd04ec: approved. Ran tests/test_consumer_fixtu
 - By: eli
 
 accept: review -> done.
+
+## c-9fb9e7f1b273
+
+- At: 2026-10-15 01:14 HKT
+- By: codex
+
+Final integrated quick-win receipt: full coverage run passed 1,152 tests in 935.26s; gate passed 96.9% lines / 93.4% branches. The five new focused suites passed 50 tests after the precision correction. Ruff src/scripts plus new tests, Vulture, audit (0 errors/0 warnings), all three generated-file freshness checks, source-archive asset inspection and ten installed-wheel CLI commands passed. Board validates with 0 errors and five existing unresolved-blocker notices. Implementation and board commits are local on master; engine remains 0.4.0. Calculator browser/visual/participant review remains pending as documented.
