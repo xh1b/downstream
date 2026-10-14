@@ -2,7 +2,7 @@
 title: Qualify 0.4 normalization and consumer metadata with fixtures
 area: integration
 priority: P1
-assignee:
+assignee: codex
 due:
 blocked-by: []
 expected-paths: [src/downstream/scenario.py, tests/, validation/]
