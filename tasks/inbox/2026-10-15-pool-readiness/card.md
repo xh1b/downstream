@@ -3,6 +3,8 @@ title: Report coefficient compatibility and independent pool readiness
 area: evidence
 priority: P2
 assignee:
+parent: 2026-10-14-coefficient-library
+expected-paths: [scripts/build_pool_readiness.py, tests/test_pool_readiness.py, docs/POOL_READINESS_0_4.md]
 blocked-by: []
 ---
 
