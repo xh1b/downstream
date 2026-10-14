@@ -43,3 +43,10 @@ done: active -> review.
 request-changes: review -> active.
 
 Independent review found Bianchi log(post)-log(reference) cancels adjacent signed share changes to zero. Use stable log1p near equal shares with an extreme-ratio fallback and add positive/negative adjacent-share regressions before acceptance.
+
+## c-95236bc63207
+
+- At: 2026-10-15 02:07 HKT
+- By: eli
+
+Fixed independently reproduced Bianchi cancellation: bounded near-equal share differences now use log1p((post-reference)/reference); extreme ratios retain safe log subtraction. Positive and negative adjacent-share regressions use independent 80-digit Decimal reference calculations, strict relative/no absolute tolerances, and test native plus CLI signed rate/count changes. Smallest-positive-float extreme-ratio checks preserve finite fallback behavior. [Tests](../../../tests/test_receiving_adapter.py). Receiving/source suite46 passed in1.60s; Ruff clean. No parameter version/value changes.
