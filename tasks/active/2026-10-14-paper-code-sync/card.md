@@ -39,7 +39,11 @@ Preserve experimental applicability and independent-validation limitations. Do n
 - Verified updated PDF: build/paper-code-sync/downstream.pdf.
 - Updated PDF SHA-256: c13f2c9f09237293fb163261e6d2d28eaa3f81591f4878932bc90694383e73bb.
 - Pre-existing uncommitted PDF preserved byte-for-byte as build/paper-code-sync/preexisting-downstream.pdf.
-- Canonical PDF replacement is pending the owner's answer to the shared-file permission question.
+- Owner clarified that generated PDFs are normal rebuildable output; AGENTS.md now explicitly permits routine regeneration.
+- Canonical paper/downstream.pdf rebuilt with make -C paper and committed in 55ae02e.
+- Its extracted text exactly matches the visually inspected replacement; the source digest and coverage claim agree.
+- Canonical PDF SHA-256: 74818e52f2bab2a7a834372d798fa80293143b39ee82c25159073e4b418ee45d.
+- Generated-PDF workflow clarification committed in b069404; no further confirmation is required for routine rebuilds.
 
 Verification command:
 
