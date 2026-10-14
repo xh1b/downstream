@@ -130,6 +130,8 @@ def _run_main(argv: list[str] | None = None) -> int:
     p.add_argument("--place-application", choices=["initial_only", "legacy_repeated"], default="initial_only")
     p.add_argument("--draws", type=int, default=2_000,
                    help="parameter-only Monte Carlo draws for count intervals (minimum 2)")
+    p.add_argument("--sensitivity-base", type=int, default=None,
+                   help="also estimate parameter variance by correlation-aware blocks (minimum 2)")
     p.add_argument("--seed", type=int, default=1901)
     p.add_argument("--strict", action="store_true", help="fail on missing baselines")
     p.add_argument("--place", default=None, metavar="KEY",
@@ -478,6 +480,7 @@ def _run_main(argv: list[str] | None = None) -> int:
                 county_mortality=county_mortality,
                 draws=args.draws,
                 seed=args.seed,
+                sensitivity_base=args.sensitivity_base,
                 nodes=parts["nodes"],
                 params_dir=Path(args.params),
             )

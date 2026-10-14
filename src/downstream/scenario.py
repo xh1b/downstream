@@ -159,6 +159,7 @@ def compute_counts(
     library is replaced with bundled subgroup coefficients.
     """
     from .child_applicability import child_scope, select_child_contrast
+    source_baselines = baselines
     params = select_child_contrast(params, scenario.child_income_quartile, params_dir)
     child_applicability = child_scope(scenario.child_profiles, scenario.child_income_quartile,
                                       scenario.income_rank_definition)
@@ -443,6 +444,16 @@ def compute_counts(
                 override["reason"] = "explicit mortality profile takes precedence"
     # Local job counts also need a finite result; prevent nonstandard JSON anywhere.
     if not _raw:
+        from .result_sensitivity import attach_sensitivity
+
+        def evaluate(sampled, config):
+            return compute_counts(sampled, source_baselines, config, strict=strict,
+                                  places=places, place_key=place_key,
+                                  mortality_profiles=mortality_profiles,
+                                  county_mortality=county_mortality, _raw=True,
+                                  params_dir=params_dir)
+
+        attach_sensitivity(computed, params, scenario, evaluate)
         import hashlib
         import json
         from dataclasses import asdict
@@ -472,6 +483,7 @@ def sample_counts(
     county_mortality: dict | None = None,
     nodes: dict | None = None,
     params_dir=None,
+    sensitivity_base: int | None = None,
 ) -> dict:
     """Return scenario counts with parameter-only 90% Monte Carlo bands.
 
@@ -488,7 +500,19 @@ def sample_counts(
     result = compute_counts(params, baselines, scenario, strict=strict,
                             places=places, place_key=place_key,
                             mortality_profiles=mortality_profiles,
-                            county_mortality=county_mortality)
+                            county_mortality=county_mortality, params_dir=params_dir)
+    if sensitivity_base is not None:
+        from .result_sensitivity import attach_variance_attribution
+
+        def evaluate(sampled, config):
+            return compute_counts(sampled, baselines, config, strict=strict,
+                                  places=places, place_key=place_key,
+                                  mortality_profiles=mortality_profiles,
+                                  county_mortality=county_mortality, _raw=True,
+                                  params_dir=params_dir)
+
+        attach_variance_attribution(result, params, scenario, evaluate, nodes=nodes,
+                                    params_dir=params_dir, base=sensitivity_base, seed=seed)
     names = tuple(result["modeled"])
     sensitivity = result["modeled"].get("excess_deaths", {}).get("persistence_sensitivity", {})
     alternate_key = "mortality_no_sustained_excess"
