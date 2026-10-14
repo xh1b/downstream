@@ -13,6 +13,7 @@ sys.path.insert(0, str(ROOT / 'src'))
 from downstream.params import load_all, load_correlations  # noqa: E402
 from downstream.validate import run  # noqa: E402
 from downstream.children import child_line  # noqa: E402
+from downstream.scenario import ScenarioInput, compute_counts  # noqa: E402
 
 OUT = Path(__file__).resolve().parent / 'generated'
 
@@ -31,6 +32,22 @@ def n(value):
 
 def band(row):
     return f"{n(row['point'])} [{n(row['low'])}, {n(row['high'])}]"
+
+
+def mortality_summary(rows):
+    """Derive the prose coverage claim from the same rows as the appendix."""
+    covered = sum(row['measured_inside_modeled_band'] for row in rows)
+    above = sum(row['modeled_excess_deaths_per100k']['point'] >
+                row['measured_differential_per100k']['point'] for row in rows)
+    summary = (f"Measured points lie inside the modeled bands for {covered} of {len(rows)} "
+               f"mortality variants; {above} of {len(rows)} modeled points exceed their "
+               "measured targets.\n")
+    pooled = next((row for row in rows if row['variant'] == 'all_adults'), None)
+    if pooled is not None:
+        summary += (f"The pooled-adult prediction is {band(pooled['modeled_excess_deaths_per100k'])} "
+                    f"against {n(pooled['measured_differential_per100k']['point'])} "
+                    "deaths per 100,000 adults per unit shock.\n")
+    return summary
 
 
 def write(name, text):
@@ -64,6 +81,8 @@ def main():
     parts = load_all(ROOT / 'params')
     ps = parts['params']
     validation = run(ps)
+    reference = compute_counts(ps, parts['baselines'], ScenarioInput(1000))
+    evaluation = json.loads((ROOT / 'validation/followthrough_evaluation_expanded_20261014.json').read_text())
     correlations = load_correlations(ROOT / 'params/correlations.csv')
     source_files = sorted(p for directory in ('src/downstream', 'params', 'validation')
                           for p in (ROOT / directory).rglob('*')
@@ -80,7 +99,9 @@ def main():
     for path in source_files:
         digest.update(str(path.relative_to(ROOT)).encode() + b'\0' + path.read_bytes())
     write('results.json', json.dumps({'parameter_set_version': ps.version,
-          'source_sha256': digest.hexdigest(), 'source_manifest': [str(p.relative_to(ROOT)) for p in source_files], 'declared_correlation_pairs': len(correlations), 'validation': validation}, indent=2) + '\n')
+          'source_sha256': digest.hexdigest(), 'source_manifest': [str(p.relative_to(ROOT)) for p in source_files],
+          'declared_correlation_pairs': len(correlations), 'validation': validation,
+          'reference_scenario': reference, 'archived_followthrough_evaluation': evaluation}, indent=2) + '\n')
     macros = [r'\newcommand{\CorrelationCount}{' + str(len(correlations)) + '}',
               r'\newcommand{\ParameterVersion}{' + tex(ps.version) + '}',
               r'\newcommand{\ParameterCount}{' + str(len(ps.parameters)) + '}',
@@ -93,6 +114,25 @@ def main():
     macros += [r'\newcommand{\VzeroDirect}{' + band(v0['direct']) + '}',
                r'\newcommand{\VzeroComposed}{' + band(v0['ige_composed']) + '}']
     write('macros.tex', '\n'.join(macros) + '\n')
+    persistence = reference['modeled']['excess_deaths']['persistence_sensitivity']
+    write('persistence.tex',
+          "For the national reference of 1,000 workers and 20 years, the source profile gives "
+          f"{n(persistence['variants']['source_profile']['point'])} expected excess deaths and "
+          f"the no-sustained-excess alternative gives {n(persistence['variants']['no_sustained_excess']['point'])}; "
+          f"their point difference is {n(persistence['source_minus_no_sustained_point'])}.\n")
+    check = evaluation['cohort_reproduction']
+    coverage = evaluation['sipp_heldout_baseline']['coverage']
+    synthesis = evaluation['evidence_synthesis']
+    write('followthrough.tex',
+          "The archived October 14 expanded evaluation reports a cohort reproduction "
+          f"difference of {n(check['difference'])} workers against the published "
+          f"{n(check['published_workers'])}-worker benchmark, within its "
+          f"{n(check['tolerance'])}-worker rounding tolerance. "
+          f"The SIPP check includes {coverage['heldout_calibration_cells']} held-out calibration cells; "
+          f"the largest absolute transition-probability difference is {n(coverage['heldout_max_abs_diff'])}. "
+          f"The study library produces {len(synthesis['reports'])} compatible pooled reports "
+          f"and {len(synthesis['blocked'])} explicit pooling refusals.\n")
+    write('mortality_summary.tex', mortality_summary(validation['v1_retrodict']['scored']))
 
     rows = []
     for p in ps.parameters:

@@ -15,6 +15,7 @@ from downstream import __version__  # noqa: E402
 from downstream.mortality import source_profile_contract  # noqa: E402
 from downstream.params import load_all  # noqa: E402
 from downstream.scenario import ScenarioInput, compute_counts  # noqa: E402
+from downstream.validate import run  # noqa: E402
 
 
 def build(params_dir=None):
@@ -23,7 +24,22 @@ def build(params_dir=None):
     params = parts['params']
     result = compute_counts(params, parts['baselines'], ScenarioInput(1000))
     persistence = result['modeled']['excess_deaths']['persistence_sensitivity']
+    validation = run(params)
+    evaluation = json.loads((ROOT / 'validation/followthrough_evaluation_expanded_20261014.json').read_text())
+    cohort_check = evaluation['cohort_reproduction']
+    sipp_check = evaluation['sipp_heldout_baseline']['coverage']
+    synthesis = evaluation['evidence_synthesis']
     h = escape
+    mortality = validation['v1_retrodict']['scored']
+    mortality_covered = sum(row['measured_inside_modeled_band'] for row in mortality)
+    mortality_rows = ''.join(
+        f'<tr><th scope="row">{h(row["variant"].replace("_", " "))}</th>'
+        f'<td>{row["modeled_excess_deaths_per100k"]["point"]:g} '
+        f'[{row["modeled_excess_deaths_per100k"]["low"]:g}, '
+        f'{row["modeled_excess_deaths_per100k"]["high"]:g}]</td>'
+        f'<td>{row["measured_differential_per100k"]["point"]:g}</td>'
+        f'<td>{"yes" if row["measured_inside_modeled_band"] else "no"}</td></tr>'
+        for row in mortality)
     rows = []
     for p in params.parameters:
         unit = parts['nodes'][p.to_node].unit
@@ -57,7 +73,9 @@ Target-cohort applicability requires structured demographics and a reviewed tran
 The mortality response comes from high-tenure male workers exposed to Pennsylvania mass layoffs in the early 1980s. The selected baseline is US men aged 45–54 in 2015–2019.
 The child earnings estimate concerns Canadian father-son pairs after firm closure. Moving those estimates to another population, place or period requires an explicit transport rationale.</p>
 <p>Each causal chain preserves citations, evidence roles and composition kinds. Relative earnings gaps transmit in gap space rather than by multiplying income levels.
-The same intergenerational earnings relationship is reused at each generation; it has one shared uncertainty draw.</p></section>
+The same intergenerational earnings relationship is reused at each generation; it has one shared uncertainty draw.
+The implemented log_elasticity_transmission ensemble variant compares the finite-change v**t mapping with the default linear gap rule,
+using the same coefficient. Both are structural transmission assumptions, not independently identified intervention responses.</p></section>
 <section id="counts"><h2>Count calculations</h2><h3>Mortality</h3><p>{h(source_profile_contract()['description'])}</p>
 <p>For annual event/person-year rate λ, annual risk m = 1 − exp(−λ). For odds ratio r, exposed annual risk q = r m / (1 − m + r m).
 Expected excess deaths = N × (counterfactual survival − exposed survival). Counterfactual survival is (1 − m) raised to the follow-up years;
@@ -87,7 +105,14 @@ Monte Carlo p05–p95 is a central 90% interval for parameter uncertainty only. 
 unmodeled pathways and structural uncertainty are excluded. Latin hypercube sampling preserves marginal coverage; declared correlations use Iman–Conover rank induction.
 Repeated relationship aliases share exactly one draw. Sobol attribution groups them, and dependent parameters are reported as joint blocks.
 Independent-step analytic moments refuse repeated shared variables. Predictive mortality, where available, adds binomial cohort variation in separately simulated exposed and counterfactual cohorts;
-their contrast is not an observable paired individual causal effect.</p></section>
+their contrast is not an observable paired individual causal effect.</p>
+<p>A separate experimental uncertainty command samples a documented national event/person-time baseline using a Poisson likelihood and
+declared Jeffreys rate prior: Gamma(events + 0.5, rate = person-years). Baseline counts must reproduce the verified rate and match its
+sex, age, cause, calendar window and geography. Exposure is a caller-declared discrete uniform over integer bounds;
+it is a sensitivity assumption, not an inferred confidence distribution. Baseline, exposure and study parameters are assumed independent.
+Expected-effect intervals, independent-cohort process contrasts and the original fixed-input reference remain separate.
+The budget requires national source-profile mortality, excludes demographic-profile overrides, and does not sample county posteriors,
+transport error, age/time trends or probabilities over structural models.</p></section>
 <section id="persistence"><h2>Mortality persistence sensitivity</h2>
 <p>The default source-profile calculation also reports a declared alternative that retains the early odds ratios and sets source offset +6 onward to OR=1,
 first changing follow-up year seven. Both structures use the same resolved baseline, exposure and horizon.
@@ -104,16 +129,38 @@ The source estimate remains unchanged. Both structures retain fixed-baseline agi
 <p>The pinned CPS January-2024 reference reproduces the published BLS known-year displacement total and includes separate three- and six-year-tenure cohorts.
 Interview age and household composition are not historical event characteristics, and these reference cohorts do not identify H-1B displacement.</p>
 <p>The mortality-cohort command aggregates sourced male age-group contrasts exactly and compares aging age-band baselines with fixed baselines.
-It requires a declared constant projection of a source-window response. Uncovered workers remain unknown; partial coverage never becomes a whole-cohort total.</p>
+Its response support is men aged 30–69 at mass layoff or firm closure with at least six years of tenure.
+It requires a declared constant projection of Table 7 source-window annual-logit responses, distinct from the default Table 5 phase profile.
+Event age selects the response, which stays fixed as survivors age through 2015–2019 period-rate bands.
+Uncovered workers remain unknown; partial coverage never becomes a whole-cohort total. These coefficient-support envelopes exclude baseline
+variance, exposure error, cross-coefficient covariance and transport error, and are ineligible for public headlines.</p>
 <p>The household command compares annual employment-state probabilities and gross earnings under a supplied unemployment duration.
-It uses observed SIPP 2021–2022 conditional transitions, not an identified displacement recovery curve. Sparse cells require explicit acceptance;
-joint household outcomes, taxes/transfers, marriage and protective interventions remain unmodeled.</p>
+It calculates member marginal expectations exactly over one to five years, reusing observed SIPP 2021–2022 conditional transitions under
+stationarity and Markov assumptions, not an identified displacement recovery curve. Adults stay within ages 25–54; children age without an inferred earnings effect.
+Any reemployment earnings multipliers are declared assumptions. Sparse cells require explicit acceptance and no full household prediction interval is claimed;
+partner responses, joint household outcomes, taxes/transfers, savings, marriage, fertility and protective interventions remain unmodeled.</p>
 <p>The uncertainty command adds documented national baseline count uncertainty, a declared integer exposure distribution and binomial variation to parameter draws.
 It states the Poisson/Gamma model and component-independence assumptions. Transport error and structural model probabilities remain excluded;
 parameter-only results and independent-cohort process contrasts retain separate labels.</p></section>
 <section id="validation"><h2>Validation status</h2><p>V0 checks internal consistency; it does not validate the model against an independent event.
 V1 historical transport diagnostics use the same five-phase mortality calculation as production, but population differences and fit failures remain visible.
 Independent-event V2 and prospective V3 validation have not been established. Code repairs and passing tests do not supply missing empirical validation.</p></section>
+<section id="scorecard"><h2>Current mortality scorecard</h2>
+<p>Measured points lie inside the modeled bands for {mortality_covered} of {len(mortality)} mortality variants.
+These compare modeled mortality with a male–female differential; the population/outcome mismatch limits interpretation.
+Point coverage is neither a test against the measured confidence interval nor evidence of causal validity.</p>
+<div class="scroll" role="region" aria-label="Mortality validation scorecard" tabindex="0"><table>
+<caption>Excess deaths per 100,000 adults per unit shock</caption><thead><tr><th scope="col">Variant</th>
+<th scope="col">Model point [band]</th><th scope="col">Measured point</th><th scope="col">Covered?</th></tr></thead>
+<tbody>{mortality_rows}</tbody></table></div>
+<p>The archived October 14 expanded evaluation reports a cohort reproduction difference of {cohort_check['difference']:,.4f} workers
+against the published {cohort_check['published_workers']:,}-worker benchmark, within its {cohort_check['tolerance']:,}-worker rounding tolerance.
+The SIPP baseline check includes {sipp_check['heldout_calibration_cells']} held-out calibration cells;
+the largest absolute transition-probability difference is {sipp_check['heldout_max_abs_diff']:.4f}.
+There are {len(synthesis['reports'])} compatible pooled reports and {len(synthesis['blocked'])} explicit pooling refusals.
+These are archived descriptive reproduction/baseline checks, not causal displacement validation or a new independent-event score.</p>
+<p>The evidence selection protocol is locally frozen research work, not retrospective preregistration or an independently timestamped forecast.
+The archived results are retained in validation/followthrough_evaluation_expanded_20261014.json.</p></section>
 <section id="parameters"><h2>Parameter inventory</h2><p><a download="downstream-parameters.csv" href="{csv_uri}">Download the complete parameter CSV with full identifiers, precision and notes</a>.</p>
 <div class="scroll" role="region" aria-label="Parameter inventory" tabindex="0"><table><caption>Parameter support bands, destination units and evidence roles</caption>
 <thead><tr><th scope="col">Relationship and identifier</th><th scope="col">Point [low, high]</th><th scope="col">Unit</th><th scope="col">Evidence role</th><th scope="col">Sources, population and qualifications</th></tr></thead><tbody>{''.join(rows)}</tbody></table></div></section>

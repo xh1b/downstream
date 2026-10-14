@@ -38,8 +38,10 @@ require verified baselines. Parameter sampling, exact moment calculations,
 sensitivity analysis, and named structural variants expose uncertainty
 in both estimates and composition choices. Current China-shock
 retrodictions show mixed results: family-status contrasts are covered,
-while male mortality variants overpredict and lower-quartile earnings
-losses remain underpredicted after a wage-spillover channel is added.
+while mortality discrepancies and lower-quartile earnings underprediction
+remain. Experimental extensions compare household earnings trajectories,
+age-stratified mortality, and age-timed child earnings values, and propagate
+documented baseline and declared exposure uncertainty separately.
 Independent event back-tests remain blocked on data, and prospective
 forecasts have not yet been registered. We report those limits alongside
 the implemented methods. Outputs are conditional population-average
@@ -62,7 +64,8 @@ and an intergenerational earnings elasticity act on different quantities.
 This model makes those distinctions explicit. It provides a typed ledger,
 a versioned parameter set, reproducible uncertainty calculations, and
 validation results that retain misses. Its present implementation is a
-conditional propagation model with population aggregation. It does not
+conditional propagation model with population aggregation, with a limited
+annual household earnings prototype. It does not
 simulate individual labor-market matching, migration, or behavioral
 interactions. The term microsimulation describes the intended family-level
 use; it should not imply that the code currently advances a representative
@@ -101,9 +104,10 @@ question, not a demonstrated advantage over these predecessors.
 \subsection{Causal composition and population consequences}
 Our design separates three tasks often combined in larger models:
 estimating an exposure, propagating its consequences, and evaluating the
-result. The exposure is supplied by the caller. A dynamic population model
-would additionally need entry, exit, and transition processes that this
-implementation does not estimate. An interacting-agent model would need
+result. The exposure is supplied by the caller. The household prototype
+reuses observed employment transitions under declared assumptions; a full
+dynamic population model would additionally need entry, exit, and linked
+demographic and economic transitions. An interacting-agent model would need
 behavioral rules and a network; neither is present here.
 
 Regional multipliers enter as a separate count boundary, following the
@@ -128,7 +132,10 @@ module reports earnings across three descendant generations. Family and
 community modules expose additional pathways, but their availability in
 a module does not imply that the scenario count interface reports them.
 The current count interface returns local service jobs, excess deaths,
-and child lifetime earnings losses, subject to the required baselines.
+and child lifetime earnings losses, subject to verified baselines and
+outcome-specific applicability checks. Default results are illustrative
+reference calculations; a documented target population and reviewed
+transport decision are required for headline eligibility.
 The mortality count is a reference scenario for US men aged 45--54. Its
 displacement effect comes from a study of high-seniority men. The child
 earnings link comes from Canadian father--son firm closures and uses a US
@@ -180,9 +187,11 @@ displacement intervention. If $t$ is instead interpreted literally as
 a constant log--log elasticity, the finite-change mapping is $v'=v^t$.
 The implemented gap rule is its first-order expansion about $v=1$,
 $v^t=1+t(v-1)+O((v-1)^2)$. Thus it is an explicit linear approximation,
-not an exact conversion of a log elasticity. A future structural variant
-should compare these mappings without treating either as independently
-identified transmission of a displacement effect.
+not an exact conversion of a log elasticity. The implemented
+\texttt{log\_elasticity\_transmission} ensemble variant compares the
+finite-change mapping with the default gap rule using the same cited
+coefficient. Both retain the structural-transmission label; neither is an
+independently identified transmission of a displacement effect.
 
 Parallel divorce and family-size pathways are not silently added to the
 displacement pathway. The same affected children may appear in several
@@ -240,6 +249,21 @@ formula remains available as \texttt{legacy\_additive}. Current V1 and
 scoreable V2 mortality calculations use the production survival kernel and
 the source-offset profile by default.
 
+Default source-profile scenarios also report a persistence sensitivity
+that retains the early phases but sets the offset +6 onward odds ratio to
+one, first changing follow-up year 7. Both alternatives use the same
+resolved baseline, exposure, horizon, and early odds ratios.
+\input{generated/persistence}
+Monte Carlo reports a parameter-only interval within each structure and
+calculates their difference within each shared parameter draw. The range
+of their points is a structural comparison, not a confidence interval or
+a probability-weighted model average. The alternative is motivated by
+the long-run divergence recorded for Eliason and Storrie
+\cite{eliasonstorrie2009}. It is a hybrid assumption, not a reproduction
+of that Swedish study or a substitution of hazard ratios for odds ratios.
+A nonsignificant estimate does not establish an exactly zero effect, and
+persistence beyond that study's follow-up remains an assumption.
+
 Only verified baseline values enter a count. A missing baseline produces
 a named blocked outcome, or raises an exception in strict mode. The
 baseline file records source, population, units, and derivation. Table~1
@@ -258,9 +282,10 @@ lists its current values; some support modules beyond the count interface.
 Mortality converts the CDC WONDER deaths-per-person-year rate to
 the annual probability $m$ using the constant-hazard mapping. A person-time rate is not itself a cohort
 probability \cite{cdcRiskMeasures}; under a constant hazard $\lambda$,
-that probability is $1-e^{-\lambda}$. The current implementation applies
-this conversion for a compatible mortality rate, but does not advance
-age-specific baselines.
+that probability is $1-e^{-\lambda}$. The default scenario applies this
+conversion for a compatible mortality rate and holds its baseline age
+rate fixed. A separate experimental cohort projection advances age-band
+baselines as described below.
 Divorce uses the Census
 SIPP five-year marriage-survival complement, which is not a pure divorce
 incidence measure. The NCVS IPV rate counts incidents rather than unique
@@ -270,6 +295,59 @@ from SSA age-band earnings and BLS inflation data; summing cross-sectional
 medians approximates, rather than equals, the median lifetime total.
 Exact source tables, windows, and arithmetic are retained in
 \nolinkurl{params/baselines.csv}.
+
+\subsection{Child applicability and age-timed valuation}
+The direct child source concerns Canadian sons aged 10--14 at paternal
+firm closure. A supplied child profile with a known incompatible age or
+sex blocks the child-dollar count; an unknown profile remains illustrative.
+Demographic matching alone is insufficient for reviewed use: the interface
+requires target-population and transport decisions, and an explicit income
+rank definition. Optional father-income-quartile contrasts use the source's
+Table 8 log-earnings coefficients and standard errors
+\cite{oreopoulos2008}. Quartiles refer to average paternal income in
+1978--1979 and need a justified mapping to the target. Signed coefficients
+and their uncertainty are retained, including null-compatible and
+beneficial estimates. No response curve across child ages is inferred.
+
+The original count $E$ is an undiscounted synthetic career loss in 2024
+dollars. With known child ages, a supplied real discount rate $r$, and an
+event/valuation year, the optional valuation report instead computes
+\begin{equation}
+ E_{\mathrm{PV}}=N(1-g_c)\sum_{i=1}^{C}\sum_{a\in A_i}
+       \frac{L_a}{(1+r)^{a-a_i}},
+\end{equation}
+where $a_i$ is child $i$'s age at displacement and $L_a$ is the synthetic
+annual earnings profile normalized to the stored career baseline.
+The report separates the observed adult-age window 25--33 from a
+constant-gap career projection over ages 20--64; ages before the event
+are excluded. Both impose a constant relative gap over their listed ages;
+neither recovers an identified annual causal path. Zero discounting of the
+career projection reproduces the original count for source-eligible ages.
+Sampled valuations add separate parameter-only intervals, holding child
+ages, discount rate, earnings profile, and survival/employment treatment
+fixed. These exploratory present values do not qualify for public headlines.
+
+\subsection{Experimental age-stratum mortality}
+The separate \texttt{mortality-cohort} command aggregates expected effects
+over explicitly supplied age/sex/tenure strata. Its current response
+support is men aged 30--69 at mass layoff or firm closure with at least six
+years of tenure. It uses age-group annual-logit contrasts from Sullivan
+and von Wachter's working-paper Table 7, held constant through follow-up
+by the declared \texttt{constant\_source\_window\_log\_odds} projection
+assumption. These source-window contrasts are distinct from the default
+Table 5 phase profile. Source age selects the response at displacement;
+the response itself does not change as survivors age.
+
+For each stratum the command compares fixed baselines with advancing
+age-band US all-cause rates for 2015--2019. Survival products are computed
+within strata before exact weighted aggregation. These are piecewise
+period rates, not single-age hazards or a forecast of future mortality
+trends. Unsupported strata remain unknown: if any positive exposure lacks
+a supported response, no whole-cohort total is reported. The reported
+bands are simultaneous coefficient-support envelopes, not cohort
+confidence intervals; baseline variance, exposure error, cross-coefficient
+covariance, and transport error remain excluded. The projection is
+experimental and ineligible for public headlines.
 
 \subsection{Place resolution}
 Where measured place values exist in compatible units, baseline pooling
@@ -298,6 +376,29 @@ their level difference would be $M(1-g)$; if it changes susceptibility to
 displacement, an independently supported effect modifier is needed.
 Place-specific child dollar losses remain exploratory and the national
 child-dollar result is the reference.
+
+\subsection{Experimental household comparison}
+The \texttt{household} command compares annual employment-state
+probabilities and gross household earnings over one to five years.
+Adults have supplied sex, age, starting employment state, and annual
+earnings if employed. Observed SIPP December-to-December 2021--2022
+conditional transitions over employed, unemployed, and not-in-labor-force
+states are reused under explicit stationarity and Markov assumptions.
+Adults remain within ages 25--54 during follow-up. The event starts from
+an employed reference member and forces unemployment for a caller-supplied
+integer duration; any reemployment earnings multipliers require a separate
+declared assumption. Unemployment-origin recovery is observational and
+does not identify a displacement recovery response.
+
+The implementation advances state probabilities exactly, sums member
+earnings expectations, and ages adults and children. Sparse transition
+cells require explicit acceptance. It does not estimate partner responses
+or joint household dependence, taxes, transfers, savings, marriage,
+fertility, or protective interventions. Children age without an inferred
+educational or earnings consequence. Household resources here mean gross
+earnings only. Survey-design uncertainty and sparse cells preclude a full
+household prediction interval; this prototype remains ineligible for
+public headlines.
 
 \section{Uncertainty and experiments}
 Figure~\ref{fig:uncertainty} distinguishes the uncertainty objects used
@@ -339,6 +440,32 @@ do not receive this count simulation. Although the API calls it
 ``posterior-predictive,'' heterogeneous elicited parameter bands are not
 a fitted joint Bayesian posterior; this is conditional predictive
 simulation under the declared input distributions.
+
+\subsection{Separate baseline, exposure, and process budget}
+The default scenario intervals above hold baseline and exposure inputs
+fixed. The separate experimental \texttt{uncertainty} command relaxes
+those restrictions for the national source-profile mortality scenario.
+Documented baseline deaths $D_b$ and person-time $T_b$ must match the
+verified rate and its sex, age, cause, calendar window, and geography.
+With a Poisson likelihood and a declared Jeffreys rate prior, it samples
+\begin{equation}
+ \lambda\mid D_b,T_b\sim
+ \operatorname{Gamma}(D_b+\tfrac12,\ \mathrm{rate}=T_b).
+\end{equation}
+Exposure is drawn from a caller-declared discrete uniform distribution
+over integer bounds that bracket the reference cohort. That distribution
+is a sensitivity assumption, not an inferred confidence distribution.
+The calculation combines these inputs with parameter draws and retains
+the original fixed-input reference. Expected-effect intervals and
+independent-cohort binomial process contrasts are reported separately.
+
+Baseline, exposure, and study parameters are assumed mutually independent,
+while the two mortality persistence structures share each draw. Transport
+error, probabilities over structures, missing mechanisms, age/time trends,
+and uncertainty in child structure and earnings profiles remain excluded.
+This national budget does not sample county posterior uncertainty or
+support demographic-profile overrides. It is not a complete uncertainty
+interval for an employer or individual and remains experimental.
 
 \subsection{Analytic moments and coverage}
 For an independent level multiplier $X$, raw moments obey
@@ -386,7 +513,9 @@ This is a precision-priority heuristic, not an expected utility
 calculation or a prediction of what a new study will find. Experiments
 carry a version marker and do not overwrite the published parameter set.
 Structural ensembles report named alternatives for gap additivity,
-transmission decay, and closure selection. Their spread represents
+transmission decay, finite-change log elasticity, and closure selection.
+Scenario mortality additionally reports the persistence comparison above.
+Their spread represents
 selected assumptions, not a probability distribution over all possible
 models.
 
@@ -435,8 +564,8 @@ strong population and outcome-transfer assumptions.
 
 \input{figures/unit-checks}
 
-The pooled-adult row covers the observed point with its current band.
-Both male variants overpredict and exclude that point. A measured
+\input{generated/mortality_summary}
+A measured
 confidence interval and a modeled parameter band answer different
 questions; overlap is not proof of validity. The full JSON scorecard
 also reports whether the modeled point lies inside the measured interval.
@@ -498,6 +627,26 @@ before outcomes are available, a declared exposure and time horizon,
 and a scoring rule fixed before evaluation. No prospective result is
 reported. Unit and panel V1 results are the current external checks.
 
+\subsection{Descriptive cohort and baseline checks}
+The reproducible CPS January-2024 reference describes known-year
+2021--2023 displacements with lost-job tenure of at least three years,
+with a separate six-year-tenure subset. Survey weights reproduce the
+rounded published BLS total. Age and household composition are measured
+at interview and cannot silently stand in for historical event-age
+characteristics. Neither cohort identifies H-1B-specific displacement.
+The held-out SIPP checks compare baseline transition probabilities;
+they do not validate displacement effects or household recovery.
+\input{generated/followthrough}
+These archived results are retained in
+\nolinkurl{validation/followthrough_evaluation_expanded_20261014.json}.
+Its compatible-pooling refusals preserve population, horizon, scale, and
+overlap differences rather than manufacture independent study counts.
+The source-selection and evaluation protocol in
+\nolinkurl{docs/SCENARIO_EVIDENCE_PROTOCOL.md} records a locally frozen
+research round, not retrospective preregistration or an independently
+timestamped prospective forecast. No new matched independent event score
+is established by these software and baseline-data checks.
+
 \FloatBarrier
 \section{Limitations}
 The model conditions on displacement and does not identify who was
@@ -508,9 +657,11 @@ causal validity of the supplied records.
 
 Studies differ in country, age, sex, tenure, and measurement window.
 Transporting them across populations is a substantive assumption.
-Mortality uses a constant baseline and the five-phase source-offset profile
-described above. It does not advance age, model individual risk factors, or
-resolve transport from the source study population. Lifetime earnings conversion uses a synthetic
+Default mortality uses a constant baseline and the five-phase source-offset
+profile described above. The separate age-stratum projection advances
+age-band baselines under a different, constant source-window response
+assumption; neither models individual risk factors or resolves source-to-target
+transport. Lifetime earnings conversion uses a synthetic
 cross-sectional profile. Local employment multipliers omit migration
 and equilibrium adjustment. These choices can affect magnitudes even
 when arithmetic and citations are correct.
@@ -523,7 +674,10 @@ None of these is resolved by collecting more Monte Carlo draws.
 The current bands use heterogeneous evidence conventions and simplified
 marginal shapes. Only the declared correlation pairs enter Monte Carlo; other dependencies
 remain unmodeled. Place measurements and baseline estimates are generally
-fixed. Structural ensembles cover only
+fixed in default scenario sampling. The separate national uncertainty
+budget includes documented baseline-count and declared exposure
+distributions under additional assumptions. Household intervals and
+county posterior sampling remain unavailable. Structural ensembles cover only
 selected alternatives. Internal coverage tests therefore validate
 machinery, while V1 exposes economic and measurement discrepancies.
 There is no basis for treating the output as a complete uncertainty
@@ -537,21 +691,24 @@ Named competing specifications must remain visible rather than being
 averaged into a preferred headline.
 
 \section{Prioritized development}
-The next release should first improve the estimands already used in count
-headlines. Add uncertainty for the mortality baseline, test transport from
-the source study population, and assess sensitivity to the constant-hazard
-conversion. Resolve the place counterfactual before adding further
-place-driven descendants. Require edge metadata for effect scale,
-intervention, mediator versus total effect, source population, and time
-window; compatible units alone do not establish causal composability.
+The next work should evaluate the experimental capabilities now implemented.
+The national baseline/exposure budget, age-stratum mortality projection,
+child present values, and household comparison each retain specific
+applicability and uncertainty limits. Extend baseline sampling to compatible
+county inputs, quantify target-population transport, and assess the
+constant-hazard conversion. Resolve the place counterfactual before adding
+further place-driven descendants. Review effect scale, intervention,
+mediator versus total effect, source population, and window metadata;
+compatible units alone do not establish causal composability.
 
-Next, fit likelihoods to actual study estimates and county denominators,
-with overlap and window checks, explicit baseline uncertainty, and
-small-sample sensitivity for synthesis. Preserve null, protective, and
-conflicting effects. Add age/sex/tenure strata only where source estimates
-support them. For local jobs, separate manufacturing and high-tech
-multipliers and test the assumption that expansion effects transfer
-symmetrically to displacement.
+Expand compatible independent study pools with overlap and window checks
+and small-sample synthesis sensitivity. Preserve null, protective, and
+conflicting effects. Broaden age/sex/tenure response support only with source
+estimates; adding baseline strata alone does not identify effect modifiers.
+Estimate survey-design uncertainty and assess longer-run stability of the
+SIPP transition cells. For the already separate manufacturing and high-tech
+job multipliers, test whether expansion effects transfer symmetrically to
+displacement.
 
 Validation should prioritize one completed independent event before
 expanding the graph: freeze a matched exposure bridge, geography,
@@ -564,8 +721,8 @@ the existing property tests; passing code tests cannot repair an
 unidentified causal bridge.
 
 \subsection{A person-and-place research program}
-Figure~\ref{fig:future} summarizes the proposed comparison and the
-research gates that precede public use.
+Figure~\ref{fig:future} summarizes the implemented household prototype
+and the research gates that still precede public use.
 \input{figures/future}
 
 The longer-term target is a distribution of possible outcomes conditional
@@ -586,15 +743,16 @@ regional response. Event definitions must include onset, duration, dose,
 comparison condition, and ordering. Unsupported interactions remain
 unresolved even when each event has an individual effect estimate.
 
-The next substantial demonstration should compare a synthetic household's
-five-year employment, earnings, and resource trajectories with and without
-involuntary displacement, restricted to supported outcomes. A protective
-intervention can follow when independently justified. Baseline validation,
-event-effect validation, and comparisons with simple models should precede
-long multigenerational chains. Shared random draws can improve comparison
-precision; they do not identify the joint distribution of one person's
-potential outcomes. These future capabilities are not claimed for the
-current engine. Milestones and acceptance criteria are recorded in
+The implemented five-year synthetic household demonstration compares
+employment probabilities and gross earnings with and without a supplied
+displacement duration. The next research step is to evaluate that restricted
+comparison against simple benchmarks and independently matched outcomes,
+then extend linked family dynamics only where justified. A protective
+intervention can follow when independently supported. Shared random draws
+can improve sampled comparison precision; the current household prototype
+instead calculates marginal expectations exactly. Neither identifies one
+person's joint potential outcomes. A full life-course simulator and public
+applicability are not established. Milestones and acceptance criteria are recorded in
 \nolinkurl{docs/LIFE_COURSE_RESEARCH_PLAN.md}.
 
 \subsection{Public calculator as a research interface}
@@ -632,8 +790,11 @@ results can consequently change at the same historical user seed.
 
 Running \texttt{make -C paper} regenerates tables and chart data, builds the PDF, and
 writes \nolinkurl{paper/generated/results.json}. This JSON contains the
-full validation output and the source SHA-256. The generated appendix
-preserves parameter points, bands, tiers, and citation keys. Population
+full validation output and the source SHA-256. The appendix
+and coverage interpretation use the same live scorecard; reference
+mortality persistence values are generated from the scenario code. The
+archived follow-through evaluation is separately labeled in the JSON.
+The generated appendix preserves parameter points, bands, tiers, and citation keys. Population
 scope, distribution declarations, and extraction notes remain in the
 underlying CSV files. Source content digest for this build begins
 \texttt{\SourceDigest}. Generated numerical results are not manually

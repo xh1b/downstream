@@ -2,10 +2,12 @@
 import importlib.util
 import json
 import re
+from copy import deepcopy
 from pathlib import Path
 
 from downstream.params import load_all, load_correlations
 from downstream.validate import run
+from downstream.scenario import ScenarioInput, compute_counts
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -19,6 +21,10 @@ def test_paper_generation_matches_engine_and_is_deterministic(tmp_path, monkeypa
     output = json.loads((tmp_path / 'results.json').read_text())
     parts = load_all()
     assert output['validation'] == json.loads(json.dumps(run(parts['params'])))
+    reference = compute_counts(parts['params'], parts['baselines'], ScenarioInput(1000))
+    assert output['reference_scenario'] == reference
+    assert output['archived_followthrough_evaluation'] == json.loads(
+        (ROOT / 'validation/followthrough_evaluation_expanded_20261014.json').read_text())
     assert output['parameter_set_version'] == parts['params'].version
     assert output['declared_correlation_pairs'] == len(load_correlations(ROOT / 'params/correlations.csv'))
     rows = (tmp_path / 'parameters.tex').read_text()
@@ -26,6 +32,20 @@ def test_paper_generation_matches_engine_and_is_deterministic(tmp_path, monkeypa
     assert len(rows.splitlines()) == len(parts['params'].parameters)
     assert r'displacement $\to$ worker earnings' in rows
     assert r'child earnings $\to$ grandchild earnings' in rows
+    # The prose must consume generated coverage rather than preserve an old success claim.
+    summary = (tmp_path / 'mortality_summary.tex').read_text()
+    scored = output['validation']['v1_retrodict']['scored']
+    covered = sum(row['modeled_excess_deaths_per100k']['low'] <=
+                  row['measured_differential_per100k']['point'] <=
+                  row['modeled_excess_deaths_per100k']['high'] for row in scored)
+    assert f'{covered} of {len(scored)} mortality variants' in summary
+    assert '0 of 3 mortality variants' in summary
+    assert '18.77 [5.51, 42.87]' in summary and 'against 4.27' in summary
+    manuscript = (ROOT / 'paper/downstream.tex').read_text()
+    assert r'\input{generated/mortality_summary}' in manuscript
+    assert 'The pooled-adult row covers the observed point' not in manuscript
+    assert 'no-sustained-excess alternative' in (tmp_path / 'persistence.tex').read_text()
+    assert '54 held-out calibration cells' in (tmp_path / 'followthrough.tex').read_text()
     # Charts must preserve the scorecard's units, order, and full precision.
     validation = run(parts['params'])
     unit = validation['v1_retrodict']
@@ -55,3 +75,19 @@ def test_paper_generation_matches_engine_and_is_deterministic(tmp_path, monkeypa
     module.main()
     after = {p.name: (p.read_bytes(), p.stat().st_mtime_ns) for p in tmp_path.iterdir()}
     assert before == after
+
+
+def test_coverage_prose_changes_when_a_variant_covers_or_underpredicts():
+    spec = importlib.util.spec_from_file_location('paper_tables', ROOT / 'paper/build_tables.py')
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    rows = deepcopy(run(load_all()['params'])['v1_retrodict']['scored'])
+    # A newly covered, underpredicting row must update both qualitative statements.
+    row = rows[0]
+    measured = row['measured_differential_per100k']['point']
+    row['modeled_excess_deaths_per100k'].update(point=measured - 1, low=0, high=measured + 1)
+    row['measured_inside_modeled_band'] = True
+    summary = module.mortality_summary(rows)
+    assert '1 of 3 mortality variants' in summary
+    assert '2 of 3 modeled points exceed' in summary
+    assert '0 of 3 mortality variants' not in summary

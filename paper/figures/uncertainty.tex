@@ -5,7 +5,8 @@
     0/{Support envelope}/{What do the endpoint calculations span?}/{A bound under the stated calculation; no probability content.},
     -1.25/{Parameter interval}/{How do outputs vary across parameter draws?}/{Central 90\% under declared distributions; excludes unmodeled error.},
     -2.5/{Realized\\mortality counts}/{How might counts vary between simulated cohorts?}/{Conditional binomial variation; not one person's paired causal effect.},
-    -3.75/{Structural\\alternatives}/{How do selected composition choices change results?}/{Named model variants; no probability distribution over all models.}} {
+    -3.75/{Structural\\alternatives}/{How do selected composition choices change results?}/{Named model variants; no probability distribution over all models.},
+    -5/{National baseline\\and exposure budget}/{How do documented counts and declared exposure affect outputs?}/{Separate experimental budget; transport and structural probabilities excluded.}} {
     \node[fbox,fill=acc!9,anchor=west,text width=3.05cm,minimum height=1.02cm]
       at (0,\y) {\textbf{\rowtitle}};
     \node[anchor=west,align=left,text width=10.6cm,font=\footnotesize,text=ink]
@@ -14,8 +15,9 @@
       at (3.8,\y-0.25) {\explanation};
   }
 \end{tikzpicture}
-\caption{Four distinct uncertainty summaries. They are not interchangeable
-intervals. Uncertain exposure, baseline estimation, study transport, and missing
-mechanisms are not all captured by the current parameter draws.}
+\caption{Five distinct uncertainty summaries. They are not interchangeable
+intervals. Default parameter draws hold baseline and exposure inputs fixed;
+the separate national budget relaxes those assumptions. Study transport and
+missing mechanisms remain outside both calculations.}
 \label{fig:uncertainty}
 \end{figure}
