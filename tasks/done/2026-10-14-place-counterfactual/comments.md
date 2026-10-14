@@ -22,3 +22,12 @@ Verified current same-place rule 1-M(1-g), null displacement invariant and natio
 - By: eli
 
 done: active -> review.
+
+## c-81c97e547641
+
+- At: 2026-10-15 00:59 HKT
+- By: codex
+
+accept: review -> done.
+
+Reviewed the documented 1-M(1-g) same-place contrast against implementation and null-effect regressions. This records the existing initial-only default and preserves the exploratory place interpretation.
