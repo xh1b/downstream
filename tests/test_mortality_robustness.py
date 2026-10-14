@@ -38,9 +38,9 @@ def test_default_source_is_preserved_and_alternative_is_explicit(parts):
     report = mortality["persistence_sensitivity"]
     source = report["variants"]["source_profile"]
     alternate = report["variants"]["no_sustained_excess"]
-    assert mortality["point"] == source["point"] == 28.73
+    assert mortality["point"] == source["point"] == 28.76
     assert alternate["point"] == 20.52
-    assert report["source_minus_no_sustained_point"] == 8.21
+    assert report["source_minus_no_sustained_point"] == 8.24
     assert all(source[k] == mortality[k] for k in ("point", "low", "high"))
     assert source["citations"] == ["sullivan2009"]
     assert alternate["evidence_status"] == "structural_assumption"
@@ -49,7 +49,7 @@ def test_default_source_is_preserved_and_alternative_is_explicit(parts):
     assert not report["eligible_for_public_headline"]
     assert not mortality["applicability"]["eligible_for_public_headline"]
     assert parts["params"] is original
-    assert original.by_link("earnings_shock->mortality_sustained").point == 1.135
+    assert original.by_link("earnings_shock->mortality_sustained").point == 1.1354
     assert "not a confidence interval" in report["structural_point_range"]["interpretation"]
     assert any("does not establish" in note for note in report["limitations"])
     assert any("does not reproduce" in note for note in report["limitations"])
@@ -210,7 +210,7 @@ def test_methods_companion_exposes_the_same_comparison():
     document = module.build()
     assert '<section id="persistence">' in document
     assert 'href="#source-eliasonstorrie2009"' in document
-    assert "source profile gives 28.73" in document
+    assert "source profile gives 28.76" in document
     assert "alternative gives 20.52" in document
     assert "not a confidence interval or a bound on the true effect" in document
     assert "nonsignificant estimate does not establish" in document

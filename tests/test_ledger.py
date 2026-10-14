@@ -13,7 +13,7 @@ PARAMS = Path(__file__).resolve().parent.parent / "params" / "parameters.csv"
 def test_loads_versioned_and_acyclic():
     params = load(PARAMS)
     assert params.parameters
-    assert params.version == "v1.50"
+    assert params.version == "v1.51"
     assert any(p.tier == "EXACT" for p in params.parameters)
 
 
@@ -74,7 +74,7 @@ def test_public_child_line_labels_direct_and_structural_roles():
 def test_rate_step_records_without_chaining():
     params = load(PARAMS)
     led = start("m", "rate_ratio").apply(RATE, params.by_link("earnings_shock->mortality_sustained"))
-    assert led.point == 1.135  # recorded, not multiplied onto 1.0*1.17*...
+    assert led.point == 1.1354  # recorded, not multiplied onto 1.0*1.17*...
     assert led.steps[0].kind == RATE
 
 

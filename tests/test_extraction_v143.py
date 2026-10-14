@@ -58,7 +58,7 @@ def test_mortality_convergence_and_divergence_recorded():
     assert "+0.5968pp" in sustained.notes and "+33.5%" in sustained.notes
     assert "DECLARED DIVERGENCE" in sustained.notes and "0.98" in sustained.notes
     # the SvW anchors themselves are untouched
-    assert peak.point == 2.6696 and sustained.point == 1.135
+    assert peak.point == 2.6698 and sustained.point == 1.1354
 
 
 def test_divorce_crosscheck_keeps_anchor():
@@ -76,4 +76,4 @@ def test_divorce_crosscheck_keeps_anchor():
 def test_audit_clean_and_version_current():
     s = summary(audit(PARAMS_DIR))
     assert s["pass"], [f.as_dict() for f in audit(PARAMS_DIR) if f.severity.value == "error"]
-    assert PARAMS.version == "v1.50"
+    assert PARAMS.version == "v1.51"

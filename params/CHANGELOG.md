@@ -1,3 +1,25 @@
+## v1.51 — 2026-10-14 — reproduce mortality transforms and correct source provenance
+
+- Recheck Danish mortality Tables 6.1/6.2 against the hash-pinned 2011 AKF
+  working paper. Correct published-version claims without claiming the
+  published JHE tables have been independently re-extracted in this audit.
+- Remove the claim that a cumulative hazard ratio is a near-exact replication
+  of an annual odds ratio. Keep different scales/windows and null-compatible
+  findings explicit; no incompatible studies are pooled.
+- Correct the MI-or-stroke 20-year cross-check to 1.09 [0.97, 1.23]; the
+  1.16 [1.07, 1.25] value belongs to all circulatory deaths. Correct the
+  Canadian child-earnings anchor's country label.
+- Re-execute all five Table 5 column 3 beta/SE-to-OR transformations at four
+  decimals. Prior peak/offsets and sustained values did not consistently
+  reproduce the stated arithmetic; source coefficients/SEs are unchanged.
+  The offset +1 range narrows as an explicitly recorded row replacement,
+  not as selective evidence addition; prior values are retained in Git.
+- Correct the five working-paper mortality phases and three Danish boundary
+  rows to canonical publication tier under CITING section 1. Published-version
+  reconciliation remains queued; table transcription remains documented.
+- Baseline values and all other coefficient values are unchanged.
+  Engine remains 0.4.0; parameters advance separately to v1.51.
+
 ## v1.50 — 2026-10-14 — correct mortality offset +4–5 uncertainty
 
 - Table 5 column 3 reports beta 0.240, SE 0.138. Correct the former 0.077

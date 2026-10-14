@@ -205,7 +205,7 @@ def test_profile_precedence_is_disclosed_on_county_output():
                             places=load_places(default_dir() / 'places.csv'), place_key='06037',
                             mortality_profiles=load_profiles(default_dir() / 'mortality_profiles.csv'),
                             county_mortality=load_county_mortality_posteriors(default_dir() / 'county_mortality.csv'))
-    assert result['modeled']['excess_deaths']['point'] == 28.73
+    assert result['modeled']['excess_deaths']['point'] == 28.76
     override = result['place']['baseline_overrides']['all_cause_mortality_annual']
     assert not override['applied'] and 'precedence' in override['reason']
 

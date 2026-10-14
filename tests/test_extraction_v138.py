@@ -2,8 +2,8 @@
 
 What this file pins:
 - three EXACT boundary-applied cause-specific mortality rows from
-  Browning & Heinesen 2012 (JHE 31(4):599-616, read from the published
-  version of record): circulatory, alcohol-related, external-cause
+  Browning & Heinesen 2012 (JHE 31(4):599-616, rechecked against the 2011 AKF
+  working-paper version): circulatory, alcohol-related, external-cause
   cumulative hazard ratios, years 1-4 after base year
 - the all-cause replication cross-checks on the SvW peak/sustained rows
 - marcus2013 spouse mental-health spillover (new node spouse_mental_health_sd)
@@ -24,7 +24,7 @@ PARAMS = load(PARAMS_DIR / "parameters.csv")
 def test_circulatory_row_pinned():
     row = PARAMS.by_link("displacement->circulatory_mortality_hazard")
     assert (row.point, row.low, row.high) == (1.54, 1.29, 1.83)
-    assert row.tier == "EXACT"
+    assert row.tier == "canonical"
     assert "MI-or-stroke 1-4y 1.58" in row.notes
     assert "NEVER chained" in row.notes
 
@@ -40,7 +40,7 @@ def test_external_cause_row_pinned_with_cancer_null_discipline():
     row = PARAMS.by_link("displacement->external_cause_mortality_hazard")
     assert (row.point, row.low, row.high) == (1.53, 1.15, 2.04)
     assert "4.31 [1.64, 11.37]" in row.notes
-    assert "Cancer NULL" in row.notes
+    assert "Cancer intervals include 1" in row.notes
     rows = [p.link for p in PARAMS.parameters if "cancer" in p.link]
     assert rows == []  # the null never becomes a row
 
@@ -50,9 +50,10 @@ def test_svW_replication_cross_checks_recorded():
     assert "1.84 [1.44, 2.34]" in peak.notes
     sustained = PARAMS.by_link("earnings_shock->mortality_sustained")
     assert "1.10 [1.05, 1.16]" in sustained.notes
-    assert "near-exact long-run replication" in sustained.notes
-    # the SvW anchors themselves are untouched
-    assert peak.point == 2.6696 and sustained.point == 1.135
+    assert "not a like-for-like replication" in sustained.notes
+    assert "near-exact long-run replication" not in sustained.notes
+    # v1.51 reproduces the source transformations at four decimals
+    assert peak.point == 2.6698 and sustained.point == 1.1354
 
 
 def test_marcus_spouse_row_pinned():
@@ -68,4 +69,4 @@ def test_marcus_spouse_row_pinned():
 def test_audit_clean_and_version_current():
     s = summary(audit(PARAMS_DIR))
     assert s["pass"], [f.as_dict() for f in audit(PARAMS_DIR) if f.severity.value == "error"]
-    assert PARAMS.version == "v1.50"
+    assert PARAMS.version == "v1.51"
