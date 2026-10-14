@@ -2,7 +2,7 @@
 title: Screen the remarriage-margin candidate from the V1 divorce row
 area: evidence
 priority: P3
-assignee:
+assignee: fenix
 due:
 blocked-by: []
 expected-paths: []
