@@ -64,3 +64,10 @@ done: active -> review.
 - By: fenix
 
 Independent code/source-unit review approves the corrected adapter. Re-ran 46 focused adapter/source-chain checks successfully. Near-equal Bianchi shares now use bounded log1p; positive and negative nextafter cases match 80-digit Decimal references in native and CLI outputs, while minimum-positive-share extremes retain a finite log-difference fallback. The earlier false-null precision finding is resolved. Verified local primary PDF hashes against the unit receipt and source definitions: Light uses percentage-point undocumented share with logged crime rate; Bianchi uses log valid-permit population share. Signed support, same post-population endpoint counts, causal-role/window/retransformation disclosures and retired-stock-link refusals remain intact. Acceptance does not establish H-1B/target transport, resolve published Bianchi source-version reconciliation or complete other receiving-community channels.
+
+## c-bfddf2cae8a2
+
+- At: 2026-10-15 02:08 HKT
+- By: fenix
+
+accept: review -> done.
