@@ -34,3 +34,12 @@ Implemented sharp marginal SE bounds over all PSD covariance matrices with suppl
 - By: fenix
 
 done: active -> review.
+
+## c-e8ef148bd66f
+
+- At: 2026-10-15 01:34 HKT
+- By: codex
+
+accept: review -> done.
+
+Reviewed sharp PSD-compatible bounds, signed-weight and missing-SE handling, additive log-odds parameterization and manuscript-version limits. Diagnostic and analytic witness tests pass. No published profile or nonlinear mortality total is admitted; parent remains open.
