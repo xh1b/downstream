@@ -51,7 +51,7 @@ The source receipt preserves original evidence text.
 Input labels share the row height. Wrapped labels do not shift numeric controls.
 Below 520 px, each input group uses two columns; its last field spans the row.
 This gives the rate unit and lifetime earnings field more space. Mobile controls
-have a 44 px minimum height. The mortality table scrolls inside a named keyboard
+have a 44 px minimum height and at least 16 px input text. The mortality table scrolls inside a named keyboard
 focusable region. Large results use scientific notation; the data panel keeps
 full numeric precision. Long source text can wrap within the page.
 

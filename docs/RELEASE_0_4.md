@@ -90,8 +90,8 @@ these gaps with zero or presenting conditional intervals as full certainty.
 
 ## Verification
 
-Coverage: 96.8% statements and 93.2% branches, above the unchanged 95%/90%
-gates. Focused checks cover source arithmetic, signed subgroup effects,
+The October 14 receipt measured 96.8% statements and 93.2% branches, above
+the unchanged 95%/90% gates. Focused checks cover source arithmetic, signed subgroup effects,
 eligibility, unsupported strata, zero-rate valuation equivalence, zero-duration
 household equivalence, uncertainty input compatibility and CLI routing.
 The October 14 full-suite receipt passed **1,065 tests** after the saved examples
@@ -144,3 +144,29 @@ Household results reconcile cumulative earnings and E/U/N person-years by member
 and household. `downstream.consumer` exposes checked scaling and mixture helpers.
 Remarriage screening refuses an unsupported coefficient without treating it as zero.
 These are local changes; the XH1B pin and deployment remain pending.
+
+
+## Final local qualification — 2026-10-15
+
+The integrated run reported 1,389 passing tests and one task-board failure
+while that tooling and its test were being changed concurrently. After the
+other task's changes landed, the full board/workflow suite passed all 29 tests.
+All model/source/calculation regressions passed. Model coverage is 97.2%
+statements and 94.1% branches, above the 95%/90% gates. The final focused
+calculation/source/artifact suite passed 137 tests.
+
+Ruff, Vulture and the evidence audit pass; the audit reports zero errors and
+zero warnings. The final wheel passed all eleven isolated CLI checks, including
+receiving-community. It contains the new consumer/receiving APIs and parameter
+set v1.52; the source archive includes all calculator assets. Generator checks
+for calculator, evidence classification, pool readiness and consumer fixtures
+pass. The paper builds without LaTeX warnings; its current source digest was
+recomputed from the final manifest and matches. Changed pages and the full
+page overview were inspected for layout defects.
+
+Independent reviews accepted the mobile implementation, receiving adapter,
+household summaries, consumer transforms and source-limited remarriage screen.
+The browser URL policy explicitly denies the local file preview and alternate
+routes; rendered mobile, zoom, assistive technology and participant checks are
+still unverified. No companion repin, deployment or independent causal
+validation is claimed.

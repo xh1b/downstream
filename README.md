@@ -51,7 +51,7 @@ python scripts/quality_gate.py coverage.json
 ```
 
 The gate requires at least 95% statement coverage and 90% branch coverage.
-Engine 0.4.0 verification measures 96.8% and 93.2%. The suite contains Hypothesis
+The 2026-10-15 engine 0.4.0 check measures 97.2% and 94.1%. The suite contains Hypothesis
 property tests for ledger envelopes, survival bounds, and county-pooling
 convexity. Deterministic fixtures cover citations, published coefficients, and
 regression examples.
