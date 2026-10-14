@@ -2,7 +2,7 @@
 title: Refactor calculator into pure calculation and focused rendering functions
 area: calculator
 priority: P2
-assignee:
+assignee: codex
 blocked-by: []
 ---
 
