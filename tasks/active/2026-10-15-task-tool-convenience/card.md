@@ -2,7 +2,7 @@
 title: Simplify cooperative task-board tooling
 area: scripts
 priority: P2
-assignee:
+assignee: codex-task-tooling
 blocked-by: []
 ---
 
