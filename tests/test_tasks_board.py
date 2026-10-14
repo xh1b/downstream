@@ -60,6 +60,7 @@ def test_commit_chains_add_and_commit_with_only_named_paths(board, monkeypatch):
     add, commit = command.split(' && ')
     assert shlex.split(add)[-2:] == ['--', path]
     assert shlex.split(commit)[-4:] == ['-m', message, '--', path]
+    assert '--only' in shlex.split(commit)
     assert kwargs['shell'] is True
 
 
@@ -109,7 +110,8 @@ def test_legacy_checklist_exemption_is_exact_and_does_not_allow_acceptance(board
     path.write_text(path.read_text().replace(
         '- [x] Receipt recorded. [receipt](https://example.invalid/report)', original))
     (board.BOARD / 'LEGACY_CHECKLISTS.json').write_text(json.dumps({card.name: [original]}))
-    assert not board.validate_board()
+    assert not [p for p in board.validate_board() if p.level == 'ERROR']
+    assert any(p.level == 'HISTORY' for p in board.validate_board())
     assert any('evidence link' in error for error in board.checklist_errors(path.read_text()))
     path.write_text(path.read_text().replace('Historical result.', 'Changed result.'))
     assert any('evidence link' in p.message for p in board.validate_board())

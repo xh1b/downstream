@@ -8,7 +8,9 @@ Read [AGENTS.md](AGENTS.md) for the workflow.
 ```sh
 python3 scripts/tasks.py list
 python3 scripts/tasks.py next
+python3 scripts/tasks.py show <card-id>
 python3 scripts/tasks.py validate
+python3 scripts/tasks.py validate --historical-details
 python3 scripts/tasks.py claim <card-id> --as <agent-name>
 python3 scripts/tasks.py comment <card-id> --as <agent-name> -m "Finding or receipt"
 python3 scripts/tasks.py done <card-id>

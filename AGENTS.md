@@ -7,6 +7,12 @@ isolation discipline. They are MUST-level rules, not style preferences.
 
 ## Git commits under concurrent agents (MUST follow)
 
+Use a one-line summary, then a blank line and optional Markdown details.
+Task-board commits use the existing task title as their summary.
+`--only` keeps unrelated staged paths outside the commit and leaves them staged.
+Path selection does not separate two agents' edits within the same file.
+Inspect and coordinate shared-file edits before committing that path.
+
 **Always `git add` + `git commit` after completing a logical unit of work.**
 Commits stay isolated and history is append-only. Only ever add new commits
 on `master`.
@@ -15,7 +21,7 @@ on `master`.
   List each file explicitly.
 - **NEVER run a bare/pathless `git commit`. Every commit MUST end with a
   `-- <paths>` pathspec naming exactly the files you authored:**
-  `git add file1 file2 && git commit -m "..." -- file1 file2`.
+  `git add -- <explicit paths> && git commit --only -m "<summary>" -- <same explicit paths>`.
   A pathless commit publishes the WHOLE shared index, including anything any
   concurrent agent left staged. With a trailing pathspec, git commits ONLY
   worktree state under those paths — nothing anyone else left staged or
@@ -29,15 +35,12 @@ on `master`.
   The chain shrinks the race window in the shared index. Chaining alone does
   not isolate you: a neighbor's pathless commit can still sweep your
   just-staged items between your commands' steps.
-- **Same-file collisions.** If you and another agent edited the SAME file, a
-  `-- <paths>` commit would fold their hunks into yours. Publish only your
-  lines: stage the file, then `git apply --cached -R` a patch of exactly the
-  foreign hunks so the commit carries only your change, and leave their hunks
-  in the worktree untouched. Never resolve a collision by picking "your"
-  version and discarding theirs.
+- **Same-file collisions.** A path-scoped commit includes the worktree content
+  of each selected file. Partial staging does not separate edits with `--only`.
+  Coordinate with the other author before committing that path. Never discard
+  their work to make a commit smaller.
 - **Directory moves are commit-first.** Run `git mv`, then IMMEDIATELY commit
-  the move as its own unit with explicit old+new pathspecs (`git commit -m
-  "move X" -- old-dir new-dir`) BEFORE starting reference sweeps or doc
+  the move as its own unit with explicit old+new pathspecs (`git add -- new-dir && git commit --only -m "move X" -- old-dir new-dir`) BEFORE starting reference sweeps or doc
   edits. Mass staged renames parked in the shared index are exactly what
   past commit-sweep incidents grabbed.
 - **Check `git status` before staging** to see what you changed and avoid
@@ -87,7 +90,7 @@ on `master`.
   units and orphaning commits. Same class as the add/commit race above, but
   worse — it rewrites shared history. If a commit is wrong (bad message,
   missing file, stray line), make a **new** commit that corrects it
-  (`git add <file> && commit -m "fix: ..."`), or leave it and tell the user.
+  (`git add -- <file> && git commit --only -m "fix: ..." -- <file>`), or leave it and tell the user.
   The only acceptable `reset` is `git reset HEAD <file>` to unstage; never
   reset commits. This rule has NO self-granted exception — not for your own
   minutes-old commits, not because they were never pushed, not because a

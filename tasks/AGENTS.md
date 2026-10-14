@@ -1,7 +1,8 @@
 # tasks — the agent board
 
 A task board in Markdown. Folders are columns. Each task has `card.md` and
-`comments.md`. Git records changes. Use `rg` to search and read the files directly.
+`comments.md`. Git records changes. Use `show <id>` to read a card and find its comments.
+Use `rg` to search the files.
 
 ## Columns
 
@@ -37,7 +38,9 @@ expected-paths: [scripts/]
 
 Only `title`, `area`, `priority`, and `assignee` are required.
 List fields use inline `[a, b]` syntax. Other fields hold one line.
-The body states the context, approach, and acceptance checklist.
+The existing `title:` is the task's one-line summary. Put optional Markdown
+details in the body, along with the existing acceptance checklist.
+No additional message fields or fixed sections are required.
 
 - `blocked-by`: these tasks must reach `done/` first. `next` omits blocked tasks.
   `claim` needs a reason with `-m` or `--file` to override an open blocker.
@@ -76,6 +79,13 @@ References in fenced code examples are ignored. Real references must resolve.
 
 ## Comments
 
+Write new messages like Git messages: a one-line summary, then a blank line
+and optional Markdown details. This applies to comments, replies, resolutions
+and transition reasons. `-m` and `--message` accept multiline text. `--file`
+reads the full message; `--file -` reads stdin. Existing messages stay valid
+and unchanged. No headings or sections are mandatory. For creation, `--title`
+supplies the task summary and the message input supplies its card body.
+
 Use `comment` to append Markdown. Use `--file` for paragraphs, lists, code, and links.
 `--file -` reads stdin. The command prints the new permanent comment reference.
 Existing timestamped comments stay intact. They have no comment ids.
@@ -86,6 +96,12 @@ python3 scripts/tasks.py comment <id> -m 'The parser check passes.' --as codex
 python3 scripts/tasks.py comment <id> --file /tmp/findings.md --as codex
 python3 scripts/tasks.py comment <id> --reply-to task:<other-id>#c-0123456789ab -m 'This fixes the same input.'
 python3 scripts/tasks.py resolve <id> task:<other-id>#c-0123456789ab -m 'The rerun confirms the fix.'
+python3 scripts/tasks.py comment <id> --as codex-task-tooling --file - <<'EOF'
+The parser check passes
+
+- Source values remain unchanged.
+- The failure case has a regression check.
+EOF
 ```
 
 New comments have this form:
@@ -129,9 +145,15 @@ prove the content of reports, external links, or commits. The reviewer checks th
 
 ## Process and commands
 
-All mutating commands record a comment and commit only the task directory.
+All mutating commands record a comment and commit explicit task paths.
 They refuse to run off `master`, mid-merge, or mid-rebase.
 Board changes are separate commits from implementation changes.
+Each automatic commit uses the task title as its summary. A blank line separates
+it from the board action and any supplied Markdown details.
+Commits use `git commit --only`. Unrelated staged files stay outside the commit
+and remain staged. Comments commit only `comments.md`.
+Path selection cannot separate two agents' edits within the same file.
+Inspect and coordinate those edits before committing that path.
 Add and commit are chained, with explicit pathspecs. Moves refuse dirty cards and
 commit the directory move immediately, before editing metadata or comments.
 Commit your checklist and receipts before `done`. Comments also refuse dirty cards.
@@ -141,6 +163,7 @@ If metadata fails after a move commit, repair the task in its new column; do not
 python3 scripts/tasks.py create <id> --title 'One line' --area scripts --priority P2 --file /tmp/task-body.md
 python3 scripts/tasks.py triage <id>
 python3 scripts/tasks.py claim <id> --as codex
+python3 scripts/tasks.py show <id>
 python3 scripts/tasks.py done <id>
 python3 scripts/tasks.py accept <id> --as reviewer
 python3 scripts/tasks.py request-changes <id> -m 'Add the failure-case receipt.'
@@ -176,10 +199,30 @@ local-only development and the pending 0.4 update.
 
 ## Checks and navigation
 
+Unmet explicit dependencies are ordinary blocked status, reported as a count.
+Missing targets, cycles, invalid structure and completion evidence errors remain
+visible. Validation exits with 1 when errors exist and 0 otherwise.
+`next` keeps its explicit-dependency filtering. Check any phase prose yourself.
+`show <id>` resolves the stable ID to its current column, prints the full card,
+and shows the comments path. It does not change files or commit.
+
+For direct card edits, inspect and validate the diff, then commit explicit paths:
+
+```sh
+git add -- tasks/active/<id>/card.md && git commit --only -m "<task title>" -- tasks/active/<id>/card.md
+```
+
+Historical evidence gaps covered by `LEGACY_CHECKLISTS.json` appear in a separate
+summary. `validate --historical-details` shows each gap. These gaps do not count
+as current warnings or errors. The exact frozen exemptions stay unchanged.
+New or edited criteria, and every `done` or `accept` action, still require evidence.
+
 ```sh
 python3 scripts/tasks.py validate
+python3 scripts/tasks.py validate --historical-details
 python3 scripts/tasks.py list
 python3 scripts/tasks.py next
+python3 scripts/tasks.py show <id>
 rg -n 'source repair|task:2026-10-14-source-repair' tasks/
 cat tasks/active/<id>/card.md tasks/active/<id>/comments.md
 ```
@@ -187,7 +230,7 @@ cat tasks/active/<id>/card.md tasks/active/<id>/comments.md
 `validate` checks columns, ids, required fields, references, cycles, and acceptance
 links. Markdown lint checks structure. Neither imposes a comment length limit.
 `list` flags uncommitted board changes. A stale claim deserves a comment, not a
-second claim. No database, generated index, search service, or detail viewer is needed.
+second claim. No database, generated index, or search service is needed.
 
 ## Downstream migration
 

@@ -67,7 +67,7 @@ def _commit_card(paths: list[str], message: str) -> tuple[int, str]:
     if status.returncode:
         return 1, status.stderr
     existing = [p for p in paths if (REPO_ROOT / p).exists()]
-    commit = shlex.join(["git", "-C", str(REPO_ROOT), "commit", "-m", message, "--", *paths])
+    commit = shlex.join(["git", "-C", str(REPO_ROOT), "commit", "--only", "-m", message, "--", *paths])
     command = commit
     if existing:
         add = shlex.join(["git", "-C", str(REPO_ROOT), "add", "--", *existing])
@@ -86,7 +86,7 @@ def _move_card(old_rel: str, new_rel: str) -> str | None:
     moved = _git("mv", old_rel, new_rel)
     if moved.returncode:
         return f"git mv failed:\n{moved.stderr}"
-    code, out = _commit_card([old_rel, new_rel], f"chore: move task {Path(old_rel).name} to {Path(new_rel).parent.name}")
+    code, out = _commit_card([old_rel, new_rel], task_commit_message(REPO_ROOT / new_rel, f"move {Path(old_rel).name} to {Path(new_rel).parent.name}"))
     return out if code else None
 
 
@@ -247,6 +247,7 @@ def check_checklist(card_dir: Path, column: str, problems: list[Problem]) -> Non
         if error.startswith("criterion needs a Markdown evidence link: "):
             criterion = error.removeprefix("criterion needs a Markdown evidence link: ")
             if "- [x] " + criterion in legacy:
+                problems.append(Problem("HISTORY", f"{column}/{card_dir.name}", error))
                 continue
         problems.append(Problem("ERROR", f"{column}/{card_dir.name}", error))
 
@@ -407,7 +408,7 @@ def validate_board() -> list[Problem]:
         elif ref["kind"] == "blocked-by":
             target_id = str(ref["target"])[5:]
             if seen[target_id] != "done":
-                problems.append(Problem("WARN", where, f"blocked by `{target_id}`, still in {seen[target_id]}/"))
+                problems.append(Problem("BLOCKED", where, f"blocked by `{target_id}`, still in {seen[target_id]}/"))
     for relation in ("blocked-by", "parent", "duplicate-of"):
         check_cycles(cards, relation, problems)
     return problems
@@ -465,17 +466,28 @@ def _print_board_notice() -> None:
 
 # -------------------------------------------------------------------- commands
 
-def cmd_validate(_args: argparse.Namespace) -> int:
+def cmd_validate(args: argparse.Namespace) -> int:
     problems = validate_board()
     errors = [p for p in problems if p.level == "ERROR"]
+    warnings = [p for p in problems if p.level == "WARN"]
+    historical = [p for p in problems if p.level == "HISTORY"]
+    blocked = [p for p in problems if p.level == "BLOCKED"]
     for level in ("ERROR", "WARN"):
         for problem in [p for p in problems if p.level == level]:
             print(problem)
+    if args.historical_details:
+        for problem in historical:
+            print(problem)
+    if historical:
+        print(f"historical accepted evidence gaps: {len(historical)} missing link(s) across "
+              f"{len({p.where for p in historical})} task(s); use --historical-details for individual gaps")
+    print(f"blocked: {len({p.where.split(':')[0] for p in blocked})} task(s), "
+          f"{len(blocked)} unsatisfied dependency reference(s)")
     counts = {column: 0 for column in COLUMNS}
     for card_id, column in seen_ids().items():
         counts[column] += 1
     print("board: " + "  ".join(f"{column}={counts[column]}" for column in COLUMNS))
-    print(f"validate: {len(errors)} error(s), {len(problems) - len(errors)} warning(s)")
+    print(f"validate: {len(errors)} error(s), {len(warnings)} warning(s)")
     return 1 if errors else 0
 
 
@@ -498,6 +510,18 @@ def cmd_list(_args: argparse.Namespace) -> int:
         print(f"## {column} ({len(cards)})")
         for card in sorted(cards, key=lambda c: (str(c["meta"].get("priority", "P4")), str(c["id"]))):
             print("  " + fmt_card(card, show_age=True))
+    return 0
+
+
+def cmd_show(args: argparse.Namespace) -> int:
+    found = _find_card(args.id)
+    if not found:
+        return fail(f"no task `{args.id}` on the board")
+    _, card_dir = found
+    print(f"Card: {(card_dir / 'card.md').relative_to(REPO_ROOT)}")
+    print(f"Comments: {(card_dir / 'comments.md').relative_to(REPO_ROOT)}\n")
+    text = (card_dir / "card.md").read_text()
+    print(text, end="" if text.endswith("\n") else "\n")
     return 0
 
 
@@ -549,6 +573,15 @@ def read_message(args: argparse.Namespace) -> str:
     return args.message or ""
 
 
+def task_commit_message(card_dir: Path, action: str, text: str = "") -> str:
+    """Use the task title as the summary; retain action and Markdown details."""
+    title = read_card(card_dir, card_dir.parent.name, [])["title"]
+    details = f"board: {action}"
+    if text:
+        details += "\n\n" + text.rstrip()
+    return f"{title}\n\n{details}"
+
+
 def finish_change(paths: list[str], message: str) -> int:
     errors = [p for p in validate_board() if p.level == "ERROR"]
     if errors:
@@ -561,7 +594,7 @@ def finish_change(paths: list[str], message: str) -> int:
     code, output = _commit_card(paths, message)
     if code:
         return fail(output)
-    print(f"{message} (commit {output})")
+    print(f"{message.splitlines()[0]} (commit {output})")
     return 0
 
 
@@ -584,7 +617,7 @@ def cmd_create(args: argparse.Namespace) -> int:
         f"assignee:\nblocked-by: []\n---\n\n{body.rstrip()}\n")
     comment_id = _append_comment(card_dir, args.who or _git_user(), "Created in inbox.")
     print(f"task:{args.id}#{comment_id}")
-    return finish_change([str(card_dir.relative_to(REPO_ROOT))], f"chore: task create {args.id}")
+    return finish_change([str(card_dir.relative_to(REPO_ROOT))], task_commit_message(card_dir, f"create {args.id}", body))
 
 
 def cmd_comment(args: argparse.Namespace) -> int:
@@ -615,7 +648,7 @@ def cmd_comment(args: argparse.Namespace) -> int:
     comment_id = _append_comment(card_dir, args.who or _git_user(), text,
                                  reply_to=reply_to, resolves=resolves)
     print(f"task:{args.id}#{comment_id}")
-    return finish_change([f"tasks/{column}/{args.id}"], f"chore: task {args.command} on {args.id}")
+    return finish_change([f"tasks/{column}/{args.id}/comments.md"], task_commit_message(card_dir, f"{args.command} on {args.id}", text))
 
 
 def cmd_move(args: argparse.Namespace) -> int:
@@ -656,7 +689,7 @@ def cmd_move(args: argparse.Namespace) -> int:
     if reason:
         text += "\n\n" + reason
     _append_comment(card_dir, who, text)
-    return finish_change([new_rel], f"chore: task {args.command} {args.id}")
+    return finish_change([new_rel], task_commit_message(card_dir, f"{args.command} {args.id}", reason))
 
 
 def cmd_refs(args: argparse.Namespace) -> int:
@@ -690,16 +723,20 @@ def cmd_refs(args: argparse.Namespace) -> int:
 
 def add_message_args(parser, *, required=False, author_required=False):
     messages = parser.add_mutually_exclusive_group(required=required)
-    messages.add_argument("-m", "--message", help="Markdown text")
-    messages.add_argument("--file", help="read Markdown from a file; - reads stdin")
+    messages.add_argument("-m", "--message", help="one-line summary, blank line, optional Markdown details; existing text also works")
+    messages.add_argument("--file", help="read the full message from a file; - reads stdin")
     parser.add_argument("--as", dest="who", metavar="NAME", required=author_required)
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="tasks", description="Markdown task board (tasks/AGENTS.md)")
     sub = parser.add_subparsers(dest="command", required=True)
-    sub.add_parser("validate", help="check task format, evidence, references, and cycles")
+    validate = sub.add_parser("validate", help="check task format, evidence, references, and cycles")
+    validate.add_argument("--historical-details", action="store_true",
+                          help="show individual historical evidence gaps under existing compatibility rules")
     sub.add_parser("list", help="print the board")
+    show = sub.add_parser("show", help="print a task card and its current comments path")
+    show.add_argument("id", help="stable task id")
     next_parser = sub.add_parser("next", help="claimable tasks, priority then due date")
     next_parser.add_argument("--limit", type=int, default=5)
     refs = sub.add_parser("refs", help="resolve a reference and list outgoing links and backlinks")
@@ -726,7 +763,7 @@ def main(argv: list[str] | None = None) -> int:
     who = getattr(args, "who", None)
     if who is not None and (not who.strip() or "\n" in who or "\r" in who):
         return fail("author must be one nonempty line")
-    commands = {"validate": cmd_validate, "list": cmd_list, "next": cmd_next,
+    commands = {"validate": cmd_validate, "list": cmd_list, "show": cmd_show, "next": cmd_next,
                 "refs": cmd_refs, "create": cmd_create, "comment": cmd_comment, "resolve": cmd_comment}
     try:
         return commands.get(args.command, cmd_move)(args)

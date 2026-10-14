@@ -3,6 +3,7 @@
 import contextlib
 import importlib.util
 import io
+import json
 import os
 from pathlib import Path
 import subprocess
@@ -51,7 +52,7 @@ class TaskTests(unittest.TestCase):
 
     def commit(self, *paths):
         self.git("add", "--", *paths)
-        self.git("commit", "-qm", "fixture", "--", *paths)
+        self.git("commit", "--only", "-qm", "fixture", "--", *paths)
 
     def seed(self, card_id, column="ready", fields="", body="- [ ] Check the input.\n", comments="# comments\n"):
         directory = self.board.BOARD / column / card_id
@@ -231,6 +232,17 @@ class TaskTests(unittest.TestCase):
         self.assertEqual(self.errors(), [])
         self.run_cli("reopen", B, "-m", "The source returns.")
 
+    def test_deleted_path_commit_keeps_unrelated_staging(self):
+        directory = self.seed(A)
+        relative = f"tasks/ready/{A}/comments.md"
+        (directory / "comments.md").unlink()
+        (self.root / "unrelated.py").write_text("other work\n")
+        self.git("add", "--", "unrelated.py")
+        code, output = self.board._commit_card([relative], "Remove the selected file")
+        self.assertEqual(code, 0, output)
+        self.assertEqual(self.git("show", "--format=", "--name-status", "HEAD"), "D\t" + relative)
+        self.assertEqual(self.git("diff", "--cached", "--name-only"), "unrelated.py")
+
     def test_mutating_commands_preserve_unrelated_staged_work(self):
         self.seed(A)
         (self.root / "unrelated.py").write_text("other work\n")
@@ -241,6 +253,29 @@ class TaskTests(unittest.TestCase):
         self.assertNotIn("unrelated.py", changed)
         self.run_cli("comment", A, "-m", "Keep the index isolated.")
         self.assertEqual(self.git("diff", "--cached", "--name-only"), "unrelated.py")
+        self.assertNotIn("unrelated.py", self.git("show", "--format=", "--name-only", "HEAD"))
+
+    def test_frozen_historical_gaps_are_summarized_without_broadening_exemptions(self):
+        criterion = "- [x] Historical result."
+        directory = self.seed(A, "done", body=criterion + "\n")
+        path = directory / "card.md"
+        manifest = self.board.BOARD / "LEGACY_CHECKLISTS.json"
+        manifest.write_text(json.dumps({A: [criterion]}))
+        previous, frozen = path.read_bytes(), manifest.read_bytes()
+        output = self.run_cli("validate")
+        self.assertIn("historical accepted evidence gaps: 1", output)
+        self.assertIn("--historical-details", output)
+        self.assertNotIn("Historical result.", output)
+        self.assertIn("0 error(s), 0 warning(s)", output)
+        output = self.run_cli("validate", "--historical-details")
+        self.assertIn("HISTORY: done/", output)
+        self.assertIn("criterion needs a Markdown evidence link: Historical result.", output)
+        self.assertEqual((previous, frozen), (path.read_bytes(), manifest.read_bytes()))
+        path.write_text(path.read_text().replace("Historical result.", "Changed result."))
+        output = self.run_cli("validate", code=1)
+        self.assertIn("ERROR: done/", output)
+        self.assertNotIn("historical accepted evidence gaps:", output)
+        self.assertEqual(manifest.read_bytes(), frozen)
 
     def test_bad_ids_foreign_branch_and_missing_files_do_not_mutate(self):
         directory = self.seed(A)
@@ -259,6 +294,95 @@ class TaskTests(unittest.TestCase):
         self.run_cli("create", B, "--title", "Injected\nassignee: other", "--area", "scripts", "-m", "Text", code=1)
         self.assertIsNone(self.board._find_card(B))
 
+
+    def test_show_resolves_moves_and_prints_the_entire_existing_card_without_writing(self):
+        directory = self.seed(A, body="A summary\n\nFull details.\n\n- [ ] Check the input.\n")
+        contents = (directory / "card.md").read_text()
+        before = self.git("rev-parse", "HEAD")
+        output = self.run_cli("show", A)
+        self.assertIn(f"Card: tasks/ready/{A}/card.md", output)
+        self.assertIn(f"Comments: tasks/ready/{A}/comments.md", output)
+        self.assertTrue(output.endswith(contents))
+        self.assertEqual(self.git("rev-parse", "HEAD"), before)
+        self.assertEqual(self.git("status", "--porcelain"), "")
+        self.run_cli("claim", A, "--as", "worker")
+        output = self.run_cli("show", A)
+        self.assertIn(f"Card: tasks/active/{A}/card.md", output)
+        self.assertIn(f"Comments: tasks/active/{A}/comments.md", output)
+        self.assertTrue(output.endswith((self.board.BOARD / "active" / A / "card.md").read_text()))
+        before = self.git("rev-parse", "HEAD")
+        self.run_cli("show", C, code=1)
+        self.run_cli("show", "../escape", code=1)
+        self.assertEqual(self.git("rev-parse", "HEAD"), before)
+        self.assertEqual(self.git("status", "--porcelain"), "")
+
+    def test_git_style_messages_keep_task_titles_and_multiline_details(self):
+        self.receipt()
+        title = "Repair source input"
+        body = "The parser retains source values.\n\n- [ ] Check the input.\n"
+        self.run_cli("create", A, "--title", title, "--area", "scripts", "--file", "-", stdin=body)
+        self.assertEqual(self.git("log", "-1", "--format=%B"),
+                         f"{title}\n\nboard: create {A}\n\n{body.rstrip()}")
+        self.assertIn(body, (self.board.BOARD / "inbox" / A / "card.md").read_text())
+        self.run_cli("triage", A)
+        self.assertEqual(self.git("log", "-1", "--format=%B"), f"{title}\n\nboard: triage {A}")
+        reason = "Start the repair\n\n- Preserve every value.\n- Keep the original scope."
+        self.run_cli("claim", A, "--as", "worker", "--file", "-", stdin=reason)
+        self.assertEqual(self.git("log", "-1", "--format=%B"),
+                         f"{title}\n\nboard: claim {A}\n\n{reason}")
+        path = self.board.BOARD / "active" / A / "comments.md"
+        self.assertIn(reason, path.read_text())
+        message = "The input check passes\n\n### Evidence\n\n- Keep full Markdown.\n\n```text\na\nb\n```"
+        file = self.root / "message.md"
+        file.write_text(message)
+        for arguments, stdin in ((("-m", message), ""), (("--message", message), ""),
+                                 (("--file", str(file)), ""), (("--file", "-"), message)):
+            with self.subTest(arguments=arguments):
+                previous = path.read_bytes()
+                self.run_cli("comment", A, *arguments, stdin=stdin)
+                self.assertTrue(path.read_bytes().startswith(previous))
+                self.assertIn(message, path.read_text()[len(previous):])
+                self.assertEqual(self.git("log", "-1", "--format=%B"),
+                                 f"{title}\n\nboard: comment on {A}\n\n{message}")
+        self.run_cli("resolve", A, f"task:{B}#{COMMENT}", "-m", message)
+        self.assertEqual(self.git("log", "-1", "--format=%B"),
+                         f"{title}\n\nboard: resolve on {A}\n\n{message}")
+
+    def test_validation_keeps_review_evidence_and_structural_errors_visible(self):
+        self.seed(A, "review", fields=f"blocked-by: [{B}]\n", body="- [x] Evidence missing.\n")
+        directory = self.seed(B, fields=f"blocked-by: [{A}]\n")
+        path = directory / "card.md"
+        path.write_text(path.read_text().replace("priority: P2", "priority: invalid"))
+        for extra in ((), ("--historical-details",)):
+            output = self.run_cli("validate", *extra, code=1)
+            self.assertIn("ERROR: review/", output)
+            self.assertIn("criterion needs a Markdown evidence link: Evidence missing.", output)
+            self.assertIn("blocked-by cycle:", output)
+            self.assertIn("`priority:` must be one of", output)
+            self.assertNotIn("historical accepted evidence gaps:", output)
+
+    def test_validation_separates_blocked_status_and_keeps_current_problems_visible(self):
+        self.seed(A, fields=f"blocked-by: [{B}]\n")
+        self.seed(B)
+        self.seed(C, "done", body="- [x] Old acceptance. [receipt](https://example.invalid/report)\n")
+        output = self.run_cli("validate")
+        self.assertIn("blocked: 1 task(s), 1 unsatisfied dependency reference(s)", output)
+        self.assertIn("0 error(s), 0 warning(s)", output)
+        self.assertNotIn("WARN:", output)
+        self.assertNotIn(A, self.run_cli("next"))
+        path = self.board.BOARD / "ready" / B / "comments.md"
+        path.unlink()
+        output = self.run_cli("validate")
+        self.assertIn("WARN:", output)
+        self.assertIn("missing comments.md", output)
+        self.assertIn("0 error(s), 1 warning(s)", output)
+        path = self.board.BOARD / "done" / C / "card.md"
+        path.write_text(path.read_text() + f"\n- [ ] Still incomplete.\nSee task:{A}#c-ffffffffffff.\n")
+        for extra in ((), ("--historical-details",)):
+            output = self.run_cli("validate", *extra, code=1)
+            self.assertIn("unchecked criterion: Still incomplete.", output)
+            self.assertIn("comment `c-ffffffffffff` not found", output)
+            self.assertIn("2 error(s), 1 warning(s)", output)
 
 if __name__ == "__main__":
     unittest.main()
