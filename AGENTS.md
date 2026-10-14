@@ -64,6 +64,12 @@ on `master`.
   be another agent's intentional work. When in doubt, assume foreign changes
   are deliberate and leave them alone. Destroying a teammate's uncommitted
   work is one of the hardest mistakes to recover from in a multi-agent repo.
+- **Generated paper PDFs are rebuildable output.** Routine regeneration of
+  `paper/downstream.pdf` from the current manuscript and build inputs is
+  allowed even when that PDF already has uncommitted changes. Rebuilding it
+  repeatedly during editing does not require confirmation or a backup.
+  This exception applies to generated PDF output, not to manuscript sources
+  or other authored inputs; preserve concurrent source edits as above.
 - **NEVER move, rename, or delete another agent's uncommitted files —
   including brand-new untracked files.** A script, parameter file, or doc
   another agent just created is their work in progress even though
