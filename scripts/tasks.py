@@ -1,34 +1,30 @@
 #!/usr/bin/env python3
-"""tasks — the agent board CLI (validate / list / next / claim / comment / done / drop).
-
-Board layout and process: tasks/AGENTS.md. Columns are subdirectories of tasks/;
-one directory per card, named YYYY-MM-DD-<short-slug>; card.md + comments.md inside.
-
-The mutating verbs (claim / comment / done / drop) edit the card AND commit it in
-the same command. Directory moves are committed before metadata edits, as required
-by this repository. Commits use
-strict pathspecs (the card directory only), so they are safe next to other agents'
-staged work. Preflight refuses to run mid-merge, mid-rebase, off master, or outside
-a work tree.
-"""
+"""Markdown task board. See tasks/AGENTS.md for format, references, and commands."""
 
 from __future__ import annotations
 
 import argparse
 import datetime as dt
+import json
 import re
 import shlex
 import subprocess
 import sys
+import uuid
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
 BOARD = Path(__file__).resolve().parent.parent / "tasks"
 REPO_ROOT = BOARD.parent
-COLUMNS = ("inbox", "ready", "active", "review", "done")
+COLUMNS = ("inbox", "ready", "active", "review", "done", "cancelled")
 PRIORITIES = ("P1", "P2", "P3", "P4")
 ID_RE = re.compile(r"^(\d{4}-\d{2}-\d{2})-[a-z0-9]+(-[a-z0-9]+)*$")
 SKIP_NAMES = {".gitkeep"}
+RELATIONS = {"blocked-by": True, "related-to": True, "parent": False, "duplicate-of": False}
+REF_RE = re.compile(r"(?<![\w:/])task:(\d{4}-\d{2}-\d{2}-[a-z0-9]+(?:-[a-z0-9]+)*)(?:#([\w-]+))?")
+COMMENT_RE = re.compile(r"^## (c-[0-9a-f]{12})$")
+CHECK_RE = re.compile(r"^\s*- \[([ xX])\]\s+(.+)$")
+LINK_RE = re.compile(r"\[[^\]\n]+\]\([^\s)]+(?:\s+[^)]*)?\)")
 
 
 class Problem:
@@ -100,22 +96,30 @@ def _git_user() -> str:
 
 
 def _stamp() -> str:
-    return dt.datetime.now(ZoneInfo("Asia/Hong_Kong")).strftime("%Y-%m-%d %H:%M")
+    return dt.datetime.now(ZoneInfo("Asia/Hong_Kong")).strftime("%Y-%m-%d %H:%M %Z")
 
 
-def _append_comment(card_dir: Path, who: str, text: str) -> str | None:
-    """Append one timestamped entry. Returns an error message, or None on success."""
-    entry = f"- {_stamp()} {who}: {text}"
-    if len(entry) > 160:
-        return f"comment is {len(entry)} chars (max 160) — shorten it"
+def _append_comment(card_dir: Path, who: str, text: str, *,
+                    reply_to: str = "", resolves: str = "") -> str:
+    """Append a Markdown block. Return its permanent comment id."""
+    comment_id = "c-" + uuid.uuid4().hex[:12]
+    entry = f"## {comment_id}\n\n- At: {_stamp()}\n- By: {who}\n"
+    if reply_to:
+        entry += f"- Reply-to: {reply_to}\n"
+    if resolves:
+        entry += f"- Resolves: {resolves}\n"
+    entry += "\n" + text.rstrip() + "\n"
     path = card_dir / "comments.md"
-    content = path.read_text() if path.is_file() else "# comments\n"
+    previous = path.read_text() if path.is_file() else ""
+    content = previous or "# comments\n"
     if not content.endswith("\n"):
         content += "\n"
-    if content.strip() == "# comments":
+    if not content.endswith("\n\n"):
         content += "\n"
-    path.write_text(content + entry + "\n")
-    return None
+    with path.open("a") as out:
+        # Add only the separator and new block. Preserve all previous bytes.
+        out.write(content[len(previous):] + entry)
+    return comment_id
 
 
 def _set_assignee(card_md: Path, who: str) -> str | None:
@@ -134,6 +138,8 @@ def _set_assignee(card_md: Path, who: str) -> str | None:
 
 
 def _find_card(card_id: str) -> tuple[str, Path] | None:
+    if not ID_RE.fullmatch(card_id):
+        return None
     for column in COLUMNS:
         card_dir = BOARD / column / card_id
         if card_dir.is_dir():
@@ -179,6 +185,8 @@ def parse_front_matter(text: str, where: str, problems: list[Problem]) -> dict[s
             continue
         key, _, value = line.partition(":")
         key, value = key.strip(), value.strip()
+        if key in meta:
+            problems.append(Problem("ERROR", where, f"line {lineno}: duplicate field `{key}`"))
         if value.startswith("[") and value.endswith("]"):
             inner = value[1:-1].strip()
             items = [item.strip().strip("'\"") for item in inner.split(",")] if inner else []
@@ -200,39 +208,140 @@ def read_card(card_dir: Path, column: str, problems: list[Problem]) -> dict[str,
     return meta
 
 
-def lint_card_text(card_dir: Path, column: str, problems: list[Problem]) -> None:
-    for filename in ("card.md", "comments.md"):
-        path = card_dir / filename
-        if not path.is_file():
+def markdown_lines(text: str):
+    """Yield source lines outside fenced code blocks, with their line numbers."""
+    fence = ""
+    for lineno, line in enumerate(text.splitlines(), 1):
+        marker = re.match(r"^\s{0,3}(`{3,}|~{3,})", line)
+        if marker:
+            token = marker[1]
+            if not fence:
+                fence = token
+            elif token[0] == fence[0] and len(token) >= len(fence):
+                fence = ""
             continue
-        for lineno, line in enumerate(path.read_text().splitlines(), start=1):
-            if len(line) > 160:
-                problems.append(
-                    Problem("ERROR", f"{column}/{card_dir.name}/{filename}", f"line {lineno}: {len(line)} chars (max 160)")
-                )
+        if not fence:
+            yield lineno, line
+
+
+def checklist_errors(text: str) -> list[str]:
+    items = [match for _, line in markdown_lines(text) if (match := CHECK_RE.match(line))]
+    if not items:
+        return ["acceptance checklist is required"]
+    errors = []
+    for item in items:
+        if item[1] == " ":
+            errors.append(f"unchecked criterion: {item[2]}")
+        elif not LINK_RE.search(item[2]):
+            errors.append(f"criterion needs a Markdown evidence link: {item[2]}")
+    return errors
 
 
 def check_checklist(card_dir: Path, column: str, problems: list[Problem]) -> None:
     if column not in ("review", "done"):
         return
-    text = (card_dir / "card.md").read_text()
-    unchecked = [line.strip() for line in text.splitlines() if line.strip().startswith("- [ ]")]
-    if not unchecked:
-        return
-    level = "ERROR" if column == "done" else "WARN"
-    problems.append(Problem(level, f"{column}/{card_dir.name}", f"{len(unchecked)} unchecked checklist item(s)"))
+    # Preserve imported completion history without granting new criteria an exemption.
+    legacy_path = BOARD / "LEGACY_CHECKLISTS.json"
+    legacy = json.loads(legacy_path.read_text()).get(card_dir.name, []) if legacy_path.is_file() else []
+    for error in checklist_errors((card_dir / "card.md").read_text()):
+        if error.startswith("criterion needs a Markdown evidence link: "):
+            criterion = error.removeprefix("criterion needs a Markdown evidence link: ")
+            if "- [x] " + criterion in legacy:
+                continue
+        problems.append(Problem("ERROR", f"{column}/{card_dir.name}", error))
+
+
+def references(cards: list[dict[str, object]]) -> list[dict[str, str | int]]:
+    """Read references and their source locations. Store no backlink files."""
+    result = []
+    for card in cards:
+        card_id, column, meta = card["id"], card["column"], card["meta"]
+        for filename in ("card.md", "comments.md"):
+            path = BOARD / str(column) / str(card_id) / filename
+            if not path.is_file():
+                continue
+            source = f"task:{card_id}"
+            for lineno, line in markdown_lines(path.read_text()):
+                if filename == "comments.md" and (heading := COMMENT_RE.fullmatch(line)):
+                    source = f"task:{card_id}#{heading[1]}"
+                kind = "mention"
+                if filename == "comments.md":
+                    if line.startswith("- Reply-to: "):
+                        kind = "reply"
+                    elif line.startswith("- Resolves: "):
+                        kind = "resolves"
+                for match in REF_RE.finditer(line):
+                    result.append({"source": source, "target": match[0], "kind": kind,
+                                   "path": str(path.relative_to(REPO_ROOT)), "line": lineno,
+                                   "text": line})
+        card_path = BOARD / str(column) / str(card_id) / "card.md"
+        text_lines = card_path.read_text().splitlines() if card_path.is_file() else []
+        for relation, many in RELATIONS.items():
+            value = meta.get(relation, [] if many else "")
+            targets = value if isinstance(value, list) else [value] if isinstance(value, str) and value else []
+            lineno = next((i for i, line in enumerate(text_lines, 1) if line.startswith(relation + ":")), 1)
+            for target in targets:
+                result.append({"source": f"task:{card_id}", "target": f"task:{target}",
+                               "kind": relation, "path": str(card_path.relative_to(REPO_ROOT)),
+                               "line": lineno, "text": text_lines[lineno - 1]})
+    return result
+
+
+def comment_ids(card: dict[str, object]) -> list[str]:
+    path = BOARD / str(card["column"]) / str(card["id"]) / "comments.md"
+    if not path.is_file():
+        return []
+    return [match[1] for _, line in markdown_lines(path.read_text())
+            if (match := COMMENT_RE.fullmatch(line))]
+
+
+def reference_error(ref: str, cards: list[dict[str, object]], *, comment: bool = False) -> str | None:
+    match = REF_RE.fullmatch(ref)
+    if not match or not ID_RE.fullmatch(match[1]):
+        return f"invalid task reference `{ref}`"
+    target = next((card for card in cards if card["id"] == match[1]), None)
+    if target is None:
+        return f"task `{match[1]}` not found on the board"
+    if comment and not match[2]:
+        return "a comment reference is required (task:<id>#c-<id>)"
+    if match[2] and match[2] not in comment_ids(target):
+        return f"comment `{match[2]}` not found in task `{match[1]}`"
+    return None
+
+
+def check_cycles(cards: list[dict[str, object]], relation: str, problems: list[Problem]) -> None:
+    graph = {}
+    for card in cards:
+        value = card["meta"].get(relation, [])
+        graph[card["id"]] = value if isinstance(value, list) else [value] if value else []
+    visited, active = set(), []
+
+    def visit(node):
+        if node in active:
+            cycle = active[active.index(node):] + [node]
+            problems.append(Problem("ERROR", "tasks/", f"{relation} cycle: " + " -> ".join(cycle)))
+            return
+        if node in visited or node not in graph:
+            return
+        visited.add(node)
+        active.append(node)
+        for target in graph[node]:
+            visit(target)
+        active.pop()
+
+    for node in graph:
+        visit(node)
 
 
 def validate_board() -> list[Problem]:
     problems: list[Problem] = []
     seen: dict[str, str] = {}
-    all_ids = seen_ids()
     if not BOARD.is_dir():
         problems.append(Problem("ERROR", "tasks/", "board directory not found"))
         return problems
     columns_found = [p.name for p in BOARD.iterdir() if p.is_dir()]
     for column in COLUMNS:
-        if column not in columns_found:
+        if column not in columns_found and column != "cancelled":
             problems.append(Problem("ERROR", "tasks/", f"missing column directory `{column}/`"))
     for column in COLUMNS:
         col_dir = BOARD / column
@@ -251,7 +360,9 @@ def validate_board() -> list[Problem]:
                 problems.append(Problem("ERROR", f"{column}/{card_id}", f"duplicate id (also in {seen[card_id]}/)"))
             seen[card_id] = column
             meta = read_card(child, column, problems)
-            lint_card_text(child, column, problems)
+            for field in ("title", "area", "priority", "assignee"):
+                if field not in meta or not isinstance(meta[field], str):
+                    problems.append(Problem("ERROR", f"{column}/{card_id}", f"`{field}:` must be a scalar field"))
             title = str(meta.get("title", "")).strip()
             if not title:
                 problems.append(Problem("ERROR", f"{column}/{card_id}", "front matter `title:` required"))
@@ -267,15 +378,11 @@ def validate_board() -> list[Problem]:
                 problems.append(Problem("ERROR", f"{column}/{card_id}", "active card needs `assignee:`"))
             if column in ("ready", "inbox") and assignee:
                 problems.append(Problem("WARN", f"{column}/{card_id}", f"unclaimed card has assignee `{assignee}`"))
-            blocked_by = meta.get("blocked-by", [])
-            if not isinstance(blocked_by, list):
-                problems.append(Problem("ERROR", f"{column}/{card_id}", "`blocked-by:` must be a list"))
-                blocked_by = []
-            for ref in blocked_by:
-                if ref not in all_ids:
-                    problems.append(Problem("ERROR", f"{column}/{card_id}", f"blocked-by id `{ref}` not found on the board"))
-                elif all_ids[ref] != "done":
-                    problems.append(Problem("WARN", f"{column}/{card_id}", f"blocked by `{ref}`, still in {all_ids[ref]}/"))
+            for relation, many in RELATIONS.items():
+                value = meta.get(relation, [] if many else "")
+                if not isinstance(value, list if many else str):
+                    expected_type = "a list" if many else "one card id"
+                    problems.append(Problem("ERROR", f"{column}/{card_id}", f"`{relation}:` must be {expected_type}"))
             expected = meta.get("expected-paths", [])
             if not isinstance(expected, list):
                 problems.append(Problem("ERROR", f"{column}/{card_id}", "`expected-paths:` must be a list"))
@@ -283,7 +390,26 @@ def validate_board() -> list[Problem]:
             for path in expected:
                 if not (REPO_ROOT / str(path).rstrip("/")).exists():
                     problems.append(Problem("WARN", f"{column}/{card_id}", f"expected-path `{path}` does not exist"))
-            check_checklist(child, column, problems)
+            if (child / "card.md").is_file():
+                check_checklist(child, column, problems)
+    cards = collect_cards()
+    for card in cards:
+        ids = comment_ids(card)
+        if len(ids) != len(set(ids)):
+            problems.append(Problem("ERROR", str(card["id"]), "duplicate comment ids"))
+    for ref in references(cards):
+        error = reference_error(str(ref["target"]), cards, comment=ref["kind"] in ("reply", "resolves"))
+        where = f"{ref['path']}:{ref['line']}"
+        if error:
+            problems.append(Problem("ERROR", where, error))
+        elif ref["kind"] in RELATIONS and ref["source"] == ref["target"]:
+            problems.append(Problem("ERROR", where, "a task cannot have a relationship to itself"))
+        elif ref["kind"] == "blocked-by":
+            target_id = str(ref["target"])[5:]
+            if seen[target_id] != "done":
+                problems.append(Problem("WARN", where, f"blocked by `{target_id}`, still in {seen[target_id]}/"))
+    for relation in ("blocked-by", "parent", "duplicate-of"):
+        check_cycles(cards, relation, problems)
     return problems
 
 
@@ -327,7 +453,7 @@ def fmt_card(card: dict[str, object], show_age: bool = False) -> str:
         extra.append("blocked-by " + ", ".join(str(ref) for ref in blocked))
     if show_age and column == "active":
         age = _card_age_minutes(card_id, column)
-        extra.append("just moved (uncommitted)" if age is None else f"claimed {age}m ago")
+        extra.append("uncommitted" if age is None else f"updated {age}m ago")
     return "  ".join(bits) + ("  [" + " ".join(extra) + "]" if extra else "")
 
 
@@ -400,181 +526,212 @@ def cmd_next(args: argparse.Namespace) -> int:
     return 0
 
 
-def cmd_claim(args: argparse.Namespace) -> int:
-    error = _repo_preflight()
-    if error:
-        print(f"error: {error}", file=sys.stderr)
-        return 1
-    src = BOARD / "ready" / args.id
-    if not src.is_dir():
-        print(f"error: no card `{args.id}` in ready/", file=sys.stderr)
-        return 1
-    tracked = _git("ls-files", "--", f"tasks/ready/{args.id}").stdout.strip()
-    if not tracked:
-        print(f"error: card `{args.id}` is untracked — commit it first (cards enter the board via a commit)", file=sys.stderr)
-        return 1
-    old_rel, new_rel = f"tasks/ready/{args.id}", f"tasks/active/{args.id}"
-    problem = _move_card(old_rel, new_rel)
-    if problem:
-        print(f"error: {problem}", file=sys.stderr)
-        return 1
-    problem = _set_assignee(BOARD / "active" / args.id / "card.md", args.who)
-    if not problem:
-        problem = _append_comment(BOARD / "active" / args.id, args.who, "claimed (ready -> active)")
-    if not problem:
-        problems = [p for p in validate_board() if p.level == "ERROR"]
-        if problems:
-            for p in problems:
-                print(p)
-            problem = "board invalid — changes left UNCOMMITTED; fix, then commit with a pathspec of the card directory"
-    if problem:
-        print(f"error: {problem}", file=sys.stderr)
-        return 1
-    code, out = _commit_card([new_rel], f"chore: task claim {args.id} ({args.who})")
+TRANSITIONS = {
+    "triage": (("inbox",), "ready"),
+    "claim": (("ready",), "active"),
+    "done": (("active",), "review"),
+    "accept": (("review",), "done"),
+    "request-changes": (("review",), "active"),
+    "drop": (("active",), "ready"),
+    "reopen": (("done", "cancelled"), "ready"),
+    "cancel": (("inbox", "ready", "active", "review"), "cancelled"),
+}
+
+
+def fail(message: str) -> int:
+    print(f"error: {message}", file=sys.stderr)
+    return 1
+
+
+def read_message(args: argparse.Namespace) -> str:
+    if args.file:
+        return sys.stdin.read() if args.file == "-" else Path(args.file).read_text()
+    return args.message or ""
+
+
+def finish_change(paths: list[str], message: str) -> int:
+    errors = [p for p in validate_board() if p.level == "ERROR"]
+    if errors:
+        for error in errors:
+            print(error, file=sys.stderr)
+        return fail("board invalid; changes left uncommitted. Fix them, then commit only these paths: " + ", ".join(paths))
+    # Recheck the branch immediately before the commit.
+    if error := _repo_preflight():
+        return fail(error)
+    code, output = _commit_card(paths, message)
     if code:
-        print(f"error: {out}", file=sys.stderr)
-        return 1
-    print(f"claimed {args.id} -> active/ as {args.who} (commit {out})")
+        return fail(output)
+    print(f"{message} (commit {output})")
     return 0
+
+
+def cmd_create(args: argparse.Namespace) -> int:
+    if error := _repo_preflight():
+        return fail(error)
+    if not ID_RE.fullmatch(args.id) or not _valid_date(args.id[:10]):
+        return fail("id must be YYYY-MM-DD-<short-slug>")
+    if _find_card(args.id):
+        return fail(f"task `{args.id}` already exists")
+    body = read_message(args)
+    if not body.strip():
+        return fail("provide the task description and acceptance checklist with --file or -m")
+    if any(not value.strip() or "\n" in value or "\r" in value for value in (args.title, args.area)):
+        return fail("title and area must each be one nonempty line")
+    card_dir = BOARD / "inbox" / args.id
+    card_dir.mkdir(parents=True)
+    (card_dir / "card.md").write_text(
+        f"---\ntitle: {args.title}\narea: {args.area}\npriority: {args.priority}\n"
+        f"assignee:\nblocked-by: []\n---\n\n{body.rstrip()}\n")
+    comment_id = _append_comment(card_dir, args.who or _git_user(), "Created in inbox.")
+    print(f"task:{args.id}#{comment_id}")
+    return finish_change([str(card_dir.relative_to(REPO_ROOT))], f"chore: task create {args.id}")
 
 
 def cmd_comment(args: argparse.Namespace) -> int:
-    error = _repo_preflight()
-    if error:
-        print(f"error: {error}", file=sys.stderr)
-        return 1
+    if error := _repo_preflight():
+        return fail(error)
     found = _find_card(args.id)
     if not found:
-        print(f"error: no card `{args.id}` on the board", file=sys.stderr)
-        return 1
+        return fail(f"no task `{args.id}` on the board")
+    text = read_message(args)
+    if not text.strip():
+        return fail("comment must not be empty")
+    reply_to = getattr(args, "reply_to", "") or ""
+    resolves = getattr(args, "ref", "") or ""
+    cards = collect_cards()
+    for ref in (reply_to, resolves):
+        if ref and (error := reference_error(ref, cards, comment=True)):
+            return fail(error)
+    # Reject broken references before appending to the permanent thread.
+    for _, line in markdown_lines(text):
+        for match in REF_RE.finditer(line):
+            if error := reference_error(match[0], cards):
+                return fail(error)
+        if COMMENT_RE.fullmatch(line):
+            return fail("comment-id headings are reserved; use ### for headings inside comments")
     column, card_dir = found
     if _git("status", "--porcelain", "--", f"tasks/{column}/{args.id}").stdout.strip():
-        print("error: card has uncommitted changes; preserve them and commit your own work first", file=sys.stderr)
-        return 1
+        return fail("card has uncommitted changes; preserve them and commit your own work first")
+    comment_id = _append_comment(card_dir, args.who or _git_user(), text,
+                                 reply_to=reply_to, resolves=resolves)
+    print(f"task:{args.id}#{comment_id}")
+    return finish_change([f"tasks/{column}/{args.id}"], f"chore: task {args.command} on {args.id}")
+
+
+def cmd_move(args: argparse.Namespace) -> int:
+    if error := _repo_preflight():
+        return fail(error)
+    found = _find_card(args.id)
+    allowed, destination = TRANSITIONS[args.command]
+    if not found or found[0] not in allowed:
+        return fail(f"`{args.command}` requires a task in {' or '.join(allowed)}/")
+    column, card_dir = found
+    if not _git("ls-files", "--", str(card_dir.relative_to(REPO_ROOT))).stdout.strip():
+        return fail("commit the task before changing its state")
+    reason = read_message(args).strip()
+    if args.command in ("cancel", "reopen", "request-changes") and not reason:
+        return fail(f"`{args.command}` requires a reason (-m or --file)")
+    if args.command in ("done", "accept"):
+        errors = checklist_errors((card_dir / "card.md").read_text())
+        if errors:
+            return fail("\n".join(errors))
+    if args.command == "claim":
+        card = next(c for c in collect_cards() if c["id"] == args.id)
+        ids = seen_ids()
+        blockers = [ref for ref in card["meta"].get("blocked-by", []) if ids.get(ref) != "done"]
+        if blockers and not reason:
+            return fail("open blockers: " + ", ".join(blockers) + "; supply -m to explain the override")
     who = args.who or _git_user()
-    problem = _append_comment(card_dir, who, args.message)
-    if not problem:
-        problems = [p for p in validate_board() if p.level == "ERROR"]
-        if problems:
-            for p in problems:
-                print(p)
-            problem = "board invalid — changes left UNCOMMITTED; fix, then commit with a pathspec of the card directory"
-    if problem:
-        print(f"error: {problem}", file=sys.stderr)
-        return 1
-    code, out = _commit_card([f"tasks/{column}/{args.id}"], f"chore: task comment on {args.id}")
-    if code:
-        print(f"error: {out}", file=sys.stderr)
-        return 1
-    print(f"commented on {args.id} ({column}/) (commit {out})")
+    if "\n" in who or "\r" in who:
+        return fail("author must be one line")
+    old_rel, new_rel = f"tasks/{column}/{args.id}", f"tasks/{destination}/{args.id}"
+    (BOARD / destination).mkdir(exist_ok=True)
+    if error := _move_card(old_rel, new_rel):
+        return fail(error)
+    card_dir = BOARD / destination / args.id
+    if args.command == "claim" or destination == "ready":
+        if error := _set_assignee(card_dir / "card.md", who if args.command == "claim" else ""):
+            return fail(error)
+    text = f"{args.command}: {column} -> {destination}."
+    if reason:
+        text += "\n\n" + reason
+    _append_comment(card_dir, who, text)
+    return finish_change([new_rel], f"chore: task {args.command} {args.id}")
+
+
+def cmd_refs(args: argparse.Namespace) -> int:
+    ref = args.ref if args.ref.startswith("task:") else "task:" + args.ref
+    cards = collect_cards()
+    if error := reference_error(ref, cards):
+        return fail(error)
+    card = next(c for c in cards if c["id"] == ref[5:].split("#")[0])
+    filename = "comments.md" if "#" in ref else "card.md"
+    path = BOARD / str(card["column"]) / str(card["id"]) / filename
+    lineno = 1
+    if "#" in ref:
+        lineno = next(i for i, line in markdown_lines(path.read_text()) if line == "## " + ref.split("#")[1])
+    print(f"{ref} -> {path.relative_to(REPO_ROOT)}:{lineno}")
+    refs = references(cards)
+    def matches(candidate):
+        return candidate == ref or ("#" not in ref and str(candidate).startswith(ref + "#"))
+    for label, key in (("Outgoing", "source"), ("Incoming", "target")):
+        print(f"{label}:")
+        found = [edge for edge in refs if matches(edge[key])]
+        for edge in found:
+            print(f"  {edge['kind']}: {edge['source']} -> {edge['target']}")
+            print(f"    {edge['path']}:{edge['line']}: {edge['text']}")
+        if not found:
+            print("  (none)")
+    resolved = sorted({str(edge["target"]) for edge in refs if edge["kind"] == "resolves" and matches(edge["target"])})
+    for target in resolved:
+        print(f"Resolved: {target}")
     return 0
 
 
-def cmd_done(args: argparse.Namespace) -> int:
-    error = _repo_preflight()
-    if error:
-        print(f"error: {error}", file=sys.stderr)
-        return 1
-    card_dir = BOARD / "active" / args.id
-    if not card_dir.is_dir():
-        print(f"error: no active card `{args.id}`", file=sys.stderr)
-        return 1
-    unchecked = [line.strip() for line in (card_dir / "card.md").read_text().splitlines() if line.strip().startswith("- [ ]")]
-    if unchecked:
-        print(f"error: {len(unchecked)} unchecked checklist item(s) — tick them (with receipts) before `done`:", file=sys.stderr)
-        for line in unchecked:
-            print(f"  {line}", file=sys.stderr)
-        return 1
-    who = args.who or _git_user()
-    old_rel, new_rel = f"tasks/active/{args.id}", f"tasks/review/{args.id}"
-    problem = _move_card(old_rel, new_rel)
-    if problem:
-        print(f"error: {problem}", file=sys.stderr)
-        return 1
-    problem = _append_comment(BOARD / "review" / args.id, who, "checklist complete (active -> review); awaiting owner review")
-    if not problem:
-        problems = [p for p in validate_board() if p.level == "ERROR"]
-        if problems:
-            for p in problems:
-                print(p)
-            problem = "board invalid — changes left UNCOMMITTED; fix, then commit with a pathspec of the card directory"
-    if problem:
-        print(f"error: {problem}", file=sys.stderr)
-        return 1
-    code, out = _commit_card([new_rel], f"chore: task {args.id} -> review")
-    if code:
-        print(f"error: {out}", file=sys.stderr)
-        return 1
-    print(f"{args.id} -> review/ (commit {out})")
-    return 0
-
-
-def cmd_drop(args: argparse.Namespace) -> int:
-    error = _repo_preflight()
-    if error:
-        print(f"error: {error}", file=sys.stderr)
-        return 1
-    card_dir = BOARD / "active" / args.id
-    if not card_dir.is_dir():
-        print(f"error: no active card `{args.id}`", file=sys.stderr)
-        return 1
-    who = args.who or _git_user()
-    old_rel, new_rel = f"tasks/active/{args.id}", f"tasks/ready/{args.id}"
-    problem = _move_card(old_rel, new_rel)
-    if problem:
-        print(f"error: {problem}", file=sys.stderr)
-        return 1
-    problem = _set_assignee(BOARD / "ready" / args.id / "card.md", "")
-    if not problem:
-        problem = _append_comment(BOARD / "ready" / args.id, who, f"claim released by {who} (active -> ready)")
-    if not problem:
-        problems = [p for p in validate_board() if p.level == "ERROR"]
-        if problems:
-            for p in problems:
-                print(p)
-            problem = "board invalid — changes left UNCOMMITTED; fix, then commit with a pathspec of the card directory"
-    if problem:
-        print(f"error: {problem}", file=sys.stderr)
-        return 1
-    code, out = _commit_card([new_rel], f"chore: task drop {args.id}")
-    if code:
-        print(f"error: {out}", file=sys.stderr)
-        return 1
-    print(f"dropped {args.id} -> ready/ (commit {out})")
-    return 0
+def add_message_args(parser, *, required=False, author_required=False):
+    messages = parser.add_mutually_exclusive_group(required=required)
+    messages.add_argument("-m", "--message", help="Markdown text")
+    messages.add_argument("--file", help="read Markdown from a file; - reads stdin")
+    parser.add_argument("--as", dest="who", metavar="NAME", required=author_required)
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(prog="tasks", description="The agent board (see tasks/AGENTS.md)")
+    parser = argparse.ArgumentParser(prog="tasks", description="Markdown task board (tasks/AGENTS.md)")
     sub = parser.add_subparsers(dest="command", required=True)
-    sub.add_parser("validate", help="check board format and references")
-    sub.add_parser("list", help="print the board view (with claim ages)")
-    next_parser = sub.add_parser("next", help="claimable cards, priority then due date")
+    sub.add_parser("validate", help="check task format, evidence, references, and cycles")
+    sub.add_parser("list", help="print the board")
+    next_parser = sub.add_parser("next", help="claimable tasks, priority then due date")
     next_parser.add_argument("--limit", type=int, default=5)
-    claim = sub.add_parser("claim", help="claim a ready card (moves, assigns, comments, commits)")
-    claim.add_argument("id")
-    claim.add_argument("--as", dest="who", required=True, metavar="NAME")
-    comment = sub.add_parser("comment", help="append a timestamped comment and commit it")
+    refs = sub.add_parser("refs", help="resolve a reference and list outgoing links and backlinks")
+    refs.add_argument("ref", help="task id or task:<id>[#c-<comment-id>]")
+    create = sub.add_parser("create", help="create a task in inbox and commit it")
+    create.add_argument("id")
+    create.add_argument("--title", required=True)
+    create.add_argument("--area", required=True)
+    create.add_argument("--priority", choices=PRIORITIES, default="P3")
+    add_message_args(create, required=True)
+    comment = sub.add_parser("comment", help="append Markdown and commit it")
     comment.add_argument("id")
-    comment.add_argument("-m", "--message", required=True)
-    comment.add_argument("--as", dest="who", default=None, metavar="NAME")
-    done_p = sub.add_parser("done", help="move a finished active card to review (requires checked checklist)")
-    done_p.add_argument("id")
-    done_p.add_argument("--as", dest="who", default=None, metavar="NAME")
-    drop = sub.add_parser("drop", help="release a claim: active -> ready, assignee cleared")
-    drop.add_argument("id")
-    drop.add_argument("--as", dest="who", default=None, metavar="NAME")
+    comment.add_argument("--reply-to", help="task:<id>#c-<comment-id>")
+    add_message_args(comment, required=True)
+    resolve = sub.add_parser("resolve", help="append a resolution linked to a comment")
+    resolve.add_argument("id", help="task where the resolution is recorded")
+    resolve.add_argument("ref", help="comment to resolve: task:<id>#c-<comment-id>")
+    add_message_args(resolve, required=True)
+    for command, (allowed, destination) in TRANSITIONS.items():
+        move = sub.add_parser(command, help=f"{'/'.join(allowed)} -> {destination}; record and commit")
+        move.add_argument("id")
+        add_message_args(move, author_required=command == "claim")
     args = parser.parse_args(argv)
-    commands = {
-        "validate": cmd_validate,
-        "list": cmd_list,
-        "next": cmd_next,
-        "claim": cmd_claim,
-        "comment": cmd_comment,
-        "done": cmd_done,
-        "drop": cmd_drop,
-    }
-    return commands[args.command](args)
+    who = getattr(args, "who", None)
+    if who is not None and (not who.strip() or "\n" in who or "\r" in who):
+        return fail("author must be one nonempty line")
+    commands = {"validate": cmd_validate, "list": cmd_list, "next": cmd_next,
+                "refs": cmd_refs, "create": cmd_create, "comment": cmd_comment, "resolve": cmd_comment}
+    try:
+        return commands.get(args.command, cmd_move)(args)
+    except (OSError, UnicodeError) as exc:
+        return fail(str(exc))
 
 
 if __name__ == "__main__":

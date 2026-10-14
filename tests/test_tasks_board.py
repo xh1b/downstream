@@ -1,5 +1,6 @@
 """Task-board dependency and shared-checkout commit protections."""
 import importlib.util
+import json
 from pathlib import Path
 import shlex
 import subprocess
@@ -25,7 +26,7 @@ def add_card(board, column, slug, blockers=()):
     directory.mkdir()
     (directory / 'card.md').write_text(
         f'---\ntitle: {slug}\narea: engine\npriority: P1\nassignee:\n'
-        f'blocked-by: [{", ".join(blockers)}]\n---\n\n- [x] Receipt recorded.\n')
+        f'blocked-by: [{", ".join(blockers)}]\n---\n\n- [x] Receipt recorded. [receipt](https://example.invalid/report)\n')
     (directory / 'comments.md').write_text('# comments\n')
     return directory
 
@@ -82,9 +83,9 @@ def test_claim_commits_the_move_before_editing_metadata(board, monkeypatch):
     assert board.main(['claim', source.name, '--as', 'test-agent']) == 0
     assert len(commits) == 2
     assert len(commits[0][0]) == 2 and 'assignee:\n' in commits[0][1]
-    assert 'claimed' not in commits[0][2]
+    assert 'claim:' not in commits[0][2]
     assert len(commits[1][0]) == 1 and 'assignee: test-agent' in commits[1][1]
-    assert 'claimed' in commits[1][2]
+    assert 'claim:' in commits[1][2]
 
 
 def test_claim_does_not_move_or_commit_a_dirty_card(board, monkeypatch):
@@ -99,3 +100,25 @@ def test_claim_does_not_move_or_commit_a_dirty_card(board, monkeypatch):
     monkeypatch.setattr(board, '_git', git)
     assert board.main(['claim', source.name, '--as', 'test-agent']) == 1
     assert source.is_dir() and not any(args[0] == 'mv' for args in calls)
+
+
+def test_legacy_checklist_exemption_is_exact_and_does_not_allow_acceptance(board):
+    card = add_card(board, 'review', 'legacy')
+    original = '- [x] Historical result.'
+    path = card / 'card.md'
+    path.write_text(path.read_text().replace(
+        '- [x] Receipt recorded. [receipt](https://example.invalid/report)', original))
+    (board.BOARD / 'LEGACY_CHECKLISTS.json').write_text(json.dumps({card.name: [original]}))
+    assert not board.validate_board()
+    assert any('evidence link' in error for error in board.checklist_errors(path.read_text()))
+    path.write_text(path.read_text().replace('Historical result.', 'Changed result.'))
+    assert any('evidence link' in p.message for p in board.validate_board())
+
+
+def test_comment_refuses_dirty_card_without_appending(board, monkeypatch):
+    card = add_card(board, 'ready', 'dirty-comments')
+    before = (card / 'comments.md').read_bytes()
+    monkeypatch.setattr(board, '_repo_preflight', lambda: None)
+    monkeypatch.setattr(board, '_git', lambda *args: subprocess.CompletedProcess(args, 0, ' M card.md', ''))
+    assert board.main(['comment', card.name, '-m', 'Do not commit foreign changes.']) == 1
+    assert (card / 'comments.md').read_bytes() == before
