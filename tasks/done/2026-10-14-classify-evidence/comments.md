@@ -22,3 +22,12 @@ Added [reproducible inventory](../../../docs/EVIDENCE_CLASSIFICATION_0_4.md), [b
 - By: eli
 
 done: active -> review.
+
+## c-1a101cbbdec8
+
+- At: 2026-10-15 00:59 HKT
+- By: codex
+
+accept: review -> done.
+
+Reviewed generated evidence roles and runtime-use distinctions, deterministic freshness check and seven focused tests. Accepted the scoped classification inventory; separate primary-source and transport review tasks remain open.
