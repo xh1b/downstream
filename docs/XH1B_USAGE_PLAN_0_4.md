@@ -145,7 +145,7 @@ rows already displayed. A new general rendering framework is not required.
 
 | Order | Work and concrete result | Existing or proposed cards |
 |:---|:---|:---|
-| 1 | Specify exposure units, timing, overlap, unknown composition and admissible conversion claims. | `exposure-semantics-contract`, `target-displaced-cohort` |
+| 1 | Specify exposure units, timing, overlap and unknown composition. | `exposure-semantics-contract`, `target-displaced-cohort` |
 | 2 | Verify consumer fixtures, scaling, mixtures and required 0.4 fields. | `consumer-contract-fixtures`, `xh1b-handoff` |
 | 3 | Carry mortality persistence alternatives through runner, cache, HTML and Markdown. | `mortality-persistence`, `sustained-mortality-alternative` |
 | 4 | Audit independent evidence, target fit and signed effects. | `coefficient-library`, `mortality-applicability`, `mortality-strata` |
