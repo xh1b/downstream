@@ -75,3 +75,10 @@ done: active -> review.
 accept: review -> done.
 
 Reviewed generator, two views, Node interaction checks and e68b100 precision correction. Accepted this local inspectable prototype and documented protocol. Browser preview was denied by URL policy; visual, mobile, assistive-technology and participant testing remain pending on the parent design work.
+
+## c-14b2adf69954
+
+- At: 2026-10-15 01:01 HKT
+- By: codex
+
+Packaging follow-up 5d67b1b includes authored HTML/CSS/JS and generated calculator artifact in the source release. Verified the built source archive contains all four files. Installed wheel independently passed ten CLI checks, including child-gaps; local UI still requires the documented manual review.
