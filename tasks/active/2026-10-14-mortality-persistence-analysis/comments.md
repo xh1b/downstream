@@ -3,3 +3,4 @@
 - 2026-10-14 22:33 John Larue: Analysis: docs/MORTALITY_PERSISTENCE_ANALYSIS_2026-10-14.md. Default unchanged; source and hybrid separated.
 - 2026-10-14 22:33 John Larue: Receipt: validation/mortality_persistence_analysis_20261014.json. Recurrence agrees within 2e-12 deaths.
 - 2026-10-14 22:33 John Larue: Rechecked source table and Swedish later intervals. Same-study segmented point 29.34; no new admission.
+- 2026-10-14 22:33 John Larue: Reproduced 2000 paired draws, seed 1901. Existing 36 mortality checks and script Ruff check pass.
