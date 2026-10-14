@@ -33,3 +33,12 @@ The calculator is a top-level app with a running local server
 Implementation: a64a638, 53f5b33 and 376b0c9. Current evidence links were repaired in 47c3e90; historical comments remain unchanged. Calculator and HTTP regression tests: 16 passed. Ruff, Vulture, generated-page freshness and diff checks pass. Source-package inspection confirms all 11 required app/server/documentation files and no retired paths.
 
 Actual browser checks at 320, 390, 600 and 1440 px found no page-wide overflow and aligned input rows. Fractional exposure, tail-null and reset work; console errors were absent. [Review and screenshot](../../../docs/CALCULATOR.md#browser-review--2026-10-15). Physical-device, zoom, assistive-technology and participant checks remain open on task:2026-10-14-calculator-design.
+
+## c-edb54627d618
+
+- At: 2026-10-15 02:35 HKT
+- By: codex
+
+done: active -> review.
+
+The top-level app, local server and verification receipts are ready for review.
