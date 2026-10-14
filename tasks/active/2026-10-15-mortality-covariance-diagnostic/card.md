@@ -2,7 +2,7 @@
 title: Bound published additive mortality phase uncertainty without invented covariance
 area: mortality
 priority: P2
-assignee:
+assignee: fenix
 blocked-by: []
 ---
 
