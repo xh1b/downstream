@@ -343,6 +343,8 @@ def compute_counts(
     # Earnings conversion: needs cited lifetime earnings.
     try:
         b = require_baseline(baselines, "median_male_lifetime_earnings")
+        if b.unit != 'usd_2024' or not math.isfinite(b.value) or b.value < 0:
+            raise BaselineMissing('child earnings conversion requires a finite nonnegative lifetime baseline in usd_2024')
         v = b.value or 0.0
         child = line["child"]
         computed["modeled"]["child_lifetime_earnings_lost_usd"] = {

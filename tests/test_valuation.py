@@ -52,3 +52,24 @@ def test_beneficial_subgroup_stays_signed_in_valuation_and_sampling():
     {'real_discount_rate':.03,'valuation_year':True}])
 def test_incomplete_or_invalid_valuation_input_fails(kw):
     with pytest.raises(ValueError):ScenarioInput(10,**kw)
+
+
+@pytest.mark.parametrize('change',[{'unit':'usd_2023'},{'unit':'EUR'},{'value':-1}])
+def test_incompatible_earnings_baseline_cannot_be_relabeled_as_2024_dollars(change):
+    from dataclasses import replace
+    from downstream.scenario import BaselineMissing
+    parts=load_all()
+    baselines={**parts['baselines'],'median_male_lifetime_earnings':replace(parts['baselines']['median_male_lifetime_earnings'],**change)}
+    scenario=ScenarioInput(10,n_children=1,child_profiles=[{'age_at_displacement':11,'sex':'Male'}],
+                           real_discount_rate=.03,valuation_year=2026)
+    result=compute_counts(parts['params'],baselines,scenario)
+    assert 'child_lifetime_earnings_lost_usd' not in result['modeled']
+    assert result['child_valuation']['available'] is False
+    with pytest.raises(BaselineMissing,match='usd_2024'):
+        compute_counts(parts['params'],baselines,scenario,strict=True)
+
+
+def test_custom_lifetime_total_retains_fixed_annual_profile_attribution():
+    result=evaluate(.03)['child_valuation']
+    assert '2023' in result['annual_profile_source']
+    assert 'custom lifetime total' in result['normalization']

@@ -48,6 +48,8 @@ def child_valuation(ledger, baseline, workers, profiles, real_rate, valuation_ye
     return {'available':True,'unit':'usd_2024','valuation_year':valuation_year,
             'event_year':valuation_year,'real_discount_rate':real_rate,
             'source':baseline.citation,'baseline_notes':baseline.notes,
+            'annual_profile_source':'SSA Annual Statistical Supplement 2025, Table 4.B6; male median earnings by age, 2023 (preliminary); https://www.ssa.gov/policy/docs/statcomps/supplement/2025/4b.html',
+            'normalization':'The fixed SSA age-band earnings shape is scaled to the supplied usd_2024 lifetime baseline; a custom lifetime total does not supply a new annual earnings path.',
             'eligible_for_public_headline':False,'projections':results,
             'uncertainty_scope':{'intervals':'Parameter-only, conditional on the selected annual earnings path and real discount rate.',
                 'fixed':['discount rate','synthetic career profile','child ages','future survival and employment treatment'],
