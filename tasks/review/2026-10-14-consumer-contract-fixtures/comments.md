@@ -22,3 +22,10 @@ claim: ready -> active.
 - By: codex
 
 Implemented acd04ec: raw totals with public provenance, complete scaling expectations, weighted persistence/removal/endpoints, explicit unavailable mixture quantiles and blocked positive-weight outcomes. Sixteen focused tests, deterministic fixture freshness and scoped Ruff pass. Companion parser/worker/cache/HTML/Markdown acceptance remains documented for XH1B; no repin or deployment. Eli is independently reviewing this unit.
+
+## c-4d912af2e501
+
+- At: 2026-10-15 00:59 HKT
+- By: codex
+
+done: active -> review.
