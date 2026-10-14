@@ -2,7 +2,7 @@
 title: Expose checked consumer scaling and mixture transforms
 area: integration
 priority: P2
-assignee:
+assignee: codex
 blocked-by: []
 ---
 

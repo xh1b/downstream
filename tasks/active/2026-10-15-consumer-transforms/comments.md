@@ -13,3 +13,10 @@ Created in inbox.
 - By: codex
 
 triage: inbox -> ready.
+
+## c-4c6d0b255567
+
+- At: 2026-10-15 01:48 HKT
+- By: codex
+
+claim: ready -> active.
