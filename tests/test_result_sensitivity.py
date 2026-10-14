@@ -1,4 +1,5 @@
 """Sensitivity must refit the same scenario without changing its scientific scope."""
+import csv
 import json
 import math
 import shutil
@@ -6,6 +7,7 @@ import shutil
 import pytest
 
 from downstream.cli import main
+from downstream.county_rates import load_county_mortality_posteriors
 from downstream.employer import DocumentedExposure, compute_entity_counts
 from downstream.mortality import excess_deaths_profile
 from downstream.mortality_profiles import load_profiles
@@ -104,6 +106,18 @@ def test_explicit_mortality_profile_has_same_sensitivity_as_equal_baseline(parts
     assert row["sensitivity"]["fixed_inputs"]["resolved_baseline"]["profiles"]
 
 
+def test_county_refits_keep_the_resolved_baseline_without_repooling(parts):
+    county = load_county_mortality_posteriors(default_dir() / "county_mortality.csv")
+    row = compute(parts, places=load_places(), place_key="17043",
+                  county_mortality=county)["modeled"]["excess_deaths"]
+    assert row["baseline"]["value"] != parts["baselines"]["all_cause_mortality_annual"].value
+    odds = {phase: p.point for phase, p in mortality_profile(parts["params"]).items()}
+    for phase, parameter in mortality_profile(parts["params"]).items():
+        expected = excess_deaths_profile(1000, row["baseline"]["annual_probability"],
+                                        {**odds, phase: 1}, 20)
+        assert drivers(row)[parameter.link]["effect_removed"]["point"] == pytest.approx(expected)
+
+
 @pytest.mark.parametrize("job_class,coefficient", [("manufacturing", 1.6), ("high_tech", 5.0)])
 def test_local_jobs_do_not_treat_cross_class_span_as_uncertainty(parts, job_class, coefficient):
     row = compute(parts, ScenarioInput(1000, net_tradable_jobs_lost=10,
@@ -144,11 +158,24 @@ def test_present_values_entity_and_policy_inherit_reports(parts):
 def test_sampling_preserves_custom_subgroup_sources_and_reports(parts, tmp_path):
     for name in ("study_estimates.csv", "nodes.csv"):
         shutil.copy(default_dir() / name, tmp_path / name)
+    library = tmp_path / "study_estimates.csv"
+    with library.open(newline="") as handle:
+        reader = csv.DictReader(handle)
+        fields, rows = reader.fieldnames, list(reader)
+    for row in rows:
+        if row["study_id"] == "oreopoulos2008_q3":
+            row.update(point="0.2", standard_error="0.03")
+    with library.open("w", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fields)
+        writer.writeheader()
+        writer.writerows(rows)
     scenario = ScenarioInput(1000, child_income_quartile=3, income_rank_definition="fixture")
     out = sample_counts(parts["params"], parts["baselines"], scenario, draws=4, params_dir=tmp_path,
                         sensitivity_base=8)
     child = out["modeled"]["child_lifetime_earnings_lost_usd"]
-    assert drivers(child)["displacement->child_earnings"]["input_value"] > 1
+    driver = drivers(child)["displacement->child_earnings"]
+    assert driver["input_value"] == pytest.approx(math.exp(.2))
+    assert driver["supported_range"]["input_low"] == pytest.approx(math.exp(.2 - 1.96*.03))
     assert child["sensitivity"]["variance_attribution"]["available"]
     assert child["sensitivity"]["variance_attribution"]["correlations_applied"] == 0
     (tmp_path / "study_estimates.csv").unlink()
