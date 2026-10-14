@@ -1,6 +1,6 @@
 # Downstream 0.4.0 — pending update and review follow-through
 
-Engine 0.4.0 / parameters v1.51, 2026-10-14. This pending update implements the
+Engine 0.4.0 / parameters v1.52, 2026-10-15. This pending update implements the
 review's scenario improvements and records unresolved empirical requirements
 in the `tasks/` board. Software correctness and source reproduction do not establish
 that the effects transport to a particular policy or population.
@@ -94,8 +94,9 @@ Coverage: 96.8% statements and 93.2% branches, above the unchanged 95%/90%
 gates. Focused checks cover source arithmetic, signed subgroup effects,
 eligibility, unsupported strata, zero-rate valuation equivalence, zero-duration
 household equivalence, uncertainty input compatibility and CLI routing.
-The final full suite passes all **1,065 tests** after the saved examples and
-methods refresh. Ruff and vulture pass; the evidence audit reports zero errors
+The October 14 full-suite receipt passed **1,065 tests** after the saved examples
+and methods refresh. The later complete receipt passed **1,152 tests** before
+the v1.52 receiving-unit changes; the current candidate is checked separately. Ruff and vulture pass; the evidence audit reports zero errors
 and zero warnings. The built wheel passes an isolated-install check for all
 three new commands plus audit, export, family, validate, scenario and bundle.
 
@@ -116,3 +117,30 @@ they do not invent baseline, exposure or transport uncertainty. Optional
 attribution separately from deterministic sensitivity and parameter intervals.
 See `RESULT_SENSITIVITY.md` and the saved 2026-10-15 reference. Main estimates
 and parameter versions are unchanged. Consumer rendering remains pending.
+
+
+## Receiving units and local tools — 2026-10-15
+
+Parameters v1.52 retire the generic immigrant-stock crime links. Source review
+found that Light–Miller regresses log crime rates on an unlogged undocumented
+population share in percentage points. Bianchi uses a log immigrant population
+share, whose denominator can change. The new typed links preserve the stored
+coefficient points/support but correct these exposure units. Bianchi's available
+working-paper version remains distinct from the published article. The default
+mortality and child-dollar reference values do not change.
+
+`receiving-community --input` accepts explicit source-specific shares or resident
+counts with both total-population denominators. It returns signed rate contrasts
+and optional same-population annual endpoint incident differences. It does not
+infer arrivals from displaced workers, annualize the ten-year source response,
+sum violent and total crime, or establish reviewed target transport.
+See [source and adapter checks](RECEIVING_COMMUNITY_0_4.md).
+
+The local calculator now uses numeric controls, equations and compact tables.
+Its mobile rules align wrapped labels, provide a wide rate/earnings field and
+confine risk-table scrolling. Browser file-preview access is blocked by the tool's
+URL policy; rendered mobile and participant checks remain unverified.
+Household results reconcile cumulative earnings and E/U/N person-years by member
+and household. `downstream.consumer` exposes checked scaling and mixture helpers.
+Remarriage screening refuses an unsupported coefficient without treating it as zero.
+These are local changes; the XH1B pin and deployment remain pending.

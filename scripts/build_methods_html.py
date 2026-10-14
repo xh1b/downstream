@@ -94,6 +94,11 @@ including null and beneficial possibilities. Quartiles refer to father's average
 Annual synthetic career earnings are discounted by (1+r) raised to years after that date, with dollars kept in 2024 purchasing power.
 The observed adult-age window (25–33) is shown separately from the constant-gap career projection (20–64).
 Neither recovers a source-identified annual earnings path; the career path extrapolates beyond observed ages. Zero-rate career valuation matches the undiscounted reference.</p>
+<h3>Receiving-community comparisons</h3><p>The receiving-community command uses separate source-specific shares.
+Light–Miller applies a percentage-point change in undocumented population share to log violent-crime rates.
+Bianchi applies a log regular-resident share ratio to log total-crime rates. Both population denominators must be retained.
+Source windows and conditional fixed-effects versus IV roles remain distinct. Optional count differences use the same post population
+in both annual endpoint rate scenarios. No displaced-worker-to-arrival bridge, cumulative-crime extrapolation or additive crime total is supplied.</p>
 <h3>Local service jobs</h3><p>Local service jobs lost = T × ℓ, where T is independently documented net local loss of tradable jobs and ℓ is the multiplier for a declared job class.
 Manufacturing and high-tech multipliers represent different classes, not endpoints of one uncertainty interval. The tradable-share field is metadata and does not infer T from displaced workers.</p>
 <h3>Reference example</h3><p>For 1,000 displaced workers, two children per worker and 20 years of mortality follow-up,

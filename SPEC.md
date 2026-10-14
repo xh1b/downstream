@@ -462,10 +462,11 @@ substituted — the spread IS the result. CLI: `downstream ensemble`.
 - Queued (structure known, number pending full-text extraction):
   `docs/QUEUED_EXTRACTIONS.md`. Each row names the study, the exact
   table/figure to extract, and the priority.
-- Excluded by honesty rule: the immigration-crime link. The pooled
-  literature (ousey2018; butcher1998) is null-to-negative — the model
-  refuses to encode a positive link, and this refusal is itself a
-  published result.
+- No generic immigration-to-crime causal coefficient is admitted from the
+  pooled literature (ousey2018; butcher1998). Source-specific receiving
+  comparisons use separate typed exposure margins and retain signed,
+  null-compatible estimates. They do not supply a universal positive,
+  negative or zero effect. See `docs/RECEIVING_COMMUNITY_0_4.md`.
 - Excluded by source-class rule (queue-9): Duncan, Ziol-Guest &
   Kalil 2010 (Child Development 81:306-325) — the early-poverty →
   adult-attainment anchor the queue named — is observational OLS on

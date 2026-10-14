@@ -1,4 +1,4 @@
-# MODEL CARD — downstream engine 0.4.0 / parameters v1.51
+# MODEL CARD — downstream engine 0.4.0 / parameters v1.52
 
 Model card practice per Mitchell et al. 2019, "Model Cards for Model
 Reporting". This card travels with the model.
@@ -29,7 +29,7 @@ Reporting". This card travels with the model.
   attribution retains declared correlated blocks. Fixed-input uncertainty is
   not inferred; removal changes are not additive causal shares.
   See `RESULT_SENSITIVITY.md`.
-- Parameter set v1.51: 67 parameter rows, each with point, band,
+- Parameter set v1.52: 67 parameter rows, each with point, band,
   precision tier, bib keys, and population scope.
 - The five default mortality phase transformations are reproduced from the
   pinned working-paper beta/SE values at four decimals. Working-paper source
@@ -76,7 +76,23 @@ Reporting". This card travels with the model.
 - NOT a forecasting system until V3 prospective validation runs.
 - NOT an immigration effects model per se: it models DISPLACEMENT
   events and their documented consequences. It refuses links the
-  pooled literature does not support (SPEC §10). Receiving-community crime paths require a separately defined influx input; they never start from generic worker displacement.
+  pooled literature does not support (SPEC §10). Receiving-community comparisons require separate undocumented-share percentage-point changes or regular-resident share ratios; they never start from generic worker displacement.
+
+## Local calculation and audit tools
+
+The calculator exposes source-offset survival, editable baseline/odds and child
+lifetime conversion. Its browser equations are checked against native refits;
+rendered mobile and participant review remain open. Household results reconcile
+paired member/household earnings and state person-years. Consumer transforms
+preserve declared input bases, source context and unavailable joint uncertainty.
+
+Parameters v1.52 correct receiving-community units. Light–Miller uses an
+undocumented-share percentage-point change with a log-rate response, not a
+log-log stock elasticity. Bianchi uses the ratio of regular-resident population
+shares, not immigrant stock alone. The separate `receiving-community` adapter
+retains source windows, conditional fixed-effects/IV roles and version limits.
+Neither source establishes an H-1B bridge or unrestricted causal transport.
+See [source-specific contract](RECEIVING_COMMUNITY_0_4.md).
 
 ## Factors
 

@@ -263,7 +263,7 @@ without replacing the source anchor or treating a nonsignificant finding as
 proof of zero. Both retain the population-applicability and fixed-baseline
 limits. See [the method and reproducible example](docs/MORTALITY_PERSISTENCE_SENSITIVITY.md).
 Parameters v1.50 correct the offset +4–5 source standard error to 0.138,
-widening intervals while preserving the point estimate. The current v1.51
+widening intervals while preserving the point estimate. Revision v1.51
 re-executes all five source transformations, corrects working-paper tiers and
 cross-study provenance, and yields the reference values above. Production
 website rendering needs integration.
@@ -397,3 +397,10 @@ MIT. See `LICENSE`.
 - [Pool readiness](docs/POOL_READINESS_0_4.md): compatibility and sample overlap.
 - [Mortality covariance](docs/MORTALITY_COVARIANCE_0_4.md): additive phase precision
   bounds with unknown covariance.
+
+- [Receiving-community comparisons](docs/RECEIVING_COMMUNITY_0_4.md): typed share
+  exposures and optional annual endpoint incident differences, separate from displacement.
+- [Household summaries](docs/HOUSEHOLD_COMPARISON_0_4.md): paired member and household
+  gross earnings and expected state person-years.
+- [Remarriage screen](docs/REMARRIAGE_MARGIN_SCREEN_0_4.md): source-based refusal of an
+  unsupported transition coefficient.

@@ -1,6 +1,6 @@
 # Sensitivity attached to scenario results
 
-Engine 0.4.0 / parameters v1.51. Each emitted scenario count now carries a
+Engine 0.4.0 / parameters v1.52. Each emitted scenario count now carries a
 `sensitivity` report. Child present-value projections carry the same report.
 Entity results and policy comparison arms inherit it through the scenario engine.
 Blocked outcomes do not acquire a result through sensitivity calculations.
@@ -105,8 +105,8 @@ variance attribution requires a joint calculation under a declared dependence
 model. Mark it unavailable if that calculation has not been made.
 
 Preserve the report schema, experiment definitions, unavailable statuses and
-source metadata in JSON, HTML and Markdown. Bundle hashes identify this code
-change even though engine and parameter versions remain 0.4.0 / v1.51. Cache
+source metadata in JSON, HTML and Markdown. Bundle hashes identify code changes in addition to engine and parameter
+versions. The feature landed in 0.4.0 / v1.51; v1.52 also corrects receiving units. Cache
 identity must also include requested analysis settings, such as seed and
 sensitivity base, when those reports are stored. XH1B integration remains pending.
 
