@@ -155,3 +155,72 @@ assert.ok(ids.blocked.children.length>0);
 console.log("interaction checks pass");
 '''
     node(harness, DIRECTORY / "index.html", DIRECTORY / "math.js", DIRECTORY / "app.js")
+
+
+@pytest.mark.skipif(shutil.which("node") is None, reason="Node not installed")
+def test_pure_analysis_preserves_inputs_and_mathematical_invariants():
+    harness = r'''
+const assert = require("node:assert/strict");
+const math = require(process.argv[1]);
+const data = JSON.parse(process.argv[2]);
+const inputs = Object.freeze({...data.defaults,
+  odds: Object.freeze(data.phases.map(phase => phase.point))});
+const sources = Object.freeze(data.phases.map(phase => Object.freeze(phase)));
+const before = JSON.stringify({inputs, sources});
+const analysis = math.analyze(inputs, sources);
+assert.deepEqual(math.analyze(inputs, sources), analysis);
+assert.equal(JSON.stringify({inputs, sources}), before);
+assert.equal(analysis.curve[0].difference, 0);
+assert.equal(analysis.curve.at(-1).difference, analysis.results.difference);
+assert.equal(analysis.curve.at(-1).years, inputs.years);
+assert.ok(analysis.curve.every(point => Number.isFinite(point.difference)));
+assert.ok(analysis.ranges.every(([low, high]) => low <= high));
+
+// Source offsets are intersections of the horizon with five time intervals.
+for (const years of [0, .125, 1, 2, 4, 6, 7, 20, 100]) {
+  const durations = math.durations(years);
+  assert.equal(durations.reduce((a, b) => a + b, 0), years);
+  assert.ok(durations.every(duration => duration >= 0));
+  for (let i = 0; i < durations.length; i++) {
+    if (durations[i] === 0) {
+      const result = math.calculate({...inputs, years});
+      assert.equal(result.drivers[i].impact, 0);
+    }
+  }
+}
+assert.deepEqual(math.durations(6.5), [1, 1, 2, 2, .5]);
+
+const close = (actual, expected) => assert.ok(
+  Math.abs(actual - expected) <= 1e-9 + 1e-10 * Math.abs(expected),
+  `${actual} != ${expected}`);
+// With one constant odds ratio, the phase product reduces to a single power.
+for (const workers of [.125, 1000, 1e6]) {
+  for (const rate of [0, .003, .1]) {
+    for (const years of [.125, 6.5, 20]) {
+      for (const theta of [.2, 1, 3]) {
+        const odds = Array(5).fill(theta);
+        const actual = math.mortality(workers, rate, odds, years);
+        const p = 1 - Math.exp(-rate);
+        const q = theta * p / (1 - p + theta * p);
+        close(actual.difference, workers * ((1 - p) ** years - (1 - q) ** years));
+        close(actual.exposed - actual.baseline, actual.difference);
+        close(math.mortality(workers / 4, rate, odds, years).difference, actual.difference / 4);
+        assert.ok(Math.abs(actual.difference) <= workers);
+        if (theta === 1) assert.equal(actual.difference, 0);
+        if (theta < 1) assert.ok(actual.difference <= 0);
+        if (theta > 1) assert.ok(actual.difference >= 0);
+      }
+    }
+  }
+}
+// Increasing any active phase's odds cannot reduce expected excess deaths.
+for (let i = 0; i < 5; i++) {
+  const odds = inputs.odds.map((value, j) => j === i ? value * 2 : value);
+  assert.ok(math.calculate({...inputs, odds}).difference >= analysis.results.difference);
+}
+assert.deepEqual(math.invalidFields({...inputs, workers: NaN, children: .5,
+  odds: [1, 0, 1, Infinity, 1]}), ["workers", "children", "odds-1", "odds-3"]);
+assert.deepEqual(math.invalidFields({...inputs, odds: Array(5)}),
+  ["odds-0", "odds-1", "odds-2", "odds-3", "odds-4"]);
+'''
+    node(harness, DIRECTORY / "math.js", json.dumps(payload(generated())))

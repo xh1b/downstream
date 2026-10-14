@@ -53,6 +53,27 @@ source engine receipt. The browser calculation has its own schema and
 math-source hash. The receipt's input hash identifies the source calculation.
 It must not be used as the identity of edited browser results.
 
+## Code structure
+
+`math.js` contains pure functions. `analyze(inputs, sources)` returns results,
+one-input source ranges and a 101-point mortality curve. It does not read the
+page, mutate inputs or retain state. Phase durations are intersections of the
+follow-up horizon with source intervals [0, 1), [1, 2), [2, 4), [4, 6) and [6, ∞).
+Changing one odds ratio creates a new input value for each sensitivity experiment.
+
+The survival equations are `S₀ = exp(−λT)` and `S₁ = ∏ᵢ(1 − pᵢ)^tᵢ`.
+Expected excess deaths are `N(S₀ − S₁)`. The implementation sums log-survival
+terms and forms `log(S₁/S₀)` directly. It factors the survival difference by
+the larger survival, so `expm1` always receives a nonpositive argument. This
+retains small effects and avoids overflow for protective odds. Exposed deaths
+use directly accumulated exposed log-survival to avoid cancellation.
+
+`app.js` reads inputs, checks the shared validation rules, calls `analyze`,
+then renders totals, phase rows, curve geometry and the receipt. Formatting and
+chart geometry are separate from outcome calculations. The selected preset
+comes from its control; there is no separate mutable preset or result cache.
+An invalid edit marks each invalid field and keeps the last valid result on screen.
+
 ## Design and language
 
 The page uses one layout. Numeric inputs, equations and tables occupy the
@@ -88,6 +109,9 @@ experiments with native engine refits at 22 input combinations. Cases include
 phase boundaries, fractional exposure, small rates, protective effects, extreme protective odds,
 null effects, zero counts and changed child assumptions. DOM tests check
 edits, presets, invalid inputs, reset and source/current data separation.
+Additional mathematical checks cover constant-odds closed-form survival,
+phase-duration sums, odds monotonicity, exposure scaling, curve endpoints,
+repeatability and frozen-input immutability.
 
 Numeric limits are N ≤ 1,000,000; T ≤ 100 years; annual rate ≤ 1;
 0 < odds ratio ≤ 1,000,000; integer c ≤ 100; 0.000001 ≤ g ≤ 10;
@@ -112,6 +136,11 @@ Earlier `file://` preview access was denied. The dedicated local HTTP server
 now supplies the application through a supported URL. Physical phone testing,
 200% zoom, screen-reader review and participant testing remain open.
 Viewport emulation does not establish those results.
+
+After the functional JavaScript refactor, the local server was restarted and
+the page reloaded. Browser checks confirmed fractional exposure (0.125 →
+0.00359 excess deaths), invalid-edit retention, tail-null (20.52), Q3 signed
+child earnings and reset (28.76). No console errors were reported.
 
 Human testing remains on task:2026-10-14-calculator-design. Test 6–8 intended
 users. Ask them to identify units, source versus custom inputs, D₀/D₁/ΔD,
