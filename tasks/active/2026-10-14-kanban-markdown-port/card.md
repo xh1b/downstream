@@ -15,6 +15,6 @@ and compatibility with existing cards and append-only comments.
 
 ## Acceptance
 
-- [ ] Port references, Markdown comments, relationships and workflow commands with regression coverage.
-- [ ] Preserve shared-checkout safeguards and validate the existing board without rewriting other agents' cards.
-- [ ] Document the new workflow and record test and validation receipts.
+- [x] Port references, Markdown comments, relationships and workflow commands with regression coverage. [receipt](task:2026-10-14-kanban-markdown-port#c-2d647cade4e4)
+- [x] Preserve shared-checkout safeguards and validate the existing board without rewriting other agents' cards. [receipt](task:2026-10-14-kanban-markdown-port#c-2d647cade4e4)
+- [x] Document the new workflow and record test and validation receipts. [receipt](task:2026-10-14-kanban-markdown-port#c-2d647cade4e4)
