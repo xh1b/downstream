@@ -98,3 +98,34 @@ def test_missing_custom_library_never_falls_back_to_bundled_coefficients(custom)
     (directory/'study_estimates.csv').unlink()
     with pytest.raises(FileNotFoundError):
         sample_counts(parts['params'],parts['baselines'],scenario(),draws=8,params_dir=directory)
+
+
+def change_contrast(directory, key, field, value):
+    path=directory/'study_estimates.csv'
+    with path.open(newline='') as handle:
+        reader=csv.DictReader(handle);fields,rows=reader.fieldnames,list(reader)
+    next(r for r in rows if r['study_id']==key)[field]=value
+    with path.open('w',newline='') as handle:
+        writer=csv.DictWriter(handle,fieldnames=fields);writer.writeheader();writer.writerows(rows)
+
+
+@pytest.mark.parametrize('field,value',[('scale','log_cumulative_hazard_ratio'),('sex','Female'),
+    ('income_quartile','1'),('time_horizon','lifetime earnings'),('age_min','0')])
+def test_custom_child_source_must_match_its_consumed_estimand(custom,field,value):
+    directory,parts=custom
+    change_contrast(directory,'oreopoulos2008_q3',field,value)
+    with pytest.raises(ValueError,match='incompatible source contrast'):
+        compute_counts(parts['params'],parts['baselines'],scenario(),params_dir=directory)
+
+
+@pytest.mark.parametrize('field,value',[('scale','log_cumulative_hazard_ratio'),('sex','Female'),
+    ('time_horizon','one-year risk'),('age_max','99'),('tenure_min_years','0')])
+def test_custom_mortality_source_must_match_its_consumed_estimand(custom,field,value):
+    from downstream.mortality_strata import project_mortality_cohort
+    directory,_=custom
+    change_contrast(directory,'sullivan2007_age_30_39',field,value)
+    payload={'source':'fixture','method':'fixture','transport_rationale':'illustrative',
+             'projection_assumption':'constant_source_window_log_odds','follow_up_years':2,
+             'strata':[dict(age_at_event=34,sex='Male',workers=1000,tenure_years=6,exposure_type='mass layoff')]}
+    with pytest.raises(ValueError,match='incompatible source contrast'):
+        project_mortality_cohort(payload,directory)

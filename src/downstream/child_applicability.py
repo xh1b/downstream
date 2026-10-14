@@ -6,7 +6,7 @@ import math
 from pathlib import Path
 
 from .params import ParameterSet
-from .study_library import load_library
+from .study_library import load_library, require_contrast
 
 
 def validate_child_inputs(profiles, n_children, quartile, rank_definition):
@@ -61,10 +61,15 @@ def select_child_contrast(params: ParameterSet, quartile, params_dir=None) -> Pa
         # Materialized MC draws carry this marker: never reset their point.
         return params
     row = load_library(Path(params_dir) / 'study_estimates.csv' if params_dir is not None else None)[f"oreopoulos2008_q{quartile}"]
+    require_contrast(row, link=original.link, scale='log_earnings_ratio', sex='Male',
+                     age_min='10', age_max='14', income_quartile=str(quartile),
+                     time_horizon='son earnings averaged 1995-1999 at ages 25-33',
+                     outcome_definition='log son earnings averaged 1995-1999',
+                     projection_status='conditional_source_contrast_not_lifetime_path')
     beta, se = row["point"], row["standard_error"]
     selected = replace(original, point=math.exp(beta), low=math.exp(beta-1.96*se),
                        high=math.exp(beta+1.96*se), dist="lognormal",
                        population_scope=row["population_scope"], tier="EXACT",
-                       notes=f"{marker} {row['source_locator']}; SHA256 {row['source_sha256']}; beta {beta}; SE {se}; conditional source subgroup, not a lifetime earnings path")
+                       notes=f"{marker} {row['source_locator']}; SHA256 {row['source_sha256']}; beta {beta}; SE {se}; SE method: {row['standard_error_method']}; conditional source subgroup, not a lifetime earnings path")
     return replace(params, parameters=tuple(selected if p.link == original.link else p
                                            for p in params.parameters))

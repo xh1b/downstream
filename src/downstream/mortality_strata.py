@@ -12,7 +12,7 @@ from pathlib import Path
 
 from .mortality import odds_risk, rate_to_risk
 from .params import default_dir
-from .study_library import load_library
+from .study_library import load_library, require_contrast
 
 
 def project_mortality_cohort(payload: dict, params_dir: Path | None = None) -> dict:
@@ -59,6 +59,11 @@ def project_mortality_cohort(payload: dict, params_dir: Path | None = None) -> d
             continue
         low = age // 10 * 10
         source = library[f'sullivan2007_age_{low}_{low+9}']
+        require_contrast(source, link='earnings_shock->mortality', scale='log_odds_ratio',
+                         sex='Male', age_min=str(low), age_max=str(low+9), tenure_min_years='6',
+                         time_horizon='calendar mortality follow-up 1980-2002; displacement 1980-1986',
+                         outcome_definition='annual all-cause death odds',
+                         projection_status='window_averaged_annual_logit_requires_projection_assumption')
 
         def baseline_for(attained_age):
             matches = [b for b in baselines if b['sex']==row['sex'] and int(b['age_min'])<=attained_age<=int(b['age_max'])]
@@ -90,11 +95,12 @@ def project_mortality_cohort(payload: dict, params_dir: Path | None = None) -> d
             'covered_expected_excess_deaths':totals,
             'whole_cohort_excess_deaths':None if any(r['workers']>0 for r in unsupported) else totals,
             'supported_strata':supported,'unsupported_strata':unsupported,
-            'uncertainty':{'band':'simultaneous coefficient-support envelope, not a cohort confidence interval',
+            'uncertainty':{'band':'Cartesian envelope of marginal coefficient ranges, not a simultaneous confidence band or cohort confidence interval',
                 'fixed':['exposure','age composition','baseline rates','transport','constant response shape'],
                 'excluded':['baseline sampling variance','exposure error','cross-coefficient covariance','transport error']},
             'limitations':['Exact weighted stratum aggregation; individual sampling is unnecessary for this expected total.',
                 'Aging uses piecewise age-band 2015-2019 period rates, not single-age hazards or a forecast of future mortality trends.',
                 'Source age is age at displacement; the response is held fixed as survivors age.',
                 'Source-window annual logit contrasts are projected constantly by explicit assumption, not a recovered phase-specific effect.',
+                'Marginal plus/minus 1.96-SE ranges do not establish simultaneous coverage or cross-age coefficient covariance.',
                 'Unmodeled strata are unknown, never zero or silently omitted from a whole-cohort total.']}
