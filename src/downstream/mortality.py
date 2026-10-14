@@ -15,7 +15,7 @@ def rate_to_risk(rate: float) -> float:
     """Convert a constant event/person-time hazard to one-year death risk."""
     if isinstance(rate, bool) or not isinstance(rate, (int, float)) or not math.isfinite(rate) or rate < 0:
         raise ValueError("annual mortality rate must be finite and nonnegative")
-    return 1 - math.exp(-rate)
+    return -math.expm1(-rate)
 
 
 MORTALITY_TIMINGS = {"source_aligned", "immediate_sustained"}
@@ -61,12 +61,27 @@ def excess_deaths_profile(workers: float, baseline: float, odds_by_phase: dict[s
     if set(odds_by_phase) != expected:
         raise ValueError(f"mortality profile needs exactly phases {sorted(expected)}")
     phases = source_profile_phase_years(years)
-    if workers == 0 or years == 0:
+    risks = {name: odds_risk(baseline, odds) for name, odds in odds_by_phase.items()}
+    if workers == 0 or years == 0 or baseline in (0, 1):
         return 0.0
-    exposed_survival = 1.0
-    for name, duration in phases.items():
-        exposed_survival *= (1 - odds_risk(baseline, odds_by_phase[name])) ** duration
-    result = workers * ((1 - baseline) ** years - exposed_survival)
+    # Annual exposed/reference survival ratio is 1/(1+(OR-1)*baseline).
+    # Form its log directly: subtracting nearly equal survival probabilities
+    # can erase a small effect or reverse its sign. expm1 preserves the gap.
+    log_ratio = -math.fsum(duration * math.log1p((odds_by_phase[name]-1)*baseline)
+                           for name, duration in phases.items() if duration)
+    if log_ratio == 0:
+        return 0.0
+    if log_ratio < 0:
+        survival = math.exp(years * math.log1p(-baseline))
+        difference = -survival * math.expm1(log_ratio)
+    else:
+        # Factor out exposed survival for protective effects, avoiding
+        # overflow when the ratio is huge but both survival levels are tiny.
+        log_exposed = math.fsum(duration * math.log1p(-risks[name])
+                                if risks[name] < 1 else -math.inf
+                                for name, duration in phases.items() if duration)
+        difference = math.exp(log_exposed) * math.expm1(-log_ratio)
+    result = workers * difference
     return min(workers, max(-workers, result))
 
 
