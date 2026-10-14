@@ -1,0 +1,546 @@
+{
+  "engine_version": "0.4.0",
+  "parameter_set_version": "v1.51",
+  "input_sha256": {
+    "params/parameters.csv": "c9161271abee056851a3f134aeb669ac108dcfb3cb751ce61cbdbf816f4b3839",
+    "params/baselines.csv": "f67538abe22be16a159c5e95b8c69fb5c803d39b2faaf7580db703f6c3a72246",
+    "params/correlations.csv": "c170d46fe53cb90a4acf706390f5ea1b9e2be9dd21a3a030aa4c0b2820ca0c24",
+    "params/study_estimates.csv": "12ea8fee6af9b0d3200989186714b7e02b77e8931f40ea1b36c84bfd6e3fdc74",
+    "src/downstream/mortality.py": "9e3c01e3c62124f75024ed4a29446e2c0e104d72d18e27ca75095717ec13610a",
+    "src/downstream/mortality_robustness.py": "db3041e56693416784dd734b58ef0c442da4c96f9d2822be8295c29c9d6152c9",
+    "scripts/analyze_mortality_persistence.py": "ff4f9494fd9b8aa7dd88d6024b62de33d754a17da0d97838aebf3a49941d192c"
+  },
+  "scope": "Fixed national male 45-54 reference, 1000 workers, 20 years; no aging or target transport calibration.",
+  "baseline_annual_rate": 0.004944,
+  "baseline_annual_probability": 0.004931798548274205,
+  "phases": [
+    {
+      "phase": "displacement",
+      "odds_ratio": 2.6698,
+      "annual_risk_per_1000_survivors": 13.059370318840864
+    },
+    {
+      "phase": "offset_1",
+      "odds_ratio": 1.9838,
+      "annual_risk_per_1000_survivors": 9.736461588864572
+    },
+    {
+      "phase": "offsets_2_3",
+      "odds_ratio": 1.7315,
+      "annual_risk_per_1000_survivors": 8.508713062576014
+    },
+    {
+      "phase": "offsets_4_5",
+      "odds_ratio": 1.2712,
+      "annual_risk_per_1000_survivors": 6.260928299385259
+    },
+    {
+      "phase": "offset_6_plus",
+      "odds_ratio": 1.1354,
+      "annual_risk_per_1000_survivors": 5.595827371116998
+    }
+  ],
+  "source_path": [
+    {
+      "follow_up_year": 1,
+      "reference_deaths_in_year": 4.931798548274205,
+      "scenario_deaths_in_year": 13.059370318840864,
+      "annual_death_count_difference": 8.127571770566659,
+      "reference_cumulative_deaths": 4.931798548274173,
+      "scenario_cumulative_deaths": 13.05937031884082,
+      "cumulative_excess_deaths": 8.127571770566647
+    },
+    {
+      "follow_up_year": 2,
+      "reference_deaths_in_year": 4.907475911353446,
+      "scenario_deaths_in_year": 9.60930953138042,
+      "annual_death_count_difference": 4.701833620026974,
+      "reference_cumulative_deaths": 9.839274459627632,
+      "scenario_cumulative_deaths": 22.668679850221224,
+      "cumulative_excess_deaths": 12.829405390593593
+    },
+    {
+      "follow_up_year": 3,
+      "reference_deaths_in_year": 4.883273228778142,
+      "scenario_deaths_in_year": 8.315831770223083,
+      "annual_death_count_difference": 3.4325585414449407,
+      "reference_cumulative_deaths": 14.722547688405825,
+      "scenario_cumulative_deaths": 30.984511620444323,
+      "cumulative_excess_deaths": 16.261963932038498
+    },
+    {
+      "follow_up_year": 4,
+      "reference_deaths_in_year": 4.859189908957627,
+      "scenario_deaths_in_year": 8.2450747438136,
+      "annual_death_count_difference": 3.3858848348559727,
+      "reference_cumulative_deaths": 19.581737597363485,
+      "scenario_cumulative_deaths": 39.2295863642579,
+      "cumulative_excess_deaths": 19.647848766894413
+    },
+    {
+      "follow_up_year": 5,
+      "reference_deaths_in_year": 4.835225363218841,
+      "scenario_deaths_in_year": 6.015314671944099,
+      "annual_death_count_difference": 1.1800893087252575,
+      "reference_cumulative_deaths": 24.416962960582282,
+      "scenario_cumulative_deaths": 45.24490103620201,
+      "cumulative_excess_deaths": 20.827938075619727
+    },
+    {
+      "follow_up_year": 6,
+      "reference_deaths_in_year": 4.81137900579194,
+      "scenario_deaths_in_year": 5.977653218084816,
+      "annual_death_count_difference": 1.1662742122928762,
+      "reference_cumulative_deaths": 29.228341966374273,
+      "scenario_cumulative_deaths": 51.22255425428682,
+      "cumulative_excess_deaths": 21.994212287912546
+    },
+    {
+      "follow_up_year": 7,
+      "reference_deaths_in_year": 4.787650253795978,
+      "scenario_deaths_in_year": 5.309194800002335,
+      "annual_death_count_difference": 0.521544546206357,
+      "reference_cumulative_deaths": 34.01599222017023,
+      "scenario_cumulative_deaths": 56.53174905428921,
+      "cumulative_excess_deaths": 22.515756834118974
+    },
+    {
+      "follow_up_year": 8,
+      "reference_deaths_in_year": 4.764038527224662,
+      "scenario_deaths_in_year": 5.279485462421889,
+      "annual_death_count_difference": 0.5154469351972271,
+      "reference_cumulative_deaths": 38.7800307473949,
+      "scenario_cumulative_deaths": 61.811234516711124,
+      "cumulative_excess_deaths": 23.03120376931622
+    },
+    {
+      "follow_up_year": 9,
+      "reference_deaths_in_year": 4.740543248932174,
+      "scenario_deaths_in_year": 5.2499423731658545,
+      "annual_death_count_difference": 0.5093991242336804,
+      "reference_cumulative_deaths": 43.52057399632713,
+      "scenario_cumulative_deaths": 67.06117688987695,
+      "cumulative_excess_deaths": 23.540602893549817
+    },
+    {
+      "follow_up_year": 10,
+      "reference_deaths_in_year": 4.7171638446190585,
+      "scenario_deaths_in_year": 5.220564601937307,
+      "annual_death_count_difference": 0.5034007573182482,
+      "reference_cumulative_deaths": 48.23773784094624,
+      "scenario_cumulative_deaths": 72.28174149181427,
+      "cumulative_excess_deaths": 24.044003650868035
+    },
+    {
+      "follow_up_year": 11,
+      "reference_deaths_in_year": 4.6938997428181946,
+      "scenario_deaths_in_year": 5.191351223645101,
+      "annual_death_count_difference": 0.49745148082690616,
+      "reference_cumulative_deaths": 52.93163758376443,
+      "scenario_cumulative_deaths": 77.47309271545942,
+      "cumulative_excess_deaths": 24.54145513169499
+    },
+    {
+      "follow_up_year": 12,
+      "reference_deaths_in_year": 4.670750374880819,
+      "scenario_deaths_in_year": 5.1623013183747455,
+      "annual_death_count_difference": 0.4915509434939267,
+      "reference_cumulative_deaths": 57.602387958645295,
+      "scenario_cumulative_deaths": 82.63539403383413,
+      "cumulative_excess_deaths": 25.033006075188837
+    },
+    {
+      "follow_up_year": 13,
+      "reference_deaths_in_year": 4.647715174962631,
+      "scenario_deaths_in_year": 5.133413971359431,
+      "annual_death_count_difference": 0.48569879639680025,
+      "reference_cumulative_deaths": 62.25010313360792,
+      "scenario_cumulative_deaths": 87.76880800519359,
+      "cumulative_excess_deaths": 25.51870487158567
+    },
+    {
+      "follow_up_year": 14,
+      "reference_deaths_in_year": 4.624793580009958,
+      "scenario_deaths_in_year": 5.104688272951224,
+      "annual_death_count_difference": 0.47989469294126597,
+      "reference_cumulative_deaths": 66.87489671361789,
+      "scenario_cumulative_deaths": 92.87349627814478,
+      "cumulative_excess_deaths": 25.9985995645269
+    },
+    {
+      "follow_up_year": 15,
+      "reference_deaths_in_year": 4.601985029745997,
+      "scenario_deaths_in_year": 5.0761233185924235,
+      "annual_death_count_difference": 0.4741382888464267,
+      "reference_cumulative_deaths": 71.47688174336383,
+      "scenario_cumulative_deaths": 97.9496195967372,
+      "cumulative_excess_deaths": 26.47273785337336
+    },
+    {
+      "follow_up_year": 16,
+      "reference_deaths_in_year": 4.579288966657116,
+      "scenario_deaths_in_year": 5.047718208787079,
+      "annual_death_count_difference": 0.46842924212996273,
+      "reference_cumulative_deaths": 76.05617071002098,
+      "scenario_cumulative_deaths": 102.99733780552424,
+      "cumulative_excess_deaths": 26.94116709550326
+    },
+    {
+      "follow_up_year": 17,
+      "reference_deaths_in_year": 4.556704835979228,
+      "scenario_deaths_in_year": 5.019472049072663,
+      "annual_death_count_difference": 0.4627672130934348,
+      "reference_cumulative_deaths": 80.61287554600017,
+      "scenario_cumulative_deaths": 108.01680985459689,
+      "cumulative_excess_deaths": 27.403934308596718
+    },
+    {
+      "follow_up_year": 18,
+      "reference_deaths_in_year": 4.534232085684232,
+      "scenario_deaths_in_year": 4.991383949991905,
+      "annual_death_count_difference": 0.4571518643076722,
+      "reference_cumulative_deaths": 85.14710763168443,
+      "scenario_cumulative_deaths": 113.00819380458881,
+      "cumulative_excess_deaths": 27.86108617290438
+    },
+    {
+      "follow_up_year": 19,
+      "reference_deaths_in_year": 4.511870166466516,
+      "scenario_deaths_in_year": 4.963453027064786,
+      "annual_death_count_difference": 0.45158286059827013,
+      "reference_cumulative_deaths": 89.658977798151,
+      "scenario_cumulative_deaths": 117.97164683165363,
+      "cumulative_excess_deaths": 28.31266903350263
+    },
+    {
+      "follow_up_year": 20,
+      "reference_deaths_in_year": 4.489618531729534,
+      "scenario_deaths_in_year": 4.9356784007606835,
+      "annual_death_count_difference": 0.44605986903114925,
+      "reference_cumulative_deaths": 94.14859632988055,
+      "scenario_cumulative_deaths": 122.90732523241434,
+      "cumulative_excess_deaths": 28.75872890253379
+    }
+  ],
+  "no_sustained_excess_path": [
+    {
+      "follow_up_year": 1,
+      "reference_deaths_in_year": 4.931798548274205,
+      "scenario_deaths_in_year": 13.059370318840864,
+      "annual_death_count_difference": 8.127571770566659,
+      "reference_cumulative_deaths": 4.931798548274173,
+      "scenario_cumulative_deaths": 13.05937031884082,
+      "cumulative_excess_deaths": 8.127571770566647
+    },
+    {
+      "follow_up_year": 2,
+      "reference_deaths_in_year": 4.907475911353446,
+      "scenario_deaths_in_year": 9.60930953138042,
+      "annual_death_count_difference": 4.701833620026974,
+      "reference_cumulative_deaths": 9.839274459627632,
+      "scenario_cumulative_deaths": 22.668679850221224,
+      "cumulative_excess_deaths": 12.829405390593593
+    },
+    {
+      "follow_up_year": 3,
+      "reference_deaths_in_year": 4.883273228778142,
+      "scenario_deaths_in_year": 8.315831770223083,
+      "annual_death_count_difference": 3.4325585414449407,
+      "reference_cumulative_deaths": 14.722547688405825,
+      "scenario_cumulative_deaths": 30.984511620444323,
+      "cumulative_excess_deaths": 16.261963932038498
+    },
+    {
+      "follow_up_year": 4,
+      "reference_deaths_in_year": 4.859189908957627,
+      "scenario_deaths_in_year": 8.2450747438136,
+      "annual_death_count_difference": 3.3858848348559727,
+      "reference_cumulative_deaths": 19.581737597363485,
+      "scenario_cumulative_deaths": 39.2295863642579,
+      "cumulative_excess_deaths": 19.647848766894413
+    },
+    {
+      "follow_up_year": 5,
+      "reference_deaths_in_year": 4.835225363218841,
+      "scenario_deaths_in_year": 6.015314671944099,
+      "annual_death_count_difference": 1.1800893087252575,
+      "reference_cumulative_deaths": 24.416962960582282,
+      "scenario_cumulative_deaths": 45.24490103620201,
+      "cumulative_excess_deaths": 20.827938075619727
+    },
+    {
+      "follow_up_year": 6,
+      "reference_deaths_in_year": 4.81137900579194,
+      "scenario_deaths_in_year": 5.977653218084816,
+      "annual_death_count_difference": 1.1662742122928762,
+      "reference_cumulative_deaths": 29.228341966374273,
+      "scenario_cumulative_deaths": 51.22255425428682,
+      "cumulative_excess_deaths": 21.994212287912546
+    },
+    {
+      "follow_up_year": 7,
+      "reference_deaths_in_year": 4.787650253795978,
+      "scenario_deaths_in_year": 4.679179229564016,
+      "annual_death_count_difference": -0.10847102423196198,
+      "reference_cumulative_deaths": 34.01599222017023,
+      "scenario_cumulative_deaths": 55.901733483850876,
+      "cumulative_excess_deaths": 21.885741263680643
+    },
+    {
+      "follow_up_year": 8,
+      "reference_deaths_in_year": 4.764038527224662,
+      "scenario_deaths_in_year": 4.656102460232538,
+      "annual_death_count_difference": -0.10793606699212432,
+      "reference_cumulative_deaths": 38.7800307473949,
+      "scenario_cumulative_deaths": 60.55783594408342,
+      "cumulative_excess_deaths": 21.77780519668852
+    },
+    {
+      "follow_up_year": 9,
+      "reference_deaths_in_year": 4.740543248932174,
+      "scenario_deaths_in_year": 4.6331395008785465,
+      "annual_death_count_difference": -0.10740374805362762,
+      "reference_cumulative_deaths": 43.52057399632713,
+      "scenario_cumulative_deaths": 65.19097544496196,
+      "cumulative_excess_deaths": 21.670401448634834
+    },
+    {
+      "follow_up_year": 10,
+      "reference_deaths_in_year": 4.7171638446190585,
+      "scenario_deaths_in_year": 4.610289790214162,
+      "annual_death_count_difference": -0.10687405440489606,
+      "reference_cumulative_deaths": 48.23773784094624,
+      "scenario_cumulative_deaths": 69.80126523517617,
+      "cumulative_excess_deaths": 21.563527394229936
+    },
+    {
+      "follow_up_year": 11,
+      "reference_deaths_in_year": 4.6938997428181946,
+      "scenario_deaths_in_year": 4.58755276971966,
+      "annual_death_count_difference": -0.10634697309853447,
+      "reference_cumulative_deaths": 52.93163758376443,
+      "scenario_cumulative_deaths": 74.38881800489582,
+      "cumulative_excess_deaths": 21.457180421131397
+    },
+    {
+      "follow_up_year": 12,
+      "reference_deaths_in_year": 4.670750374880819,
+      "scenario_deaths_in_year": 4.564927883629825,
+      "annual_death_count_difference": -0.10582249125099352,
+      "reference_cumulative_deaths": 57.602387958645295,
+      "scenario_cumulative_deaths": 78.95374588852565,
+      "cumulative_excess_deaths": 21.35135792988035
+    },
+    {
+      "follow_up_year": 13,
+      "reference_deaths_in_year": 4.647715174962631,
+      "scenario_deaths_in_year": 4.542414578920364,
+      "annual_death_count_difference": -0.10530059604226683,
+      "reference_cumulative_deaths": 62.25010313360792,
+      "scenario_cumulative_deaths": 83.49616046744597,
+      "cumulative_excess_deaths": 21.246057333838053
+    },
+    {
+      "follow_up_year": 14,
+      "reference_deaths_in_year": 4.624793580009958,
+      "scenario_deaths_in_year": 4.520012305294385,
+      "annual_death_count_difference": -0.10478127471557297,
+      "reference_cumulative_deaths": 66.87489671361789,
+      "scenario_cumulative_deaths": 88.01617277274033,
+      "cumulative_excess_deaths": 21.141276059122447
+    },
+    {
+      "follow_up_year": 15,
+      "reference_deaths_in_year": 4.601985029745997,
+      "scenario_deaths_in_year": 4.497720515168953,
+      "annual_death_count_difference": -0.10426451457704378,
+      "reference_cumulative_deaths": 71.47688174336383,
+      "scenario_cumulative_deaths": 92.51389328790924,
+      "cumulative_excess_deaths": 21.037011544545408
+    },
+    {
+      "follow_up_year": 16,
+      "reference_deaths_in_year": 4.579288966657116,
+      "scenario_deaths_in_year": 4.475538663661699,
+      "annual_death_count_difference": -0.10375030299541699,
+      "reference_cumulative_deaths": 76.05617071002098,
+      "scenario_cumulative_deaths": 96.98943195157096,
+      "cumulative_excess_deaths": 20.933261241549985
+    },
+    {
+      "follow_up_year": 17,
+      "reference_deaths_in_year": 4.556704835979228,
+      "scenario_deaths_in_year": 4.453466208577508,
+      "annual_death_count_difference": -0.10323862740172007,
+      "reference_cumulative_deaths": 80.61287554600017,
+      "scenario_cumulative_deaths": 101.4428981601485,
+      "cumulative_excess_deaths": 20.830022614148334
+    },
+    {
+      "follow_up_year": 18,
+      "reference_deaths_in_year": 4.534232085684232,
+      "scenario_deaths_in_year": 4.431502610395256,
+      "annual_death_count_difference": -0.10272947528897625,
+      "reference_cumulative_deaths": 85.14710763168443,
+      "scenario_cumulative_deaths": 105.87440077054373,
+      "cumulative_excess_deaths": 20.727293138859295
+    },
+    {
+      "follow_up_year": 19,
+      "reference_deaths_in_year": 4.511870166466516,
+      "scenario_deaths_in_year": 4.409647332254636,
+      "annual_death_count_difference": -0.10222283421188028,
+      "reference_cumulative_deaths": 89.658977798151,
+      "scenario_cumulative_deaths": 110.28404810279835,
+      "cumulative_excess_deaths": 20.625070304647352
+    },
+    {
+      "follow_up_year": 20,
+      "reference_deaths_in_year": 4.489618531729534,
+      "scenario_deaths_in_year": 4.387899839943022,
+      "annual_death_count_difference": -0.1017186917865125,
+      "reference_cumulative_deaths": 94.14859632988055,
+      "scenario_cumulative_deaths": 114.67194794274133,
+      "cumulative_excess_deaths": 20.52335161286078
+    }
+  ],
+  "source_minus_alternative_at_year_20": 8.23537728967301,
+  "difference_as_fraction_of_source_excess": 0.2863609625301427,
+  "source_excess_increase_over_alternative": 0.40126863511476274,
+  "late_log_odds_attenuation": [
+    {
+      "fraction_of_source_late_log_odds": 0,
+      "late_odds_ratio": 1.0,
+      "year_20_excess": 20.52335161286114
+    },
+    {
+      "fraction_of_source_late_log_odds": 0.25,
+      "late_odds_ratio": 1.0322555402601619,
+      "year_20_excess": 22.49270607163458
+    },
+    {
+      "fraction_of_source_late_log_odds": 0.5,
+      "late_odds_ratio": 1.0655515003977987,
+      "year_20_excess": 24.520660897723253
+    },
+    {
+      "fraction_of_source_late_log_odds": 0.75,
+      "late_odds_ratio": 1.0999214397181558,
+      "year_20_excess": 26.60879738152048
+    },
+    {
+      "fraction_of_source_late_log_odds": 1,
+      "late_odds_ratio": 1.1354,
+      "year_20_excess": 28.758728902534
+    }
+  ],
+  "attenuation_status": "Unweighted diagnostic assumptions, not an identified transport distribution or bounds.",
+  "working_paper_column_2_diagnostic": {
+    "source": "Sullivan-von Wachter NBER WP13626 Table 5 column 2, PDF page 54",
+    "url": "https://www.nber.org/system/files/working_papers/w13626/w13626.pdf",
+    "source_sha256": "20617cbe3924c8b58f6d3888cb0a0ea26ca908d60486f4aad304398dd6ef9c8f",
+    "annual_log_odds_coefficients": [
+      0.983,
+      0.688,
+      0.555,
+      0.555,
+      0.249,
+      0.249,
+      0.179,
+      0.179,
+      0.179,
+      0.179,
+      0.179,
+      0.065,
+      0.065,
+      0.065,
+      0.065,
+      0.065,
+      0.153,
+      0.153,
+      0.153,
+      0.153
+    ],
+    "year_20_excess": 29.33746074808687,
+    "status": "Point-only within-study check using fixed model baseline; no joint interval or production admission."
+  },
+  "paired_parameter_sampling": {
+    "available": true,
+    "status": "declared_structural_sensitivity",
+    "eligible_for_public_headline": false,
+    "unit": "deaths",
+    "variants": {
+      "source_profile": {
+        "point": 28.76,
+        "low": 11.26,
+        "high": 50.1,
+        "evidence_status": "source_profile_with_transport_assumptions",
+        "citations": [
+          "sullivan2009"
+        ],
+        "parameter_interval_90": {
+          "p05": 22.0449,
+          "p50": 29.1305,
+          "p95": 36.6818,
+          "mean": 29.2535
+        }
+      },
+      "no_sustained_excess": {
+        "point": 20.52,
+        "low": 9.19,
+        "high": 35.36,
+        "evidence_status": "structural_assumption",
+        "motivating_citations": [
+          "eliasonstorrie2009"
+        ],
+        "assumption": "Retain source odds through offset +5; set offset +6 onward OR=1.",
+        "first_changed_follow_up_year": 7,
+        "fixed_late_odds_ratio": 1.0,
+        "parameter_interval_90": {
+          "p05": 15.728,
+          "p50": 20.8553,
+          "p95": 26.4615,
+          "mean": 20.9558
+        }
+      }
+    },
+    "source_minus_no_sustained_point": 8.24,
+    "structural_point_range": {
+      "low": 20.52,
+      "high": 28.76,
+      "interpretation": "Range of point estimates across these two assumptions; not a confidence interval or a bound on the true effect."
+    },
+    "shared_inputs": [
+      "exposure",
+      "resolved mortality baseline",
+      "follow-up horizon",
+      "source odds through offset +5"
+    ],
+    "limitations": [
+      "No probabilities or model-average weights are assigned to the structures.",
+      "A nonsignificant long-run estimate does not establish an exactly zero effect.",
+      "The Swedish study differs in population, design, effect scale and follow-up; this hybrid does not reproduce its estimates or substitute its hazard ratios for odds ratios.",
+      "The cutoff follows the source profile's offset +6 phase, not the Swedish study's windows; persistence beyond its 12-year follow-up is an assumption in either direction.",
+      "Baseline aging and target-population transport remain unresolved in both structures."
+    ],
+    "source_minus_no_sustained_parameter_interval_90": {
+      "p05": 2.9883,
+      "p50": 8.2391,
+      "p95": 13.8406,
+      "mean": 8.2977
+    },
+    "sampling": {
+      "draws": 2000,
+      "seed": 1901,
+      "comparison": "Both structures use the same parameter draw; the difference is calculated within each draw.",
+      "scope": "Parameter uncertainty conditional on each structure; fixed inputs and exclusions are the same as the parent scenario."
+    }
+  },
+  "sampling_exclusions": [
+    "exposure estimation error",
+    "baseline estimation error",
+    "structural uncertainty",
+    "unmodeled pathways"
+  ],
+  "arithmetic_check": "Annual survivor recurrence agrees with production log-survival function at all 20 horizons within 2e-12 deaths."
+}
