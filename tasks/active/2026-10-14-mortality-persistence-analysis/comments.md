@@ -1,3 +1,4 @@
 - 2026-10-14 22:24 codex: Owner requested focused analysis; no default change is assumed.
 - 2026-10-14 22:24 codex: claimed (ready -> active)
 - 2026-10-14 22:33 John Larue: Analysis: docs/MORTALITY_PERSISTENCE_ANALYSIS_2026-10-14.md. Default unchanged; source and hybrid separated.
+- 2026-10-14 22:33 John Larue: Receipt: validation/mortality_persistence_analysis_20261014.json. Recurrence agrees within 2e-12 deaths.
