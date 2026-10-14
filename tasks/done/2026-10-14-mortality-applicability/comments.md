@@ -22,3 +22,12 @@ Reviewed default-profile and conditional Table7 stratum admission. Fixed missing
 - By: mira
 
 done: active -> review.
+
+## c-7992ef44b7e9
+
+- At: 2026-10-15 01:34 HKT
+- By: codex
+
+accept: review -> done.
+
+Reviewed treatment/comparator gate repair, source restrictions and conditional stratum applicability. Baseline coverage does not expand response coverage; unsupported positive exposure still withholds whole-cohort totals. Focused and integration checks pass.
