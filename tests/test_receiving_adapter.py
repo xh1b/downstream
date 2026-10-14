@@ -1,6 +1,7 @@
 """Receiving estimates need source-specific shares, denominators and endpoint windows."""
 from copy import deepcopy
 from dataclasses import replace
+from decimal import Decimal, localcontext
 import json
 import math
 
@@ -204,3 +205,41 @@ def test_cli_and_old_link_migration(tmp_path, capsys):
               "--kinds", "gap_log_elastic", "--draws", "2"])
     assert exc.value.code == 2
     assert "retired" in capsys.readouterr().err
+
+
+@pytest.mark.parametrize("direction", [0.0, 1.0])
+def test_adjacent_bianchi_share_shift_survives_in_native_and_cli(params, direction, tmp_path, capsys):
+    payload = example("bianchi_2010")
+    reference = payload["exposure"]["reference_share"]
+    post = math.nextafter(reference, direction)
+    payload["exposure"]["post_share"] = post
+    # Independent high-precision arithmetic on the actual binary inputs;
+    # an absolute approximation tolerance would wrongly admit a zero here.
+    with localcontext() as context:
+        context.prec = 80
+        expected_log = (Decimal.from_float(post) / Decimal.from_float(reference)).ln()
+        expected_change = (Decimal.from_float(.105) * expected_log).exp() - 1
+    expected_log, expected_change = float(expected_log), float(expected_change)
+    native = receiving_comparison(params, payload)
+    path = tmp_path / "adjacent-shares.json"
+    path.write_text(json.dumps(payload))
+    assert main(["receiving-community", "--input", str(path)]) == 0
+    cli = json.loads(capsys.readouterr().out)
+    for result in (native, cli):
+        assert result["exposure"]["applied_shift"] != 0
+        assert result["exposure"]["applied_shift"] == pytest.approx(expected_log, rel=1e-14, abs=0)
+        assert result["percent_rate_change"]["point"] == pytest.approx(100*expected_change, rel=1e-14, abs=0)
+        assert result["rate_projection"]["exposure_minus_reference"]["point"] == pytest.approx(300*expected_change, rel=1e-14, abs=0)
+        assert result["endpoint_incident_difference"]["point"] == pytest.approx(30*expected_change, rel=1e-14, abs=0)
+        assert math.copysign(1, result["endpoint_incident_difference"]["point"]) == math.copysign(1, post-reference)
+        assert result["rate_ratio"]["point"] == 1  # the ratio can round; signed changes must survive
+
+
+@pytest.mark.parametrize("reference,post", [(math.nextafter(0.0, 1.0), 1.0),
+                                            (1.0, math.nextafter(0.0, 1.0))])
+def test_extreme_bianchi_share_ratios_use_finite_log_difference_fallback(params, reference, post):
+    payload = example("bianchi_2010", baseline=False)
+    payload["exposure"].update(reference_share=reference, post_share=post)
+    result = receiving_comparison(params, payload)
+    assert result["exposure"]["applied_shift"] == math.log(post)-math.log(reference)
+    assert all(math.isfinite(result["rate_ratio"][key]) for key in ("point", "low", "high"))

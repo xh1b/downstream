@@ -96,7 +96,13 @@ def receiving_comparison(params: ParameterSet, payload: dict) -> dict:
     else:
         if reference == 0 or post == 0:
             raise ValueError("log-share source requires strictly positive reference and post shares")
-        delta = math.log(post) - math.log(reference)
+        difference = post - reference
+        # Near equality, separately rounded logarithms can erase a real
+        # signed shift. A bounded relative difference is safe for log1p;
+        # distant ratios retain log subtraction to avoid ratio overflow.
+        delta = (math.log1p(difference / reference)
+                 if abs(difference) <= reference / 2
+                 else math.log(post) - math.log(reference))
     parameter = params.by_link(spec["link"])
     if (parameter.citation_keys != [spec["source_citation"]] or parameter.evidence_role != "conditional"
             or (parameter.from_node, parameter.to_node) != tuple(spec["link"].split("->"))):
