@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a self-contained local reference explorer from current engine output."""
+"""Build the calculator page from current engine output."""
 from __future__ import annotations
 
 import argparse
@@ -21,8 +21,8 @@ def build() -> str:
 
     parts = load_all(ROOT / "params")
     result = compute_counts(parts["params"], parts["baselines"], ScenarioInput(
-        1000, label="Fixed national reference; exposure scaling only"))
-    directory = ROOT / "examples" / "calculator"
+        1000, label="National source reference"))
+    directory = ROOT / "calculator"
     phases = [{"phase": phase, "label": label, "point": p.point, "low": p.low, "high": p.high,
                "citation": p.citation, "population_scope": p.population_scope}
               for (phase, p), label in zip(mortality_profile(parts["params"]).items(),
@@ -55,11 +55,11 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true", help="Fail if generated HTML is stale")
     args = parser.parse_args()
-    path = ROOT / "examples" / "calculator" / "index.html"
+    path = ROOT / "calculator" / "index.html"
     expected = build()
     if args.check:
         if not path.exists() or path.read_text() != expected:
-            print("Calculator HTML is stale; run scripts/build_calculator_prototype.py")
+            print("Calculator HTML is stale; run scripts/build_calculator.py")
             return 1
         print("Calculator HTML matches current engine and authored UI inputs")
     else:

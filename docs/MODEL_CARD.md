@@ -82,8 +82,9 @@ Reporting". This card travels with the model.
 
 The calculator exposes source-offset survival, editable baseline/odds and child
 lifetime conversion. Its browser equations are checked against native refits;
-rendered mobile and participant review remain open. Household results reconcile
-paired member/household earnings and state person-years. Consumer transforms
+responsive viewport checks pass; physical-device and participant review remain
+open. Household results reconcile paired member/household earnings and state
+person-years. Consumer transforms
 preserve declared input bases, source context and unavailable joint uncertainty.
 
 Parameters v1.52 correct receiving-community units. Light–Miller uses an

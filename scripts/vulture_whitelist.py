@@ -74,3 +74,9 @@ GREATGRANDCHILD
 # sampling uses bulk materialization, while counterfactual and sabotage
 # tests exercise this API to alter a point without changing its band.
 ParameterSet.with_param
+
+# http.server dispatches request handlers by method name; ThreadingMixIn
+# reads daemon_threads when it creates a request thread.
+CalculatorHandler.do_GET
+CalculatorHandler.do_HEAD
+CalculatorServer.daemon_threads

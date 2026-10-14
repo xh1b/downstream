@@ -1,7 +1,23 @@
 # Local calculator
 
-Open [index.html](../examples/calculator/index.html). The page is self-contained.
-No server, account or external assets are required.
+Run from the repository root:
+
+```sh
+make serve
+```
+
+Open [http://127.0.0.1:8000/](http://127.0.0.1:8000/). Press `Ctrl+C` to stop.
+Use `make serve PORT=8001` to select another port. Python 3.12 or later is
+required; `make` uses `.venv/bin/python` when available.
+
+Without `make`, run `python3 scripts/serve_calculator.py --port 8000`.
+The server builds current source data at startup and serves only the calculator.
+Restart it after changing source files. It listens on this computer's loopback
+address. Repository files and directory listings are not served.
+
+The app lives in [`calculator/`](../calculator/). `make calculator` rebuilds
+its self-contained [index.html](../calculator/index.html) for offline use or
+static hosting. No account, Node packages or external assets are required.
 
 ## Calculation
 
@@ -58,11 +74,11 @@ full numeric precision. Long source text can wrap within the page.
 ## Build and verify
 
 ```sh
-.venv/bin/python scripts/build_calculator_prototype.py
-.venv/bin/python scripts/build_calculator_prototype.py --check
-.venv/bin/python -m pytest tests/test_calculator_prototype.py -q
-node --check examples/calculator/math.js
-node --check examples/calculator/app.js
+.venv/bin/python scripts/build_calculator.py
+.venv/bin/python scripts/build_calculator.py --check
+.venv/bin/python -m pytest tests/test_calculator.py tests/test_calculator_server.py -q
+node --check calculator/math.js
+node --check calculator/app.js
 ```
 
 The generated HTML embeds source parameters, signed child presets and the
@@ -79,15 +95,23 @@ and E ≤ 1,000,000,000 USD 2024. All inputs must be finite. These are interface
 limits, not source-support or transport claims. Invalid edits keep the last
 valid calculation and mark the input.
 
-## Remaining review
+## Browser review — 2026-10-15
 
-The browser tool rejected the previous `file://` preview under its URL policy.
-No alternate route was used. Node tests verify equations and DOM behavior;
-they do not verify rendered appearance, responsive layout or assistive technology.
+The local HTTP app was inspected in the in-app browser at 320, 390, 600 and
+1440 px widths. Page width matched viewport width in all four cases.
+Inputs aligned within each row. The risk table scrolled inside its container.
+At 390 px, controls measured 44 px high. At 600 px, all three top inputs
+shared the same vertical position despite the wrapped rate label.
 
-Inspect at 1440 px and 390 px, at 200% zoom, with a keyboard and screen reader.
-Check table scrolling, labels, focus, error recovery and the curve. Record
-screenshots and defects before public use.
+Live checks retained the exact 0.125 exposure label and displayed 0.00359
+expected excess deaths. The tail-null control displayed 20.52; reset restored
+28.76. No browser console errors were reported. See the
+[390 px screenshot](images/calculator-mobile-390.jpg).
+
+Earlier `file://` preview access was denied. The dedicated local HTTP server
+now supplies the application through a supported URL. Physical phone testing,
+200% zoom, screen-reader review and participant testing remain open.
+Viewport emulation does not establish those results.
 
 Human testing remains on task:2026-10-14-calculator-design. Test 6–8 intended
 users. Ask them to identify units, source versus custom inputs, D₀/D₁/ΔD,

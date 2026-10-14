@@ -171,3 +171,15 @@ The browser URL policy explicitly denies the local file preview and alternate
 routes; rendered mobile, zoom, assistive technology and participant checks are
 still unverified. No companion repin, deployment or independent causal
 validation is claimed.
+## Calculator app and local server — 2026-10-15 follow-up
+
+The calculator now lives in `calculator/`. `make serve` builds current source
+data and serves the app at `http://127.0.0.1:8000/`. The server serves only the
+calculator; it does not expose repository files. `make calculator` builds the
+self-contained page. Setup, method and review receipts are in [CALCULATOR.md](CALCULATOR.md).
+
+The HTTP app was reviewed in the in-app browser at 320, 390, 600 and 1440 px.
+No page-wide overflow was found; wrapped labels retained aligned numeric inputs.
+Fractional exposure, tail-null and reset controls worked. This completes the
+responsive browser-viewport check that was blocked by the earlier file preview.
+Physical devices, zoom, assistive technology and human participants remain untested.

@@ -3,8 +3,9 @@ recursive-include params *
 recursive-include validation *.csv *.json *.xml *.txt *.md *.py *.bib
 recursive-include tests *.py
 recursive-include scripts *.py
-recursive-include docs *.md *.html
-recursive-include examples *.html *.css *.js *.json *.md
+recursive-include docs *.md *.html *.jpg
+recursive-include calculator *.html *.css *.js *.md
+include Makefile
 recursive-include tasks *.md .gitkeep
 recursive-include paper *.py *.tex *.bib *.tikz Makefile
 exclude coverage.json

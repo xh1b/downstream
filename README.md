@@ -26,6 +26,19 @@ The bibliography includes research, methods and context sources; inclusion does 
 See [CREDITS.md](CREDITS.md) for the complete attribution record.
 <!-- END GENERATED ATTRIBUTION -->
 
+## Calculator
+
+```sh
+make serve
+```
+
+Open **[127.0.0.1:8000](http://127.0.0.1:8000/)**. Press `Ctrl+C` to stop.
+Use `make serve PORT=8001` if the port is busy.
+
+The app lives in [`calculator/`](calculator/). It calculates in the browser;
+the local server builds its source data at startup. No Node packages are needed.
+See [calculator setup and method](docs/CALCULATOR.md).
+
 ## Install
 
 Python 3.12 or later is required.
@@ -355,9 +368,9 @@ Key documents:
 
 [xh1b.org/downstream](https://xh1b.org/downstream) integrates this model into
 employer, county, state, and family surfaces. Integration is in progress. It is
-deferred while the team strengthens this model. This repo contains only the model, the
-parameters, and the paper. The database runner and its record-selection rules
-belong to the companion project.
+deferred while the team strengthens this model. This repo contains the model,
+parameters, calculator and paper. The database runner and its record-selection
+rules belong to the companion project.
 
 ## Contributing and version comparisons
 
@@ -381,9 +394,9 @@ MIT. See `LICENSE`.
 
 ## Local 0.4 review tools
 
-- [Calculator](examples/calculator/index.html): edit exposure, timing, baseline,
+- [Calculator](calculator/index.html): edit exposure, timing, baseline,
   odds ratios and child earnings inputs. Survival and sensitivity recalculate in
-  the browser. See [method and checks](docs/CALCULATOR_PROTOTYPE.md).
+  the browser. See [method and checks](docs/CALCULATOR.md).
 - [Child-gap view](docs/CHILD_GAP_VIEW.md): `downstream child-gaps --workers 1000`.
 - [Evidence classification](docs/EVIDENCE_CLASSIFICATION_0_4.md): inspect source
   applicability separately from structural runtime use.
