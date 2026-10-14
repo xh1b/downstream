@@ -2,7 +2,7 @@
 title: Specify exposure semantics for conditional consequence estimates
 area: integration
 priority: P1
-assignee:
+assignee: eli
 due:
 blocked-by: []
 expected-paths: [src/downstream/employer.py, src/downstream/scenario.py]
