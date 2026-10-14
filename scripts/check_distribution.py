@@ -28,8 +28,14 @@ def main() -> None:
         validation = Path(subprocess.check_output(
             [str(python), "-c", "from downstream.params import default_dir; print(default_dir().parent / 'validation')"],
             cwd=root, env=env, text=True).strip())
+        receiving = root / "receiving.json"
+        receiving.write_text(json.dumps({"model": "bianchi_2010", "exposure": {
+            "margin": "valid_residence_permit_residents", "response_window": "ten_year_endpoint_difference",
+            "unit": "population_share_fraction", "reference_share": .02, "post_share": .021,
+            "population": "synthetic province", "source": "synthetic wheel fixture"}}))
         for command in (["audit"], ["export"], ["family"], ["validate"],
                         ["child-gaps", "--workers", "1000"],
+                        ["receiving-community", "--input", str(receiving)],
                         ["scenario", "--workers", "1000", "--draws", "20", "--seed", "1901",
                          "--sensitivity-base", "8"],
                         ["mortality-cohort", "--input", str(validation / "cps2024_hypothetical_mortality_input.json")],
@@ -42,6 +48,9 @@ def main() -> None:
                 raise RuntimeError(f"Installed-wheel {command[0]} failed:\n"
                                    f"{result.stdout}\n{result.stderr}")
             payload = json.loads(result.stdout)
+            if command[0] == "receiving-community":
+                if payload["eligible_for_public_headline"] or payload["rate_projection"]["available"]:
+                    raise RuntimeError("Installed-wheel receiving scenario invents transport or a baseline")
             if command[0] == "child-gaps":
                 if len(payload["rows"]) != 3 or payload["combined_total"] is not None:
                     raise RuntimeError("Installed-wheel child-gaps lacks separate generation output")

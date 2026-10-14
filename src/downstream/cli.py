@@ -81,6 +81,9 @@ def _run_main(argv: list[str] | None = None) -> int:
     p = sub.add_parser("mortality-cohort", help="exact age-stratum mortality with an explicit projection assumption")
     p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
     p.add_argument("--input", required=True)
+    p = sub.add_parser("receiving-community", help="source-specific immigrant-share crime-rate scenarios")
+    p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
+    p.add_argument("--input", required=True)
     p = sub.add_parser("household", help="annual household earnings under a supplied displacement duration")
     p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
     p.add_argument("--input", required=True)
@@ -335,6 +338,10 @@ def _run_main(argv: list[str] | None = None) -> int:
         from .uncertainty_budget import propagate_uncertainty
         _dump(propagate_uncertainty(parts['params'],parts['baselines'],json.loads(Path(args.input).read_text()),
                                    nodes=parts['nodes'],params_dir=Path(args.params)))
+        return 0
+    if args.cmd == "receiving-community":
+        from .receiving_community import receiving_comparison
+        _dump(receiving_comparison(parts["params"], json.loads(Path(args.input).read_text())))
         return 0
     if args.cmd == "household":
         from .household import household_comparison
