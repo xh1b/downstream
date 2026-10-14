@@ -1,8 +1,7 @@
 # TODO migration - 2026-10-14
 
-All 48 top-level TODO entries were converted to cards. The dated archive is immutable historical context; use the board for current work.
-
-Archive: `docs/history/TODO_2026-10-14.md`; SHA-256 `103bedf403e11287ef6c4929cbb7d86b04d3efbcf0697456a50d170d71e41429`.
+All 48 top-level TODO entries were converted to cards. Use the board for current work.
+The original TODO was removed; Git history retains its previous contents.
 
 Legacy DONE entries are imported as done history; this does not claim new owner acceptance or XH1B deployment.
 Recent 0.4 implementation completions await owner review. Mixed completed/pending entries stay ready with separate checked/open criteria.

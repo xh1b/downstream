@@ -99,9 +99,8 @@ not a second claim.
 
 ## Downstream migration
 
-`tasks/MIGRATION.md` maps all 48 legacy entries to cards and records the archive
-hash. `docs/history/TODO_2026-10-14.md` preserves the original text and is not
-an active backlog. Legacy DONE entries in done/ preserve historical status;
+`tasks/MIGRATION.md` maps all 48 legacy entries to cards. The original TODO
+was removed; Git history retains it. Legacy DONE entries in done/ preserve historical status;
 this import does not assert fresh owner acceptance. Recent completed 0.4
 implementation entries start in review/. Mixed completed/pending entries
 retain checked achievements and unchecked remaining work in ready/.

@@ -20,7 +20,6 @@ The columns are inbox (proposals or blocked inputs), ready (triaged), active
 The initial import has 48 cards. Partial scopes keep their remaining work open;
 recent completed 0.4 work awaits owner review. No agent claims were invented.
 See [the migration map](MIGRATION.md) for every original entry and its card.
-The [dated TODO archive](../docs/history/TODO_2026-10-14.md) preserves the original text.
 
 ## Scope
 

@@ -122,5 +122,5 @@ Use `tasks/` for all work tracking, following `tasks/AGENTS.md`. The root
 TODO.md has been converted to task cards and is no longer the backlog.
 Read the board with `python3 scripts/tasks.py list` or `next`; claim ready
 work before starting it and record findings/receipts in the card thread.
-Initial migration is a bootstrap import. The dated TODO in `docs/history/`
-is historical context only. Do not recreate a competing TODO list.
+Initial migration is a bootstrap import. The original TODO was removed;
+Git history retains it. Do not recreate a competing TODO list.
