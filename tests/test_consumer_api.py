@@ -123,3 +123,12 @@ def test_mixtures_require_a_common_known_denominator_and_mortality_contract():
 def test_blocked_mixture_remains_unavailable_after_display_scaling():
     unavailable = {"available": False, "reason": "blocked"}
     assert scale_outcome(unavailable, 2) == unavailable
+
+
+def test_null_mortality_contract_is_unknown_not_a_shared_declared_basis():
+    source = row()
+    source["components"] = dict.fromkeys(("follow_up_years", "method", "timing"))
+    assert not mix_expected([packet(source)], [1], "excess_deaths")["available"]
+    source["components"] = {"follow_up_years": -1, "method": "odds_survival", "timing": "source_profile"}
+    with pytest.raises(ValueError, match="follow-up must be finite"):
+        mix_expected([packet(source)], [1], "excess_deaths")

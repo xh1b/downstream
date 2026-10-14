@@ -123,8 +123,13 @@ def mix_expected(results, weights, outcome):
     if outcome == "excess_deaths":
         contracts = [row.get("components", {}) for row, _ in rows]
         fields = ("follow_up_years", "method", "timing")
-        if any(not set(fields) <= contract.keys() for contract in contracts):
+        if any(not isinstance(contract, dict) or not set(fields) <= contract.keys()
+               or contract["follow_up_years"] is None
+               or any(not isinstance(contract[key], str) or not contract[key].strip()
+                      for key in ("method", "timing")) for contract in contracts):
             return {"available": False, "reason": "Common mortality follow-up/method/timing is undeclared."}
+        if any(not _nonnegative_number(contract["follow_up_years"]) for contract in contracts):
+            raise ValueError("mortality follow-up must be finite and nonnegative")
         if any(any(contract[key] != contracts[0][key] for key in fields) for contract in contracts):
             raise ValueError("component mortality follow-up/method/timing differs")
     out = {"available": True, "unit": rows[0][0]["unit"],
