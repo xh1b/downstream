@@ -16,7 +16,7 @@ Keep implementation and deployment in the companion project out of this scope.
 
 ## Acceptance
 
-- [ ] Trace the current pin, exposure, calculation, cache and presentation contracts with source paths.
-- [ ] Distinguish implemented model capabilities from those the companion actually consumes.
-- [ ] Prioritize existing open cards and record concrete next steps and release acceptance criteria.
-- [ ] Record inspection scope and uncertainty about deployed state; retain engine 0.4.0.
+- [x] Trace the current pin, exposure, calculation, cache and presentation contracts with source paths.
+- [x] Distinguish implemented model capabilities from those the companion actually consumes.
+- [x] Prioritize existing open cards and record concrete next steps and release acceptance criteria.
+- [x] Record inspection scope and uncertainty about deployed state; retain engine 0.4.0.
