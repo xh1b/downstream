@@ -16,8 +16,8 @@ precision or pooled estimates. Independent extraction remains the parent task.
 
 ## Acceptance
 
-- [ ] Preserve every current contrast, coefficient sign and null-compatible interval.
-- [ ] Show scale, horizon, treatment/comparison, outcome, population and subgroup compatibility/refusal reasons.
-- [ ] Separate same-sample overlap from declared distinct groups; do not count contrast rows as independent studies.
-- [ ] Produce deterministic inspectable output with source identity and a freshness check; do not pool or change model parameters.
-- [ ] Test admission distinctions using independent, overlapping and mismatched synthetic contrasts.
+- [x] Preserve every current contrast, coefficient sign and null-compatible interval. [report](../../../docs/POOL_READINESS_0_4.md) [tests](../../../tests/test_pool_readiness.py)
+- [x] Show scale, horizon, treatment/comparison, outcome, population and subgroup compatibility/refusal reasons. [report](../../../docs/POOL_READINESS_0_4.md) [tests](../../../tests/test_pool_readiness.py)
+- [x] Separate same-sample overlap from declared distinct groups; do not count contrast rows as independent studies. [report](../../../docs/POOL_READINESS_0_4.md) [tests](../../../tests/test_pool_readiness.py)
+- [x] Produce deterministic inspectable output with source identity and a freshness check; do not pool or change model parameters. [report](../../../docs/POOL_READINESS_0_4.md) [tests](../../../tests/test_pool_readiness.py)
+- [x] Test admission distinctions using independent, overlapping and mismatched synthetic contrasts. [report](../../../docs/POOL_READINESS_0_4.md) [tests](../../../tests/test_pool_readiness.py)
