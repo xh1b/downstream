@@ -34,3 +34,12 @@ Implemented in5bfc6a6: member/household paired cumulative gross earnings, signed
 - By: mira
 
 done: active -> review.
+
+## c-951b6d7d1ac0
+
+- At: 2026-10-15 02:02 HKT
+- By: codex
+
+accept: review -> done.
+
+Reviewed exact member/household reconciliation, paired differences, state-person-year occupancy assumptions and explicit calendar labels. Fixed overridden transition gating preserves actual-use provenance. Forty household checks pass; broader monthly/resource/dependence work remains open.
