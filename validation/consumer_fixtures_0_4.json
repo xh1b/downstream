@@ -11,6 +11,7 @@
     "src/downstream/bundle.py": "a6a7a6f75d997b6bb9fafe318648a2c36723f41f0b6a1ec63f421d48ce3405fb",
     "src/downstream/child_applicability.py": "55b53fb93d0086691e2f240d185cbc90a627df1198c9a5f8ec56ebf01ccb3e96",
     "src/downstream/child_gap_view.py": "e2226f11dd32729a8415894be9800302c5c2a92fd82762d3cb513ae984d8057d",
+    "src/downstream/child_support.py": "49f5b717455f9b24a8c58d7480aa3c867cc3093ec2b6a409eaed44f80ddbcaff",
     "src/downstream/children.py": "37b2fad943718e8c2b4970871d625b113476e7a892aaadb50a95d201dcd089a9",
     "src/downstream/citations.py": "44307686753744a800cd1e43eb8b4bdce6dacae82cb307f777bd50768aa31eb9",
     "src/downstream/cli.py": "1607d0537cf6f642407f0bf63562c684e6d3bfc6f2457ed1eff8128c64001a69",
@@ -20,7 +21,7 @@
     "src/downstream/county_rates.py": "77aaa0a966d104c61a617d51a79ca463673c9735e381c8ebf3d7800f186a17cc",
     "src/downstream/credits.py": "a82fab82c4a71da829e863a5399662383b09189cdafe025213f1668db8a8cc6b",
     "src/downstream/distributions.py": "41ab35ec9f3d3c60455f216e5758f4997164d890964ee7fa5afadfa1bad95221",
-    "src/downstream/employer.py": "5758c88a4f1a9d0e6bdc33e983f9130e035f4596ebc3bdaf609670e62984e049",
+    "src/downstream/employer.py": "a46628e68ee4603a75ecd96e3fad565a4d31767a6e703b5f075acd69be132712",
     "src/downstream/evidence.py": "c51fa99d7cfbff6fb48e2d2493378e45548051d450911c2634272803c44e2260",
     "src/downstream/explanation.py": "9cb2e5f2077fd72d770f7c4dfa0d013f5f7a57dd364405ddb63cb441a89cda5f",
     "src/downstream/family.py": "1ba3a5499f1633eb50eb6d14b67d4cf9b2368604d8903b87a2ca1ebf739eab08",
@@ -31,9 +32,10 @@
     "src/downstream/ledger.py": "9a6e4fad78e7700f34ab1f6d571e9cf04c2146868125bab087d1adbba9af504b",
     "src/downstream/mc.py": "f0ffb3dca3b01ec65142c0c0d37e41e369b268b14b6923344e7eed75a40eab57",
     "src/downstream/mortality.py": "9e3c01e3c62124f75024ed4a29446e2c0e104d72d18e27ca75095717ec13610a",
+    "src/downstream/mortality_covariance.py": "42b4a695c72a25b3f75ba2d215ec5a3829c4f29922152e7b57295a252ee67151",
     "src/downstream/mortality_profiles.py": "1f9f2bf9f12e4714b4545eba5bd4db67635d430be0c0ad46a466e3b37be4d838",
     "src/downstream/mortality_robustness.py": "db3041e56693416784dd734b58ef0c442da4c96f9d2822be8295c29c9d6152c9",
-    "src/downstream/mortality_strata.py": "fad80e434a602ac3efbe51697f118b7993ceb491035588ca5b4a3f21903f0a84",
+    "src/downstream/mortality_strata.py": "4f8b77aaf5822f0edf62db2f0eef21b5a64573549e4358d28684be7bb1c8454e",
     "src/downstream/params.py": "e2af3e2d3394ce241006937cba7eb67bf4eeb9110cef39170e51549da1e0fe00",
     "src/downstream/place.py": "4d8c31e5d1a673fcbe43bfcf60188d2644790e7d776fe6ccbf7b7b71ab957e21",
     "src/downstream/policy.py": "ee32e77bd34771eb621226a9ac3b64599662737066bcb7b16f83c912bf143359",
@@ -74,7 +76,7 @@
     "params/study_estimates.template.csv": "3f71fb5102d87827c926ac9c9ad09ce834798bb19c461cfca3f6854665cc66bf",
     "scripts/build_consumer_fixtures.py": "d76850e80f00c4afcb8dcc6e2a769a11ba2e114a1dd00cae9acbb8a9da446270"
   },
-  "source_content_sha256": "bd4245cc0bfd08533c0f76916f309c6b97253ff87e46440646bee7143b86a24c",
+  "source_content_sha256": "edbf51000ceb45cb9ba6401c05981555822cb4bf3e745a63ff7094ffd0e7ce03",
   "fixture_sampling": "128 draws/base, seed 1901; contract fixtures, not precision-qualified research intervals.",
   "fixtures": {
     "national": {
