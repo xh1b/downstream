@@ -2,7 +2,7 @@
 title: Add explicit receiving-community exposure adapter
 area: scenarios
 priority: P2
-assignee:
+assignee: eli
 parent: 2026-10-14-full-comparison
 expected-paths: [src/downstream/receiving_community.py, src/downstream/cli.py, tests/test_receiving_adapter.py, docs/RECEIVING_COMMUNITY_0_4.md]
 blocked-by: []
