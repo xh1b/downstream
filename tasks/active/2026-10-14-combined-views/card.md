@@ -2,7 +2,7 @@
 title: Combined child-gap view, housing chain and explanation design
 area: presentation
 priority: P3
-assignee:
+assignee: mira
 due:
 blocked-by: []
 expected-paths: []
