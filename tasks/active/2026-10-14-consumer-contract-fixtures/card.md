@@ -23,11 +23,11 @@ This proposal does not authorize a companion repin or deployment.
 
 ## Acceptance
 
-- [ ] Specify required output fields and scaling rules for totals, sensitivities, applicability and provenance.
-- [ ] Provide national, county, mixed, unsupported-place, blocked, zero and fractional consumer fixtures.
-- [ ] Preserve child applicability, signed subgroup estimates and explicit valuation in relevant fixtures.
-- [ ] Verify every combined alternative uses the same weights and inputs; never inherit first-place totals or eligibility.
-- [ ] Keep support envelopes, parameter intervals and structural comparisons distinct; do not average quantiles as joint intervals.
-- [ ] Record input, source, bundle and adapter identity requirements and cache invalidation expectations.
-- [ ] Prepare companion acceptance steps for parsed/scaled results, explorer, HTML and Markdown parity.
-- [ ] Mark unsupported combinations unavailable and document remaining transport and dependence limits.
+- [x] Specify required output fields and scaling rules for totals, sensitivities, applicability and provenance. [contract](../../../docs/CONSUMER_FIXTURES_0_4.md)
+- [x] Provide national, county, mixed, unsupported-place, blocked, zero and fractional consumer fixtures. [fixtures](../../../validation/consumer_fixtures_0_4.json)
+- [x] Preserve child applicability, signed subgroup estimates and explicit valuation in relevant fixtures. [signed and valuation checks](../../../tests/test_consumer_fixtures.py)
+- [x] Verify every combined alternative uses the same weights and inputs; never inherit first-place totals or eligibility. [mixture checks](../../../tests/test_consumer_fixtures.py)
+- [x] Keep support envelopes, parameter intervals and structural comparisons distinct; do not average quantiles as joint intervals. [joint-uncertainty limits](../../../docs/CONSUMER_FIXTURES_0_4.md)
+- [x] Record input, source, bundle and adapter identity requirements and cache invalidation expectations. [identity and cache contract](../../../docs/CONSUMER_FIXTURES_0_4.md)
+- [x] Prepare companion acceptance steps for parsed/scaled results, explorer, HTML and Markdown parity. [companion acceptance steps](../../../docs/CONSUMER_FIXTURES_0_4.md)
+- [x] Mark unsupported combinations unavailable and document remaining transport and dependence limits. [unavailable combinations](../../../tests/test_consumer_fixtures.py)
