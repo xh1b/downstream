@@ -1,0 +1,410 @@
+{
+  "inspected_at_utc": "2026-10-14T14:10:50.748859+00:00",
+  "scope": "Local source inspection and synthetic worker execution only. No database, browser, repin, deployment or remote operation.",
+  "downstream_head": "924dfe46b5321cd5d9c5b29751a5061ced246685",
+  "xh1b_head": "91e4d352fd3e5788188fdad8e954c5155ec9e8f8",
+  "xh1b_source_files_sha256": {
+    "scraper/vendor/downstream-source.json": "16eb66260d467079680a1d504ffd6d69283194d933598c7a58f666364442bbd2",
+    "scraper/vendor/downstream/manifest.json": "cabb9061249f7dad69436337f3b1ea027f3fd7e4d4e0ad0f8650f3aedb5b76c5",
+    "scraper/scraper/entity_analysis.py": "bae7d745a11ee911b49fd6b78e05a2b0a13993742d83b938b3be06937e074b3d",
+    "scraper/scraper/entity_analysis_worker.py": "3fe89ba1d4455cb95c8f8756d29629c1b6307021a2482ea4cbbb23c42ba3c8bc",
+    "scraper/scraper/aggregate.py": "90c66a73ac4aaae813c3e92f1039a14d5114743a4bc403bff44fbc6d288ecc50",
+    "scraper/scraper/scheduler.py": "c3724884ddfe398e6ec2a06960b227a76ead1588e3c9deb31ee25e649e3dd69b",
+    "website/src/lib/downstream-analysis.ts": "5210b548cd47e7f7d87328bcbb2a1490321f0860d4f48917348b3f5fc85c7503",
+    "website/src/lib/queries/downstream.ts": "ee8a2f6adcca6a702851ba256882705bc7cc17db51d448424afd29e4890024f0",
+    "website/src/lib/downstream-calculations.ts": "47f5fac2243fe0453715903f5b8952d553143f11ab5e4aa133a3bb6b40d11f3c",
+    "website/src/lib/downstream-reference.ts": "b0ce342818b0350fb75cc42bad39632b59e31f031ab16939a34c3de912daaf90",
+    "website/src/lib/downstream-baseline.ts": "f3c26a046e097119d4006d9aca435fa98aa66fec3ac656629e76b86e93012800",
+    "website/src/components/downstream-impact.tsx": "5dc2a23cdddc6fb1db80064252ec191b843fbf1a39edeb006d946e69803e7a0f",
+    "website/src/components/downstream-summary.tsx": "f5b30544f176a7b9f6f4a1efe12ded33ec60a5def4c0d289057844760c032ed2",
+    "website/src/components/downstream-summary-details.tsx": "af9d97c6aff9ba36559a4709d8ed568115313d3395ae8ae744a9354f285176ce",
+    "website/src/components/downstream-model-explorer.tsx": "be709d2be99e172d51ab13429fa8a336007cd3c34382ea5597044a8d9210c3ac",
+    "website/scripts/build-downstream-reference.py": "de2191afd79509079a37d9a869746d1e4bb18f04160742c5734f6c0f5252ebf2",
+    "website/src/content/downstream-reference.json": "0d23abaff7c19d4f88f7cd3c73504b956692a650f83e21736662fc771b298224"
+  },
+  "current_model_inputs_sha256": {
+    "src/downstream/scenario.py": "bef5d93385c0c36dea576bfff95b6b56492788ff3ff092fdb28276955edf55de",
+    "src/downstream/mortality_robustness.py": "db3041e56693416784dd734b58ef0c442da4c96f9d2822be8295c29c9d6152c9",
+    "params/parameters.csv": "c9161271abee056851a3f134aeb669ac108dcfb3cb751ce61cbdbf816f4b3839",
+    "params/VERSION": "5b485c5ce24d5cb27d71d6b5e9a2336df87ee23fb70b0876bf5d6cdfe60ffe76"
+  },
+  "verified_pinned_file_count": 58,
+  "pin": {
+    "source_commit": "e16440fe513b95ad5edb06fa120462789d5fc19c",
+    "engine_version": "0.3.0",
+    "parameter_set_version": "v1.49",
+    "bundle_sha256": "bb2b77ddfb379bb71d40b91abb25658940160a679c3a22be1ac7f116f8a1a606"
+  },
+  "synthetic_inputs": [
+    {
+      "entity_type": "employer",
+      "entity_id": "inspection-national"
+    },
+    {
+      "entity_type": "county",
+      "entity_id": "17043"
+    },
+    {
+      "entity_type": "employer",
+      "entity_id": "inspection-mix",
+      "place_inputs": [
+        [
+          "17043",
+          0.6
+        ],
+        [
+          "national",
+          0.4
+        ]
+      ]
+    }
+  ],
+  "pinned_worker_results": [
+    {
+      "id": "inspection-national",
+      "engine": "0.3.0",
+      "parameters": "v1.49",
+      "normalization": {
+        "displaced_workers": 1000,
+        "children_per_worker": 2,
+        "tradable_share": 1,
+        "follow_up_years": 20
+      },
+      "target_population": null,
+      "modeled": {
+        "excess_deaths": {
+          "point": 28.73,
+          "low": 12.32,
+          "high": 48.49,
+          "eligible_for_public_headline": false
+        },
+        "child_lifetime_earnings_lost_usd": {
+          "point": 478894046.4,
+          "low": 124388064.0,
+          "high": 808522416.0,
+          "eligible_for_public_headline": false
+        }
+      },
+      "blocked": [
+        {
+          "outcome": "local_service_jobs_lost",
+          "reason": "requires a documented net local loss of tradable jobs; worker displacement alone is not this exposure"
+        }
+      ]
+    },
+    {
+      "id": "17043",
+      "engine": "0.3.0",
+      "parameters": "v1.49",
+      "normalization": {
+        "displaced_workers": 1000,
+        "children_per_worker": 2,
+        "tradable_share": 1,
+        "follow_up_years": 20
+      },
+      "target_population": null,
+      "modeled": {
+        "excess_deaths": {
+          "point": 17.0,
+          "low": 7.26,
+          "high": 28.84,
+          "eligible_for_public_headline": false
+        },
+        "child_lifetime_earnings_lost_usd": {
+          "point": 503231663.09,
+          "low": 129684421.44,
+          "high": 856275058.08,
+          "eligible_for_public_headline": false
+        }
+      },
+      "blocked": [
+        {
+          "outcome": "local_service_jobs_lost",
+          "reason": "requires a documented net local loss of tradable jobs; worker displacement alone is not this exposure"
+        }
+      ]
+    },
+    {
+      "id": "inspection-mix",
+      "engine": "0.3.0",
+      "parameters": "v1.49",
+      "normalization": {
+        "displaced_workers": 1000,
+        "children_per_worker": 2,
+        "tradable_share": 1,
+        "follow_up_years": 20
+      },
+      "target_population": null,
+      "modeled": {
+        "excess_deaths": {
+          "point": 21.692,
+          "low": 9.284,
+          "high": 36.7,
+          "eligible_for_public_headline": false
+        },
+        "child_lifetime_earnings_lost_usd": {
+          "point": 493496616.414,
+          "low": 127565878.464,
+          "high": 837174001.248,
+          "eligible_for_public_headline": false
+        }
+      },
+      "blocked": [
+        {
+          "outcome": "local_service_jobs_lost",
+          "reason": "requires a documented net local loss of tradable jobs; worker displacement alone is not this exposure"
+        }
+      ]
+    }
+  ],
+  "candidate_worker_results": [
+    {
+      "id": "inspection-national",
+      "engine": "0.4.0",
+      "parameters": "v1.51",
+      "normalization": {
+        "displaced_workers": 1000,
+        "children_per_worker": 2,
+        "tradable_share": 1,
+        "follow_up_years": 20
+      },
+      "target_population": null,
+      "modeled": {
+        "excess_deaths": {
+          "point": 28.76,
+          "low": 11.26,
+          "high": 50.1,
+          "eligible_for_public_headline": false,
+          "persistence_sensitivity": {
+            "available": true,
+            "status": "declared_structural_sensitivity",
+            "eligible_for_public_headline": false,
+            "unit": "deaths",
+            "variants": {
+              "source_profile": {
+                "point": 28.76,
+                "low": 11.26,
+                "high": 50.1,
+                "evidence_status": "source_profile_with_transport_assumptions",
+                "citations": [
+                  "sullivan2009"
+                ]
+              },
+              "no_sustained_excess": {
+                "point": 20.52,
+                "low": 9.19,
+                "high": 35.36,
+                "evidence_status": "structural_assumption",
+                "motivating_citations": [
+                  "eliasonstorrie2009"
+                ],
+                "assumption": "Retain source odds through offset +5; set offset +6 onward OR=1.",
+                "first_changed_follow_up_year": 7,
+                "fixed_late_odds_ratio": 1.0
+              }
+            },
+            "source_minus_no_sustained_point": 8.24,
+            "structural_point_range": {
+              "low": 20.52,
+              "high": 28.76,
+              "interpretation": "Range of point estimates across these two assumptions; not a confidence interval or a bound on the true effect."
+            },
+            "shared_inputs": [
+              "exposure",
+              "resolved mortality baseline",
+              "follow-up horizon",
+              "source odds through offset +5"
+            ],
+            "limitations": [
+              "No probabilities or model-average weights are assigned to the structures.",
+              "A nonsignificant long-run estimate does not establish an exactly zero effect.",
+              "The Swedish study differs in population, design, effect scale and follow-up; this hybrid does not reproduce its estimates or substitute its hazard ratios for odds ratios.",
+              "The cutoff follows the source profile's offset +6 phase, not the Swedish study's windows; persistence beyond its 12-year follow-up is an assumption in either direction.",
+              "Baseline aging and target-population transport remain unresolved in both structures."
+            ]
+          }
+        },
+        "child_lifetime_earnings_lost_usd": {
+          "point": 478894046.4,
+          "low": 124388064.0,
+          "high": 808522416.0,
+          "eligible_for_public_headline": false
+        }
+      },
+      "blocked": [
+        {
+          "outcome": "local_service_jobs_lost",
+          "reason": "requires a documented net local loss of tradable jobs; worker displacement alone is not this exposure"
+        }
+      ]
+    },
+    {
+      "id": "17043",
+      "engine": "0.4.0",
+      "parameters": "v1.51",
+      "normalization": {
+        "displaced_workers": 1000,
+        "children_per_worker": 2,
+        "tradable_share": 1,
+        "follow_up_years": 20
+      },
+      "target_population": null,
+      "modeled": {
+        "excess_deaths": {
+          "point": 17.02,
+          "low": 6.63,
+          "high": 29.81,
+          "eligible_for_public_headline": false,
+          "persistence_sensitivity": {
+            "available": true,
+            "status": "declared_structural_sensitivity",
+            "eligible_for_public_headline": false,
+            "unit": "deaths",
+            "variants": {
+              "source_profile": {
+                "point": 17.02,
+                "low": 6.63,
+                "high": 29.81,
+                "evidence_status": "source_profile_with_transport_assumptions",
+                "citations": [
+                  "sullivan2009"
+                ]
+              },
+              "no_sustained_excess": {
+                "point": 12.12,
+                "low": 5.41,
+                "high": 20.97,
+                "evidence_status": "structural_assumption",
+                "motivating_citations": [
+                  "eliasonstorrie2009"
+                ],
+                "assumption": "Retain source odds through offset +5; set offset +6 onward OR=1.",
+                "first_changed_follow_up_year": 7,
+                "fixed_late_odds_ratio": 1.0
+              }
+            },
+            "source_minus_no_sustained_point": 4.9,
+            "structural_point_range": {
+              "low": 12.12,
+              "high": 17.02,
+              "interpretation": "Range of point estimates across these two assumptions; not a confidence interval or a bound on the true effect."
+            },
+            "shared_inputs": [
+              "exposure",
+              "resolved mortality baseline",
+              "follow-up horizon",
+              "source odds through offset +5"
+            ],
+            "limitations": [
+              "No probabilities or model-average weights are assigned to the structures.",
+              "A nonsignificant long-run estimate does not establish an exactly zero effect.",
+              "The Swedish study differs in population, design, effect scale and follow-up; this hybrid does not reproduce its estimates or substitute its hazard ratios for odds ratios.",
+              "The cutoff follows the source profile's offset +6 phase, not the Swedish study's windows; persistence beyond its 12-year follow-up is an assumption in either direction.",
+              "Baseline aging and target-population transport remain unresolved in both structures."
+            ]
+          }
+        },
+        "child_lifetime_earnings_lost_usd": {
+          "point": 503231663.09,
+          "low": 129684421.44,
+          "high": 856275058.08,
+          "eligible_for_public_headline": false
+        }
+      },
+      "blocked": [
+        {
+          "outcome": "local_service_jobs_lost",
+          "reason": "requires a documented net local loss of tradable jobs; worker displacement alone is not this exposure"
+        }
+      ]
+    },
+    {
+      "id": "inspection-mix",
+      "engine": "0.4.0",
+      "parameters": "v1.51",
+      "normalization": {
+        "displaced_workers": 1000,
+        "children_per_worker": 2,
+        "tradable_share": 1,
+        "follow_up_years": 20
+      },
+      "target_population": null,
+      "modeled": {
+        "excess_deaths": {
+          "point": 21.716,
+          "low": 8.482,
+          "high": 37.926,
+          "eligible_for_public_headline": false,
+          "persistence_sensitivity": {
+            "available": true,
+            "status": "declared_structural_sensitivity",
+            "eligible_for_public_headline": false,
+            "unit": "deaths",
+            "variants": {
+              "source_profile": {
+                "point": 17.02,
+                "low": 6.63,
+                "high": 29.81,
+                "evidence_status": "source_profile_with_transport_assumptions",
+                "citations": [
+                  "sullivan2009"
+                ]
+              },
+              "no_sustained_excess": {
+                "point": 12.12,
+                "low": 5.41,
+                "high": 20.97,
+                "evidence_status": "structural_assumption",
+                "motivating_citations": [
+                  "eliasonstorrie2009"
+                ],
+                "assumption": "Retain source odds through offset +5; set offset +6 onward OR=1.",
+                "first_changed_follow_up_year": 7,
+                "fixed_late_odds_ratio": 1.0
+              }
+            },
+            "source_minus_no_sustained_point": 4.9,
+            "structural_point_range": {
+              "low": 12.12,
+              "high": 17.02,
+              "interpretation": "Range of point estimates across these two assumptions; not a confidence interval or a bound on the true effect."
+            },
+            "shared_inputs": [
+              "exposure",
+              "resolved mortality baseline",
+              "follow-up horizon",
+              "source odds through offset +5"
+            ],
+            "limitations": [
+              "No probabilities or model-average weights are assigned to the structures.",
+              "A nonsignificant long-run estimate does not establish an exactly zero effect.",
+              "The Swedish study differs in population, design, effect scale and follow-up; this hybrid does not reproduce its estimates or substitute its hazard ratios for odds ratios.",
+              "The cutoff follows the source profile's offset +6 phase, not the Swedish study's windows; persistence beyond its 12-year follow-up is an assumption in either direction.",
+              "Baseline aging and target-population transport remain unresolved in both structures."
+            ]
+          }
+        },
+        "child_lifetime_earnings_lost_usd": {
+          "point": 493496616.414,
+          "low": 127565878.464,
+          "high": 837174001.248,
+          "eligible_for_public_headline": false
+        }
+      },
+      "blocked": [
+        {
+          "outcome": "local_service_jobs_lost",
+          "reason": "requires a documented net local loss of tradable jobs; worker displacement alone is not this exposure"
+        }
+      ]
+    }
+  ],
+  "candidate_mix_check": {
+    "expected_source_point_from_rounded_components": 21.716,
+    "actual_source_point": 21.716,
+    "actual_nested_source_point": 17.02,
+    "expected_alternate_point_from_rounded_components": 15.48,
+    "actual_nested_alternate_point": 12.12,
+    "finding": "Main outcome statistics mix correctly. Nested structural sensitivity stays on first component. This is a pending 0.4 compatibility defect, not evidence of a deployed defect."
+  }
+}
