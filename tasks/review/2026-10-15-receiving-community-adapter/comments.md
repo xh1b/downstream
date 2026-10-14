@@ -50,3 +50,10 @@ Independent review found Bianchi log(post)-log(reference) cancels adjacent signe
 - By: eli
 
 Fixed independently reproduced Bianchi cancellation: bounded near-equal share differences now use log1p((post-reference)/reference); extreme ratios retain safe log subtraction. Positive and negative adjacent-share regressions use independent 80-digit Decimal reference calculations, strict relative/no absolute tolerances, and test native plus CLI signed rate/count changes. Smallest-positive-float extreme-ratio checks preserve finite fallback behavior. [Tests](../../../tests/test_receiving_adapter.py). Receiving/source suite46 passed in1.60s; Ruff clean. No parameter version/value changes.
+
+## c-7b2e6f53e079
+
+- At: 2026-10-15 02:07 HKT
+- By: eli
+
+done: active -> review.
