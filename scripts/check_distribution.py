@@ -29,6 +29,7 @@ def main() -> None:
             [str(python), "-c", "from downstream.params import default_dir; print(default_dir().parent / 'validation')"],
             cwd=root, env=env, text=True).strip())
         for command in (["audit"], ["export"], ["family"], ["validate"],
+                        ["child-gaps", "--workers", "1000"],
                         ["scenario", "--workers", "1000", "--draws", "20", "--seed", "1901",
                          "--sensitivity-base", "8"],
                         ["mortality-cohort", "--input", str(validation / "cps2024_hypothetical_mortality_input.json")],
@@ -41,6 +42,9 @@ def main() -> None:
                 raise RuntimeError(f"Installed-wheel {command[0]} failed:\n"
                                    f"{result.stdout}\n{result.stderr}")
             payload = json.loads(result.stdout)
+            if command[0] == "child-gaps":
+                if len(payload["rows"]) != 3 or payload["combined_total"] is not None:
+                    raise RuntimeError("Installed-wheel child-gaps lacks separate generation output")
             if command[0] == "scenario":
                 report = payload["modeled"]["excess_deaths"]["sensitivity"]
                 if len(report["effect_drivers"]) != 5 or not report["variance_attribution"]["available"]:
