@@ -49,7 +49,7 @@ def propagate_uncertainty(params, baselines, payload, *, nodes=None, params_dir=
         raise ValueError('draws must be an integer 2-100000')
     if isinstance(seed,bool) or not isinstance(seed,int):
         raise ValueError('seed must be an integer')
-    params=select_child_contrast(params,scenario.child_income_quartile)
+    params=select_child_contrast(params,scenario.child_income_quartile,params_dir)
     rng=random.Random(seed+32452843)
     process_rng=random.Random(seed+49979687)
 

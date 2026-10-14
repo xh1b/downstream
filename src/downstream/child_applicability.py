@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from dataclasses import replace
 import math
+from pathlib import Path
 
 from .params import ParameterSet
 from .study_library import load_library
@@ -51,7 +52,7 @@ def child_scope(profiles, quartile, rank_definition):
                             "A subgroup's nonsignificant coefficient is retained with its uncertainty, not replaced with zero."]}
 
 
-def select_child_contrast(params: ParameterSet, quartile) -> ParameterSet:
+def select_child_contrast(params: ParameterSet, quartile, params_dir=None) -> ParameterSet:
     if quartile is None:
         return params
     original = params.by_link("displacement->child_earnings")
@@ -59,7 +60,7 @@ def select_child_contrast(params: ParameterSet, quartile) -> ParameterSet:
     if marker in original.notes:
         # Materialized MC draws carry this marker: never reset their point.
         return params
-    row = load_library()[f"oreopoulos2008_q{quartile}"]
+    row = load_library(Path(params_dir) / 'study_estimates.csv' if params_dir is not None else None)[f"oreopoulos2008_q{quartile}"]
     beta, se = row["point"], row["standard_error"]
     selected = replace(original, point=math.exp(beta), low=math.exp(beta-1.96*se),
                        high=math.exp(beta+1.96*se), dist="lognormal",

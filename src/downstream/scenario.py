@@ -135,6 +135,7 @@ def compute_counts(
     mortality_profiles: dict | None = None,
     county_mortality: dict | None = None,
     _raw: bool = False,
+    params_dir=None,
 ) -> dict:
     """Modeled counts for a displacement scenario.
 
@@ -154,7 +155,7 @@ def compute_counts(
     contract instead of staying national.
     """
     from .child_applicability import child_scope, select_child_contrast
-    params = select_child_contrast(params, scenario.child_income_quartile)
+    params = select_child_contrast(params, scenario.child_income_quartile, params_dir)
     child_applicability = child_scope(scenario.child_profiles, scenario.child_income_quartile,
                                       scenario.income_rank_definition)
     place_block: dict | None = None
@@ -475,7 +476,7 @@ def sample_counts(
     if isinstance(draws, bool) or not isinstance(draws, int) or draws < 2:
         raise ValueError("draws must be an integer of at least 2")
     from .child_applicability import select_child_contrast
-    params = select_child_contrast(params, scenario.child_income_quartile)
+    params = select_child_contrast(params, scenario.child_income_quartile, params_dir)
     from .mc import simulate_many
 
     result = compute_counts(params, baselines, scenario, strict=strict,

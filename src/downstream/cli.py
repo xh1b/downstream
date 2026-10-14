@@ -481,7 +481,7 @@ def _run_main(argv: list[str] | None = None) -> int:
                 nodes=parts["nodes"],
                 params_dir=Path(args.params),
             )
-        except (KeyError, ValueError) as exc:
+        except (OSError, KeyError, ValueError) as exc:
             parser.error(str(exc))
         _dump(out)
         return 0
@@ -496,7 +496,8 @@ def _run_main(argv: list[str] | None = None) -> int:
             out = compare_policies(params, parts["baselines"], before, after,
                                    places=load_places(Path(args.params) / "places.csv"),
                                    county_mortality=_county_mortality_arg(parser, args.params, before.place_key or after.place_key),
-                                   mortality_profiles=_mortality_profiles_arg(parser, args.params))
+                                   mortality_profiles=_mortality_profiles_arg(parser, args.params),
+                                   params_dir=Path(args.params))
         except (OSError, ValueError, TypeError, KeyError) as exc:
             parser.error(str(exc))
         _dump(out)
@@ -534,6 +535,7 @@ def _run_main(argv: list[str] | None = None) -> int:
                 places=places, place_key=args.place,
                 mortality_profiles=mortality_profiles,
                 county_mortality=county_mortality,
+                params_dir=Path(args.params),
             )
         except (ValueError, TypeError, KeyError) as exc:
             parser.error(str(exc))
