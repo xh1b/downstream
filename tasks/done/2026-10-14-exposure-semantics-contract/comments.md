@@ -27,3 +27,12 @@ Implementation 2fc4e1c adds backward-compatible exposure_semantics, validated un
 - By: eli
 
 done: active -> review.
+
+## c-c910617b8e00
+
+- At: 2026-10-15 01:34 HKT
+- By: codex
+
+accept: review -> done.
+
+Reviewed optional metadata validation, legacy/warehouse compatibility, preserved unknowns, separate exposure identity and count-basis-only eligibility. Affected integration tests pass. No scientific cohort admission or calendar allocation is inferred.
