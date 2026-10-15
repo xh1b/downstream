@@ -2,7 +2,7 @@
 title: Apply open Dependabot dependency updates
 area: tooling
 priority: P2
-assignee:
+assignee: codex-dependabot
 tags: [@tag:tooling]
 blocked-by: []
 ---
