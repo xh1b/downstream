@@ -11,6 +11,6 @@ Owner requested repo-wide AGENTS.md guidance that keeps maintained documentation
 
 Related port: @task:2026-10-15-task-tags-refs-links.
 
-- [ ] Document Markdown placement, discoverability and one authoritative explanation per topic.
-- [ ] Encourage meaningful reciprocal links and shared tags in docs, code, tests and artifacts.
-- [ ] Cover hidden navigation metadata in paper sources, with valid examples and checks.
+- [x] Document Markdown placement, discoverability and one authoritative explanation per topic. [receipt](@task:2026-10-15-linked-documentation-guidance#c-e17ce0888c3b)
+- [x] Encourage meaningful reciprocal links and shared tags in docs, code, tests and artifacts. [receipt](@task:2026-10-15-linked-documentation-guidance#c-e17ce0888c3b)
+- [x] Cover hidden navigation metadata in paper sources, with valid examples and checks. [receipt](@task:2026-10-15-linked-documentation-guidance#c-e17ce0888c3b)
