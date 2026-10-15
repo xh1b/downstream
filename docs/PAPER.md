@@ -33,6 +33,16 @@ must be installed locally. The outputs are [the PDF](../paper/downstream.pdf) an
 consume live engine results; their source digest records the authored inputs.
 Source comment changes can update that digest without changing model arithmetic.
 
+The HTML footer retains the exact input-content SHA-256. Its result fingerprint
+uses [the companion generator](../scripts/build_methods_html.py)
+(@link:methods-result-digest) to normalize floating-point values to 12 significant
+digits before hashing the complete result. This tolerates the last-bit `libm`
+differences observed between macOS and Linux sensitivity calculations; it is a
+display fingerprint, not a byte-exact checksum of exported results. Engine
+calculations and exported JSON retain full precision. The
+[paper tests](../tests/test_paper_tables.py) cover the observed platform values,
+material result changes and provenance changes. @link:test-paper-tables
+
 ## Method connections
 
 | Paper passage | Method or contract | Implementation | Verification |

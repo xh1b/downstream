@@ -1,7 +1,7 @@
 # @ref:test-paper-tables
 # Method: @link:doc-paper.
 # Implementation: @link:code-validate; @link:code-scenario.
-# Related: @link:paper-build-tables; @link:paper-methods.
+# Related: @link:paper-build-tables; @link:paper-methods; @link:methods-result-digest.
 # @tag:methods @tag:testing
 """The paper's scorecard must come from live engine results."""
 import importlib.util
@@ -15,6 +15,29 @@ from downstream.validate import run
 from downstream.scenario import ScenarioInput, compute_counts
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_methods_result_fingerprint_tolerates_platform_roundoff():
+    spec = importlib.util.spec_from_file_location(
+        'methods_builder', ROOT / 'scripts/build_methods_html.py')
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    # Actual macOS/Linux values from the PR CI scenario artifact.
+    mac = {'sensitivity': [3.8120118124581133, -3.8120118124581133,
+                           32.57074071499211, 6.463555504002443],
+           'input_content_sha256': 'unchanged-inputs', 'available': True,
+           'label': 'source profile', 'zero': -0.0, 'optional': None}
+    linux = deepcopy(mac)
+    linux['sensitivity'] = [3.8120118124581204, -3.8120118124581204,
+                            32.57074071499212, 6.46355550400245]
+    linux['zero'] = 0.0
+    fingerprint = module.reference_result_digest(mac)
+    assert module.reference_result_digest(linux) == fingerprint
+    linux['sensitivity'][2] += 0.001
+    assert module.reference_result_digest(linux) != fingerprint
+    changed_inputs = deepcopy(mac)
+    changed_inputs['input_content_sha256'] = 'different-inputs'
+    assert module.reference_result_digest(changed_inputs) != fingerprint
 
 
 def test_paper_generation_matches_engine_and_is_deterministic(tmp_path, monkeypatch):
