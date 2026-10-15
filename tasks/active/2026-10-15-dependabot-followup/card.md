@@ -2,7 +2,7 @@
 title: Apply follow-up Dependabot updates and repair CI failures
 area: tooling
 priority: P2
-assignee:
+assignee: codex-dependabot
 tags: [@tag:tooling]
 blocked-by: []
 ---
