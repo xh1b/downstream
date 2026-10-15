@@ -134,10 +134,103 @@ work before starting it and record findings/receipts in the card thread.
 Initial migration is a bootstrap import. The original TODO was removed;
 Git history retains it. Do not recreate a competing TODO list.
 
-## Refs, links and tags
+## Documentation and connections
 
-Use `@task:<id>` and `@task:<id>#c-<comment-id>` for new task references.
-Use `@tag:<name>` for reusable task-type labels, including in code comments.
-Define a stable section once with `@ref:<id>` and cite it with `@link:<id>`.
-Follow @link:reference-token-contract and run `python3 scripts/refcheck.py check`
-with task validation before review. Existing task references and comments stay intact.
+@ref:documentation-workflow
+
+Make related documentation, implementation, tests, tasks and paper sources easy
+to find from one another. Improve these connections as part of the work you touch.
+Follow @link:reference-token-contract for token syntax and @link:task-workflow
+for task ownership and receipts.
+
+### Markdown documentation
+
+- Put new maintained design notes, methods, contracts, guides, decisions and
+  reports in `docs/` as Markdown (`.md`). Use clear filenames and headings;
+  reuse the existing document for a topic before creating another one.
+- Keep root README and subsystem READMEs as concise entry points. Link new
+  documents from the relevant README or existing guide so readers can discover
+  them. Use descriptive relative Markdown links for files and normal links for
+  external sources, datasets, citations and artifacts.
+- Keep one authoritative explanation of each contract or decision. Link to it
+  from related docs and code, and update it when behavior or assumptions change.
+  Include purpose, scope, relevant limitations and reproducible evidence when
+  they help the reader. Keep work status and discussion in task cards.
+- Keep authored paper sources in `paper/` and generated artifacts with their
+  established build workflow. Supporting methods and development notes belong
+  in `docs/`; connect them to the paper and implementation.
+
+### Stable refs, links and tags
+
+- Define `@ref:<id>` once beside the section, module, API, algorithm, test or
+  paper passage it identifies. Give it a meaningful, stable name. Cite it with
+  `@link:<id>` from related locations; preserve IDs when moving their content.
+- Link in both useful directions: a contract explains its implementation and
+  verification; code and tests point back to the rationale, method or invariant.
+  Give the document and implementation distinct anchor IDs. Add links at
+  meaningful boundaries rather than repeating them on every function or line.
+- Reuse `@tag:<name>` across task metadata, docs and source comments for shared
+  topics and task types. Check `python3 scripts/tasks.py tags` and search the
+  repository before adding a name. Tags group related material; refs identify
+  a specific location. Use `@task:<id>` or a permanent comment reference for
+  task decisions, provenance and receipts when that history is relevant.
+- Keep explanations readable alongside the tokens. Use ordinary Markdown links
+  for browsable files, sources and generated outputs as well as stable tokens
+  for repository navigation. Avoid orphan documents, duplicate explanations,
+  dangling links and parallel hand-maintained backlink lists.
+
+For example, a Markdown method and its implementation can point to each other:
+
+```markdown
+## Example method
+
+@ref:example-method
+
+Implementation: @link:example-implementation. @tag:methods
+```
+
+```python
+# @ref:example-implementation
+# Method and assumptions: @link:example-method. @tag:methods
+```
+
+### Paper and rendered artifacts
+
+Put navigation tokens in source comments when they should stay out of rendered
+output. Use `%` comments in LaTeX, `<!-- ... -->` comments in Markdown or HTML,
+and the language's comment syntax in code and other authored sources. Place the
+comment beside the relevant passage so it moves with that passage. For example:
+
+```tex
+% @ref:example-paper-method
+% Method: @link:example-method; implementation: @link:example-implementation.
+% @tag:methods
+```
+
+```markdown
+<!-- @ref:example-supporting-note -->
+<!-- Related paper passage: @link:example-paper-method. @tag:methods -->
+```
+
+Commented tokens are still checked and searchable. Keep scientific citations,
+reader-facing cross-references and attribution in the rendered paper; hidden
+navigation metadata supplements those references. Generated files inherit their
+links from authored sources and templates; make changes at the source.
+
+### Checks when changing linked material
+
+Update relevant documentation and connections with each logical code or method
+change. Preserve existing task history. When retiring an anchor, update or
+remove all its links in the same commit. Verify relative file links and examples,
+then run these checks before review:
+
+```sh
+python3 scripts/refcheck.py check
+python3 scripts/tasks.py validate
+```
+
+Run the relevant tests or artifact build when behavior or rendered content
+changes. `refcheck` checks tracked text, including source comments, for anchor
+uniqueness, missing link targets and token shape. Task validation resolves task
+and comment references. Review still checks whether the explanation and evidence
+match the implementation. Fenced examples above are placeholders, not live anchors.
