@@ -75,11 +75,11 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
-      - uses: actions/download-artifact@v7
+      - uses: actions/download-artifact@v8
         with:
           name: model-before
           path: before
-      - uses: actions/download-artifact@v7
+      - uses: actions/download-artifact@v8
         with:
           name: model-after
           path: after
