@@ -35,3 +35,10 @@ All three PRs failed test_semantic_methods_companion_is_current. [The failing jo
 The repair normalizes only result-fingerprint floats to 12 significant digits and canonicalizes signed zero. The exact input hash, model arithmetic, exported JSON and rendered numerical content retain their precision. docs/PAPER.md documents the fingerprint scope; the new regression uses actual platform values and detects material result and input-provenance changes. Regenerated docs/methods.html differs only in its footer result-fingerprint label and digest. The reconstructed Linux reference and macOS reference now generate byte-identical full HTML.
 
 Installed Hypothesis 6.169.4 and Ruff 0.17.0, matching the dependency versions resolved by CI. The CI fast suite plus all paper tests passes on Python 3.14.7 (154 passed in 32.86s) and Python 3.12.14 (154 passed in 35.23s). Ruff, Vulture, refcheck (314 anchors, 1335 links, zero failures), task validation and git diff --check pass. No remote writes or push were performed.
+
+## c-9db976fada8b
+
+- At: 2026-10-15 18:50 HKT
+- By: codex-dependabot
+
+done: active -> review.
