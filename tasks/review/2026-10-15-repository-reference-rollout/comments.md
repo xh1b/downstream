@@ -47,3 +47,10 @@ Verification:
 - `make -C paper`: successful 20-page PDF. Extracted PDF text is identical to the prior paper except its rebuilt source-content digest. No reference/link/tag tokens appear in the PDF. The methods companion and calculator keep identical visible text; navigation metadata stays hidden. Calculator freshness check passes.
 
 Work landed in scoped local commits on master. Unrelated concurrent work was left intact. This is navigation and documentation work, not new numerical or scientific validation.
+
+## c-2fdc1a73226c
+
+- At: 2026-10-15 17:57 HKT
+- By: codex-repo-links
+
+done: active -> review.
