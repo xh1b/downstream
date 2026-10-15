@@ -2,7 +2,7 @@
 title: Connect existing docs, code, tests and paper with repository references
 area: docs
 priority: P2
-assignee:
+assignee: codex-repo-links
 tags: [@tag:tooling]
 blocked-by: []
 ---
