@@ -133,3 +133,11 @@ Read the board with `python3 scripts/tasks.py list` or `next`; claim ready
 work before starting it and record findings/receipts in the card thread.
 Initial migration is a bootstrap import. The original TODO was removed;
 Git history retains it. Do not recreate a competing TODO list.
+
+## Refs, links and tags
+
+Use `@task:<id>` and `@task:<id>#c-<comment-id>` for new task references.
+Use `@tag:<name>` for reusable task-type labels, including in code comments.
+Define a stable section once with `@ref:<id>` and cite it with `@link:<id>`.
+Follow @link:reference-token-contract and run `python3 scripts/refcheck.py check`
+with task validation before review. Existing task references and comments stay intact.

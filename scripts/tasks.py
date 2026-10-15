@@ -21,7 +21,9 @@ PRIORITIES = ("P1", "P2", "P3", "P4")
 ID_RE = re.compile(r"^(\d{4}-\d{2}-\d{2})-[a-z0-9]+(-[a-z0-9]+)*$")
 SKIP_NAMES = {".gitkeep"}
 RELATIONS = {"blocked-by": True, "related-to": True, "parent": False, "duplicate-of": False}
-REF_RE = re.compile(r"(?<![\w:/])task:(\d{4}-\d{2}-\d{2}-[a-z0-9]+(?:-[a-z0-9]+)*)(?:#([\w-]+))?")
+REF_RE = re.compile(r"(?<![@\w:/])@?task:(\d{4}-\d{2}-\d{2}-[a-z0-9]+(?:-[a-z0-9]+)*)(?:#([\w-]+))?")
+TAG_NAME_RE = re.compile(r"[a-z0-9][a-z0-9_-]*")
+TAG_RE = re.compile(r"@tag:[a-z0-9][a-z0-9_-]*")
 COMMENT_RE = re.compile(r"^## (c-[0-9a-f]{12})$")
 CHECK_RE = re.compile(r"^\s*- \[([ xX])\]\s+(.+)$")
 LINK_RE = re.compile(r"\[[^\]\n]+\]\([^\s)]+(?:\s+[^)]*)?\)")
@@ -135,6 +137,58 @@ def _set_assignee(card_md: Path, who: str) -> str | None:
             card_md.write_text("\n".join(lines) + "\n")
             return None
     return "front matter has no `assignee:` line"
+
+
+def normalize_tag(token: str) -> str:
+    """Normalize one input token to the canonical `@tag:<name>` form."""
+    name = token.strip()
+    if name[:1] == "@":
+        name = name[1:]
+    name = name.lstrip("#")
+    if name[:4].lower() == "tag:":
+        name = name[4:]
+    name = name.lower()
+    if not TAG_NAME_RE.fullmatch(name):
+        raise ValueError(f"invalid tag `{token}` — use `@tag:` followed by lowercase letters, digits, hyphens, or underscores")
+    return f"@tag:{name}"
+
+
+def parse_tag_list(text: str) -> list[str]:
+    """Normalize a comma-separated tag option into a sorted unique list."""
+    tags = set()
+    for token in text.split(","):
+        if token.strip():
+            tags.add(normalize_tag(token))
+    return sorted(tags)
+
+
+def card_tags(meta: dict[str, object]) -> list[str]:
+    """The tags field as a plain list, empty when the field is absent or scalar."""
+    tags = meta.get("tags", [])
+    return [str(tag) for tag in tags] if isinstance(tags, list) else []
+
+
+def _set_tags(card_md: Path, tags: list[str]) -> str | None:
+    """Set or insert the front-matter tags line. Returns an error message, or None."""
+    lines = card_md.read_text().splitlines()
+    try:
+        end = lines.index("---", 1)
+    except ValueError:
+        return "card.md has no front matter block"
+    line = f"tags: [{', '.join(tags)}]" if tags else "tags: []"
+    for i in range(1, end):
+        if lines[i].startswith("tags:"):
+            lines[i] = line
+            break
+    else:
+        for i in range(1, end):
+            if lines[i].startswith("assignee:"):
+                lines.insert(i + 1, line)
+                break
+        else:
+            return "front matter has no `assignee:` line"
+    card_md.write_text("\n".join(lines) + "\n")
+    return None
 
 
 def _find_card(card_id: str) -> tuple[str, Path] | None:
@@ -261,10 +315,10 @@ def references(cards: list[dict[str, object]]) -> list[dict[str, str | int]]:
             path = BOARD / str(column) / str(card_id) / filename
             if not path.is_file():
                 continue
-            source = f"task:{card_id}"
+            source = f"@task:{card_id}"
             for lineno, line in markdown_lines(path.read_text()):
                 if filename == "comments.md" and (heading := COMMENT_RE.fullmatch(line)):
-                    source = f"task:{card_id}#{heading[1]}"
+                    source = f"@task:{card_id}#{heading[1]}"
                 kind = "mention"
                 if filename == "comments.md":
                     if line.startswith("- Reply-to: "):
@@ -272,7 +326,7 @@ def references(cards: list[dict[str, object]]) -> list[dict[str, str | int]]:
                     elif line.startswith("- Resolves: "):
                         kind = "resolves"
                 for match in REF_RE.finditer(line):
-                    result.append({"source": source, "target": match[0], "kind": kind,
+                    result.append({"source": source, "target": "@" + match[0].lstrip("@"), "kind": kind,
                                    "path": str(path.relative_to(REPO_ROOT)), "line": lineno,
                                    "text": line})
         card_path = BOARD / str(column) / str(card_id) / "card.md"
@@ -282,7 +336,7 @@ def references(cards: list[dict[str, object]]) -> list[dict[str, str | int]]:
             targets = value if isinstance(value, list) else [value] if isinstance(value, str) and value else []
             lineno = next((i for i, line in enumerate(text_lines, 1) if line.startswith(relation + ":")), 1)
             for target in targets:
-                result.append({"source": f"task:{card_id}", "target": f"task:{target}",
+                result.append({"source": f"@task:{card_id}", "target": f"@task:{target}",
                                "kind": relation, "path": str(card_path.relative_to(REPO_ROOT)),
                                "line": lineno, "text": text_lines[lineno - 1]})
     return result
@@ -304,7 +358,7 @@ def reference_error(ref: str, cards: list[dict[str, object]], *, comment: bool =
     if target is None:
         return f"task `{match[1]}` not found on the board"
     if comment and not match[2]:
-        return "a comment reference is required (task:<id>#c-<id>)"
+        return "a comment reference is required (@task:<id>#c-<id>)"
     if match[2] and match[2] not in comment_ids(target):
         return f"comment `{match[2]}` not found in task `{match[1]}`"
     return None
@@ -384,6 +438,16 @@ def validate_board() -> list[Problem]:
                 if not isinstance(value, list if many else str):
                     expected_type = "a list" if many else "one card id"
                     problems.append(Problem("ERROR", f"{column}/{card_id}", f"`{relation}:` must be {expected_type}"))
+            tags = meta.get("tags", [])
+            if not isinstance(tags, list):
+                problems.append(Problem("ERROR", f"{column}/{card_id}", "`tags:` must be a list"))
+                tags = []
+            for tag in tags:
+                if not TAG_RE.fullmatch(str(tag)):
+                    problems.append(Problem("ERROR", f"{column}/{card_id}",
+                                            f"`tags:` holds an invalid tag `{tag}` — use `@tag:` followed by lowercase letters, digits, hyphens, or underscores"))
+            if len(tags) != len(set(tags)):
+                problems.append(Problem("ERROR", f"{column}/{card_id}", "`tags:` holds a duplicate tag"))
             expected = meta.get("expected-paths", [])
             if not isinstance(expected, list):
                 problems.append(Problem("ERROR", f"{column}/{card_id}", "`expected-paths:` must be a list"))
@@ -406,7 +470,7 @@ def validate_board() -> list[Problem]:
         elif ref["kind"] in RELATIONS and ref["source"] == ref["target"]:
             problems.append(Problem("ERROR", where, "a task cannot have a relationship to itself"))
         elif ref["kind"] == "blocked-by":
-            target_id = str(ref["target"])[5:]
+            target_id = str(ref["target"])[6:]
             if seen[target_id] != "done":
                 problems.append(Problem("BLOCKED", where, f"blocked by `{target_id}`, still in {seen[target_id]}/"))
     for relation in ("blocked-by", "parent", "duplicate-of"):
@@ -452,6 +516,9 @@ def fmt_card(card: dict[str, object], show_age: bool = False) -> str:
     blocked = meta.get("blocked-by", [])
     if isinstance(blocked, list) and blocked:
         extra.append("blocked-by " + ", ".join(str(ref) for ref in blocked))
+    tags = card_tags(meta)
+    if tags:
+        extra.append(" ".join(tags))
     if show_age and column == "active":
         age = _card_age_minutes(card_id, column)
         extra.append("uncommitted" if age is None else f"updated {age}m ago")
@@ -562,6 +629,71 @@ TRANSITIONS = {
 }
 
 
+def cmd_tags(args: argparse.Namespace) -> int:
+    _print_board_notice()
+    cards = collect_cards()
+    if not args.name:
+        counts: dict[str, int] = {}
+        for card in cards:
+            for tag in card_tags(card["meta"]):
+                counts[tag] = counts.get(tag, 0) + 1
+        for tag, count in sorted(counts.items(), key=lambda item: (-item[1], item[0])):
+            print(f"{tag}  {count}")
+        if not counts:
+            print("(no tags on the board)")
+        return 0
+    try:
+        tag = normalize_tag(args.name)
+    except ValueError as exc:
+        return fail(str(exc))
+    found = False
+    for column in COLUMNS:
+        matches = [card for card in cards if card["column"] == column and tag in card_tags(card["meta"])]
+        if not matches:
+            continue
+        found = True
+        print(f"## {column} ({len(matches)})")
+        for card in sorted(matches, key=lambda c: (str(c["meta"].get("priority", "P4")), str(c["id"]))):
+            print("  " + fmt_card(card))
+    if not found:
+        print(f"no task carries {tag}")
+    return 0
+
+
+def cmd_tag(args: argparse.Namespace) -> int:
+    if error := _repo_preflight():
+        return fail(error)
+    found = _find_card(args.id)
+    if not found:
+        return fail(f"no task `{args.id}` on the board")
+    column, card_dir = found
+    if _git("status", "--porcelain", "--", str(card_dir.relative_to(REPO_ROOT))).stdout.strip():
+        return fail("card has uncommitted changes; preserve them and commit your own work first")
+    if not _git("ls-files", "--", str(card_dir.relative_to(REPO_ROOT))).stdout.strip():
+        return fail("commit the task before changing its tags")
+    try:
+        names = sorted({normalize_tag(name) for name in args.names})
+    except ValueError as exc:
+        return fail(str(exc))
+    card_md = card_dir / "card.md"
+    current = card_tags(parse_front_matter(card_md.read_text(), args.id, []))
+    if args.action == "add":
+        if held := [name for name in names if name in current]:
+            return fail("task already carries " + ", ".join(held))
+        updated = sorted(set(current) | set(names))
+        summary = "tags: add " + ", ".join(names)
+    else:
+        if absent := [name for name in names if name not in current]:
+            return fail("task does not carry " + ", ".join(absent))
+        updated = [name for name in current if name not in set(names)]
+        summary = "tags: remove " + ", ".join(names)
+    if error := _set_tags(card_md, updated):
+        return fail(error)
+    _append_comment(card_dir, args.who or _git_user(), summary + ".")
+    return finish_change([f"tasks/{column}/{args.id}/card.md", f"tasks/{column}/{args.id}/comments.md"],
+                         task_commit_message(card_dir, f"{args.command} {args.action} {args.id}", summary))
+
+
 def fail(message: str) -> int:
     print(f"error: {message}", file=sys.stderr)
     return 1
@@ -610,13 +742,18 @@ def cmd_create(args: argparse.Namespace) -> int:
         return fail("provide the task description and acceptance checklist with --file or -m")
     if any(not value.strip() or "\n" in value or "\r" in value for value in (args.title, args.area)):
         return fail("title and area must each be one nonempty line")
+    try:
+        tags = parse_tag_list(args.tags or "")
+    except ValueError as exc:
+        return fail(str(exc))
+    tag_field = f"tags: [{', '.join(tags)}]\n" if tags else ""
     card_dir = BOARD / "inbox" / args.id
     card_dir.mkdir(parents=True)
     (card_dir / "card.md").write_text(
         f"---\ntitle: {args.title}\narea: {args.area}\npriority: {args.priority}\n"
-        f"assignee:\nblocked-by: []\n---\n\n{body.rstrip()}\n")
+        f"assignee:\n{tag_field}blocked-by: []\n---\n\n{body.rstrip()}\n")
     comment_id = _append_comment(card_dir, args.who or _git_user(), "Created in inbox.")
-    print(f"task:{args.id}#{comment_id}")
+    print(f"@task:{args.id}#{comment_id}")
     return finish_change([str(card_dir.relative_to(REPO_ROOT))], task_commit_message(card_dir, f"create {args.id}", body))
 
 
@@ -635,6 +772,8 @@ def cmd_comment(args: argparse.Namespace) -> int:
     for ref in (reply_to, resolves):
         if ref and (error := reference_error(ref, cards, comment=True)):
             return fail(error)
+    reply_to = "@" + reply_to.lstrip("@") if reply_to else ""
+    resolves = "@" + resolves.lstrip("@") if resolves else ""
     # Reject broken references before appending to the permanent thread.
     for _, line in markdown_lines(text):
         for match in REF_RE.finditer(line):
@@ -647,7 +786,7 @@ def cmd_comment(args: argparse.Namespace) -> int:
         return fail("card has uncommitted changes; preserve them and commit your own work first")
     comment_id = _append_comment(card_dir, args.who or _git_user(), text,
                                  reply_to=reply_to, resolves=resolves)
-    print(f"task:{args.id}#{comment_id}")
+    print(f"@task:{args.id}#{comment_id}")
     return finish_change([f"tasks/{column}/{args.id}/comments.md"], task_commit_message(card_dir, f"{args.command} on {args.id}", text))
 
 
@@ -693,11 +832,15 @@ def cmd_move(args: argparse.Namespace) -> int:
 
 
 def cmd_refs(args: argparse.Namespace) -> int:
-    ref = args.ref if args.ref.startswith("task:") else "task:" + args.ref
+    ref = args.ref
+    if ref.startswith("task:"):
+        ref = "@" + ref
+    elif not ref.startswith("@task:"):
+        ref = "@task:" + ref
     cards = collect_cards()
     if error := reference_error(ref, cards):
         return fail(error)
-    card = next(c for c in cards if c["id"] == ref[5:].split("#")[0])
+    card = next(c for c in cards if c["id"] == ref[6:].split("#")[0])
     filename = "comments.md" if "#" in ref else "card.md"
     path = BOARD / str(card["column"]) / str(card["id"]) / filename
     lineno = 1
@@ -739,21 +882,29 @@ def main(argv: list[str] | None = None) -> int:
     show.add_argument("id", help="stable task id")
     next_parser = sub.add_parser("next", help="claimable tasks, priority then due date")
     next_parser.add_argument("--limit", type=int, default=5)
+    tags = sub.add_parser("tags", help="list all tags, or the tasks carrying one")
+    tags.add_argument("name", nargs="?")
+    tag = sub.add_parser("tag", help="add or remove @tag:<name> labels on a task; record and commit")
+    tag.add_argument("id")
+    tag.add_argument("action", choices=("add", "remove"))
+    tag.add_argument("names", nargs="+", metavar="NAME")
+    tag.add_argument("--as", dest="who", metavar="NAME")
     refs = sub.add_parser("refs", help="resolve a reference and list outgoing links and backlinks")
-    refs.add_argument("ref", help="task id or task:<id>[#c-<comment-id>]")
+    refs.add_argument("ref", help="task id or @task:<id>[#c-<comment-id>]")
     create = sub.add_parser("create", help="create a task in inbox and commit it")
     create.add_argument("id")
     create.add_argument("--title", required=True)
     create.add_argument("--area", required=True)
     create.add_argument("--priority", choices=PRIORITIES, default="P3")
+    create.add_argument("--tags", help="comma-separated tags; the @tag: prefix is optional")
     add_message_args(create, required=True)
     comment = sub.add_parser("comment", help="append Markdown and commit it")
     comment.add_argument("id")
-    comment.add_argument("--reply-to", help="task:<id>#c-<comment-id>")
+    comment.add_argument("--reply-to", help="@task:<id>#c-<comment-id>")
     add_message_args(comment, required=True)
     resolve = sub.add_parser("resolve", help="append a resolution linked to a comment")
     resolve.add_argument("id", help="task where the resolution is recorded")
-    resolve.add_argument("ref", help="comment to resolve: task:<id>#c-<comment-id>")
+    resolve.add_argument("ref", help="comment to resolve: @task:<id>#c-<comment-id>")
     add_message_args(resolve, required=True)
     for command, (allowed, destination) in TRANSITIONS.items():
         move = sub.add_parser(command, help=f"{'/'.join(allowed)} -> {destination}; record and commit")
@@ -764,7 +915,7 @@ def main(argv: list[str] | None = None) -> int:
     if who is not None and (not who.strip() or "\n" in who or "\r" in who):
         return fail("author must be one nonempty line")
     commands = {"validate": cmd_validate, "list": cmd_list, "show": cmd_show, "next": cmd_next,
-                "refs": cmd_refs, "create": cmd_create, "comment": cmd_comment, "resolve": cmd_comment}
+                "tags": cmd_tags, "tag": cmd_tag, "refs": cmd_refs, "create": cmd_create, "comment": cmd_comment, "resolve": cmd_comment}
     try:
         return commands.get(args.command, cmd_move)(args)
     except (OSError, UnicodeError) as exc:

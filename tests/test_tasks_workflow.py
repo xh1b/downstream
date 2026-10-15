@@ -17,7 +17,7 @@ A = "2026-10-14-a"
 B = "2026-10-14-b"
 C = "2026-10-14-c"
 COMMENT = "c-0123456789ab"
-EVIDENCE = f"- [x] Preserves source values. [receipt](task:{B}#{COMMENT})\n"
+EVIDENCE = f"- [x] Preserves source values. [receipt](@task:{B}#{COMMENT})\n"
 
 
 class TaskTests(unittest.TestCase):
@@ -122,16 +122,16 @@ class TaskTests(unittest.TestCase):
         output = self.run_cli("comment", A, "--file", "-", "--as", "worker", stdin=body)
         self.assertTrue(path.read_bytes().startswith(old))
         self.assertIn(body, path.read_text())
-        self.assertRegex(output, rf"task:{A}#c-[0-9a-f]{{12}}")
+        self.assertRegex(output, rf"@task:{A}#c-[0-9a-f]{{12}}")
         self.assertIn(" HKT", path.read_text())
         self.assertEqual(self.errors(), [])
 
     def test_replies_resolutions_and_backlinks_survive_column_moves(self):
         self.seed(A)
         self.receipt()
-        target = f"task:{B}#{COMMENT}"
+        target = f"@task:{B}#{COMMENT}"
         output = self.run_cli("comment", A, "--reply-to", target, "-m", "This also fixes the input.")
-        reply = next(line for line in output.splitlines() if line.startswith("task:"))
+        reply = next(line for line in output.splitlines() if line.startswith("@task:"))
         self.run_cli("resolve", A, target, "-m", "The rerun confirms it.")
         self.run_cli("claim", B, "--as", "worker")
         output = self.run_cli("refs", target)
@@ -147,7 +147,7 @@ class TaskTests(unittest.TestCase):
         self.seed(A, fields=f"related-to: [{B}]\nparent: {B}\n")
         self.seed(B)
         output = self.run_cli("refs", B)
-        self.assertIn(f"parent: task:{A} -> task:{B}", output)
+        self.assertIn(f"parent: @task:{A} -> @task:{B}", output)
         self.assertIn(f"related-to: [{B}]", output)
         self.assertEqual(self.git("status", "--porcelain"), "")
 
@@ -155,17 +155,17 @@ class TaskTests(unittest.TestCase):
         directory = self.seed(A)
         self.receipt()
         previous = (directory / "comments.md").read_bytes()
-        for arguments in (("--reply-to", f"task:{B}#c-ffffffffffff", "-m", "Reply"),
-                          ("-m", f"Missing task:{C}."),
+        for arguments in (("--reply-to", f"@task:{B}#c-ffffffffffff", "-m", "Reply"),
+                          ("-m", f"Missing @task:{C}."),
                           ("-m", f"## {COMMENT}\n\nSpoofed boundary.")):
             self.run_cli("comment", A, *arguments, code=1)
             self.assertEqual((directory / "comments.md").read_bytes(), previous)
-        self.run_cli("resolve", A, f"task:{B}", "-m", "Resolved", code=1)
+        self.run_cli("resolve", A, f"@task:{B}", "-m", "Resolved", code=1)
         self.assertEqual((directory / "comments.md").read_bytes(), previous)
 
     def test_fenced_examples_are_not_edges_checklists_or_comment_ids(self):
-        body = f"- [ ] Real criterion.\n\n~~~markdown\ntask:{C}#c-ffffffffffff\n- [x] Example only.\n~~~\n"
-        comments = f"# comments\n\n```markdown\n## {COMMENT}\ntask:{C}\n```\n"
+        body = f"- [ ] Real criterion.\n\n~~~markdown\n@task:{C}#c-ffffffffffff\n- [x] Example only.\n~~~\n"
+        comments = f"# comments\n\n```markdown\n## {COMMENT}\n@task:{C}\n```\n"
         self.seed(A, body=body, comments=comments)
         self.assertEqual(self.errors(), [])
         self.assertEqual(self.board.comment_ids(self.board.collect_cards()[0]), [])
@@ -173,7 +173,7 @@ class TaskTests(unittest.TestCase):
         self.assertIn("(none)", self.run_cli("refs", A))
 
     def test_validation_finds_broken_links_and_duplicate_comment_ids_in_files(self):
-        directory = self.seed(A, body=f"- [ ] Check.\n\nSee task:{B}#c-ffffffffffff.\n")
+        directory = self.seed(A, body=f"- [ ] Check.\n\nSee @task:{B}#c-ffffffffffff.\n")
         self.receipt()
         path = directory / "comments.md"
         path.write_text(f"# comments\n\n## {COMMENT}\n\nOne\n\n## {COMMENT}\n\nTwo\n")
@@ -344,7 +344,7 @@ class TaskTests(unittest.TestCase):
                 self.assertIn(message, path.read_text()[len(previous):])
                 self.assertEqual(self.git("log", "-1", "--format=%B"),
                                  f"{title}\n\nboard: comment on {A}\n\n{message}")
-        self.run_cli("resolve", A, f"task:{B}#{COMMENT}", "-m", message)
+        self.run_cli("resolve", A, f"@task:{B}#{COMMENT}", "-m", message)
         self.assertEqual(self.git("log", "-1", "--format=%B"),
                          f"{title}\n\nboard: resolve on {A}\n\n{message}")
 
@@ -377,12 +377,121 @@ class TaskTests(unittest.TestCase):
         self.assertIn("missing comments.md", output)
         self.assertIn("0 error(s), 1 warning(s)", output)
         path = self.board.BOARD / "done" / C / "card.md"
-        path.write_text(path.read_text() + f"\n- [ ] Still incomplete.\nSee task:{A}#c-ffffffffffff.\n")
+        path.write_text(path.read_text() + f"\n- [ ] Still incomplete.\nSee @task:{A}#c-ffffffffffff.\n")
         for extra in ((), ("--historical-details",)):
             output = self.run_cli("validate", *extra, code=1)
             self.assertIn("unchecked criterion: Still incomplete.", output)
             self.assertIn("comment `c-ffffffffffff` not found", output)
             self.assertIn("2 error(s), 1 warning(s)", output)
+
+    def test_create_with_tags_normalizes_and_validation_rejects_bad_tag_fields(self):
+        self.run_cli("create", A, "--title", "Tagged", "--area", "scripts",
+                     "--tags", "#Deploy, bug, tag:deploy", "-m", "Context.\n\n- [ ] Check the input.")
+        text = (self.board.BOARD / "inbox" / A / "card.md").read_text()
+        self.assertIn("tags: [@tag:bug, @tag:deploy]\n", text)
+        self.assertLess(text.index("assignee:"), text.index("tags: [@tag:bug, @tag:deploy]"))
+        self.assertLess(text.index("tags: [@tag:bug, @tag:deploy]"), text.index("blocked-by:"))
+        self.assertEqual(self.errors(), [])
+        self.run_cli("create", B, "--title", "Bad", "--area", "scripts", "--tags", "Bad Tag!", "-m", "Text", code=1)
+        self.assertIsNone(self.board._find_card(B))
+        self.seed(C, fields="tags: deploy\n")
+        self.assertIn("`tags:` must be a list", "\n".join(self.errors()))
+        path = self.board.BOARD / "ready" / C / "card.md"
+        path.write_text(path.read_text().replace("tags: deploy", "tags: [Bad Tag]"))
+        self.assertIn("invalid tag `Bad Tag`", "\n".join(self.errors()))
+        path.write_text(path.read_text().replace("tags: [Bad Tag]", "tags: [@tag:a, @tag:a]"))
+        self.assertIn("duplicate tag", "\n".join(self.errors()))
+
+    def test_tag_verbs_add_remove_record_and_refuse_bad_changes(self):
+        self.receipt()
+        self.run_cli("create", A, "--title", "Tagged", "--area", "scripts", "-m", "Context.\n\n- [ ] Check the input.")
+        self.run_cli("tag", A, "add", "#Deploy", "bug", "--as", "worker")
+        card = self.board.BOARD / "inbox" / A / "card.md"
+        self.assertIn("tags: [@tag:bug, @tag:deploy]\n", card.read_text())
+        comments = (self.board.BOARD / "inbox" / A / "comments.md").read_text()
+        self.assertIn("tags: add @tag:bug, @tag:deploy.", comments)
+        self.run_cli("triage", A)
+        revision = self.git("rev-parse", "HEAD")
+        self.run_cli("tag", A, "add", "deploy", code=1)
+        self.run_cli("tag", A, "remove", "missing-tag", code=1)
+        self.run_cli("tag", A, "add", "Bad Tag", code=1)
+        self.assertEqual(self.git("rev-parse", "HEAD"), revision)
+        self.assertIn("tags: [@tag:bug, @tag:deploy]", (self.board.BOARD / "ready" / A / "card.md").read_text())
+        self.run_cli("tag", A, "remove", "bug", "#deploy")
+        self.assertIn("tags: []", (self.board.BOARD / "ready" / A / "card.md").read_text())
+        self.assertIn("tags: remove @tag:bug, @tag:deploy.",
+                      (self.board.BOARD / "ready" / A / "comments.md").read_text())
+        self.run_cli("tag", A, "add", "x")
+        self.assertIn("tags: [@tag:x]", (self.board.BOARD / "ready" / A / "card.md").read_text())
+        self.assertEqual(self.errors(), [])
+        self.assertEqual(self.git("status", "--porcelain"), "")
+
+    def test_tags_verb_lists_counts_and_filters_tasks_by_column(self):
+        self.seed(A, fields="tags: [@tag:deploy, @tag:bug]\n")
+        self.seed(B, "done", fields="tags: [@tag:deploy]\n",
+                  body="- [x] Complete. [report](https://example.invalid/report)\n")
+        self.seed(C, fields="tags: []\n")
+        listing = self.run_cli("tags")
+        self.assertTrue(listing.startswith("@tag:deploy  2\n"), listing)
+        self.assertIn("@tag:bug  1", listing)
+        filtered = self.run_cli("tags", "#Deploy")
+        self.assertIn(A, filtered)
+        self.assertIn(B, filtered)
+        self.assertNotIn(C, filtered)
+        self.assertIn("## ready (1)", filtered)
+        self.assertIn("## done (1)", filtered)
+        self.assertIn("no task carries @tag:absent", self.run_cli("tags", "absent"))
+        self.assertIn("invalid tag", self.run_cli("tags", "Bad Tag", code=1))
+
+    def test_list_and_next_display_tags(self):
+        self.seed(A, fields="tags: [@tag:deploy]\n")
+        self.assertIn("@tag:deploy", self.run_cli("list"))
+        self.assertIn("@tag:deploy", self.run_cli("next"))
+
+    def test_tag_command_preserves_unrelated_staged_work(self):
+        self.seed(A)
+        (self.root / "unrelated.py").write_text("other work\n")
+        self.git("add", "--", "unrelated.py")
+        self.run_cli("tag", A, "add", "deploy")
+        self.assertEqual(self.git("diff", "--cached", "--name-only"), "unrelated.py")
+        self.assertNotIn("unrelated.py", self.git("show", "--format=", "--name-only", "HEAD"))
+        self.assertIn("tags: [@tag:deploy]", (self.board.BOARD / "ready" / A / "card.md").read_text())
+
+    def test_legacy_and_canonical_references_share_backlinks_without_rewriting_history(self):
+        target = f"task:{B}#{COMMENT}"
+        old = f"# comments\n\n## c-fedcba987654\n\n- Reply-to: {target}\n\nKeep legacy {target}.\n"
+        directory = self.seed(A, body=f"- [ ] Check.\nSee [legacy]({target}).\n", comments=old)
+        self.receipt()
+        self.assertEqual(self.errors(), [])
+        legacy = self.run_cli("refs", target)
+        canonical = self.run_cli("refs", "@" + target)
+        self.assertEqual(legacy, canonical)
+        self.assertIn(f"reply: @task:{A}#c-fedcba987654 -> @{target}", canonical)
+        self.run_cli("resolve", A, target, "-m", f"Also see @{target}.")
+        self.assertTrue((directory / "comments.md").read_text().startswith(old))
+        self.assertIn(f"- Resolves: @{target}", (directory / "comments.md").read_text())
+        self.run_cli("claim", B, "--as", "worker")
+        self.assertIn(f"tasks/active/{B}/comments.md", self.run_cli("refs", target))
+        self.assertIn(f"Resolved: @{target}", self.run_cli("refs", "@" + target))
+        self.assertEqual(self.errors(), [])
+
+    def test_tag_refuses_dirty_task_and_preserves_peer_edits_and_staging(self):
+        directory = self.seed(A)
+        card, comments = directory / "card.md", directory / "comments.md"
+        card.write_text(card.read_text() + "\nPeer work.\n")
+        for staged in (False, True):
+            if staged:
+                self.git("add", "--", str(card.relative_to(self.root)))
+            previous = card.read_bytes(), comments.read_bytes(), self.git("diff", "--cached")
+            revision = self.git("rev-parse", "HEAD")
+            self.run_cli("tag", A, "add", "@tag:tooling", code=1)
+            self.assertEqual(previous, (card.read_bytes(), comments.read_bytes(), self.git("diff", "--cached")))
+            self.assertEqual(revision, self.git("rev-parse", "HEAD"))
+
+    def test_task_references_embedded_in_larger_tokens_are_ignored(self):
+        self.seed(A, body=f"- [ ] Check.\nword@task:{B} @@task:{B} https://host/task:{B}\n")
+        self.assertEqual(self.errors(), [])
+        self.assertIn("(none)", self.run_cli("refs", A))
 
 if __name__ == "__main__":
     unittest.main()

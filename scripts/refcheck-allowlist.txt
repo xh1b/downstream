@@ -1,0 +1,2 @@
+# Deliberate reference fixtures; paths relative to the repository root.
+tests/test_refcheck.py

@@ -1,5 +1,9 @@
 # tasks — the agent board
 
+@ref:task-workflow
+
+Use @link:reference-token-contract for shared token conventions.
+
 A task board in Markdown. Folders are columns. Each task has `card.md` and
 `comments.md`. Git records changes. Use `show <id>` to read a card and find its comments.
 Use `rg` to search the files.
@@ -17,9 +21,11 @@ Use `rg` to search the files.
 
 ## Card format
 
+@ref:task-card-format
+
 The directory name is the permanent task id: `YYYY-MM-DD-<short-slug>`.
 Do not rename it. Change `title:` when the name needs to change.
-Moving between columns keeps the id and every `task:` reference valid.
+Moving between columns keeps the id and every `@task:` reference valid.
 
 ```yaml
 ---
@@ -27,6 +33,7 @@ title: One line
 area: scripts
 priority: P2
 assignee:
+tags: [@tag:bug, @tag:tooling]
 due: 2026-10-21
 blocked-by: [2026-10-14-source-repair]
 related-to: [2026-10-14-parser-review]
@@ -56,19 +63,21 @@ blocked task's plan before removing that dependency.
 
 ## References and backlinks
 
-Use `task:<id>` for a task and `task:<id>#c-<comment-id>` for a comment.
+Use `@task:<id>` for a task and `@task:<id>#c-<comment-id>` for a comment.
 These references work as plain text or Markdown link targets.
+Legacy `task:` references remain readable and resolve to the same targets;
+new CLI output and reply/resolution metadata use `@task:`. Keep retained comments intact.
 
 ```markdown
-See [source repair](task:2026-10-14-source-repair).
-Evidence: [test receipt](task:2026-10-14-source-repair#c-0123456789ab).
+See [source repair](@task:2026-10-14-source-repair).
+Evidence: [test receipt](@task:2026-10-14-source-repair#c-0123456789ab).
 ```
 
-`task:` is a board reference, not a browser URL. Resolve it with:
+`@task:` is a board reference, not a browser URL. Resolve it with:
 
 ```sh
 python3 scripts/tasks.py refs 2026-10-14-source-repair
-python3 scripts/tasks.py refs task:2026-10-14-source-repair#c-0123456789ab
+python3 scripts/tasks.py refs @task:2026-10-14-source-repair#c-0123456789ab
 ```
 
 `refs` prints the current file and line, outgoing references, and incoming references.
@@ -76,6 +85,26 @@ It includes relationships and mentions from card bodies and comments.
 Each entry includes its source task or comment, file, line, and source text.
 Backlinks are computed from the files. Do not keep a second backlink list.
 References in fenced code examples are ignored. Real references must resolve.
+
+## Tags
+
+Use optional `tags: [@tag:bug, @tag:tooling]` for task types. Reuse existing tags
+from `tags` before inventing a new label. Store lowercase names with letters,
+digits, hyphens or underscores. Commands accept bare names, `#name`, `tag:name`
+and `@tag:name`, normalize case, and store sorted unique tokens.
+Tags appear in `list` and `next`. `tags <name>` filters across all columns.
+Tag edits append a comment and commit only that card and thread; dirty cards
+are refused so another author's uncommitted edits stay untouched.
+Use the same token in code comments or docs to make one `rg` search find all uses.
+
+```sh
+python3 scripts/tasks.py create <id> --title 'One line' --area scripts --tags bug,tooling --file /tmp/task-body.md
+python3 scripts/tasks.py tag <id> add bug tooling --as codex
+python3 scripts/tasks.py tag <id> remove bug --as codex
+python3 scripts/tasks.py tags
+python3 scripts/tasks.py tags tooling
+rg -n '@tag:tooling' tasks/ scripts/
+```
 
 ## Comments
 
@@ -94,8 +123,8 @@ Link to their task, or cite a git revision when the exact old entry matters.
 ```sh
 python3 scripts/tasks.py comment <id> -m 'The parser check passes.' --as codex
 python3 scripts/tasks.py comment <id> --file /tmp/findings.md --as codex
-python3 scripts/tasks.py comment <id> --reply-to task:<other-id>#c-0123456789ab -m 'This fixes the same input.'
-python3 scripts/tasks.py resolve <id> task:<other-id>#c-0123456789ab -m 'The rerun confirms the fix.'
+python3 scripts/tasks.py comment <id> --reply-to @task:<other-id>#c-0123456789ab -m 'This fixes the same input.'
+python3 scripts/tasks.py resolve <id> @task:<other-id>#c-0123456789ab -m 'The rerun confirms the fix.'
 python3 scripts/tasks.py comment <id> --as codex-task-tooling --file - <<'EOF'
 The parser check passes
 
@@ -111,7 +140,7 @@ New comments have this form:
 
 - At: 2026-10-14 20:00 HKT
 - By: codex
-- Reply-to: task:2026-10-14-source-repair#c-fedcba987654
+- Reply-to: @task:2026-10-14-source-repair#c-fedcba987654
 
 The rerun passes.
 ```
@@ -132,18 +161,20 @@ Timestamps use Asia/Hong_Kong (HKT). The displayed age in `list` is time since t
 
 Each checked criterion must include a Markdown evidence link on the same line.
 The link can point to a comment with receipts, a report, a test file, or a commit.
-Use relative file paths from the card directory. `task:` references survive moves.
+Use relative file paths from the card directory. `@task:` references survive moves.
 
 ```markdown
-- [x] Source values are preserved. [receipt](task:2026-10-14-source-repair#c-0123456789ab)
+- [x] Source values are preserved. [receipt](@task:2026-10-14-source-repair#c-0123456789ab)
 - [x] Regression checks pass. [tests](../../../tests/test_tasks_workflow.py)
 ```
 
 Both `done` and `accept` require a nonempty, complete checklist with evidence links.
-Validation checks link syntax and resolves `task:` targets. It does not run tests or
+Validation checks link syntax and resolves `@task:` targets. It does not run tests or
 prove the content of reports, external links, or commits. The reviewer checks those.
 
 ## Process and commands
+
+@ref:task-command-reference
 
 All mutating commands record a comment and commit explicit task paths.
 They refuse to run off `master`, mid-merge, or mid-rebase.
@@ -223,7 +254,7 @@ python3 scripts/tasks.py validate --historical-details
 python3 scripts/tasks.py list
 python3 scripts/tasks.py next
 python3 scripts/tasks.py show <id>
-rg -n 'source repair|task:2026-10-14-source-repair' tasks/
+rg -n 'source repair|@task:2026-10-14-source-repair' tasks/
 cat tasks/active/<id>/card.md tasks/active/<id>/comments.md
 ```
 
@@ -253,3 +284,9 @@ XH1B integration tasks belong to the companion repository. Local cards track
 handoff and references; they do not authorize applying the pending update.
 The CLI is adapted from XH1B commit `e1b851ec28c75bc14f368f8655911e6d51f991e5`,
 retaining Downstream's commit-first moves, chained path-scoped commits and HKT timestamps.
+
+Tags and canonical task tokens are ported from XH1B `e66c9db27` (tags landed
+in `03e0fcd03`); repository
+anchor/link checks are ported from `adc41dcfc`. Downstream retains legacy task
+reference compatibility, its frozen evidence exemptions, HKT timestamps and
+commit-first directory moves. XH1B product/release updates remain separate.
