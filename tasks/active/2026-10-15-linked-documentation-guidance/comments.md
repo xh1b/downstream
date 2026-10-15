@@ -15,3 +15,10 @@ Created in inbox.
 triage: inbox -> ready.
 
 Owner explicitly requested this follow-up. Checked the current board: token tooling is in review, and no active task covers documentation policy. Existing docs and root entry points are established.
+
+## c-3eddb14f15d5
+
+- At: 2026-10-15 17:13 HKT
+- By: codex-doc-links
+
+claim: ready -> active.

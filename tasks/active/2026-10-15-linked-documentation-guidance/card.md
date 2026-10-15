@@ -2,7 +2,7 @@
 title: Document linked Markdown, code and paper conventions
 area: docs
 priority: P2
-assignee:
+assignee: codex-doc-links
 tags: [@tag:tooling]
 blocked-by: []
 ---
