@@ -1,3 +1,8 @@
+# @ref:code-mc
+# Method: @link:doc-probabilistic-roadmap.
+# Verification: @link:test-audit-repairs; @link:test-dist-v127; @link:test-explanation-properties.
+# Related: @link:paper-uncertainty.
+# @tag:uncertainty
 """Monte Carlo propagation over parameter uncertainty.
 
 v1.2 methodology: Latin Hypercube Sampling over the parameter space,

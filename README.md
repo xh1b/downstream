@@ -1,5 +1,8 @@
 # downstream
 
+<!-- @ref:repository-overview; @tag:model -->
+<!-- Context: @link:docs-index; @link:doc-model-card; @link:specification; @link:paper-methods. -->
+
 `downstream` estimates consequences of a supplied worker-displacement exposure.
 The current engine applies published response coefficients and declared
 composition rules to population-average worker, family and community scenarios.
@@ -353,6 +356,9 @@ timestamp to establish public preregistration.
 
 Current work is tracked in [the task board](tasks/README.md), using the XH1B card format.
 Run `python3 scripts/tasks.py next` to see claimable work.
+
+Start with [the documentation map](docs/README.md) for connected guides, code,
+tests and paper sources.
 
 Key documents:
 

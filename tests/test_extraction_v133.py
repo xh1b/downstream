@@ -1,3 +1,7 @@
+# @ref:test-extraction-v133
+# Method: @link:doc-citing.
+# Implementation: @link:code-params; @link:code-units; @link:code-audit.
+# @tag:evidence @tag:testing
 """v1.33 pins: #24 Damm & Dustmann 2014 neighborhood conviction-share exposure.
 
 What this file hunts:

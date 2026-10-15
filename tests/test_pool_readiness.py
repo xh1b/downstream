@@ -1,3 +1,7 @@
+# @ref:test-pool-readiness
+# Method: @link:doc-pool-readiness-0-4.
+# Implementation: @link:code-study-library.
+# @tag:evidence @tag:testing
 """Readiness must never mistake phases, subgroups or scale mismatches for replications."""
 from copy import deepcopy
 import importlib.util

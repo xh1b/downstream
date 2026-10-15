@@ -1,5 +1,14 @@
 # Mortality source reconciliation — 2026-09-10
 
+<!-- @ref:doc-mortality-source-reconciliation-2026-09-10; @tag:mortality -->
+<!--
+Connections: @link:code-mortality; @link:code-worker; @link:doc-mortality-applicability-0-4;
+@link:doc-mortality-persistence-sensitivity; @link:docs-index; @link:paper-counts; @link:test-audit04-mortality-precision; @link:test-mathematics-v02; @link:test-metamorphic.
+-->
+
+Related: [Documentation map](README.md) · [mortality applicability 0 4](MORTALITY_APPLICABILITY_0_4.md) · [mortality persistence sensitivity](MORTALITY_PERSISTENCE_SENSITIVITY.md).
+Implementation: [mortality](../src/downstream/mortality.py), [worker](../src/downstream/worker.py). Checks: [audit04_mortality_precision](../tests/test_audit04_mortality_precision.py), [mathematics_v02](../tests/test_mathematics_v02.py), [metamorphic](../tests/test_metamorphic.py).
+
 ## Decision
 
 Correction verified 2026-10-14 (parameters v1.50): Table 5 column 3,

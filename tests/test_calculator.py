@@ -1,3 +1,8 @@
+# @ref:test-calculator
+# Method: @link:doc-calculator.
+# Implementation: @link:code-mortality; @link:code-scenario; @link:calculator-math;
+# @link:calculator-app; @link:script-build-calculator; @link:script-serve-calculator.
+# @tag:calculator @tag:testing
 """Browser equations must match native engine refits, including custom inputs."""
 from dataclasses import replace
 import importlib.util
@@ -33,6 +38,10 @@ def node(code, *args):
 def test_generated_data_freshness_source_identity_and_small_surface():
     html = generated()
     assert (DIRECTORY / "index.html").read_text() == html
+    # Embedded copies reference the unique anchors in their authored sources.
+    assert "@ref:" not in html
+    for anchor in ("calculator-template", "calculator-math", "calculator-app", "calculator-style"):
+        assert f"@link:{anchor}" in html
     data = payload(html)
     assert data["result"]["engine_version"] == "0.4.0"
     assert data["result"]["input_content_sha256"]

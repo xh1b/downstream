@@ -1,3 +1,7 @@
+# @ref:test-ledger
+# Method: @link:doc-causal-graph-plan.
+# Implementation: @link:code-ledger; @link:code-params; @link:code-children.
+# @tag:model @tag:testing
 """Compute checks for composition semantics — the core math."""
 
 from pathlib import Path

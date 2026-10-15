@@ -1,3 +1,7 @@
+# @ref:test-extraction-v18
+# Method: @link:doc-citing.
+# Implementation: @link:code-params; @link:code-distributions; @link:code-validate.
+# @tag:evidence @tag:testing
 """Traps for the v1.10 extraction round (ADH validation + Aizer IPV producer).
 
 Each trap names the defect it hunts:

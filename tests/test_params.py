@@ -1,3 +1,7 @@
+# @ref:test-params
+# Method: @link:doc-citing.
+# Implementation: @link:code-params; @link:code-citations.
+# @tag:evidence @tag:testing
 """Parameter-set, node, baseline, and citation-database checks."""
 
 from pathlib import Path

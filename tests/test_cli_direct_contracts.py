@@ -1,3 +1,7 @@
+# @ref:test-cli-direct-contracts
+# Method: @link:doc-scenario-evidence-protocol.
+# Implementation: @link:code-cli; @link:code-params; @link:code-forecast-registry.
+# @tag:validation @tag:testing
 """In-process CLI contract coverage for fast public-command routing checks."""
 from __future__ import annotations
 

@@ -1,5 +1,15 @@
 # CITING — citation and evidence rules
 
+<!-- @ref:doc-citing; @tag:evidence -->
+<!--
+Connections: @link:code-params; @link:code-citations; @link:code-audit; @link:doc-attribution;
+@link:doc-evidence-classification-0-4; @link:docs-index; @link:test-params; @link:test-audit;
+@link:test-source-reextraction.
+-->
+
+Related: [Documentation map](README.md) · [attribution](ATTRIBUTION.md) · [evidence classification 0 4](EVIDENCE_CLASSIFICATION_0_4.md).
+Implementation: [params](../src/downstream/params.py), [citations](../src/downstream/citations.py), [audit](../src/downstream/audit.py). Checks: [params](../tests/test_params.py), [audit](../tests/test_audit.py), [source_reextraction](../tests/test_source_reextraction.py).
+
 Binding for every parameter, baseline, and doc claim in this repo.
 The audit (`downstream audit`) enforces the mechanical parts.
 

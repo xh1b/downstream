@@ -1,5 +1,13 @@
 # Sensitivity attached to scenario results
 
+<!-- @ref:doc-result-sensitivity; @tag:uncertainty -->
+<!--
+Connections: @link:code-result-sensitivity; @link:code-sensitivity; @link:code-knobs; @link:doc-probabilistic-roadmap; @link:doc-exposure-semantics-0-4; @link:docs-index; @link:test-result-sensitivity; @link:test-sensitivity-scoring; @link:test-knobs.
+-->
+
+Related: [Documentation map](README.md) · [probabilistic roadmap](PROBABILISTIC_ROADMAP.md) · [exposure semantics 0 4](EXPOSURE_SEMANTICS_0_4.md).
+Implementation: [result_sensitivity](../src/downstream/result_sensitivity.py), [sensitivity](../src/downstream/sensitivity.py), [knobs](../src/downstream/knobs.py). Checks: [result_sensitivity](../tests/test_result_sensitivity.py), [sensitivity_scoring](../tests/test_sensitivity_scoring.py), [knobs](../tests/test_knobs.py).
+
 Engine 0.4.0 / parameters v1.52. Each emitted scenario count now carries a
 `sensitivity` report. Child present-value projections carry the same report.
 Entity results and policy comparison arms inherit it through the scenario engine.

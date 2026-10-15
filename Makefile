@@ -1,3 +1,5 @@
+# @ref:calculator-build
+# Context: @link:doc-calculator; @link:script-build-calculator; @link:script-serve-calculator. @tag:calculator
 PYTHON ?= $(if $(wildcard .venv/bin/python),.venv/bin/python,python3)
 PORT ?= 8000
 

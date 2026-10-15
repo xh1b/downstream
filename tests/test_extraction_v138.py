@@ -1,3 +1,7 @@
+# @ref:test-extraction-v138
+# Method: @link:doc-citing.
+# Implementation: @link:code-params; @link:code-audit.
+# @tag:evidence @tag:testing
 """v1.39 pins: Browning & Heinesen 2012 + Marcus 2013 full-text extractions.
 
 What this file pins:

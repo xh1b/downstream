@@ -1,3 +1,7 @@
+# @ref:test-extraction-v114b
+# Method: @link:doc-citing.
+# Implementation: @link:code-params; @link:code-audit; @link:code-citations.
+# @tag:evidence @tag:testing
 """v1.14b pins: fertility elasticity (kearney2018fracking) and the
 bib-duplicate resolution.
 

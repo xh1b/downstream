@@ -1,3 +1,7 @@
+# @ref:test-extraction-v125
+# Method: @link:doc-citing.
+# Implementation: @link:code-params; @link:code-audit; @link:code-citations.
+# @tag:evidence @tag:testing
 """v1.25 pins: unemployment -> mental health (queue #20, owner-downloaded
 ScienceDirect PDF read in full; Paul & Moser, JVB 74(3):264-282).
 

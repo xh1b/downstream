@@ -1,3 +1,7 @@
+# @ref:code-admission
+# Method: @link:doc-pool-readiness-0-4.
+# Verification: @link:test-admission-provenance; @link:test-guard-rails; @link:test-synthesis.
+# @tag:evidence
 """Manual-review report for synthesized evidence versus a shipped parameter.
 
 The report is intentionally read-only.  A pooled estimate can be statistically

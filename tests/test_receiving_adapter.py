@@ -1,3 +1,7 @@
+# @ref:test-receiving-adapter
+# Method: @link:doc-receiving-community-0-4.
+# Implementation: @link:code-receiving-community; @link:code-employer.
+# @tag:receiving @tag:testing
 """Receiving estimates need source-specific shares, denominators and endpoint windows."""
 from copy import deepcopy
 from dataclasses import replace

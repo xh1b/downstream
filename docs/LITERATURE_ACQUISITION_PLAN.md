@@ -1,5 +1,14 @@
 # Literature Acquisition Plan
 
+<!-- @ref:doc-literature-acquisition-plan; @tag:evidence -->
+<!--
+Connections: @link:code-evidence; @link:code-admission; @link:doc-citing; @link:doc-queued-extractions; @link:doc-pool-readiness-0-4; @link:docs-index; @link:script-import-evidence-corpus;
+@link:test-evidence; @link:test-admission-provenance.
+-->
+
+Related: [Documentation map](README.md) · [citing](CITING.md) · [queued extractions](QUEUED_EXTRACTIONS.md).
+Implementation: [evidence](../src/downstream/evidence.py), [admission](../src/downstream/admission.py). Checks: [evidence](../tests/test_evidence.py), [admission_provenance](../tests/test_admission_provenance.py).
+
 ## Purpose
 
 Build a broad, reproducible corpus of causal studies for the `downstream`

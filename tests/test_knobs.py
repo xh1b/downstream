@@ -1,3 +1,8 @@
+# @ref:test-knobs
+# Method: @link:doc-result-sensitivity.
+# Implementation: @link:code-knobs; @link:code-children; @link:code-params; @link:code-scenario;
+# @link:code-sensitivity.
+# @tag:uncertainty @tag:testing
 """Adversarial traps for the knob-experiment harness and Sobol CIs.
 
 Each trap names the defect it hunts:

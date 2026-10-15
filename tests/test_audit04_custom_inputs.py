@@ -1,3 +1,8 @@
+# @ref:test-audit04-custom-inputs
+# Method: @link:doc-exposure-semantics-0-4.
+# Implementation: @link:code-cli; @link:code-employer; @link:code-params; @link:code-policy;
+# @link:code-scenario.
+# @tag:exposure @tag:testing
 """Regression receipts for release-audit custom-source findings."""
 import csv
 from dataclasses import replace

@@ -1,3 +1,7 @@
+# @ref:test-extraction-v140
+# Method: @link:doc-citing.
+# Implementation: @link:code-params; @link:code-audit.
+# @tag:evidence @tag:testing
 """v1.41 pins: Bingley-Cappellari-Ovidi (JEEA 2026) + Schaller-Stevens 2015.
 
 What this file pins:

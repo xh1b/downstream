@@ -1,3 +1,7 @@
+# @ref:test-audit-repairs
+# Method: @link:doc-exposure-semantics-0-4.
+# Implementation: @link:code-community; @link:code-distributions; @link:code-inference; @link:code-ledger; @link:code-mc.
+# @tag:exposure @tag:testing
 """Regression traps for the 2026-09-09 deep mathematics/code audit."""
 import csv
 

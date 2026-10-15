@@ -1,5 +1,13 @@
 # QUEUED EXTRACTIONS
 
+<!-- @ref:doc-queued-extractions; @tag:evidence -->
+<!--
+Connections: @link:code-params; @link:code-evidence; @link:code-admission; @link:doc-literature-acquisition-plan; @link:doc-citing; @link:docs-index; @link:test-source-reextraction; @link:test-admission-provenance.
+-->
+
+Related: [Documentation map](README.md) · [literature acquisition plan](LITERATURE_ACQUISITION_PLAN.md) · [citing](CITING.md).
+Implementation: [params](../src/downstream/params.py), [evidence](../src/downstream/evidence.py), [admission](../src/downstream/admission.py). Checks: [source_reextraction](../tests/test_source_reextraction.py), [admission_provenance](../tests/test_admission_provenance.py).
+
 Structure exists in the model; the NUMBER is pending a full-text
 extraction pass. Each row names the study, the exact target, and the
 priority. When a row lands: add the parameter row (tiered per

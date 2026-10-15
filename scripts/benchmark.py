@@ -1,3 +1,7 @@
+# @ref:script-benchmark
+# Method: @link:doc-testing-quality.
+# Implementation: @link:code-children; @link:code-mc; @link:code-params.
+# @tag:testing
 """Reproducible local microbenchmarks for the public numerical paths."""
 from __future__ import annotations
 

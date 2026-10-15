@@ -1,3 +1,7 @@
+# @ref:test-v2-backtest
+# Method: @link:doc-scenario-evidence-protocol.
+# Implementation: @link:code-validate; @link:code-params.
+# @tag:validation @tag:testing
 """v1.27 pins: V2 out-of-sample back-test framework (pre-registered).
 
 What this file hunts:

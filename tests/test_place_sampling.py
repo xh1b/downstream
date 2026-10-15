@@ -1,3 +1,7 @@
+# @ref:test-place-sampling
+# Method: @link:doc-place-counterfactual.
+# Implementation: @link:code-cli; @link:code-params; @link:code-place; @link:code-knobs; @link:code-scenario.
+# @tag:place @tag:testing
 """Place experiments must recompute gamma and preserve national behavior."""
 import json
 

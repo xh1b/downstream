@@ -1,3 +1,7 @@
+# @ref:code-variants
+# Method: @link:doc-causal-graph-plan.
+# Verification: @link:test-variants; @link:test-extraction-v119.
+# @tag:model
 """Structural-variant ensemble: named alternate composition assumptions.
 
 The model's composition choices (side-by-side parallel streams, flat

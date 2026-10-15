@@ -1,3 +1,8 @@
+# @ref:test-calculator-server
+# Method: @link:doc-calculator.
+# Implementation: @link:calculator-math; @link:calculator-app; @link:script-build-calculator;
+# @link:script-serve-calculator.
+# @tag:calculator @tag:testing
 """The local server serves the current app without exposing repository files."""
 from contextlib import contextmanager
 import json

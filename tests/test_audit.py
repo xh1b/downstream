@@ -1,3 +1,7 @@
+# @ref:test-audit
+# Method: @link:doc-citing.
+# Implementation: @link:code-audit.
+# @tag:evidence @tag:testing
 """Adversarial traps for the audit — each names the bug class it hunts."""
 
 import csv

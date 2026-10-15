@@ -1,3 +1,7 @@
+# @ref:test-household-summary
+# Method: @link:doc-household-comparison-0-4.
+# Implementation: @link:code-household.
+# @tag:household @tag:testing
 """Reconciled marginal household expectations, without invented joint outcomes."""
 
 from copy import deepcopy

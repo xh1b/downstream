@@ -1,3 +1,9 @@
+# @ref:script-build-methods-html
+# Method: @link:doc-paper.
+# Implementation: @link:code-credits; @link:code-mortality; @link:code-params.
+# Verification: @link:test-paper-tables.
+# Related: @link:paper-methods; @link:paper-build-tables.
+# @tag:methods
 """Build a self-contained, semantic HTML companion to the methods paper."""
 from __future__ import annotations
 
@@ -55,6 +61,7 @@ def build(params_dir=None):
     csv_uri = 'data:text/csv;charset=utf-8,' + quote((directory / 'parameters.csv').read_text())
     digest = hashlib.sha256(json.dumps(result, sort_keys=True, allow_nan=False).encode()).hexdigest()
     return f'''<!doctype html>
+<!-- Generated companion: @link:script-build-methods-html; @link:paper-methods; @link:doc-paper. @tag:methods -->
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Downstream methods and evidence</title><style>
 :root{{color-scheme:light dark}}body{{font:18px/1.65 system-ui,sans-serif;margin:0 auto;padding:2rem 1.2rem;max-width:1000px}}

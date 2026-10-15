@@ -1,5 +1,16 @@
 # Testing quality review — 2026-09-09
 
+<!-- @ref:doc-testing-quality; @tag:testing -->
+<!--
+Connections: @link:code-ledger; @link:code-validate; @link:doc-scenario-evidence-protocol;
+@link:doc-open-source-release; @link:docs-index; @link:script-quality-gate; @link:quality-workflow;
+@link:script-benchmark; @link:script-vulture-whitelist; @link:test-properties-hypothesis;
+@link:test-mathematics-v02.
+-->
+
+Related: [Documentation map](README.md) · [scenario evidence protocol](SCENARIO_EVIDENCE_PROTOCOL.md) · [open source release](OPEN_SOURCE_RELEASE.md).
+Implementation: [ledger](../src/downstream/ledger.py), [validate](../src/downstream/validate.py). Checks: [properties_hypothesis](../tests/test_properties_hypothesis.py), [mathematics_v02](../tests/test_mathematics_v02.py).
+
 ## Current gate
 
 Engine 0.4.0 / parameters v1.51 verification on 2026-10-14 measured
@@ -190,3 +201,17 @@ proportional to parameter count times its base sample), and should be run as
 an analysis job rather than on an interactive request path. Do not enforce a
 fixed timing threshold in ordinary CI: host contention makes it flaky; retain
 the benchmark output as a trend baseline and investigate material regressions.
+
+## Reference tooling and source navigation
+
+<!-- @ref:test-refcheck; @link:script-refcheck; @link:reference-token-contract. @tag:tooling @tag:testing -->
+
+[Reference-checker tests](../tests/test_refcheck.py) exercise duplicate anchors,
+dangling links, malformed names, source-comment tokens and fenced examples.
+Their literal fixtures are exempt from repository scanning through
+[the fixture allowlist](../scripts/refcheck-allowlist.txt); this section is the
+verification anchor for that intentionally exempt file.
+[Task workflow tests](../tests/test_tasks_workflow.py) and
+[board safeguards](../tests/test_tasks_board.py) cover task references, tags,
+comments and isolated local commits. Run the reference and task validators
+before review. These checks establish navigability, not scientific validity.

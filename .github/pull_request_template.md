@@ -1,5 +1,8 @@
 ## What changes and why?
 
+<!-- @ref:contribution-review-template; @tag:development -->
+<!-- Context: @link:contributing; @link:doc-testing-quality; @link:doc-citing; @link:documentation-workflow. -->
+
 Describe the problem and resulting behavior. Link the relevant issue or study.
 
 ## Validation

@@ -1,5 +1,13 @@
 # Annual household comparison summaries in 0.4
 
+<!-- @ref:doc-household-comparison-0-4; @tag:household -->
+<!--
+Connections: @link:code-household; @link:doc-baseline-transition-r2-2026-09-14; @link:doc-life-course-research-plan; @link:docs-index; @link:paper-household; @link:test-household; @link:test-household-summary.
+-->
+
+Related: [Documentation map](README.md) · [baseline transition r2 2026-09-14](BASELINE_TRANSITION_R2_2026-09-14.md) · [life course research plan](LIFE_COURSE_RESEARCH_PLAN.md).
+Implementation: [household](../src/downstream/household.py). Checks: [household](../tests/test_household.py), [household_summary](../tests/test_household_summary.py).
+
 `household_comparison(payload, params_dir=None)` now returns cumulative paired
 arm summaries for every adult and the household, in addition to existing
 annual rows and the legacy cumulative difference field. This extends the

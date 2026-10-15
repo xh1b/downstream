@@ -1,3 +1,8 @@
+# @ref:code-inference
+# Method: @link:doc-probabilistic-roadmap.
+# Verification: @link:test-inference; @link:test-audit-repairs; @link:test-inference-fuzz.
+# Related: @link:paper-uncertainty.
+# @tag:uncertainty
 """Analytic inference layer: exact moments, variance shares, coverage.
 
 The Monte Carlo rebuilds the compute per draw; this module does the

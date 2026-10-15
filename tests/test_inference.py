@@ -1,3 +1,8 @@
+# @ref:test-inference
+# Method: @link:doc-probabilistic-roadmap.
+# Implementation: @link:code-inference; @link:code-children; @link:code-params; @link:code-knobs;
+# @link:code-distributions.
+# @tag:uncertainty @tag:testing
 """Adversarial traps for the analytic inference layer.
 
 Each trap names the defect it hunts:

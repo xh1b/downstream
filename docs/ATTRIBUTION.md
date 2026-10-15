@@ -1,5 +1,14 @@
 # ATTRIBUTION — how this model credits research
 
+<!-- @ref:doc-attribution; @tag:evidence -->
+<!--
+Connections: @link:code-credits; @link:code-citations; @link:doc-citing; @link:docs-index;
+@link:script-fetch-dois; @link:test-credits; @link:test-params.
+-->
+
+Related: [Documentation map](README.md) · [citing](CITING.md).
+Implementation: [credits](../src/downstream/credits.py), [citations](../src/downstream/citations.py). Checks: [credits](../tests/test_credits.py), [params](../tests/test_params.py).
+
 The model's authority is borrowed and the loans are itemized. These
 rules keep the credit exact.
 

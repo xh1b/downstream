@@ -1,5 +1,13 @@
 # Remarriage-margin screen
 
+<!-- @ref:doc-remarriage-margin-screen-0-4; @tag:family -->
+<!--
+Connections: @link:code-family; @link:code-admission; @link:doc-queued-extractions; @link:doc-citing; @link:docs-index; @link:test-remarriage-screen.
+-->
+
+Related: [Documentation map](README.md) · [queued extractions](QUEUED_EXTRACTIONS.md) · [citing](CITING.md).
+Implementation: [family](../src/downstream/family.py), [admission](../src/downstream/admission.py). Checks: [remarriage_screen](../tests/test_remarriage_screen.py).
+
 **Disposition: screen complete; no coefficient admitted.** The original task
 names a candidate from the V1 divorce row but no specific table. We checked both
 cited anchors, `rege2007` and `charles2004`. Neither identifies a displacement

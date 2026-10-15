@@ -1,3 +1,7 @@
+# @ref:test-mathematics-v02
+# Method: @link:doc-child-gap-view.
+# Implementation: @link:code-children; @link:code-distributions; @link:code-inference; @link:code-ledger; @link:code-mortality.
+# @tag:children @tag:testing
 from dataclasses import replace
 
 import pytest

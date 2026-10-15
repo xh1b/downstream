@@ -1,3 +1,8 @@
+# @link:test-refcheck
+# Method: @link:docs-index.
+# Implementation: @link:script-refcheck.
+# Related: @link:reference-token-contract.
+# @tag:tooling @tag:testing
 """@ref:/@link: anchors are unique, well-formed, and every link resolves."""
 
 import contextlib

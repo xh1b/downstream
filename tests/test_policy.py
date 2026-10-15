@@ -1,3 +1,7 @@
+# @ref:test-policy
+# Method: @link:doc-causal-graph-plan.
+# Implementation: @link:code-policy; @link:code-params; @link:code-scenario.
+# @tag:policy @tag:testing
 from dataclasses import replace
 import pytest
 from downstream.params import load_all

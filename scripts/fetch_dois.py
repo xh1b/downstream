@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# @ref:script-fetch-dois
+# Method: @link:doc-attribution.
+# Implementation: @link:code-citations; @link:code-params.
+# @tag:evidence
 """Pin DOIs onto references.bib entries via the Crossref API.
 
 For every bib entry WITHOUT a doi field: query Crossref by title +

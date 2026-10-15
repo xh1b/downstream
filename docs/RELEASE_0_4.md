@@ -1,5 +1,13 @@
 # Downstream 0.4.0 — pending update and review follow-through
 
+<!-- @ref:doc-release-0-4; @tag:release -->
+<!--
+Connections: @link:code-scenario; @link:code-audit; @link:code-consumer; @link:doc-consumer-fixtures-0-4; @link:doc-model-card; @link:doc-open-source-release; @link:docs-index; @link:test-release-repairs; @link:test-consumer-fixtures; @link:test-exposure-semantics.
+-->
+
+Related: [Documentation map](README.md) · [consumer fixtures 0 4](CONSUMER_FIXTURES_0_4.md) · [model card](MODEL_CARD.md).
+Implementation: [scenario](../src/downstream/scenario.py), [audit](../src/downstream/audit.py), [consumer](../src/downstream/consumer.py). Checks: [release_repairs](../tests/test_release_repairs.py), [consumer_fixtures](../tests/test_consumer_fixtures.py), [exposure_semantics](../tests/test_exposure_semantics.py).
+
 Engine 0.4.0 / parameters v1.52, 2026-10-15. This pending update implements the
 review's scenario improvements and records unresolved empirical requirements
 in the `tasks/` board. Software correctness and source reproduction do not establish

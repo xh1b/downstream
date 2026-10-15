@@ -1,3 +1,7 @@
+# @ref:code-scoring
+# Method: @link:doc-scenario-evidence-protocol.
+# Verification: @link:test-guard-rails; @link:test-sensitivity-scoring.
+# @tag:validation
 """Proper scoring rules for the validation program.
 
 A published forecast must be scored against what happened. These are

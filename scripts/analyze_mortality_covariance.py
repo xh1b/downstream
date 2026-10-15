@@ -1,3 +1,7 @@
+# @ref:script-analyze-mortality-covariance
+# Method: @link:doc-mortality-covariance-0-4.
+# Implementation: @link:code-mortality-covariance.
+# @tag:mortality
 """Inspect available Table 4 additive components without admitting a profile."""
 from __future__ import annotations
 

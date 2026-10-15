@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# @ref:script-serve-calculator
+# Method: @link:doc-calculator.
+# Implementation: @link:calculator-template; @link:calculator-math; @link:calculator-app.
+# Verification: @link:test-calculator; @link:test-calculator-server.
+# @tag:calculator
 """Build and serve the calculator on a local HTTP address."""
 from __future__ import annotations
 

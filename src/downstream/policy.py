@@ -1,3 +1,7 @@
+# @ref:code-policy
+# Method: @link:doc-causal-graph-plan.
+# Verification: @link:test-policy; @link:test-audit04-custom-inputs; @link:test-guard-rails.
+# @tag:policy
 """Conditional policy contrasts with explicit exposure assumptions.
 
 This layer compares supplied counterfactual exposures. It does not estimate

@@ -1,3 +1,7 @@
+# @ref:code-cli
+# Method: @link:doc-model-card.
+# Verification: @link:test-cli-direct-contracts; @link:test-cli-smoke.
+# @tag:cli
 """downstream CLI.
 
     downstream family                          standard-family vignette

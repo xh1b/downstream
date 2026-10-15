@@ -1,3 +1,6 @@
+# @ref:script-acquire-followthrough-sources
+# Method: @link:doc-scenario-evidence-protocol.
+# @tag:data
 """Acquire public reference data with immutable local files and hash provenance.
 
 This is a source-download CLI, not parameter admission. Raw public data are

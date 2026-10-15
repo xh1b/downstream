@@ -1,3 +1,7 @@
+# @ref:test-extraction-v112
+# Method: @link:doc-citing.
+# Implementation: @link:code-params; @link:code-audit; @link:code-ledger.
+# @tag:evidence @tag:testing
 """v1.12 extraction pins: spillover (adh2013), achievement (dahl2012),
 income-longevity slope (chetty2016).
 

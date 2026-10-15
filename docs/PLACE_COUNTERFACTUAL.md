@@ -1,5 +1,13 @@
 # Same-place child-earnings counterfactual
 
+<!-- @ref:doc-place-counterfactual; @tag:place -->
+<!--
+Connections: @link:code-place; @link:code-build-places; @link:code-county-rates; @link:doc-child-gap-view; @link:doc-cdc-wonder-profile-import; @link:docs-index; @link:test-place; @link:test-county-rates; @link:test-build-places-adversarial.
+-->
+
+Related: [Documentation map](README.md) · [child gap view](CHILD_GAP_VIEW.md) · [cdc wonder profile import](CDC_WONDER_PROFILE_IMPORT.md).
+Implementation: [place](../src/downstream/place.py), [build_places](../src/downstream/build_places.py), [county_rates](../src/downstream/county_rates.py). Checks: [place](../tests/test_place.py), [county_rates](../tests/test_county_rates.py), [build_places_adversarial](../tests/test_build_places_adversarial.py).
+
 Verified 2026-10-15 for engine 0.4.0, parameter set v1.51.
 
 The contrast is displacement versus no displacement **in the same place**.

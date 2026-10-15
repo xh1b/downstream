@@ -1,3 +1,7 @@
+# @ref:code-place
+# Method: @link:doc-place-counterfactual.
+# Verification: @link:test-place; @link:test-child-gap-view; @link:test-extraction-v130.
+# @tag:place
 """Place-resolved layer: partial pooling of county baselines + the
 Chetty-Hendren mobility modifier.
 

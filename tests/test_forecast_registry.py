@@ -1,3 +1,7 @@
+# @ref:test-forecast-registry
+# Method: @link:doc-scenario-evidence-protocol.
+# Implementation: @link:code-forecast-registry.
+# @tag:validation @tag:testing
 from datetime import datetime, timezone
 
 import pytest

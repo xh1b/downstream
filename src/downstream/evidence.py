@@ -1,3 +1,7 @@
+# @ref:code-evidence
+# Method: @link:doc-literature-acquisition-plan.
+# Verification: @link:test-evidence; @link:test-evidence-classification; @link:test-guard-rails.
+# @tag:evidence
 """The acquired-paper registry.
 
 The parameter table is deliberately small: it contains only estimates that

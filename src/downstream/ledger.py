@@ -1,3 +1,7 @@
+# @ref:code-ledger
+# Method: @link:doc-causal-graph-plan; @link:spec-composition.
+# Verification: @link:test-ledger; @link:test-audit-repairs; @link:test-extraction-v112.
+# @tag:model
 """Deterministic ledger computation with explicit composition semantics.
 
 A Ledger tracks ONE quantity through its cited steps. Composition is

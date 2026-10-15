@@ -1,3 +1,8 @@
+# @ref:test-guard-rails
+# Method: @link:doc-exposure-semantics-0-4.
+# Implementation: @link:code-params; @link:code-scenario; @link:code-citations; @link:code-policy;
+# @link:code-bundle.
+# @tag:exposure @tag:testing
 """Admission-contract guard rails across the small modules.
 
 Each test pins one loud-failure branch: the loaders and constructors must

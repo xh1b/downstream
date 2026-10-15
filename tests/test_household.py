@@ -1,3 +1,7 @@
+# @ref:test-household
+# Method: @link:doc-household-comparison-0-4.
+# Implementation: @link:code-household; @link:code-params.
+# @tag:household @tag:testing
 from copy import deepcopy
 import json
 

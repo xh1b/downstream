@@ -1,3 +1,7 @@
+# @ref:test-consumer-fixtures
+# Method: @link:doc-consumer-fixtures-0-4.
+# Implementation: @link:code-consumer.
+# @tag:consumer @tag:testing
 """Consumer acceptance must preserve normalization, scope and shared comparisons."""
 import copy
 import math

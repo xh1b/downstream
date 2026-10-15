@@ -1,3 +1,7 @@
+# @ref:test-uncertainty-budget
+# Method: @link:doc-probabilistic-roadmap.
+# Implementation: @link:code-uncertainty-budget; @link:code-params.
+# @tag:uncertainty @tag:testing
 from copy import deepcopy
 import json
 

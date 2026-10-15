@@ -1,3 +1,7 @@
+# @ref:test-validate
+# Method: @link:doc-scenario-evidence-protocol.
+# Implementation: @link:code-validate; @link:code-params.
+# @tag:validation @tag:testing
 """V0 internal-consistency checks — the model's cheapest falsifier."""
 
 from pathlib import Path

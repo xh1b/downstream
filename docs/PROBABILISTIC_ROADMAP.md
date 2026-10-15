@@ -1,5 +1,15 @@
 # Probabilistic extension roadmap
 
+<!-- @ref:doc-probabilistic-roadmap; @tag:uncertainty -->
+<!--
+Connections: @link:code-distributions; @link:code-mc; @link:code-inference; @link:code-uncertainty-budget; @link:code-county-rates; @link:doc-result-sensitivity; @link:doc-scenario-evidence-protocol;
+@link:docs-index; @link:paper-uncertainty; @link:test-distributions; @link:test-inference;
+@link:test-uncertainty-budget.
+-->
+
+Related: [Documentation map](README.md) · [result sensitivity](RESULT_SENSITIVITY.md) · [scenario evidence protocol](SCENARIO_EVIDENCE_PROTOCOL.md).
+Implementation: [distributions](../src/downstream/distributions.py), [mc](../src/downstream/mc.py), [inference](../src/downstream/inference.py), [uncertainty_budget](../src/downstream/uncertainty_budget.py), [county_rates](../src/downstream/county_rates.py). Checks: [distributions](../tests/test_distributions.py), [inference](../tests/test_inference.py), [uncertainty_budget](../tests/test_uncertainty_budget.py).
+
 This document distinguishes implemented probability machinery from research
 work that requires new data. It prevents a convenient sampler from being
 mistaken for evidence about a causal bridge.

@@ -1,3 +1,7 @@
+# @ref:script-analyze-mortality-persistence
+# Method: @link:doc-mortality-persistence-analysis-2026-10-14.
+# Implementation: @link:code-mortality; @link:code-params; @link:code-scenario.
+# @tag:mortality
 """Reproduce persistence arithmetic without changing admitted model inputs."""
 from __future__ import annotations
 

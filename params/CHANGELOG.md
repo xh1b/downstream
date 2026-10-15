@@ -1,5 +1,8 @@
 ## v1.52 — 2026-10-15 — correct receiving-community exposure units
 
+<!-- @ref:parameter-changelog; @tag:evidence -->
+<!-- Context: @link:doc-citing; @link:doc-evidence-classification-0-4; @link:code-params. -->
+
 - Retire generic immigrant-stock receiving links. Light–Miller Table 2 is a
   semi-log coefficient per percentage-point undocumented population share,
   not a log-log stock elasticity. Rechecked b=-.12, SE=.03 against the original

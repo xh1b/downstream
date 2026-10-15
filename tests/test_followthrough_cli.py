@@ -1,3 +1,7 @@
+# @ref:test-followthrough-cli
+# Method: @link:doc-scenario-evidence-protocol.
+# Implementation: @link:code-validate; @link:code-cli.
+# @tag:validation @tag:testing
 import json
 import shutil
 

@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# @ref:script-build-pool-readiness
+# Method: @link:doc-pool-readiness-0-4.
+# Implementation: @link:code-study-library.
+# @tag:evidence
 """Report source-contrast compatibility; never compute or admit a pooled effect."""
 from __future__ import annotations
 

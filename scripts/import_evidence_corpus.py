@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# @ref:script-import-evidence-corpus
+# Method: @link:doc-literature-acquisition-plan.
+# @tag:evidence
 """Import locally acquired PDFs into the reproducible evidence registry.
 
 This is a mechanical import, not evidence extraction.  Each record is marked

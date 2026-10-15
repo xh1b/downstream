@@ -1,3 +1,7 @@
+# @ref:test-employer-warehouse
+# Method: @link:doc-exposure-semantics-0-4.
+# Implementation: @link:code-cli; @link:code-employer; @link:code-params; @link:code-scenario.
+# @tag:exposure @tag:testing
 """Synthetic warehouse contract fixtures; no database or production records."""
 from copy import deepcopy
 from decimal import Decimal

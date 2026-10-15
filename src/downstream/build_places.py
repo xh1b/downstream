@@ -1,3 +1,7 @@
+# @ref:code-build-places
+# Method: @link:doc-place-counterfactual.
+# Verification: @link:test-build-places-adversarial; @link:test-extraction-v130.
+# @tag:place
 """Build params/places.csv from the Opportunity Atlas county outcomes
 and the CDC WONDER county mortality export.
 

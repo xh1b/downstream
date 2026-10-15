@@ -1,3 +1,7 @@
+# @ref:code-synthesis
+# Method: @link:doc-pool-readiness-0-4.
+# Verification: @link:test-synthesis; @link:test-child-applicability; @link:test-guard-rails.
+# @tag:evidence
 """Study-level random-effects synthesis, separate from parameter admission.
 
 This is deliberately a small, auditable evidence layer: it will combine only

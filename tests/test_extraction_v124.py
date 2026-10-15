@@ -1,3 +1,7 @@
+# @ref:test-extraction-v124
+# Method: @link:doc-citing.
+# Implementation: @link:code-params; @link:code-audit; @link:code-citations.
+# @tag:evidence @tag:testing
 """v1.24 pins: recessions -> IPV (queue #22, owner-downloaded PDF read in
 full; Schneider, Harknett & McLanahan, Demography 53(2):471-505).
 

@@ -1,3 +1,7 @@
+# @ref:test-transmissions
+# Method: @link:doc-child-gap-view.
+# Implementation: @link:code-transmissions; @link:code-audit; @link:code-children; @link:code-ledger; @link:code-params.
+# @tag:children @tag:testing
 """The generational transmission registry.
 
 Traps the core design invariant: the child line is ONE admitted

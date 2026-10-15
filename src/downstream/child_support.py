@@ -1,3 +1,7 @@
+# @ref:code-child-support
+# Method: @link:doc-child-support-0-4.
+# Verification: @link:test-child-support.
+# @tag:children
 """Inspect existing child earnings source support without inventing new effects."""
 
 from __future__ import annotations

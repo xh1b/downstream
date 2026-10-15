@@ -1,3 +1,7 @@
+# @ref:test-evidence
+# Method: @link:doc-literature-acquisition-plan.
+# Implementation: @link:code-evidence.
+# @tag:evidence @tag:testing
 from pathlib import Path
 
 import pytest

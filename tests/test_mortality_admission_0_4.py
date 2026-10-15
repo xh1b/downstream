@@ -1,3 +1,7 @@
+# @ref:test-mortality-admission-0-4
+# Method: @link:doc-mortality-applicability-0-4.
+# Implementation: @link:code-mortality-strata; @link:code-mortality-profiles.
+# @tag:mortality @tag:testing
 """Demographic baseline availability is never causal-response admission."""
 
 import csv

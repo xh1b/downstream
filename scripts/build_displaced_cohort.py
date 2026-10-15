@@ -1,3 +1,6 @@
+# @ref:script-build-displaced-cohort
+# Method: @link:doc-scenario-evidence-protocol.
+# @tag:data
 """Reproduce a frozen CPS January-2024 long-tenured displacement reference cohort.
 
 Age and household structure are measured at interview, not retrospectively at

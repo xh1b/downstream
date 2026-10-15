@@ -1,3 +1,7 @@
+# @ref:test-bundle
+# Method: @link:doc-consumer-fixtures-0-4.
+# Implementation: @link:code-bundle.
+# @tag:consumer @tag:testing
 import json
 import os
 from pathlib import Path

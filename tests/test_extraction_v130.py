@@ -1,3 +1,7 @@
+# @ref:test-extraction-v130
+# Method: @link:doc-citing.
+# Implementation: @link:code-params; @link:code-build-places; @link:code-place.
+# @tag:evidence @tag:testing
 """v1.30 pins: #23 Chetty-Hendren extraction + #30 Opportunity Atlas plug.
 
 What this file hunts:

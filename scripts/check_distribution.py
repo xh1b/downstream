@@ -1,3 +1,6 @@
+# @ref:script-check-distribution
+# Method: @link:doc-open-source-release.
+# @tag:release
 """Install a wheel in isolation and exercise it without checkout data or imports."""
 from __future__ import annotations
 

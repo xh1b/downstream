@@ -1,3 +1,7 @@
+# @ref:test-child-support
+# Method: @link:doc-child-support-0-4.
+# Implementation: @link:code-child-support; @link:code-params; @link:code-scenario.
+# @tag:children @tag:testing
 """Inspectable source support retains uncertainty and refuses false transport."""
 
 import csv

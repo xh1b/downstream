@@ -1,3 +1,7 @@
+# @ref:test-metamorphic
+# Method: @link:doc-mortality-source-reconciliation-2026-09-10.
+# Implementation: @link:code-mortality; @link:code-params; @link:code-scenario.
+# @tag:mortality @tag:testing
 """Metamorphic checks for scenario arithmetic and mortality timing.
 
 These assert relations that must hold even where a fixed expected result would

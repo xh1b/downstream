@@ -1,3 +1,7 @@
+# @ref:code-citations
+# Method: @link:doc-citing.
+# Verification: @link:test-params; @link:test-credits.
+# @tag:evidence
 """references.bib parsing + citation coverage.
 
 The bib file is the single citation database. Parameter rows cite by

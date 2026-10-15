@@ -1,3 +1,7 @@
+# @ref:test-release-repairs
+# Method: @link:doc-probabilistic-roadmap.
+# Implementation: @link:code-params; @link:code-county-rates; @link:code-place; @link:code-mortality-profiles; @link:code-mortality.
+# @tag:uncertainty @tag:testing
 """Regression checks for the website readiness review."""
 import csv
 import subprocess

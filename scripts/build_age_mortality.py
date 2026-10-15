@@ -1,3 +1,6 @@
+# @ref:script-build-age-mortality
+# Method: @link:doc-mortality-applicability-0-4.
+# @tag:mortality
 """Derive age-band mortality counts/rates from the pinned national WONDER pull."""
 import argparse
 from collections import defaultdict

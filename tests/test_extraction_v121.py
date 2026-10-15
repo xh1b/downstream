@@ -1,3 +1,7 @@
+# @ref:test-extraction-v121
+# Method: @link:doc-citing.
+# Implementation: @link:code-params; @link:code-audit; @link:code-citations.
+# @tag:evidence @tag:testing
 """v1.21 pins: the Collinson et al. 2024 eviction stream (queue #17,
 read via NBER w30382; QJE 139(1):57-120 is the version of record).
 

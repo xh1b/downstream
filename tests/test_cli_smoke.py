@@ -1,3 +1,6 @@
+# @ref:test-cli-smoke
+# Method: @link:doc-model-card.
+# @tag:model @tag:testing
 """CLI smoke traps: every public verb must at least run.
 
 Born 2026-09-07 from a real bug the smoke test caught: a function-local

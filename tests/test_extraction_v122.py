@@ -1,3 +1,7 @@
+# @ref:test-extraction-v122
+# Method: @link:doc-citing.
+# Implementation: @link:code-params; @link:code-audit; @link:code-citations.
+# @tag:evidence @tag:testing
 """v1.22 pins: the foreclosure price-spillover row (queue #18, read via
 NBER w14866; Campbell, Giglio & Pathak, AER 101(5):2108-31).
 

@@ -1,3 +1,8 @@
+# @ref:code-uncertainty-budget
+# Method: @link:doc-probabilistic-roadmap.
+# Verification: @link:test-uncertainty-budget; @link:test-audit04-custom-inputs.
+# Related: @link:paper-uncertainty.
+# @tag:uncertainty
 """Propagate documented exposure and mortality-baseline uncertainty separately.
 
 This conditional budget adds an explicit count likelihood and declared

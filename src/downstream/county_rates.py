@@ -1,3 +1,7 @@
+# @ref:code-county-rates
+# Method: @link:doc-probabilistic-roadmap.
+# Verification: @link:test-county-rates; @link:test-county-eb-prior; @link:test-county-mortality.
+# @tag:uncertainty
 """Count-likelihood county baseline uncertainty.
 
 The production place table intentionally does not reinterpret a generic

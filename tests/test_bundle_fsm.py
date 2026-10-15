@@ -1,3 +1,7 @@
+# @ref:test-bundle-fsm
+# Method: @link:doc-consumer-fixtures-0-4.
+# Implementation: @link:code-bundle.
+# @tag:consumer @tag:testing
 """Adversarial workflow tests for the atomic bundle export lifecycle."""
 from __future__ import annotations
 

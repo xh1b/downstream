@@ -1,3 +1,8 @@
+# @ref:code-worker
+# Method: @link:doc-mortality-source-reconciliation-2026-09-10.
+# Verification: @link:test-modules; @link:test-audit04-mortality-precision.
+# Related: @link:paper-counts.
+# @tag:mortality
 """Worker-level outcomes: earnings, mortality.
 
 The earnings shock IS the exposure (JLS 1993 band by default; a caller

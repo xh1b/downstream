@@ -1,3 +1,7 @@
+# @ref:code-params
+# Method: @link:doc-citing; @link:spec-composition.
+# Verification: @link:test-params; @link:test-source-reextraction.
+# @tag:evidence
 """Parameter set, node registry, and baseline loading + DAG validation.
 
 Every parameter row carries bib-key citations, a precision tier, a

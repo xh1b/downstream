@@ -1,3 +1,7 @@
+# @ref:test-extraction-v132
+# Method: @link:doc-citing.
+# Implementation: @link:code-params; @link:code-units; @link:code-audit.
+# @tag:evidence @tag:testing
 """v1.33 pins: #25 Akee casino quasi-experiment + #9 Duncan refusal.
 
 What this file hunts:

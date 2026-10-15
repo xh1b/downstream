@@ -1,3 +1,7 @@
+# @ref:test-build-places-adversarial
+# Method: @link:doc-place-counterfactual.
+# Implementation: @link:code-build-places.
+# @tag:place @tag:testing
 """Small hostile fixtures for Opportunity Atlas place-file ingestion."""
 from __future__ import annotations
 

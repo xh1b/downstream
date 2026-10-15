@@ -1,3 +1,7 @@
+# @ref:test-extraction-v120
+# Method: @link:doc-citing.
+# Implementation: @link:code-params; @link:code-audit; @link:code-citations.
+# @tag:evidence @tag:testing
 """v1.21 pins: the Stevens & Schaller 2011 grade-retention row (queue
 #12, read via NBER w15480; Economics of Education Review 30(2) is the
 version of record).

@@ -1,5 +1,14 @@
 # Downstream 0.4 priorities informed by XH1B usage
 
+<!-- @ref:doc-xh1b-usage-plan-0-4; @tag:consumer -->
+<!--
+Connections: @link:code-employer; @link:code-consumer; @link:doc-consumer-fixtures-0-4; @link:doc-exposure-semantics-0-4; @link:docs-index; @link:test-consumer-fixtures; @link:test-consumer-api;
+@link:test-exposure-semantics.
+-->
+
+Related: [Documentation map](README.md) · [consumer fixtures 0 4](CONSUMER_FIXTURES_0_4.md) · [exposure semantics 0 4](EXPOSURE_SEMANTICS_0_4.md).
+Implementation: [employer](../src/downstream/employer.py), [consumer](../src/downstream/consumer.py). Checks: [consumer_fixtures](../tests/test_consumer_fixtures.py), [consumer_api](../tests/test_consumer_api.py), [exposure_semantics](../tests/test_exposure_semantics.py).
+
 Inspected 2026-10-14. Keep engine 0.4.0; current parameters are v1.51.
 
 The next priority is a trustworthy exposure-to-outcome contract and a tested

@@ -1,5 +1,15 @@
 # Open source release checklist
 
+<!-- @ref:doc-open-source-release; @tag:release -->
+<!--
+Connections: @link:code-bundle; @link:code-credits; @link:code-audit; @link:doc-release-0-4;
+@link:doc-testing-quality; @link:docs-index; @link:script-check-distribution; @link:test-bundle;
+@link:test-export; @link:test-credits.
+-->
+
+Related: [Documentation map](README.md) · [release 0 4](RELEASE_0_4.md) · [testing quality](TESTING_QUALITY.md).
+Implementation: [bundle](../src/downstream/bundle.py), [credits](../src/downstream/credits.py), [audit](../src/downstream/audit.py). Checks: [bundle](../tests/test_bundle.py), [export](../tests/test_export.py), [credits](../tests/test_credits.py).
+
 Repository files prepare the project for contribution and review. The owner
 must separately configure hosting settings and publish the reviewed release.
 

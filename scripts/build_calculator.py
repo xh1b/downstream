@@ -1,4 +1,10 @@
 #!/usr/bin/env python3
+# @ref:script-build-calculator
+# Method: @link:doc-calculator.
+# Implementation: @link:code-params; @link:code-scenario; @link:code-study-library;
+# @link:calculator-template; @link:calculator-math; @link:calculator-app.
+# Verification: @link:test-calculator; @link:test-calculator-server.
+# @tag:calculator
 """Build the calculator page from current engine output."""
 from __future__ import annotations
 
@@ -43,12 +49,16 @@ def build() -> str:
                             "rate": parts["baselines"]["all_cause_mortality_annual"].value,
                             "children": 2, "gap": original.point,
                             "earnings": parts["baselines"]["median_male_lifetime_earnings"].value}}
-    template = (directory / "template.html").read_text()
-    return (template.replace("/* CALCULATOR_STYLE */", (directory / "style.css").read_text())
+    def embedded_source(name):
+        # Repeated inline assets cite their authored anchor rather than defining it again.
+        return (directory / name).read_text().replace("@ref:", "@link:")
+
+    template = embedded_source("template.html")
+    return (template.replace("/* CALCULATOR_STYLE */", embedded_source("style.css"))
             .replace("/* CALCULATOR_DATA */", json.dumps(payload, sort_keys=True, indent=2,
                                                         allow_nan=False).replace("<", "\\u003c"))
-            .replace("/* CALCULATOR_MATH */", (directory / "math.js").read_text())
-            .replace("/* CALCULATOR_APP */", (directory / "app.js").read_text()))
+            .replace("/* CALCULATOR_MATH */", embedded_source("math.js"))
+            .replace("/* CALCULATOR_APP */", embedded_source("app.js")))
 
 
 def main() -> int:

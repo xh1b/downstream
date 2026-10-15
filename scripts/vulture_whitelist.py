@@ -1,3 +1,6 @@
+# @ref:script-vulture-whitelist
+# Method: @link:doc-testing-quality.
+# @tag:testing
 """Names vulture would otherwise flag, each with the reason it exists.
 
 Whitelisting is a reviewed decision, not a suppress-all: every entry

@@ -1,3 +1,7 @@
+# @ref:test-fetal-chain
+# Method: @link:doc-causal-graph-plan.
+# Implementation: @link:code-ledger; @link:code-mc; @link:code-params.
+# @tag:model @tag:testing
 """Fetal dose-response chain (v1.45): birth weight walks to adult outcomes.
 
 The in-utero cohort is a DIFFERENT population from the childhood-exposure

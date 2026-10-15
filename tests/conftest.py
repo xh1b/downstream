@@ -1,3 +1,7 @@
+# @ref:test-conftest
+# Method: @link:doc-testing-quality.
+# Implementation: @link:engine-package.
+# @tag:testing
 """Put src/ on the path for the test run (the package is not installed)."""
 
 import sys

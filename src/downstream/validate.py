@@ -1,3 +1,7 @@
+# @ref:code-validate
+# Method: @link:doc-scenario-evidence-protocol.
+# Verification: @link:test-validate; @link:test-audit-repairs; @link:test-extraction-v117.
+# @tag:validation
 """Model validation, stage by stage.
 
 V0 — internal consistency (runs offline, always):

@@ -1,3 +1,7 @@
+# @ref:test-dist-v127
+# Method: @link:doc-citing.
+# Implementation: @link:code-audit; @link:code-distributions; @link:code-params; @link:code-mc.
+# @tag:evidence @tag:testing
 """v1.27 pins: per-parameter distributions + first citable correlations.
 
 What this file hunts:

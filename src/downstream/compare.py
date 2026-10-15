@@ -1,3 +1,7 @@
+# @ref:code-compare
+# Method: @link:doc-version-comparison.
+# Verification: @link:test-compare.
+# @tag:consumer
 """Deterministic, field-complete comparison of saved calculations and parameters."""
 from __future__ import annotations
 

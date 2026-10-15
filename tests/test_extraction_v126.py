@@ -1,3 +1,7 @@
+# @ref:test-extraction-v126
+# Method: @link:doc-citing.
+# Implementation: @link:code-params; @link:code-audit; @link:code-citations.
+# @tag:evidence @tag:testing
 """v1.26 pins: import competition -> radical vote (queue #15, owner-downloaded
 PDF read in full; Colantone & Stanig, AJPS 62(4):936-953).
 

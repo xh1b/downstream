@@ -1,5 +1,8 @@
 # SIPP data manifest — downloaded 2026-09-13
 
+<!-- @ref:sipp-data-provenance; @tag:household @tag:data -->
+<!-- Context: @link:doc-sipp-baseline-data-assessment-2026-09-13; @link:doc-baseline-transition-r2-2026-09-14; @link:script-build-baseline-transitions. -->
+
 Exact provenance lives in `MANIFEST.json` beside this file: for every
 file, its source URL on
 `www2.census.gov/programs-surveys/sipp/data/datasets/`, byte size,

@@ -1,3 +1,6 @@
+# @ref:test-displaced-cohort
+# Method: @link:doc-scenario-evidence-protocol.
+# @tag:data @tag:testing
 import importlib.util
 import json
 from pathlib import Path

@@ -1,3 +1,7 @@
+# @ref:test-export
+# Method: @link:doc-version-comparison.
+# Implementation: @link:code-snapshot; @link:code-params.
+# @tag:consumer @tag:testing
 """Snapshot export traps (the P1 'export verb' item).
 
 What this file hunts:

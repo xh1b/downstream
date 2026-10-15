@@ -1,3 +1,7 @@
+# @ref:test-sensitivity-centering
+# Method: @link:doc-result-sensitivity.
+# Implementation: @link:code-params; @link:code-sensitivity.
+# @tag:uncertainty @tag:testing
 """Traps for Sobol estimator stability at small output variance.
 
 The 2026-09-10 review recorded a shipped grandchild block run whose

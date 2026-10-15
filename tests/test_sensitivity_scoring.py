@@ -1,3 +1,7 @@
+# @ref:test-sensitivity-scoring
+# Method: @link:doc-scenario-evidence-protocol.
+# Implementation: @link:code-params; @link:code-scoring; @link:code-sensitivity; @link:code-children.
+# @tag:validation @tag:testing
 """Sobol sensitivity + scoring-rule checks."""
 
 import random

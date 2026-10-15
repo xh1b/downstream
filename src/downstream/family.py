@@ -1,3 +1,7 @@
+# @ref:code-family
+# Method: @link:doc-causal-graph-plan.
+# Verification: @link:test-modules; @link:test-remarriage-screen.
+# @tag:family
 """Family-stream outcomes: divorce, IPV transmission, family size.
 
 Parallel streams are reported SIDE BY SIDE with the displacement path.

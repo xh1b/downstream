@@ -1,3 +1,8 @@
+# @ref:test-vignette-scenario-mc
+# Method: @link:doc-probabilistic-roadmap.
+# Implementation: @link:code-mc; @link:code-params; @link:code-scenario; @link:code-vignette;
+# @link:code-children.
+# @tag:uncertainty @tag:testing
 """Vignette, scenario, and Monte Carlo checks."""
 
 from pathlib import Path

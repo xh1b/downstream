@@ -1,3 +1,7 @@
+# @ref:test-extraction-v117
+# Method: @link:doc-citing.
+# Implementation: @link:code-params; @link:code-validate.
+# @tag:evidence @tag:testing
 """v1.17 pins: the adh2013 spillover link WIRED into the V1 panel
 earnings row (the open wiring left by v1.12's landing of the row).
 

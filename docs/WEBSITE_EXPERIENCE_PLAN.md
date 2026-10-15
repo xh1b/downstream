@@ -1,5 +1,15 @@
 # Website experience plan: explore possible futures
 
+<!-- @ref:doc-website-experience-plan; @tag:calculator -->
+<!--
+Connections: @link:code-explanation; @link:code-render; @link:doc-calculator; @link:doc-rendering;
+@link:doc-model-card; @link:docs-index; @link:test-explanation-properties; @link:test-guard-rails;
+@link:test-release-repairs.
+-->
+
+Related: [Documentation map](README.md) · [calculator](CALCULATOR.md) · [rendering](RENDERING.md).
+Implementation: [explanation](../src/downstream/explanation.py), [render](../src/downstream/render.py). Checks: [explanation_properties](../tests/test_explanation_properties.py), [guard_rails](../tests/test_guard_rails.py), [release_repairs](../tests/test_release_repairs.py).
+
 Status: product and design proposal, September 10, 2026. This plan concerns
 usefulness, comprehension, trust, and visual quality. It does not prescribe
 frameworks, components, databases, deployment, or other implementation choices.

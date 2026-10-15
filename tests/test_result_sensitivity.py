@@ -1,3 +1,8 @@
+# @ref:test-result-sensitivity
+# Method: @link:doc-result-sensitivity.
+# Implementation: @link:code-result-sensitivity; @link:code-cli; @link:code-county-rates;
+# @link:code-employer; @link:code-mortality.
+# @tag:uncertainty @tag:testing
 """Sensitivity must refit the same scenario without changing its scientific scope."""
 import csv
 import json

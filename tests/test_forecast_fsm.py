@@ -1,3 +1,7 @@
+# @ref:test-forecast-fsm
+# Method: @link:doc-scenario-evidence-protocol.
+# Implementation: @link:code-forecast-registry.
+# @tag:validation @tag:testing
 """Adversarial state-machine tests for immutable forecast registrations."""
 from __future__ import annotations
 

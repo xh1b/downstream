@@ -1,3 +1,7 @@
+# @ref:test-extraction-v114
+# Method: @link:doc-citing.
+# Implementation: @link:code-params; @link:code-audit.
+# @tag:evidence @tag:testing
 """v1.14 extraction pins: long-run EITC earnings row (bastian2018,
 published JOLE copy) and the Behrman & Taubman IGE cross-check notes.
 

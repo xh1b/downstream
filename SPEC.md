@@ -1,11 +1,15 @@
 # SPEC — the downstream causal consequence graph
 
+<!-- @ref:specification; @tag:model @tag:methods -->
+<!-- Context: @link:docs-index; @link:code-ledger; @link:code-scenario; @link:paper-model; @link:test-mathematics-v02. -->
+
 Versioned with the parameter set (`params/VERSION`). This document is
 the algorithm: what is computed, from what, with which citations, and
 what is deliberately not computed. Everything here is public by
 design. The companion research corpus is private; this repo carries
 only the model, the numbers, and their sources.
 
+<!-- @ref:spec-purpose; connections: @link:doc-model-card; @link:code-scenario. -->
 ## 1. Purpose and what the model computes
 
 `downstream` is a versioned, evidence-locked causal consequence graph. Given
@@ -62,6 +66,7 @@ unit-appropriate uncertainty representation before they can be composed.
    in their output, not a footnote.
 5. Validation misses are published. The model does not tune to pass.
 
+<!-- @ref:spec-nodes; connections: @link:code-units; @link:code-params; @link:test-params. -->
 ## 2. Nodes and units
 
 `params/nodes.csv` declares every node and its unit. The unit decides
@@ -82,6 +87,7 @@ The v0 lesson, now enforced by `downstream audit`: Moretti's
 shape error, and the audit rejects any `level_ratio` row with a point
 below 1.0 as the tell for that bug class.
 
+<!-- @ref:spec-parameters; connections: @link:doc-citing; @link:code-params; @link:test-params. -->
 ## 3. Parameters
 
 `params/parameters.csv`, version `params/VERSION`. Columns:
@@ -128,6 +134,7 @@ Full history: params/CHANGELOG.md)
 Tiers mean what `CITING.md` says they mean. The audit cross-checks
 each tier against the `xh1b-evidence` class recorded in the bib entry.
 
+<!-- @ref:spec-composition; connections: @link:code-ledger; @link:code-transmissions; @link:paper-composition; @link:test-ledger. -->
 ## 4. Composition semantics
 
 A ledger tracks one quantity through cited steps. Step kinds:
@@ -173,6 +180,7 @@ weights and an additivity assumption the literature does not license.
 `combine_parallel` exists (gap-additive, floored at 0) for a future
 combined view, behind its own cited derivation.
 
+<!-- @ref:spec-pathways; connections: @link:code-worker; @link:code-family; @link:code-children; @link:code-community; @link:test-modules. -->
 ## 5. Modeled pathways
 
 - **Worker stream** (`worker.py`): earnings gap (direct), mortality
@@ -190,6 +198,7 @@ combined view, behind its own cited derivation.
   `(spend_pct/10) × (years/12)` — both normalizations are declared
   assumptions — and youth-crime percent delta via the wage elasticity.
 
+<!-- @ref:spec-counts; connections: @link:code-mortality; @link:code-scenario; @link:paper-counts; @link:test-mathematics-v02. -->
 ## 6. Count conversion and baselines
 
 Relative effects become counts only against cited baselines
@@ -219,6 +228,7 @@ historical linear formula. Pending baselines
 block their outcome (`blocked`, with the fix named); `strict=True`
 raises instead. **No baseline value is ever guessed.**
 
+<!-- @ref:spec-uncertainty; connections: @link:code-distributions; @link:code-mc; @link:paper-uncertainty; @link:test-distributions. -->
 ## 7. Uncertainty propagation
 
 `mc.simulate` rebuilds the full module compute per draw, so nonlinear
@@ -238,6 +248,7 @@ mark. Methodology (mckay1979; iman1982; hersbach2000 in references.bib):
    (`params/correlations.csv`) has two declared -0.5 earnings/mortality
    pairs. Literature motivates their direction; magnitude is judgment.
 
+<!-- @ref:spec-inference; connections: @link:code-inference; @link:test-inference. -->
 ## 7b. Analytic inference (the same algebra, done exactly)
 
 `inference.py` propagates the first two moments of a chain in CLOSED
@@ -308,6 +319,7 @@ variance within 6%, skewness sign exact when identifiable. Declared-
 truncates them; the algebra has no truncated-normal rule) — when one
 is cited into the set, add the moment rule and unpin the trap.
 
+<!-- @ref:spec-sensitivity; connections: @link:doc-result-sensitivity; @link:code-sensitivity; @link:test-sensitivity-scoring. -->
 ## 8. Sensitivity analysis (what drives the range)
 
 `sensitivity.sobol_indices` computes first-order and total Sobol
@@ -319,6 +331,7 @@ the extraction queue by precision value. Model evals =
 base x (N+2); the model evaluates in microseconds, so base sizes of
 a few hundred are cheap and seeded for reproducibility.
 
+<!-- @ref:spec-knobs; connections: @link:code-knobs; @link:test-knobs. -->
 ## 8b. Knob experiments (how the model is explored)
 
 `knobs.py` is the experiment layer. Two tools, both fail-loud:
@@ -357,6 +370,7 @@ sensitivity --ci N`. Shell note: link ids contain `->`, quote them.
 PIT values with a calibration table. A published band that misses its
 stated coverage is a wrong model, whatever its citations say.
 
+<!-- @ref:spec-explanation; connections: @link:doc-rendering; @link:code-explanation; @link:code-render. -->
 ## 10. The explanation contract (how claims travel)
 
 `explanation.Explanation` is the data contract between the model and
@@ -367,6 +381,7 @@ tested: no naked point estimates; every step cited; refusals named
 with their missing input. Rendering rules live in
 `docs/RENDERING.md`; the reference renderer is `render.py`.
 
+<!-- @ref:spec-scenarios; connections: @link:doc-exposure-semantics-0-4; @link:code-scenario; @link:test-exposure-semantics. -->
 ## 11. Scenario aggregation
 
 `scenario.compute_counts` takes an exposure (workers, family
@@ -375,6 +390,7 @@ multipliers + an explicit blocked list. Composition across units
 (summing deaths over workers) is linear-in-N by construction; the
 level (no-migration-dampener) caveat lives in the validation docs.
 
+<!-- @ref:spec-validation; connections: @link:doc-scenario-evidence-protocol; @link:code-validate; @link:paper-validation; @link:test-validate. -->
 ## 12. Validation program
 
 - **V0 — internal consistency (running):** the direct child estimate
@@ -439,6 +455,7 @@ level (no-migration-dampener) caveat lives in the validation docs.
 - **V3 — prospective (designed):** pre-registered forecasts scored
   with proper rules; misses published.
 
+<!-- @ref:spec-variants; connections: @link:code-variants; @link:test-variants. -->
 ## 12b. Structural-variant ensemble (declared assumptions, priced)
 
 `variants.run_ensemble` runs the named composition-assumption
@@ -457,6 +474,7 @@ The baseline row always
 equals the shipped model (trap-pinned). No variant is silently
 substituted — the spread IS the result. CLI: `downstream ensemble`.
 
+<!-- @ref:spec-queued-evidence; connections: @link:doc-queued-extractions; @link:doc-literature-acquisition-plan. -->
 ## 13. Queued and excluded
 
 - Queued (structure known, number pending full-text extraction):
@@ -480,6 +498,7 @@ substituted — the spread IS the result. CLI: `downstream ensemble`.
   encoded as a parameter. When a headline needs it, both positions are
   computed as named alternate bands, never averaged silently.
 
+<!-- @ref:spec-limitations; connections: @link:doc-model-card; @link:paper-limitations. -->
 ## 14. Limitations (registered, not hidden)
 
 1. Deterministic gap and survival propagation inside a draw; interactions
@@ -495,6 +514,7 @@ substituted — the spread IS the result. CLI: `downstream ensemble`.
 5. The great-grandchild layer is the weakest-identified number in the
    model (see the honesty statement shipped in its output).
 
+<!-- @ref:spec-layout; connections: @link:docs-index; @link:repository-overview. -->
 ## 15. Layout
 
 ```

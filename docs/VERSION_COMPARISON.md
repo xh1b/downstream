@@ -1,5 +1,13 @@
 # Comparing versions
 
+<!-- @ref:doc-version-comparison; @tag:consumer -->
+<!--
+Connections: @link:code-compare; @link:code-snapshot; @link:doc-consumer-fixtures-0-4; @link:doc-open-source-release; @link:docs-index; @link:test-compare; @link:test-export; @link:test-release-repairs.
+-->
+
+Related: [Documentation map](README.md) · [consumer fixtures 0 4](CONSUMER_FIXTURES_0_4.md) · [open source release](OPEN_SOURCE_RELEASE.md).
+Implementation: [compare](../src/downstream/compare.py), [snapshot](../src/downstream/snapshot.py). Checks: [compare](../tests/test_compare.py), [export](../tests/test_export.py), [release_repairs](../tests/test_release_repairs.py).
+
 `downstream compare` reads saved JSON results. It does not recompute either
 version with the current engine: run each version's own engine with identical
 inputs, then compare its outputs. This captures changes to both code and data.

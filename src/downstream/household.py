@@ -1,3 +1,8 @@
+# @ref:code-household
+# Method: @link:doc-household-comparison-0-4.
+# Verification: @link:test-household; @link:test-household-summary.
+# Related: @link:paper-household.
+# @tag:household
 """Annual household-resource scenarios using observed SIPP baseline transitions.
 
 This is an exact state-probability calculation. Forcing unemployment for a

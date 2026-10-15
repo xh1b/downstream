@@ -1,3 +1,8 @@
+# @ref:test-explanation-properties
+# Method: @link:doc-child-gap-view.
+# Implementation: @link:code-children; @link:code-explanation; @link:code-params; @link:code-render;
+# @link:code-scenario.
+# @tag:children @tag:testing
 """Explanation + rendering checks, and cross-cutting properties.
 
 The properties here are the model's constitution: they must hold for

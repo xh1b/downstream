@@ -1,3 +1,7 @@
+# @ref:script-build-cohort-projection
+# Method: @link:doc-mortality-applicability-0-4.
+# Implementation: @link:code-mortality-strata.
+# @tag:mortality
 """Build a hypothetical event cohort from pinned CPS reference composition.
 
 Interview age is used as the onset age of a *hypothetical new event*, never

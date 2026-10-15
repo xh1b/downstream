@@ -1,3 +1,5 @@
+// @ref:calculator-math
+// Context: @link:doc-calculator; @link:code-mortality; @link:code-result-sensitivity; @link:test-calculator. @tag:calculator
 "use strict";
 // Pure equations; source offsets and survival match downstream.mortality.
 const DownstreamMath = (() => {

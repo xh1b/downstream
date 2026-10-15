@@ -1,3 +1,7 @@
+# @ref:test-retrodict
+# Method: @link:doc-scenario-evidence-protocol.
+# Implementation: @link:code-params; @link:code-validate.
+# @tag:validation @tag:testing
 """Traps for the V1 unit-level retrodiction scorecard.
 
 Each trap names the defect it hunts:

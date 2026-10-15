@@ -1,3 +1,5 @@
+# @ref:paper-build
+# Context: @link:doc-paper; @link:paper-build-tables; @link:script-build-methods-html. @tag:methods
 # SPDX-License-Identifier: MIT
 PYTHON ?= $(if $(wildcard ../.venv/bin/python),../.venv/bin/python,python3)
 LATEXMK := latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error

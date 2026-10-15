@@ -1,3 +1,7 @@
+# @ref:test-synthesis
+# Method: @link:doc-pool-readiness-0-4.
+# Implementation: @link:code-synthesis; @link:code-admission; @link:code-params.
+# @tag:evidence @tag:testing
 import csv
 
 import pytest

@@ -1,3 +1,7 @@
+# @ref:code-consumer
+# Method: @link:doc-consumer-fixtures-0-4.
+# Verification: @link:test-consumer-api; @link:test-consumer-fixtures.
+# @tag:consumer
 """Checked display transforms for a fixed exposure basis and place mixtures.
 
 These helpers retain input provenance; they do not estimate exposure or transport.

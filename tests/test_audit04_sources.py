@@ -1,3 +1,7 @@
+# @ref:test-audit04-sources
+# Method: @link:doc-citing.
+# Implementation: @link:code-audit; @link:code-params.
+# @tag:evidence @tag:testing
 """Primary-table fixtures independently checked in the 2026-10-14 release audit.
 
 NBER w13626 Tables 5/7, Oreopoulos JOLE Tables 2/8, Browning-Heinesen

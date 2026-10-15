@@ -1,3 +1,7 @@
+# @ref:test-compare
+# Method: @link:doc-version-comparison.
+# Implementation: @link:code-compare; @link:code-cli.
+# @tag:consumer @tag:testing
 """Version comparisons must expose numerical and schema changes without positional noise."""
 import csv
 import io

@@ -1,3 +1,7 @@
+# @ref:test-mortality-covariance
+# Method: @link:doc-mortality-covariance-0-4.
+# Implementation: @link:code-mortality-covariance.
+# @tag:mortality @tag:testing
 """Unknown covariance bounds must follow PSD geometry, not independence guesses."""
 import importlib.util
 import json

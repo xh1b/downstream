@@ -1,3 +1,7 @@
+# @ref:test-extraction-v143
+# Method: @link:doc-citing.
+# Implementation: @link:code-params; @link:code-audit.
+# @tag:evidence @tag:testing
 """v1.43 pins: the six second-sweep studies extracted and landed.
 
 What this file pins:

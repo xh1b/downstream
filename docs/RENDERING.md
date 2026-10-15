@@ -1,5 +1,14 @@
 # RENDERING — how to show the model's work to people who are not mathematicians
 
+<!-- @ref:doc-rendering; @tag:rendering -->
+<!--
+Connections: @link:code-explanation; @link:code-render; @link:doc-website-experience-plan;
+@link:doc-calculator; @link:docs-index; @link:test-explanation-properties; @link:test-guard-rails.
+-->
+
+Related: [Documentation map](README.md) · [website experience plan](WEBSITE_EXPERIENCE_PLAN.md) · [calculator](CALCULATOR.md).
+Implementation: [explanation](../src/downstream/explanation.py), [render](../src/downstream/render.py). Checks: [explanation_properties](../tests/test_explanation_properties.py), [guard_rails](../tests/test_guard_rails.py).
+
 The problem this solves: the model makes claims like "a town hit by
 X displacement is likely to see infant mortality about 3% higher over
 20 years" — where the number flows through SEVERAL influences, from

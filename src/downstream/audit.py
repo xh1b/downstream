@@ -1,3 +1,7 @@
+# @ref:code-audit
+# Method: @link:doc-citing.
+# Verification: @link:test-audit; @link:test-audit04-sources; @link:test-dist-v127.
+# @tag:evidence
 """The downstream audit.
 
 Static checks over the parameter set, node registry, baselines, and

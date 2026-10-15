@@ -1,3 +1,7 @@
+# @ref:test-evidence-classification
+# Method: @link:doc-evidence-classification-0-4.
+# Implementation: @link:code-evidence; @link:code-study-library.
+# @tag:evidence @tag:testing
 """Classification must retain admission and causal-use distinctions."""
 from __future__ import annotations
 

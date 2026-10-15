@@ -1,3 +1,7 @@
+# @ref:test-extraction-v115
+# Method: @link:doc-citing.
+# Implementation: @link:code-params; @link:code-audit.
+# @tag:evidence @tag:testing
 """v1.15 pins: GOP win-probability row (autor2020polarization) and the
 Carneiro timing-corroboration notes.
 

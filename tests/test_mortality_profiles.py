@@ -1,3 +1,7 @@
+# @ref:test-mortality-profiles
+# Method: @link:doc-mortality-applicability-0-4.
+# Implementation: @link:code-mortality-profiles; @link:code-employer; @link:code-params; @link:code-scenario; @link:code-cli.
+# @tag:mortality @tag:testing
 from pathlib import Path
 
 import pytest

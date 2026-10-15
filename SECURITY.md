@@ -1,5 +1,8 @@
 # Security reporting
 
+<!-- @ref:security-reporting; @tag:security -->
+<!-- Context: @link:repository-overview; @link:contributing. -->
+
 Report vulnerabilities privately through the repository's **Security → Report
 a vulnerability** option when available. If it is unavailable, contact a
 maintainer privately through their GitHub profile to arrange a reporting channel.

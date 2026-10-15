@@ -1,3 +1,6 @@
+# @ref:script-quality-gate
+# Method: @link:doc-testing-quality.
+# @tag:testing
 """Fail CI when measured line or branch coverage regresses below the floor."""
 from __future__ import annotations
 

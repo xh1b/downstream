@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# @ref:script-inspect-child-support
+# Method: @link:doc-child-support-0-4.
+# Implementation: @link:code-child-support; @link:code-scenario.
+# @tag:children
 """Print an inspectable existing-source child support report as JSON."""
 
 import argparse

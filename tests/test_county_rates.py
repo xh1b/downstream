@@ -1,3 +1,7 @@
+# @ref:test-county-rates
+# Method: @link:doc-probabilistic-roadmap.
+# Implementation: @link:code-county-rates.
+# @tag:uncertainty @tag:testing
 import pytest
 
 from downstream.county_rates import (

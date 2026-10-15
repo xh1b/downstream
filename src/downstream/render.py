@@ -1,3 +1,7 @@
+# @ref:code-render
+# Method: @link:doc-rendering.
+# Verification: @link:test-explanation-properties; @link:test-guard-rails.
+# @tag:rendering
 """Text rendering of explanations.
 
 The reference renderer: this is the bar every future surface (web,

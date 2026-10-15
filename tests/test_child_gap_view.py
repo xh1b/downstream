@@ -1,3 +1,7 @@
+# @ref:test-child-gap-view
+# Method: @link:doc-child-gap-view.
+# Implementation: @link:code-child-gap-view; @link:code-children; @link:code-params; @link:code-place; @link:code-scenario.
+# @tag:children @tag:testing
 """Contracts for a combined explanation without combined causal effects."""
 
 from dataclasses import replace

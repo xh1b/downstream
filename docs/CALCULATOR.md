@@ -1,5 +1,14 @@
 # Local calculator
 
+<!-- @ref:doc-calculator; @tag:calculator -->
+<!--
+Connections: @link:code-mortality; @link:code-scenario; @link:doc-rendering; @link:doc-exposure-semantics-0-4; @link:docs-index; @link:calculator-math; @link:calculator-app; @link:calculator-template; @link:calculator-style; @link:script-build-calculator; @link:script-serve-calculator;
+@link:test-calculator; @link:test-calculator-server.
+-->
+
+Related: [Documentation map](README.md) · [rendering](RENDERING.md) · [exposure semantics 0 4](EXPOSURE_SEMANTICS_0_4.md).
+Implementation: [mortality](../src/downstream/mortality.py), [scenario](../src/downstream/scenario.py). Checks: [calculator](../tests/test_calculator.py), [calculator_server](../tests/test_calculator_server.py).
+
 Run from the repository root:
 
 ```sh

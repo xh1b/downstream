@@ -1,3 +1,7 @@
+# @ref:code-transmissions
+# Method: @link:doc-child-gap-view; @link:spec-composition.
+# Verification: @link:test-transmissions.
+# @tag:children
 """Generational transmission: one parent->child edge, walked recursively.
 
 An intergenerational walk is ONE admitted relationship — parent outcome

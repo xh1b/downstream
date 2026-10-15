@@ -1,5 +1,13 @@
 # Entity exposure semantics in 0.4
 
+<!-- @ref:doc-exposure-semantics-0-4; @tag:exposure -->
+<!--
+Connections: @link:code-employer; @link:code-scenario; @link:code-community; @link:doc-consumer-fixtures-0-4; @link:doc-receiving-community-0-4; @link:docs-index; @link:paper-exposure; @link:test-exposure-semantics; @link:test-employer; @link:test-adapter-adversarial.
+-->
+
+Related: [Documentation map](README.md) · [consumer fixtures 0 4](CONSUMER_FIXTURES_0_4.md) · [receiving community 0 4](RECEIVING_COMMUNITY_0_4.md).
+Implementation: [employer](../src/downstream/employer.py), [scenario](../src/downstream/scenario.py), [community](../src/downstream/community.py). Checks: [exposure_semantics](../tests/test_exposure_semantics.py), [employer](../tests/test_employer.py), [adapter_adversarial](../tests/test_adapter_adversarial.py).
+
 `DocumentedExposure` accepts optional `exposure_semantics` metadata. Existing
 positional arguments, warehouse input and numeric calculations are preserved.
 The adapter uses the supplied authoritative exposure; it does not turn wages,

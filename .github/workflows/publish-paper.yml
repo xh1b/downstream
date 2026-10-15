@@ -1,3 +1,5 @@
+# @ref:paper-publication-workflow
+# Context: @link:doc-paper; @link:paper-build; @link:doc-open-source-release. @tag:methods
 name: publish methods paper
 
 on:
@@ -13,8 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
           cache: pip
@@ -25,7 +27,7 @@ jobs:
         with:
           root_file: paper/downstream.tex
           args: -pdf -interaction=nonstopmode -halt-on-error -file-line-error
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: downstream-methods-paper-${{ github.sha }}
           path: |
@@ -33,7 +35,7 @@ jobs:
             docs/methods.html
           if-no-files-found: error
           retention-days: 90
-      - uses: softprops/action-gh-release@v2
+      - uses: softprops/action-gh-release@v3
         if: github.event_name == 'push'
         with:
           files: |

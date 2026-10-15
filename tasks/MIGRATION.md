@@ -1,5 +1,7 @@
 # TODO migration - 2026-10-14
 
+<!-- @ref:task-migration; @link:task-workflow; @link:docs-index. @tag:tooling -->
+
 All 48 top-level TODO entries were converted to cards. Use the board for current work.
 The original TODO was removed; Git history retains its previous contents.
 

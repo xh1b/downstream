@@ -1,3 +1,7 @@
+# @ref:test-source-reextraction
+# Method: @link:doc-citing.
+# Implementation: @link:code-params.
+# @tag:evidence @tag:testing
 import math
 
 import pytest

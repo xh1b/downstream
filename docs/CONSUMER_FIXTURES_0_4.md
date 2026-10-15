@@ -1,5 +1,15 @@
 # Consumer acceptance fixtures for Downstream 0.4
 
+<!-- @ref:doc-consumer-fixtures-0-4; @tag:consumer -->
+<!--
+Connections: @link:code-consumer; @link:code-bundle; @link:code-snapshot; @link:doc-exposure-semantics-0-4; @link:doc-version-comparison; @link:doc-xh1b-usage-plan-0-4; @link:docs-index;
+@link:script-build-consumer-fixtures; @link:test-consumer-fixtures; @link:test-consumer-api;
+@link:test-bundle.
+-->
+
+Related: [Documentation map](README.md) · [exposure semantics 0 4](EXPOSURE_SEMANTICS_0_4.md) · [version comparison](VERSION_COMPARISON.md).
+Implementation: [consumer](../src/downstream/consumer.py), [bundle](../src/downstream/bundle.py), [snapshot](../src/downstream/snapshot.py). Checks: [consumer_fixtures](../tests/test_consumer_fixtures.py), [consumer_api](../tests/test_consumer_api.py), [bundle](../tests/test_bundle.py).
+
 The fixture pack is model-side preparation for the pending XH1B handoff.
 It does not change the companion pin, cache, website or deployed state.
 

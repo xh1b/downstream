@@ -1,3 +1,8 @@
+# @ref:test-place
+# Method: @link:doc-place-counterfactual.
+# Implementation: @link:code-place; @link:code-audit; @link:code-params; @link:code-vignette;
+# @link:code-children.
+# @tag:place @tag:testing
 """v1.29 pins: the place-resolved layer (shrinkage + mobility modifier).
 
 What this file hunts:

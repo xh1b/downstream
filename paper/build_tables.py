@@ -1,3 +1,9 @@
+# @ref:paper-build-tables
+# Method: @link:doc-paper.
+# Implementation: @link:code-validate.
+# Verification: @link:test-paper-tables.
+# Related: @link:paper-methods.
+# @tag:methods @tag:validation
 """Generate paper data from the current engine; never hand-copy score values."""
 from __future__ import annotations
 

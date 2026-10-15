@@ -1,5 +1,13 @@
 # Published additive mortality coefficients: covariance diagnostic
 
+<!-- @ref:doc-mortality-covariance-0-4; @tag:mortality -->
+<!--
+Connections: @link:code-mortality-covariance; @link:doc-mortality-applicability-0-4; @link:doc-pool-readiness-0-4; @link:docs-index; @link:script-analyze-mortality-covariance; @link:test-mortality-covariance.
+-->
+
+Related: [Documentation map](README.md) · [mortality applicability 0 4](MORTALITY_APPLICABILITY_0_4.md) · [pool readiness 0 4](POOL_READINESS_0_4.md).
+Implementation: [mortality_covariance](../src/downstream/mortality_covariance.py). Checks: [mortality_covariance](../tests/test_mortality_covariance.py).
+
 The missing covariance does not prevent us from bounding each additive phase's
 standard error. It still prevents reproducing the authors' ordinary phase-sum
 intervals or joint draws. This diagnostic changes no admitted coefficient,

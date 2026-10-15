@@ -1,5 +1,14 @@
 # Mortality persistence sensitivity — engine 0.4.0
 
+<!-- @ref:doc-mortality-persistence-sensitivity; @tag:mortality -->
+<!--
+Connections: @link:code-mortality-robustness; @link:code-scenario; @link:doc-mortality-persistence-analysis-2026-10-14; @link:doc-mortality-source-reconciliation-2026-09-10; @link:docs-index;
+@link:paper-counts; @link:test-mortality-robustness; @link:test-result-sensitivity.
+-->
+
+Related: [Documentation map](README.md) · [mortality persistence analysis 2026-10-14](MORTALITY_PERSISTENCE_ANALYSIS_2026-10-14.md) · [mortality source reconciliation 2026-09-10](MORTALITY_SOURCE_RECONCILIATION_2026-09-10.md).
+Implementation: [mortality_robustness](../src/downstream/mortality_robustness.py), [scenario](../src/downstream/scenario.py). Checks: [mortality_robustness](../tests/test_mortality_robustness.py), [result_sensitivity](../tests/test_result_sensitivity.py).
+
 The default source-profile scenario now reports two mortality structures
 side by side in `modeled.excess_deaths.persistence_sensitivity`. This is
 also available through entity calculations and the full scenario records

@@ -1,3 +1,7 @@
+# @ref:code-mortality-profiles
+# Method: @link:doc-mortality-applicability-0-4.
+# Verification: @link:test-mortality-profiles; @link:test-guard-rails; @link:test-mortality-admission-0-4.
+# @tag:mortality
 """Versioned demographic mortality-baseline profiles.
 
 Profiles are rate inputs, not causal-effect modifiers.  A scenario may use one

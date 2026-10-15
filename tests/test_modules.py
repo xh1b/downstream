@@ -1,3 +1,8 @@
+# @ref:test-modules
+# Method: @link:doc-child-gap-view.
+# Implementation: @link:code-children; @link:code-community; @link:code-family; @link:code-params;
+# @link:code-worker.
+# @tag:children @tag:testing
 """Module-level checks: worker, children, family, community streams."""
 
 from pathlib import Path

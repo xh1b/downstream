@@ -1,3 +1,5 @@
+# @ref:dependency-updates
+# Context: @link:contributing; @link:package-configuration. @tag:development
 version: 2
 updates:
   - package-ecosystem: github-actions

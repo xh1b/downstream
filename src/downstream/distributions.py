@@ -1,3 +1,8 @@
+# @ref:code-distributions
+# Method: @link:doc-probabilistic-roadmap.
+# Verification: @link:test-distributions; @link:test-audit-repairs; @link:test-dist-v127.
+# Related: @link:paper-uncertainty.
+# @tag:uncertainty
 """Parameter distributions and uncertainty propagation.
 
 Methodology (each choice cited in SPEC §7):

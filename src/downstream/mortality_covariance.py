@@ -1,3 +1,7 @@
+# @ref:code-mortality-covariance
+# Method: @link:doc-mortality-covariance-0-4.
+# Verification: @link:test-mortality-covariance.
+# @tag:mortality
 """Unknown-covariance diagnostics for additive log-odds coefficients.
 
 This module never admits a mortality response or converts coefficients to deaths.

@@ -1,3 +1,7 @@
+# @ref:code-community
+# Method: @link:doc-exposure-semantics-0-4.
+# Verification: @link:test-modules; @link:test-exposure-semantics.
+# @tag:exposure
 """Community stream: local multipliers and school spending.
 
 Moretti's multiplier is a LEVEL ratio for a *net metro-level change*

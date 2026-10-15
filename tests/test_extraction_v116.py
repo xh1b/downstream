@@ -1,3 +1,7 @@
+# @ref:test-extraction-v116
+# Method: @link:doc-citing.
+# Implementation: @link:code-params; @link:code-audit.
+# @tag:evidence @tag:testing
 """v1.16 pins: child-maltreatment row (lindo2018maltreatment, read via
 NBER w18994; JPubE 163 is the version of record).
 

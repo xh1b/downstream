@@ -1,3 +1,8 @@
+# @ref:test-child-applicability
+# Method: @link:doc-child-support-0-4.
+# Implementation: @link:code-child-applicability; @link:code-params; @link:code-scenario;
+# @link:code-study-library; @link:code-synthesis.
+# @tag:children @tag:testing
 from dataclasses import replace
 import math
 

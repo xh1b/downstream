@@ -1,3 +1,7 @@
+# @ref:test-county-mortality
+# Method: @link:doc-cdc-wonder-profile-import.
+# Implementation: @link:code-county-mortality; @link:code-cli; @link:code-county-rates.
+# @tag:mortality @tag:testing
 import pytest
 from pathlib import Path
 

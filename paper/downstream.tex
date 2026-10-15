@@ -1,3 +1,7 @@
+% @ref:paper-methods
+% Method: @link:doc-paper; @link:specification.
+% Related: @link:paper-build-tables.
+% @tag:methods
 % SPDX-License-Identifier: MIT
 % Copyright (c) 2026 John Larue
 \documentclass[10pt]{article}
@@ -52,6 +56,9 @@ limits; numerical consistency alone does not
 establish causal validity.
 \end{abstract}
 
+% @ref:paper-introduction
+% Method: @link:doc-model-card; @link:doc-prior-attempts.
+% @tag:methods
 \section{Introduction}
 Worker displacement has consequences beyond a worker's immediate earnings.
 The underlying studies measure different outcomes in different populations:
@@ -71,6 +78,9 @@ interactions. The term microsimulation describes the intended family-level
 use; it should not imply that the code currently advances a representative
 synthetic population through an annual life cycle.
 
+% @ref:paper-related-work
+% Method: @link:doc-prior-attempts; @link:doc-life-course-research-plan.
+% @tag:methods
 \section{Relation to other modeling approaches}
 \subsection{Life-course and household microsimulation}
 The intended person-and-place simulator belongs to an established research
@@ -118,12 +128,21 @@ links under declared assumptions rather than pool unlike estimands into a
 single effect. The model is therefore an auditable synthesis of conditional
 responses, not a newly identified causal estimate of the entire system.
 
+% @ref:paper-model
+% Method: @link:specification; @link:doc-evidence-classification-0-4.
+% Related: @link:figure-model.
+% @tag:model
 \section{Model and evidence}
 Figure~\ref{fig:model} separates supplied inputs, model operations, and
 reported outputs. Its arrows describe computation; they do not establish
 that a causal pathway is identified.
 \input{figures/model}
 
+% @ref:paper-exposure
+% Method: @link:doc-exposure-semantics-0-4.
+% Implementation: @link:code-scenario; @link:code-employer.
+% Verification: @link:test-exposure-semantics.
+% @tag:exposure
 \subsection{Exposure and outcomes}
 A scenario supplies displaced-worker exposure $N$, children per exposed
 worker $C$, independently documented net tradable-job loss $T$, a job class, and a mortality window $Y$. The tradable-share field is metadata only; it does not infer $T$ from $N$.
@@ -164,6 +183,11 @@ subjects use the same population-average impact framing as employers.
 This interface does not establish a causal link between filings and
 worker displacement.
 
+% @ref:paper-composition
+% Method: @link:spec-composition.
+% Implementation: @link:code-ledger; @link:code-units.
+% Verification: @link:test-ledger.
+% @tag:model
 \subsection{Typed composition}
 Let $v$ be a counterfactual-relative earnings level, with no loss represented
 by $v=1$. Let $p$ be a parameter and $t$ an intergenerational transmission
@@ -207,6 +231,11 @@ studies, and summation can double-count their losses. A named structural
 variant exposes gap-additive composition as an experiment rather than
 making it the default.
 
+% @ref:paper-parameters
+% Method: @link:doc-citing.
+% Implementation: @link:code-params; @link:code-citations.
+% Verification: @link:test-params.
+% @tag:evidence
 \subsection{Parameter custody}
 This build contains \ParameterCount{} parameter rows in set
 \ParameterVersion{}. Appendix~\ref{app:parameters} is generated directly
@@ -226,6 +255,11 @@ parameter structure. It cannot prove that a source has been interpreted
 correctly. Full notes and evidence classes remain in the CSV and
 bibliography rather than being replaced by the compact appendix.
 
+% @ref:paper-counts
+% Method: @link:doc-mortality-source-reconciliation-2026-09-10; @link:doc-mortality-persistence-sensitivity.
+% Implementation: @link:code-mortality; @link:code-worker.
+% Verification: @link:test-mathematics-v02.
+% @tag:mortality
 \subsection{Count conversion}
 With annual mortality risk $m=1-e^{-\lambda}$ from baseline rate $\lambda$, source-offset odds ratios $r_j$,
 and lifetime earnings baseline $L$, the current scenario implements
@@ -312,6 +346,11 @@ medians approximates, rather than equals, the median lifetime total.
 Exact source tables, windows, and arithmetic are retained in
 \nolinkurl{params/baselines.csv}.
 
+% @ref:paper-children
+% Method: @link:doc-child-gap-view.
+% Implementation: @link:code-child-applicability; @link:code-valuation.
+% Verification: @link:test-valuation.
+% @tag:children
 \subsection{Child applicability and age-timed valuation}
 The direct child source concerns Canadian sons aged 10--14 at paternal
 firm closure. A supplied child profile with a known incompatible age or
@@ -346,6 +385,11 @@ Sampled valuations add separate parameter-only intervals, holding child
 ages, discount rate, earnings profile, and survival/employment treatment
 fixed. These exploratory present values do not qualify for public headlines.
 
+% @ref:paper-mortality-strata
+% Method: @link:doc-mortality-applicability-0-4.
+% Implementation: @link:code-mortality-strata.
+% Verification: @link:test-mortality-strata.
+% @tag:mortality
 \subsection{Experimental age-stratum mortality}
 The separate \texttt{mortality-cohort} command aggregates expected effects
 over explicitly supplied age/sex/tenure strata. Its current response
@@ -369,6 +413,11 @@ ranges do not establish joint coverage; baseline variance, exposure error, cross
 covariance, and transport error remain excluded. The projection is
 experimental and ineligible for public headlines.
 
+% @ref:paper-place
+% Method: @link:doc-place-counterfactual.
+% Implementation: @link:code-place.
+% Verification: @link:test-place.
+% @tag:place
 \subsection{Place resolution}
 Where measured place values exist in compatible units, baseline pooling
 uses $b_*=(1-w)b_{national}+wb_{local}$ with $w=n/(n+k)$. The precision
@@ -397,6 +446,11 @@ displacement, an independently supported effect modifier is needed.
 Place-specific child dollar losses remain exploratory and the national
 child-dollar result is the reference.
 
+% @ref:paper-household
+% Method: @link:doc-household-comparison-0-4.
+% Implementation: @link:code-household.
+% Verification: @link:test-household-summary.
+% @tag:household
 \subsection{Experimental household comparison}
 The \texttt{household} command compares annual employment-state
 probabilities and gross household earnings over one to five years.
@@ -420,11 +474,20 @@ earnings only. Survey-design uncertainty and sparse cells preclude a full
 household prediction interval; this prototype remains ineligible for
 public headlines.
 
+% @ref:paper-uncertainty
+% Method: @link:doc-probabilistic-roadmap.
+% Implementation: @link:code-mc; @link:code-inference.
+% Related: @link:figure-uncertainty.
+% @tag:uncertainty
 \section{Uncertainty and experiments}
 Figure~\ref{fig:uncertainty} distinguishes the uncertainty objects used
 below. Each answers a different question.
 \input{figures/uncertainty}
 
+% @ref:paper-sampling
+% Implementation: @link:code-distributions; @link:code-mc.
+% Verification: @link:test-distributions.
+% @tag:uncertainty
 \subsection{Parameter sampling}
 Latin hypercube sampling stratifies each parameter marginal
 \cite{mckay1979}. Positive ratio units default to log-uniform sampling;
@@ -461,6 +524,10 @@ do not receive this count simulation. Although the API calls it
 a fitted joint Bayesian posterior; this is conditional predictive
 simulation under the declared input distributions.
 
+% @ref:paper-uncertainty-budget
+% Implementation: @link:code-uncertainty-budget.
+% Verification: @link:test-uncertainty-budget.
+% @tag:uncertainty
 \subsection{Separate baseline, exposure, and process budget}
 The default scenario intervals above hold baseline and exposure inputs
 fixed. The separate experimental \texttt{uncertainty} command relaxes
@@ -487,6 +554,10 @@ This national budget does not sample county posterior uncertainty or
 support demographic-profile overrides. It is not a complete uncertainty
 interval for an employer or individual and remains experimental.
 
+% @ref:paper-inference
+% Implementation: @link:code-inference.
+% Verification: @link:test-inference.
+% @tag:uncertainty
 \subsection{Analytic moments and coverage}
 For an independent level multiplier $X$, raw moments obey
 $E[(VX)^k]=E[V^k]E[X^k]$. A direct step replaces the moments. For a gap
@@ -510,6 +581,11 @@ interval machinery under its own assumptions. They cannot establish
 coverage for real-world events. Correlation stress experiments similarly
 price a hypothetical dependence choice without treating it as evidence.
 
+% @ref:paper-sensitivity
+% Method: @link:doc-result-sensitivity.
+% Implementation: @link:code-sensitivity; @link:code-knobs; @link:code-variants.
+% Verification: @link:test-sensitivity-scoring.
+% @tag:uncertainty
 \subsection{Sensitivity, sweeps, and structural variants}
 The sensitivity interface estimates first-order and total Sobol indices
 using a Saltelli-style design \cite{sobol2001,saltelli2002}. Seed replicates
@@ -545,6 +621,11 @@ cancellation for identical cases. Shared-draw paired contrasts are a
 future improvement; the current envelope is not a probabilistic policy
 effect interval and does not identify a policy-to-exposure bridge.
 
+% @ref:paper-synthesis
+% Method: @link:doc-pool-readiness-0-4.
+% Implementation: @link:code-synthesis; @link:code-county-rates.
+% Verification: @link:test-synthesis.
+% @tag:evidence
 \subsection{Evidence synthesis and county likelihoods}
 The optional synthesis module implements DerSimonian--Laird heterogeneity
 estimation and inverse-variance random-effects pooling only after exact
@@ -564,13 +645,27 @@ requires national-prior outcome, population, and window metadata to match
 the county observation. The county module is not integrated into scenario
 baseline uncertainty.
 
+% @ref:paper-validation
+% Method: @link:doc-scenario-evidence-protocol.
+% Implementation: @link:code-validate; @link:code-scoring.
+% Verification: @link:test-validate.
+% @tag:validation
 \section{Validation results}
+% @ref:paper-v0
+% Implementation: @link:code-validate.
+% Verification: @link:test-validate.
+% @tag:validation
 \subsection{V0: internal consistency}
 The direct child estimate is \VzeroDirect{}, while the worker-shock path
 composed with intergenerational transmission is \VzeroComposed{}.
 Their bands overlap. This checks compatibility between two modeled paths;
 it does not provide an independent validation of their causal claims.
 
+% @ref:paper-v1-units
+% Implementation: @link:code-validate.
+% Verification: @link:test-retrodict.
+% Related: @link:figure-unit-checks.
+% @tag:validation
 \subsection{V1: China-shock unit scorecard}
 Figure~\ref{fig:unit-checks} plots the unit comparisons. Exact values are
 retained in Appendix~\ref{app:scorecards}.
@@ -605,6 +700,11 @@ mechanism, not an extracted explanation. Several additional target
 outcomes are withheld because the implemented evidence path would reuse
 the target coefficient rather than provide an independent comparison.
 
+% @ref:paper-v1-panel
+% Implementation: @link:code-validate; @link:code-scoring.
+% Verification: @link:test-panel.
+% Related: @link:figure-panel-checks.
+% @tag:validation
 \subsection{V1: commuting-zone contrasts and scoring}
 Figure~\ref{fig:panel-checks} plots the panel contrasts on separate axes
 for family status and earnings.
@@ -633,6 +733,11 @@ point estimate as the target and does not integrate its measurement
 uncertainty. The upper-tail PIT and earnings residual show why selected
 tercile coverage should not be described as overall model validation.
 
+% @ref:paper-independent-validation
+% Method: @link:doc-scenario-evidence-protocol.
+% Implementation: @link:code-forecast-registry.
+% Verification: @link:test-v2-backtest; @link:test-forecast-fsm.
+% @tag:validation
 \subsection{V2 and V3: incomplete validation}
 Independent-event protocols exist for NAFTA, the auto crisis, and BRAC.
 Their scorecards are blocked on event-specific exposure bridges or
@@ -647,6 +752,10 @@ before outcomes are available, a declared exposure and time horizon,
 and a scoring rule fixed before evaluation. No prospective result is
 reported. Unit and panel V1 results are the current external checks.
 
+% @ref:paper-descriptive-checks
+% Method: @link:doc-baseline-transition-r2-2026-09-14.
+% Implementation: @link:script-build-displaced-cohort; @link:script-evaluate-followthrough.
+% @tag:data
 \subsection{Descriptive cohort and baseline checks}
 The reproducible CPS January-2024 reference describes known-year
 2021--2023 displacements with lost-job tenure of at least three years,
@@ -668,6 +777,9 @@ timestamped prospective forecast. No new matched independent event score
 is established by these software and baseline-data checks.
 
 \FloatBarrier
+% @ref:paper-limitations
+% Method: @link:doc-model-card; @link:doc-citing.
+% @tag:methods
 \section{Limitations}
 The model conditions on displacement and does not identify who was
 displaced or why. An upstream employer exposure can therefore be more
@@ -710,6 +822,9 @@ findings may supply cross-checks without setting a causal point.
 Named competing specifications must remain visible rather than being
 averaged into a preferred headline.
 
+% @ref:paper-development
+% Method: @link:doc-life-course-research-plan; @link:doc-causal-graph-plan.
+% @tag:model
 \section{Prioritized development}
 The next work should evaluate the experimental capabilities now implemented.
 The national baseline/exposure budget, age-stratum mortality projection,
@@ -740,6 +855,10 @@ designs, and known analytic variance shares. These checks complement
 the existing property tests; passing code tests cannot repair an
 unidentified causal bridge.
 
+% @ref:paper-research-program
+% Method: @link:doc-life-course-research-plan.
+% Related: @link:figure-future.
+% @tag:model
 \subsection{A person-and-place research program}
 Figure~\ref{fig:future} summarizes the implemented household prototype
 and the research gates that still precede public use.
@@ -775,6 +894,11 @@ person's joint potential outcomes. A full life-course simulator and public
 applicability are not established. Milestones and acceptance criteria are recorded in
 \nolinkurl{docs/LIFE_COURSE_RESEARCH_PLAN.md}.
 
+% @ref:paper-calculator
+% Method: @link:doc-calculator; @link:doc-website-experience-plan.
+% Implementation: @link:calculator-math.
+% Verification: @link:test-calculator.
+% @tag:calculator
 \subsection{Public calculator as a research interface}
 An eventual website should make the profile, event, comparison, outcome
 unit, time horizon, and evidence applicability visible together. It should
@@ -796,6 +920,11 @@ evidence of comprehension. The separate product plan,
 visual direction, explanation patterns, and release criteria; it is a
 design proposal, not a description of a deployed service.
 
+% @ref:paper-reproducibility
+% Method: @link:doc-paper; @link:doc-consumer-fixtures-0-4.
+% Implementation: @link:script-build-methods-html.
+% Related: @link:paper-build-tables.
+% @tag:methods
 \section{Reproducibility and availability}
 The model and paper source are provided under the repository's MIT
 license. Run the tests, \texttt{downstream audit}, and
@@ -825,6 +954,11 @@ the tables provide compact rounded readings. The digest manifest includes engine
 
 \clearpage
 \appendix
+% @ref:paper-scorecards
+% Implementation: @link:code-validate.
+% Verification: @link:test-paper-tables.
+% Related: @link:paper-build-tables.
+% @tag:validation
 \section{Numerical validation scorecards}\label{app:scorecards}
 These tables retain the exact comparison structure behind
 Figures~\ref{fig:unit-checks} and~\ref{fig:panel-checks}.
@@ -866,6 +1000,10 @@ measured contrast as a point target.}
 \end{table}
 
 \clearpage
+% @ref:paper-parameter-inventory
+% Method: @link:doc-citing; @link:doc-attribution.
+% Implementation: @link:code-params.
+% @tag:evidence
 \section{Current parameter set}\label{app:parameters}
 The table is an inventory, not a claim that every row belongs to one
 composable causal chain. Values use each destination node's declared

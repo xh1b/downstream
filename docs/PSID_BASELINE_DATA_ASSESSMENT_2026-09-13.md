@@ -1,5 +1,13 @@
 # PSID baseline-data assessment — 2026-09-13
 
+<!-- @ref:doc-psid-baseline-data-assessment-2026-09-13; @tag:data -->
+<!--
+Connections: @link:code-household; @link:doc-sipp-baseline-data-assessment-2026-09-13; @link:doc-data-sources; @link:docs-index; @link:test-household; @link:test-household-summary.
+-->
+
+Related: [Documentation map](README.md) · [sipp baseline data assessment 2026-09-13](SIPP_BASELINE_DATA_ASSESSMENT_2026-09-13.md) · [data sources](DATA_SOURCES.md).
+Implementation: [household](../src/downstream/household.py). Checks: [household](../tests/test_household.py), [household_summary](../tests/test_household_summary.py).
+
 ## Scope and verdict
 
 R2 of the [research plan](LIFE_COURSE_RESEARCH_PLAN.md) requires a baseline

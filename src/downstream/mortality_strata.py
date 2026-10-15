@@ -1,3 +1,7 @@
+# @ref:code-mortality-strata
+# Method: @link:doc-mortality-applicability-0-4.
+# Verification: @link:test-mortality-strata; @link:test-audit04-custom-inputs; @link:test-mortality-admission-0-4.
+# @tag:mortality
 """Exact age-stratum scenarios with sourced responses and explicit projection.
 
 The Table 7 annual-logit contrasts are averaged over a source follow-up

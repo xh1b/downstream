@@ -1,3 +1,7 @@
+# @ref:code-vignette
+# Method: @link:doc-model-card.
+# Verification: @link:test-explanation-properties; @link:test-guard-rails; @link:test-place.
+# @tag:model
 """The standard family: a fully cited worked vignette.
 
 Standard family = employed father, mother, three children (ages 3, 7,

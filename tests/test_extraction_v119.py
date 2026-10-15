@@ -1,3 +1,7 @@
+# @ref:test-extraction-v119
+# Method: @link:doc-citing.
+# Implementation: @link:code-params; @link:code-variants.
+# @tag:evidence @tag:testing
 """v1.19 pins: the closure-selection design contrast added to the
 structural-variant ensemble (the V2 item queued at v1.13).
 

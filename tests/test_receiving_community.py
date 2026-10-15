@@ -1,3 +1,7 @@
+# @ref:test-receiving-community
+# Method: @link:doc-receiving-community-0-4.
+# Implementation: @link:code-receiving-community; @link:code-units.
+# @tag:receiving @tag:testing
 """Receiving coefficients require distinct source-share inputs after v1.52 repair."""
 import pytest
 

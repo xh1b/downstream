@@ -1,3 +1,5 @@
+// @ref:calculator-app
+// Context: @link:doc-calculator; @link:calculator-math; @link:calculator-template; @link:test-calculator. @tag:calculator
 "use strict";
 (() => {
   const payload = JSON.parse(document.getElementById("engine-data").textContent);

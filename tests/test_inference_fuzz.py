@@ -1,3 +1,7 @@
+# @ref:test-inference-fuzz
+# Method: @link:doc-probabilistic-roadmap.
+# Implementation: @link:code-inference; @link:code-ledger; @link:code-params.
+# @tag:uncertainty @tag:testing
 """Property fuzz: the analytic layer vs the MC on random chains.
 
 The adversarial move: stop testing the chains I thought of. Generate

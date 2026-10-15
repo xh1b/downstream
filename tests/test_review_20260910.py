@@ -1,3 +1,8 @@
+# @ref:test-review-20260910
+# Method: @link:doc-probabilistic-roadmap.
+# Implementation: @link:code-distributions; @link:code-ledger; @link:code-mc; @link:code-mortality;
+# @link:code-params.
+# @tag:uncertainty @tag:testing
 """Independent numerical oracles for the September 10 review repairs."""
 from dataclasses import replace
 

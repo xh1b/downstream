@@ -1,3 +1,7 @@
+# @ref:test-extraction-v142
+# Method: @link:doc-citing.
+# Implementation: @link:code-params; @link:code-audit.
+# @tag:evidence @tag:testing
 """v1.42 pins: Brand & Simon Thomas 2014 landing + EB prior yardstick.
 
 What this file pins:

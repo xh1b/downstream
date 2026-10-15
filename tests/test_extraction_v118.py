@@ -1,3 +1,7 @@
+# @ref:test-extraction-v118
+# Method: @link:doc-citing.
+# Implementation: @link:code-params; @link:code-audit.
+# @tag:evidence @tag:testing
 """v1.18 pins: Thornton 1980 landed as CROSS-CHECK NOTES on the
 fertility row — and deliberately NOT as a parameter row.
 

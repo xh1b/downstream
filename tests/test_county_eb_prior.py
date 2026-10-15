@@ -1,3 +1,7 @@
+# @ref:test-county-eb-prior
+# Method: @link:doc-probabilistic-roadmap.
+# Implementation: @link:code-county-rates.
+# @tag:uncertainty @tag:testing
 """Empirical-Bayes prior-strength check for the county-mortality pooling.
 
 Pins the method-of-moments EB yardstick (county_rates.empirical_bayes_

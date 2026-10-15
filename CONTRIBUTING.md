@@ -1,5 +1,8 @@
 # Contributing to downstream
 
+<!-- @ref:contributing; @tag:development -->
+<!-- Context: @link:docs-index; @link:documentation-workflow; @link:doc-testing-quality; @link:doc-citing. -->
+
 Contributions to the engine, evidence, tests, and documentation are welcome.
 Start with a bug or evidence proposal issue for changes to model behavior;
 small fixes can go straight to a pull request. Explain the causal question,
@@ -87,3 +90,11 @@ Contributions are provided under the repository's MIT license. Respect
 third-party source and dataset licenses; do not commit restricted microdata,
 credentials, or private records. See [conduct](CODE_OF_CONDUCT.md) and
 [security reporting](SECURITY.md).
+
+## Connected documentation
+
+Use [the documentation map](docs/README.md) to find existing methods and contracts.
+Keep maintained Markdown in `docs/`, link it from the relevant entry point, and
+connect implementation and verification with the [reference-token conventions](tasks/README.md).
+Use source comments for paper navigation metadata. Run `python3 scripts/refcheck.py check`
+and `python3 scripts/tasks.py validate` alongside the relevant behavior or build checks.

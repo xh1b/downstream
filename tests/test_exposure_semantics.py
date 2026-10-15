@@ -1,3 +1,7 @@
+# @ref:test-exposure-semantics
+# Method: @link:doc-exposure-semantics-0-4.
+# Implementation: @link:code-employer; @link:code-scenario.
+# @tag:exposure @tag:testing
 """Exposure labels cannot create unique people, dates or target-population evidence."""
 from copy import deepcopy
 from dataclasses import replace

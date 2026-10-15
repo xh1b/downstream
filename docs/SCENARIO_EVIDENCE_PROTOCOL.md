@@ -1,5 +1,14 @@
 # Evidence selection and independent evaluation
 
+<!-- @ref:doc-scenario-evidence-protocol; @tag:validation -->
+<!--
+Connections: @link:code-validate; @link:code-scoring; @link:code-forecast-registry; @link:doc-data-sources; @link:doc-evidence-classification-0-4; @link:docs-index; @link:paper-validation;
+@link:script-acquire-followthrough-sources; @link:script-build-displaced-cohort; @link:script-evaluate-followthrough; @link:test-validate; @link:test-v2-backtest; @link:test-forecast-fsm.
+-->
+
+Related: [Documentation map](README.md) · [data sources](DATA_SOURCES.md) · [evidence classification 0 4](EVIDENCE_CLASSIFICATION_0_4.md).
+Implementation: [validate](../src/downstream/validate.py), [scoring](../src/downstream/scoring.py), [forecast_registry](../src/downstream/forecast_registry.py). Checks: [validate](../tests/test_validate.py), [v2_backtest](../tests/test_v2_backtest.py), [forecast_fsm](../tests/test_forecast_fsm.py).
+
 Protocol fixed on 2026-10-14 for the next acquisition/evaluation round.
 The existing anchors, source tables and China-shock diagnostics were already
 known when this was written. This is not retrospective preregistration of

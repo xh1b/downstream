@@ -1,3 +1,7 @@
+# @ref:code-explanation
+# Method: @link:doc-rendering.
+# Verification: @link:test-explanation-properties; @link:test-guard-rails; @link:test-release-repairs.
+# @tag:rendering
 """The explanation object: a computed claim with its full derivation.
 
 This is the contract between the model and every surface that renders

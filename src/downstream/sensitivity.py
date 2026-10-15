@@ -1,3 +1,8 @@
+# @ref:code-sensitivity
+# Method: @link:doc-result-sensitivity.
+# Verification: @link:test-knobs; @link:test-release-repairs; @link:test-review-20260910.
+# Related: @link:paper-uncertainty.
+# @tag:uncertainty
 """Global sensitivity analysis: Sobol variance decomposition.
 
 Which parameters DRIVE the uncertainty in an outcome? The answer

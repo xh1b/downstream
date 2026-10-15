@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# @ref:script-fetch-wonder
+# Method: @link:doc-cdc-wonder-profile-import.
+# @tag:data
 """Reproducible CDC WONDER Underlying Cause of Death (D76) downloads.
 
 Two flows, matching the two access paths CDC provides:

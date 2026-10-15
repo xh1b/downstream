@@ -23,6 +23,8 @@ The initial import has 48 cards. Partial scopes keep their remaining work open;
 recent completed 0.4 work awaits owner review. No agent claims were invented.
 See [the migration map](MIGRATION.md) for every original entry and its card.
 
+For methods and implementation navigation, see [the documentation map](../docs/README.md).
+
 ## Reference tokens
 
 @ref:reference-token-contract

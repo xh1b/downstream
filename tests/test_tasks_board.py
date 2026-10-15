@@ -1,3 +1,8 @@
+# @ref:test-tasks-board
+# Method: @link:docs-index.
+# Implementation: @link:script-tasks.
+# Related: @link:task-workflow; @link:reference-token-contract.
+# @tag:tooling @tag:testing
 """Task-board dependency and shared-checkout commit protections."""
 import importlib.util
 import json

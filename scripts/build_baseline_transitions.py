@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# @ref:script-build-baseline-transitions
+# Method: @link:doc-baseline-transition-r2-2026-09-14.
+# @tag:household
 """R2 baseline artifact: weighted 2021->2022 employment/earnings transitions.
 
 First baseline-transition artifact for the research plan's R2 milestone

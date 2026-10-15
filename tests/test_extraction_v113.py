@@ -1,3 +1,7 @@
+# @ref:test-extraction-v113
+# Method: @link:doc-citing.
+# Implementation: @link:code-params; @link:code-audit.
+# @tag:evidence @tag:testing
 """v1.13 extraction pins: college enrollment + short-run income bridge
 (hilger2016, published AEJ:Applied copy) and property-crime semielasticity
 (raphael2001, JLE 44(1)).

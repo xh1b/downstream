@@ -1,3 +1,7 @@
+# @ref:test-mortality-robustness
+# Method: @link:doc-mortality-persistence-sensitivity.
+# Implementation: @link:code-mortality-robustness; @link:code-scenario.
+# @tag:mortality @tag:testing
 """Persistence disagreements must change assumptions, not silently replace evidence."""
 from dataclasses import replace
 import json

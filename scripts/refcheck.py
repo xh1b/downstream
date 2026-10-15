@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# @ref:script-refcheck
+# Method: @link:docs-index.
+# Verification: @link:test-refcheck.
+# Related: @link:reference-token-contract.
+# @tag:tooling
 """Repo-wide @ref:<id> anchors and @link:<id> references.
 
 `@ref:<id>` defines a named anchor. It must appear exactly once across all

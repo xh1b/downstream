@@ -1,3 +1,7 @@
+# @ref:test-consumer-api
+# Method: @link:doc-consumer-fixtures-0-4.
+# Implementation: @link:code-consumer.
+# @tag:consumer @tag:testing
 """The reusable consumer API rejects overflow and retains explicit unknowns."""
 import pytest
 

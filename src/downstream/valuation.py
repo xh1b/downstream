@@ -1,3 +1,7 @@
+# @ref:code-valuation
+# Method: @link:doc-child-gap-view.
+# Verification: @link:test-valuation.
+# @tag:children
 """Explicit real-dollar discounting of the existing synthetic earnings profile."""
 from __future__ import annotations
 

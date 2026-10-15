@@ -1,3 +1,8 @@
+# @ref:test-tasks-workflow
+# Method: @link:docs-index.
+# Implementation: @link:script-tasks.
+# Related: @link:task-workflow; @link:reference-token-contract.
+# @tag:tooling @tag:testing
 """Task links and state changes use Markdown and disposable Git repositories."""
 
 import contextlib

@@ -1,3 +1,5 @@
+# @ref:evidence-proposal-template
+# Context: @link:doc-citing; @link:doc-literature-acquisition-plan. @tag:evidence
 name: Evidence or model proposal
 description: Propose a causal link, source extraction, or modeling improvement
 body:

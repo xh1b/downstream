@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# @ref:script-build-county-mortality
+# Method: @link:doc-cdc-wonder-profile-import.
+# Implementation: @link:code-county-mortality; @link:code-county-rates; @link:code-params.
+# @tag:mortality
 """Build params/county_mortality.csv: Gamma-Poisson county mortality posteriors.
 
 Consumes a validated CDC WONDER county export (see scripts/fetch_wonder.py)

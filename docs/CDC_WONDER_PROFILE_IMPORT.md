@@ -1,5 +1,15 @@
 # CDC WONDER profile download and import
 
+<!-- @ref:doc-cdc-wonder-profile-import; @tag:mortality -->
+<!--
+Connections: @link:code-county-mortality; @link:code-mortality-profiles; @link:doc-data-sources;
+@link:doc-mortality-applicability-0-4; @link:docs-index; @link:script-build-county-mortality;
+@link:script-fetch-wonder; @link:test-county-mortality; @link:test-mortality-profiles; @link:test-adapter-adversarial.
+-->
+
+Related: [Documentation map](README.md) · [data sources](DATA_SOURCES.md) · [mortality applicability 0 4](MORTALITY_APPLICABILITY_0_4.md).
+Implementation: [county_mortality](../src/downstream/county_mortality.py), [mortality_profiles](../src/downstream/mortality_profiles.py). Checks: [county_mortality](../tests/test_county_mortality.py), [mortality_profiles](../tests/test_mortality_profiles.py), [adapter_adversarial](../tests/test_adapter_adversarial.py).
+
 Use a separate CDC WONDER export for every demographic profile that will
 appear in a scenario. A county file is valid only when the exported table is
 grouped by **County** alone; sex, age, cause, and years are filters, not

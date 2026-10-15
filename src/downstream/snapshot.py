@@ -1,3 +1,7 @@
+# @ref:code-snapshot
+# Method: @link:doc-version-comparison.
+# Verification: @link:test-export; @link:test-release-repairs.
+# @tag:consumer
 """Version-stamped parameter-set snapshot export.
 
 The downstream repo is LOCAL-ONLY (owner decision 2026-09-06): production

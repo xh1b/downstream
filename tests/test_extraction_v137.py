@@ -1,3 +1,7 @@
+# @ref:test-extraction-v137
+# Method: @link:doc-citing.
+# Implementation: @link:code-params; @link:code-audit.
+# @tag:evidence @tag:testing
 """v1.37 pins: the 2026-09-13 research-sweep extractions.
 
 What this file pins:

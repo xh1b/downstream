@@ -1,3 +1,7 @@
+# @ref:script-evaluate-followthrough
+# Method: @link:doc-scenario-evidence-protocol.
+# Implementation: @link:code-params; @link:code-synthesis; @link:code-validate.
+# @tag:validation
 """Publish all available checks and explicit independent-event refusals."""
 from collections import defaultdict
 import argparse

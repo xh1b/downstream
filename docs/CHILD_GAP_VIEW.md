@@ -1,5 +1,14 @@
 # Child and descendant earnings gaps
 
+<!-- @ref:doc-child-gap-view; @tag:children -->
+<!--
+Connections: @link:code-child-gap-view; @link:code-children; @link:code-transmissions; @link:code-valuation; @link:doc-child-support-0-4; @link:doc-place-counterfactual; @link:docs-index;
+@link:paper-children; @link:test-child-gap-view; @link:test-child-gap-cli; @link:test-transmissions.
+-->
+
+Related: [Documentation map](README.md) · [child support 0 4](CHILD_SUPPORT_0_4.md) · [place counterfactual](PLACE_COUNTERFACTUAL.md).
+Implementation: [child_gap_view](../src/downstream/child_gap_view.py), [children](../src/downstream/children.py), [transmissions](../src/downstream/transmissions.py), [valuation](../src/downstream/valuation.py). Checks: [child_gap_view](../tests/test_child_gap_view.py), [child_gap_cli](../tests/test_child_gap_cli.py), [transmissions](../tests/test_transmissions.py).
+
 `downstream.child_gap_view.child_gap_view` provides one structured explanation
 report containing the existing child, grandchild and great-grandchild earnings
 paths. It combines views rather than adding effects. Engine and parameter

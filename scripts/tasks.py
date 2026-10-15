@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# @ref:script-tasks
+# Method: @link:docs-index.
+# Verification: @link:test-tasks-workflow; @link:test-tasks-board.
+# Related: @link:task-workflow.
+# @tag:tooling
 """Markdown task board. See tasks/AGENTS.md for format, references, and commands."""
 
 from __future__ import annotations

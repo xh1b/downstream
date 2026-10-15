@@ -1,5 +1,13 @@
 # Research plan: a person, their family, and their possible futures
 
+<!-- @ref:doc-life-course-research-plan; @tag:model -->
+<!--
+Connections: @link:code-scenario; @link:code-household; @link:code-policy; @link:doc-causal-graph-plan; @link:doc-prior-attempts; @link:doc-website-experience-plan; @link:docs-index; @link:test-household; @link:test-policy; @link:test-audit04-custom-inputs.
+-->
+
+Related: [Documentation map](README.md) · [causal graph plan](CAUSAL_GRAPH_PLAN.md) · [prior attempts](PRIOR_ATTEMPTS.md).
+Implementation: [scenario](../src/downstream/scenario.py), [household](../src/downstream/household.py), [policy](../src/downstream/policy.py). Checks: [household](../tests/test_household.py), [policy](../tests/test_policy.py), [audit04_custom_inputs](../tests/test_audit04_custom_inputs.py).
+
 Status: future direction agreed in conversation, September 10, 2026.
 Capabilities below are goals unless explicitly described as current. This
 plan supersedes the earlier sequence that prioritized a long multigenerational

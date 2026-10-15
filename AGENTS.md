@@ -138,6 +138,7 @@ Git history retains it. Do not recreate a competing TODO list.
 
 @ref:documentation-workflow
 
+Start with [the documentation map](docs/README.md) (@link:docs-index).
 Make related documentation, implementation, tests, tasks and paper sources easy
 to find from one another. Improve these connections as part of the work you touch.
 Follow @link:reference-token-contract for token syntax and @link:task-workflow

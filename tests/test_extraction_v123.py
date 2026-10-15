@@ -1,3 +1,7 @@
+# @ref:test-extraction-v123
+# Method: @link:doc-citing.
+# Implementation: @link:code-params; @link:code-audit; @link:code-citations.
+# @tag:evidence @tag:testing
 """v1.23 pins: IPV exposure -> child mental health (queue #21, read via
 the Nebraska DigitalCommons accepted manuscript; Evans, Davies &
 DiLillo, Aggression and Violent Behavior 13(2):131-140).

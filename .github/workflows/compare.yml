@@ -1,3 +1,5 @@
+# @ref:comparison-workflow
+# Context: @link:doc-version-comparison; @link:code-compare. @tag:consumer
 name: model comparison
 
 on:
@@ -30,11 +32,11 @@ jobs:
       matrix:
         side: [before, after]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ matrix.side == 'before' && (github.event.pull_request.base.sha || inputs.before_ref) || (github.event_name == 'pull_request' && github.sha || inputs.after_ref) }}
           persist-credentials: false
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
       # Each version executes its own engine and data on a separate runner.
@@ -54,7 +56,7 @@ jobs:
           python -m downstream.cli transmissions > results/transmissions.json
           python -m downstream.cli infer --outcome grandchild > results/inference.json
           git rev-parse HEAD > results/commit.txt
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: model-${{ matrix.side }}
           path: results/
@@ -67,17 +69,17 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v7
         with:
           name: model-before
           path: before
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v7
         with:
           name: model-after
           path: after
@@ -93,7 +95,7 @@ jobs:
           done
           python -m downstream.cli compare --before before --after after --before-label "$before_label" --after-label "$after_label" --changes-only --out reports/summary.md
           cat reports/summary.md >> "$GITHUB_STEP_SUMMARY"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: model-comparison
           path: reports/

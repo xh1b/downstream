@@ -1,5 +1,14 @@
 # Receiving-community scenarios in 0.4
 
+<!-- @ref:doc-receiving-community-0-4; @tag:receiving -->
+<!--
+Connections: @link:code-receiving-community; @link:doc-immigration-replacement-evidence-scan-2026-09-14; @link:doc-exposure-semantics-0-4; @link:docs-index; @link:test-receiving-community;
+@link:test-receiving-adapter.
+-->
+
+Related: [Documentation map](README.md) · [immigration replacement evidence scan 2026-09-14](IMMIGRATION_REPLACEMENT_EVIDENCE_SCAN_2026-09-14.md) · [exposure semantics 0 4](EXPOSURE_SEMANTICS_0_4.md).
+Implementation: [receiving_community](../src/downstream/receiving_community.py). Checks: [receiving_community](../tests/test_receiving_community.py), [receiving_adapter](../tests/test_receiving_adapter.py).
+
 Engine **0.4.0**, parameter set **v1.52**. The `receiving-community` command
 applies one explicitly selected source contrast to supplied immigrant population
 shares. It does not convert displaced workers, requested positions or wages

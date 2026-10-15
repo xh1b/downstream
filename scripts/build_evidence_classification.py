@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# @ref:script-build-evidence-classification
+# Method: @link:doc-evidence-classification-0-4.
+# Implementation: @link:code-evidence; @link:code-ledger; @link:code-params.
+# @tag:evidence
 """Export evidence roles without promoting observed associations to causal effects."""
 from __future__ import annotations
 

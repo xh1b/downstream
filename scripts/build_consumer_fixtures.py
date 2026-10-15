@@ -1,3 +1,7 @@
+# @ref:script-build-consumer-fixtures
+# Method: @link:doc-consumer-fixtures-0-4.
+# Implementation: @link:code-consumer; @link:code-county-rates; @link:code-mortality-profiles.
+# @tag:consumer
 """Build offline acceptance fixtures for normalized and mixed model consumers."""
 from __future__ import annotations
 

@@ -1,3 +1,7 @@
+# @ref:code-units
+# Method: @link:doc-causal-graph-plan; @link:spec-composition.
+# Verification: @link:test-ledger; @link:test-receiving-community.
+# @tag:model
 """Unit system for model nodes.
 
 Units decide HOW a parameter may be applied. This is the guard that

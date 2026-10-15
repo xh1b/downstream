@@ -1,5 +1,14 @@
 # DATA SOURCES — everything the model needs, and the access path for each
 
+<!-- @ref:doc-data-sources; @tag:data -->
+<!--
+Connections: @link:code-brac; @link:code-build-places; @link:code-county-mortality; @link:doc-cdc-wonder-profile-import; @link:doc-literature-acquisition-plan; @link:docs-index; @link:test-brac;
+@link:test-build-places-adversarial; @link:test-county-mortality.
+-->
+
+Related: [Documentation map](README.md) · [cdc wonder profile import](CDC_WONDER_PROFILE_IMPORT.md) · [literature acquisition plan](LITERATURE_ACQUISITION_PLAN.md).
+Implementation: [brac](../src/downstream/brac.py), [build_places](../src/downstream/build_places.py), [county_mortality](../src/downstream/county_mortality.py). Checks: [brac](../tests/test_brac.py), [build_places_adversarial](../tests/test_build_places_adversarial.py), [county_mortality](../tests/test_county_mortality.py).
+
 Owner directive: use the APIs/pull tooling already in the xh1b
 monorepo where they exist; new pulls follow the automation principle
 (fully automated download path, no manual steps). Env vars live in

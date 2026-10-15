@@ -1,3 +1,7 @@
+# @ref:test-credits
+# Method: @link:doc-attribution.
+# Implementation: @link:code-credits; @link:code-citations; @link:code-params.
+# @tag:evidence @tag:testing
 """Credits engine checks — the computed collective must stay exact."""
 
 import pytest
@@ -52,6 +56,8 @@ def test_generated_credits_is_a_complete_renderable_attribution(data, tmp_path):
     output = tmp_path / "CREDITS.md"
     text = write_credits_md(data, output)
     assert output.read_text(encoding="utf-8") == text
+    assert "<!-- Generated attribution: @link:code-credits;" in text
+    assert "@ref:" not in text
     assert "## The researchers" in text
     assert "| key | authors | year | venue | role | evidence | doi |" in text
     assert "parameter-source study" in text

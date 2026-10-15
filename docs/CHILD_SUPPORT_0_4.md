@@ -1,5 +1,14 @@
 # Inspect child source support in 0.4
 
+<!-- @ref:doc-child-support-0-4; @tag:children -->
+<!--
+Connections: @link:code-child-support; @link:code-child-applicability; @link:code-study-library;
+@link:doc-child-gap-view; @link:doc-pool-readiness-0-4; @link:docs-index; @link:script-inspect-child-support; @link:test-child-support; @link:test-child-applicability; @link:test-pool-readiness.
+-->
+
+Related: [Documentation map](README.md) · [child gap view](CHILD_GAP_VIEW.md) · [pool readiness 0 4](POOL_READINESS_0_4.md).
+Implementation: [child_support](../src/downstream/child_support.py), [child_applicability](../src/downstream/child_applicability.py), [study_library](../src/downstream/study_library.py). Checks: [child_support](../tests/test_child_support.py), [child_applicability](../tests/test_child_applicability.py), [pool_readiness](../tests/test_pool_readiness.py).
+
 The source-support report makes the existing Canadian father-son earnings
 source and its income contrasts inspectable together. It admits no new effect,
 age-response curve or country-specific evidence. The wider extraction work in

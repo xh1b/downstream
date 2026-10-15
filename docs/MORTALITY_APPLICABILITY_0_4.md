@@ -1,5 +1,13 @@
 # Mortality applicability in 0.4
 
+<!-- @ref:doc-mortality-applicability-0-4; @tag:mortality -->
+<!--
+Connections: @link:code-mortality-profiles; @link:code-mortality-strata; @link:doc-mortality-source-reconciliation-2026-09-10; @link:doc-mortality-covariance-0-4; @link:docs-index; @link:script-build-age-mortality; @link:script-build-cohort-projection; @link:test-mortality-admission-0-4; @link:test-mortality-profiles; @link:test-mortality-strata.
+-->
+
+Related: [Documentation map](README.md) · [mortality source reconciliation 2026-09-10](MORTALITY_SOURCE_RECONCILIATION_2026-09-10.md) · [mortality covariance 0 4](MORTALITY_COVARIANCE_0_4.md).
+Implementation: [mortality_profiles](../src/downstream/mortality_profiles.py), [mortality_strata](../src/downstream/mortality_strata.py). Checks: [mortality_admission_0_4](../tests/test_mortality_admission_0_4.py), [mortality_profiles](../tests/test_mortality_profiles.py), [mortality_strata](../tests/test_mortality_strata.py).
+
 Mortality baseline coverage and causal-response coverage are different. A
 verified mortality rate for a demographic group never admits the default
 displacement response for that group.

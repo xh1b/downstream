@@ -1,3 +1,7 @@
+# @ref:test-adapter-adversarial
+# Method: @link:doc-data-sources.
+# Implementation: @link:code-brac; @link:code-county-mortality.
+# @tag:data @tag:testing
 """Hostile I/O fixtures for source adapters; no network calls are made."""
 from __future__ import annotations
 

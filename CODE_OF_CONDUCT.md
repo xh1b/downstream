@@ -1,5 +1,8 @@
 # Community conduct
 
+<!-- @ref:community-conduct; @tag:development -->
+<!-- Context: @link:repository-overview; @link:contributing. -->
+
 Treat contributors with respect. Critique claims, code, and evidence clearly;
 allow people to ask questions, correct mistakes, and disagree constructively.
 Welcome different backgrounds and levels of experience.

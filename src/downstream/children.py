@@ -1,3 +1,7 @@
+# @ref:code-children
+# Method: @link:doc-child-gap-view; @link:spec-composition.
+# Verification: @link:test-modules; @link:test-child-gap-view; @link:test-transmissions.
+# @tag:children
 """Child and grandchild lines.
 
 Primary path: the DIRECT Oreopoulos estimate on children of displaced

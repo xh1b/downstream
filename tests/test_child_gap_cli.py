@@ -1,3 +1,7 @@
+# @ref:test-child-gap-cli
+# Method: @link:doc-child-gap-view.
+# Implementation: @link:code-child-gap-view; @link:code-cli.
+# @tag:children @tag:testing
 """CLI delivery preserves signed subgroup results and explicit refusals."""
 import json
 

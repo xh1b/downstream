@@ -1,3 +1,7 @@
+# @ref:code-study-library
+# Method: @link:doc-pool-readiness-0-4.
+# Verification: @link:test-admission-provenance; @link:test-child-applicability; @link:test-evidence-classification.
+# @tag:evidence
 """Hash-pinned source contrasts; distinct from pooled or transported effects."""
 from __future__ import annotations
 

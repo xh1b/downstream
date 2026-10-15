@@ -1,5 +1,14 @@
 # MODEL CARD — downstream engine 0.4.0 / parameters v1.52
 
+<!-- @ref:doc-model-card; @tag:model -->
+<!--
+Connections: @link:code-scenario; @link:code-vignette; @link:code-cli; @link:doc-exposure-semantics-0-4; @link:doc-scenario-evidence-protocol; @link:doc-release-0-4; @link:docs-index;
+@link:test-vignette-scenario-mc; @link:test-cli-direct-contracts; @link:test-exposure-semantics.
+-->
+
+Related: [Documentation map](README.md) · [exposure semantics 0 4](EXPOSURE_SEMANTICS_0_4.md) · [scenario evidence protocol](SCENARIO_EVIDENCE_PROTOCOL.md).
+Implementation: [scenario](../src/downstream/scenario.py), [vignette](../src/downstream/vignette.py), [cli](../src/downstream/cli.py). Checks: [vignette_scenario_mc](../tests/test_vignette_scenario_mc.py), [cli_direct_contracts](../tests/test_cli_direct_contracts.py), [exposure_semantics](../tests/test_exposure_semantics.py).
+
 Model card practice per Mitchell et al. 2019, "Model Cards for Model
 Reporting". This card travels with the model.
 

@@ -1,3 +1,7 @@
+# @ref:code-forecast-registry
+# Method: @link:doc-scenario-evidence-protocol.
+# Verification: @link:test-forecast-registry; @link:test-cli-direct-contracts; @link:test-forecast-fsm.
+# @tag:validation
 """Immutable local forecast registrations and separate outcome scoring.
 
 A local timestamp is not proof of public preregistration. Publish the

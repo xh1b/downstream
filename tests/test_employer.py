@@ -1,3 +1,7 @@
+# @ref:test-employer
+# Method: @link:doc-exposure-semantics-0-4.
+# Implementation: @link:code-employer; @link:code-cli; @link:code-params; @link:code-scenario.
+# @tag:exposure @tag:testing
 import json
 import math
 

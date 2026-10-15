@@ -1,3 +1,8 @@
+# @ref:test-paper-tables
+# Method: @link:doc-paper.
+# Implementation: @link:code-validate; @link:code-scenario.
+# Related: @link:paper-build-tables; @link:paper-methods.
+# @tag:methods @tag:testing
 """The paper's scorecard must come from live engine results."""
 import importlib.util
 import json

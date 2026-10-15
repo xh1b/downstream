@@ -1,3 +1,7 @@
+# @ref:test-remarriage-screen
+# Method: @link:doc-remarriage-margin-screen-0-4.
+# Implementation: @link:code-family.
+# @tag:family @tag:testing
 """Keep adjacent divorce findings from becoming a fabricated remarriage pathway."""
 import json
 from pathlib import Path

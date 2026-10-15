@@ -1,5 +1,13 @@
 # Receiving-community channel: evidence scan and search protocol (2026-09-14)
 
+<!-- @ref:doc-immigration-replacement-evidence-scan-2026-09-14; @tag:receiving -->
+<!--
+Connections: @link:code-receiving-community; @link:doc-receiving-community-0-4; @link:doc-queued-extractions; @link:docs-index; @link:test-receiving-community; @link:test-receiving-adapter.
+-->
+
+Related: [Documentation map](README.md) · [receiving community 0 4](RECEIVING_COMMUNITY_0_4.md) · [queued extractions](QUEUED_EXTRACTIONS.md).
+Implementation: [receiving_community](../src/downstream/receiving_community.py). Checks: [receiving_community](../tests/test_receiving_community.py), [receiving_adapter](../tests/test_receiving_adapter.py).
+
 Status: **first-pass scan, anchors verified by search 2026-09-14; nothing
 admitted yet.** Motivation: running the 1,000-worker displacement scenario
 with replacement inflows (`docs/BASELINE_TRANSITION_R2_2026-09-14.md` is
