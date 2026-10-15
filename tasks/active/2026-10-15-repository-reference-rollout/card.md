@@ -11,7 +11,7 @@ Apply the owner's linked-documentation conventions throughout the existing maint
 
 Related: @task:2026-10-15-task-tags-refs-links and @task:2026-10-15-linked-documentation-guidance.
 
-- [ ] Inventory the maintained surfaces and add a discoverable Markdown documentation map with links to existing guides.
-- [ ] Connect existing docs, implementation modules, scripts and tests using relevant anchors, reciprocal links and reusable tags.
-- [ ] Link paper passages and authored figures to their methods, code and verification using source comments; propagate metadata through generated companion sources.
-- [ ] Verify reference resolution, local file links, unchanged executable behavior and paper rendering; record scope and checks.
+- [x] Inventory the maintained surfaces and add a discoverable Markdown documentation map with links to existing guides. [receipt](@task:2026-10-15-repository-reference-rollout#c-28310db0d70b)
+- [x] Connect existing docs, implementation modules, scripts and tests using relevant anchors, reciprocal links and reusable tags. [receipt](@task:2026-10-15-repository-reference-rollout#c-28310db0d70b)
+- [x] Link paper passages and authored figures to their methods, code and verification using source comments; propagate metadata through generated companion sources. [receipt](@task:2026-10-15-repository-reference-rollout#c-28310db0d70b)
+- [x] Verify reference resolution, local file links, unchanged executable behavior and paper rendering; record scope and checks. [receipt](@task:2026-10-15-repository-reference-rollout#c-28310db0d70b)
