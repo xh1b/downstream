@@ -3,6 +3,7 @@ title: Port XH1B task tags, refs and links
 area: scripts
 priority: P2
 assignee: codex-task-tokens
+tags: [@tag:tooling]
 blocked-by: []
 ---
 
