@@ -49,3 +49,10 @@ Implementation: 4ef684e. Read locally from XH1B scripts/tasks.py at e66c9db272cf
 Downstream retains HKT timestamps, commit-first directory moves, title-based board commit summaries and legacy task-reference compatibility. New task output and reply/resolution metadata use the canonical prefix. Tag commands also refuse dirty cards. The anchor scanner validates the entire name, including mixed-case suffixes, and accepts the same tag shape as the task CLI.
 
 Usage: [token guide](../../README.md), [task CLI](../../../scripts/tasks.py), [reference checker](../../../scripts/refcheck.py), [workflow tests](../../../tests/test_tasks_workflow.py), [reference tests](../../../tests/test_refcheck.py). Local commits only; XH1B was read without changes.
+
+## c-1252fa3790dc
+
+- At: 2026-10-15 17:12 HKT
+- By: codex-task-tokens
+
+done: active -> review.
