@@ -5,12 +5,12 @@
 """R2 baseline artifact: weighted 2021->2022 employment/earnings transitions.
 
 First baseline-transition artifact for the research plan's R2 milestone
-(docs/LIFE_COURSE_RESEARCH_PLAN.md). Estimates ordinary (no-event)
+(docs/research/LIFE_COURSE_RESEARCH_PLAN.md). Estimates ordinary (no-event)
 December-to-December employment-state transitions and earnings changes
 for prime-age workers from the redesigned SIPP public-use files, within
 the January 2021 - December 2022 longitudinal span.
 
-Design (all choices declared in docs/BASELINE_TRANSITION_R2_2026-09-14.md):
+Design (all choices declared in docs/audits/BASELINE_TRANSITION_R2_2026-09-14.md):
 - Persons: FINYR2 > 0 in the calendar-2023 longitudinal weights release
   (the span Jan 2021 - Dec 2022), age 25-54 at December 2021, present in
   both pu2021 and pu2022 December records with RIN_UNIV = 1 and a valid

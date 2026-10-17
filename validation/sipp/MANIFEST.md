@@ -13,7 +13,7 @@ spreadsheets, dictionaries, input example) is committed here under
 repository alone — anyone can re-download the raw files from the
 recorded URLs and verify every hash. Terms: free download, no
 registration, redistributable
-(`docs/SIPP_BASELINE_DATA_ASSESSMENT_2026-09-13.md`).
+(`docs/audits/SIPP_BASELINE_DATA_ASSESSMENT_2026-09-13.md`).
 
 Pending: none — `validation/sipp/2022/pu2022_schema.json` had been
 throttled on 2026-09-13 and was fetched 2026-09-14. The 2023-release

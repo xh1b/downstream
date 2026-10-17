@@ -1,5 +1,5 @@
 # @ref:script-build-age-mortality
-# Method: @link:doc-mortality-applicability-0-4.
+# Method: @link:integration-mortality.
 # @tag:mortality
 """Derive age-band mortality counts/rates from the pinned national WONDER pull."""
 import argparse

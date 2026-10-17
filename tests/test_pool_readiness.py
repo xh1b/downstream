@@ -112,7 +112,7 @@ def test_current_annual_odds_and_cumulative_hazards_explicitly_refused(report):
 
 def test_committed_report_retains_navigation_and_current_source_identity(report):
     text = REPORT.render(report)
-    assert text == (ROOT / 'docs/POOL_READINESS_0_4.md').read_text()
+    assert text == (ROOT / 'docs/audits/POOL_READINESS_0_4.md').read_text()
     assert '<!-- @' + 'ref:doc-pool-readiness-0-4;' in text
     assert '@link:script-build-pool-readiness' in text
 

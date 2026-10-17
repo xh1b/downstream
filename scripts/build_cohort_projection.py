@@ -1,5 +1,5 @@
 # @ref:script-build-cohort-projection
-# Method: @link:doc-mortality-applicability-0-4.
+# Method: @link:integration-mortality.
 # Implementation: @link:code-mortality-strata.
 # @tag:mortality
 """Build a hypothetical event cohort from pinned CPS reference composition.

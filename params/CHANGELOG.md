@@ -288,7 +288,7 @@
   committed male export: k ≈ 822 prior person-years (Gamma shape ≈ 4.1,
   noise ≈ 11% of the county spread) vs the DECLARED k = 2000 — the
   declared prior shrinks harder; kept as the shipped conservative
-  choice, recorded in docs/DATA_SOURCES.md with the rerun-when-more-
+  choice, recorded in docs/audits/DATA_SOURCES.md with the rerun-when-more-
   exports rule (tests/test_county_eb_prior.py pins the arithmetic).
 - SECOND RESEARCH SWEEP queued (6 verified candidates): Eliason &
   Storrie 2009 (JHR 44(2) — venue corrected, Sweden), Bloemen,

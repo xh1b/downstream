@@ -20,7 +20,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--out',type=Path,default=ROOT/'validation/followthrough_evaluation.json')
     args=parser.parse_args()
-    protocol=ROOT/'docs/SCENARIO_EVIDENCE_PROTOCOL.md'
+    protocol=ROOT/'docs/research/SCENARIO_EVIDENCE_PROTOCOL.md'
     cohort=json.loads((ROOT/'validation/cps2024_displaced_cohort.json').read_text())
     sipp=json.loads((ROOT/'validation/sipp/r2_transitions/coverage_and_calibration.json').read_text())
     by_origin=defaultdict(list)

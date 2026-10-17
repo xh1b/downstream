@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # @ref:script-import-evidence-corpus
-# Method: @link:doc-literature-acquisition-plan.
+# Method: @link:doc-evidence.
 # @tag:evidence
 """Import locally acquired PDFs into the reproducible evidence registry.
 
 This is a mechanical import, not evidence extraction.  Each record is marked
 ``unreviewed`` until a researcher records the estimand, uncertainty, scope,
-and graph-overlap decision under docs/CITING.md.
+and graph-overlap decision under docs/EVIDENCE.md.
 """
 
 from __future__ import annotations
