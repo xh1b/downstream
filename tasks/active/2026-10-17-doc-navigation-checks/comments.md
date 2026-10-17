@@ -35,3 +35,13 @@ Commit 067c188 is not assumed; use the preceding implementation commit titled â€
 494 relative file/heading links pass across maintained/supporting docs and repository entry points. Stable refs pass (327 anchors, 1432 links); task validation has zero errors/warnings. Ruff, Vulture and evidence audit pass (0 audit errors/warnings). All four freshness checks pass: evidence classification, pool readiness, consumer fixtures and calculator. The 89-test report/consumer/paper/ref run and 231-test adapter/sensitivity/CLI/audit/evidence/paper/calculator/task run pass.
 
 The evaluator executed into a new temporary output and retained its honest independent-event blockage (no matched external source). Saved historical evaluations and validation/sipp/MANIFEST.json were not rewritten. Protocol changes only repair navigation: original digest 6da5c238bb9466a9a591b0f9361fb815e22f92f430c0c117e64ab1c68878e94d at 26c4bb2:docs/SCENARIO_EVIDENCE_PROTOCOL.md; current digest 67767deb04df553d12aa9335175489d15e5a666fcf7c23b1688a25a52f289bd7 at docs/research/SCENARIO_EVIDENCE_PROTOCOL.md. Old receipts keep their original protocol hashes. Historical task comments and frozen evidence exemptions stay unchanged.
+
+## c-bd6f5664e9e4
+
+- At: 2026-10-17 20:55 HKT
+- By: codex-doc-cleanup
+- Reply-to: @task:2026-10-17-doc-navigation-checks#c-2f90e31ea7ac
+
+The path/build repair commit is b49c335
+
+The preceding receipt's placeholder commit sentence was unintended. b49c335 is the implementation commit for audit builders, migrated paths and regenerated reports; the listed checks refer to that work.
