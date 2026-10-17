@@ -1,531 +1,113 @@
-# SPEC — the downstream causal consequence graph
+# Implementation and methods map
 
 <!-- @ref:specification; @tag:model @tag:methods -->
-<!-- Context: @link:docs-index; @link:code-ledger; @link:code-scenario; @link:paper-model; @link:test-mathematics-v02. -->
+<!-- @link:docs-index; @link:paper-methods; @link:code-scenario. -->
 
-This is a secondary algorithm and contract reference, versioned with
-`params/VERSION`. The [implementation](src/downstream/) and admitted data define
-actual behavior. The [paper](paper/downstream.tex) explains the mathematics and
-scientific choices; the [software guides](docs/readme.md) cover use, integration
-and development. Resolve disagreements against code and tests, then repair the
-relevant explanation. Research directions below are proposals until implemented.
+The implementation and admitted data define behavior. The
+[paper](paper/downstream.tex) explains mathematics and scientific rationale;
+the [software guides](docs/readme.md) describe calling and maintenance contracts.
+This file preserves historical SPEC section numbers and stable anchors as a
+navigation map. It does not maintain a second set of formulas, parameter values
+or verification claims. Historical versions remain available in Git.
 
-<!-- @ref:spec-purpose; connections: @link:doc-model-card; @link:code-scenario. -->
 ## 1. Purpose and what the model computes
 
-`downstream` is a versioned, evidence-locked causal consequence graph. Given
-an initiating event or altered state, it discovers and composes the published,
-compatible downstream links through a person, their family, and their
-community over time. Its purpose is to make distant effects auditable: a result
-must identify every scientific bridge that led to it, its uncertainty, and the
-missing bridge that would block it.
+<!-- @ref:spec-purpose -->
 
-The model is descriptive. It does not contain a preferred political or moral
-conclusion. Positive, harmful, null, and conflicting effects are evidence
-records with the same status. Where high-quality evidence supports competing
-structures, it reports structural variants rather than silently selecting a
-story. The model simulates distributions for synthetic people and populations;
-it does not claim to predict an identified person's life.
+[Model scope](docs/model_card.md). Rationale: @link:paper-model; implementation: @link:code-scenario.
 
-Worker displacement is the first seed event and the currently implemented
-graph. It is not the intended boundary: the graph will expand across health,
-housing and relocation, family structure, education, crime and incarceration,
-mental health, environment, and protective interventions as cited bridges are
-extracted.
-
-The current implementation takes a documented **worker-displacement exposure**
-and propagates it through cited effect links. A separate community input may
-name a documented net change in a metro's tradable employment. A worker count
-does not establish that net change.
-
-| Stream | Outcomes |
-|:---|:---|
-| worker | long-run earnings, excess mortality |
-| children | child adult earnings, grandchild earnings, great-grandchild earnings |
-| family | divorce hazard, family-size penalty, daughter adult-violence odds |
-| community | local service jobs from a separate net-employment input; school-spending and youth-crime branches |
-
-Every number carries: a point estimate, a band, a precision tier, at
-least one bib key (`params/references.bib`), and a population scope.
-The ledger records each step so any output can be audited back to its
-studies.
-
-The graph expansion requirements are defined in
-`docs/research/causal_graph_plan.md`. New links must also carry their causal estimand
-(total, direct, mediated, null, or context-only), time semantics, and a
-unit-appropriate uncertainty representation before they can be composed.
-
-**Honesty architecture** (non-negotiable):
-
-1. Nothing is computed without a cited parameter. Missing inputs fail
-   loudly (`blocked` with the exact missing baseline named).
-2. Vignettes and scenarios report **ranges for populations**, never
-   deterministic claims about a person.
-3. Relative effects (rate ratios, odds ratios) convert to counts only
-   against **cited baselines**.
-4. Weakly identified layers (generation 3) carry an honesty statement
-   in their output, not a footnote.
-5. Validation misses are published. The model does not tune to pass.
-
-<!-- @ref:spec-nodes; connections: @link:code-units; @link:code-params; @link:test-params. -->
 ## 2. Nodes and units
 
-`params/nodes.csv` declares every node and its unit. The unit decides
-how a parameter may be applied:
+<!-- @ref:spec-nodes -->
 
-| Unit | Meaning | Applied as |
-|:---|:---|:---|
-| `persons`, `count` | exposure quantities | inputs |
-| `gap_multiplier` | deviation from 1.0 vs a counterfactual (0.80 = −20%) | `level`, `gap`, or `direct` step |
-| `rate_ratio` | relative rate vs counterfactual | recorded; applied to a baseline rate at the boundary |
-| `odds_ratio` | relative odds vs counterfactual | recorded; applied to baseline odds |
-| `level_ratio` | jobs-per-jobs, dollars-per-dollars — a LEVEL | multiplies a count; **never chained** |
-| `percent_delta` | percent change | via an elasticity |
+[Nodes and admitted data](docs/evidence.md#know-which-record-you-are-editing). Rationale: @link:paper-composition; implementation: @link:code-units.
 
-The v0 lesson, now enforced by `downstream audit`: Moretti's
-"1 high-tech job supports ~5 local service jobs" is a
-`level_ratio`. Multiplying it into an earnings chain (as v0 did) is a
-shape error, and the audit rejects any `level_ratio` row with a point
-below 1.0 as the tell for that bug class.
-
-<!-- @ref:spec-parameters; connections: @link:doc-citing; @link:code-params; @link:test-params. -->
 ## 3. Parameters
 
-`params/parameters.csv`, version `params/VERSION`. Columns:
-`link, from_node, to_node, point, low, high, tier, citation,
-population_scope, notes`. `citation` holds semicolon-separated bib
-keys — free-text citations are not allowed anywhere.
+<!-- @ref:spec-parameters -->
 
-### Active parameter set (v1.18; Thornton 1980 cross-check notes on the fertility row (no value
-change, no cross-generation fertility link — observational, CITING §1);
-v1.17 spillover wired into the V1 earnings row (no value change);
-v1.16 child-maltreatment row (JPubE 2018) landed; v1.15 GOP
-win-probability + Carneiro notes; v1.14 fertility/EITC/IGE; v1.13 Hilger/Raphael;
-v1.12 spillover; v1.11 Oreopoulos pin; v1.9 S&vW; v1.10 Lindo.
-Full history: params/CHANGELOG.md)
+[Parameter custody](docs/evidence.md#citation-and-extraction-rules). Rationale: @link:paper-parameters; implementation: @link:code-params.
 
-| Link | Value [band] | Tier | Source keys |
-|:---|:---|:---|:---|
-| displacement→worker_earnings | 0.80 [0.75, 0.85] | EXACT-abstract | jacobson1993; oreopoulos2008; davis2011 |
-| earnings_shock→mortality_sustained | 1.135 [1.033, 1.247] | EXACT | sullivan2009 |
-| earnings_shock→mortality_peak | 2.672 [2.116, 3.374] | EXACT | sullivan2009 |
-| displacement→divorce_hazard | 1.11 [1.05, 1.25] | canonical | rege2007; charles2004 |
-| displacement→child_earnings (direct) | 0.9076 [0.844, 0.976] | EXACT | oreopoulos2008 |
-| divorce→child_earnings (parallel) | 0.95 [0.90, 0.99] | canonical | gruber2004 |
-| family_size→child_earnings (parallel, per extra child) | 0.98 [0.95, 1.00] | canonical | black2005 |
-| child_earnings→grandchild_earnings (IGE) | 0.55 [0.40, 0.60] | canonical | solon1992; corak2013; chetty2014 |
-| grandchild_earnings→greatgrandchild_earnings (IGE) | 0.55 [0.40, 0.60] | canonical | lindahl2015; adermon2018 |
-| ipv_exposure→daughter_violence_odds | 2.5 [2.0, 3.0] | canonical | widom1989; ehrensaft2003 |
-| displacement→infant_birth_weight | 0.954 [0.912, 0.998] | EXACT | lindo2011 |
-| wage_ratio→household_ipv (ln-elasticity) | −0.813 [−1.45, −0.18] | EXACT-results | aizer2010 |
-| net metro tradable-job change→local_service_jobs | 5.0 [1.6, 5.0] | canonical | moretti2010 |
-| school_spending→child_earnings (per +10% × 12y) | 1.07 [1.03, 1.10] | canonical | jackson2016 |
-| youth_wages→youth_crime (elasticity) | −1.0 [−1.5, −0.5] | canonical | gould2002; grogger1998 |
-| import_shock→non_displaced_wage_spillover (log pts/$1k) | −0.822 [−1.304, −0.340] | EXACT | adh2013 |
-| family_income_shock→child_achievement (SD/$1k) | +0.061 [0.016, 0.106] | EXACT | dahl2012 |
-| family_income_shock→life_expectancy (yrs/$1k) | +0.133 [0.117, 0.150] | EXACT | chetty2016 |
-| displacement→college_enrollment | 0.9894 [0.9848, 0.9939] | EXACT | hilger2016 |
-| displacement→parental_income (short-run) | 0.8640 [0.8568, 0.8712] | EXACT | hilger2016 |
-| unemployment_rate→property_crime (% per pp) | +5.018 [2.795, 7.241] | EXACT | raphael2001 |
-| eitc_exposure→adult_earnings_early (per $1k exposure, ages 13-18) | +564 [84, 1044] | EXACT | bastian2018 |
-| male_earnings→fertility (elasticity, ln-ln) | +1.24 [0.397, 2.083] | EXACT | kearney2018fracking |
-| import_shock→gop_win_probability (pp/$1k) | +24.08 [0.42, 47.74] | EXACT | autor2020polarization |
-| male_mass_layoff_rate→child_maltreatment (%/pp) | +6.0 [3.65, 8.35] | EXACT | lindo2018maltreatment |
-
-Tiers mean what `CITING.md` says they mean. The audit cross-checks
-each tier against the `xh1b-evidence` class recorded in the bib entry.
-
-<!-- @ref:spec-composition; connections: @link:code-ledger; @link:code-transmissions; @link:paper-composition; @link:test-ledger. -->
 ## 4. Composition semantics
 
-A ledger tracks one quantity through cited steps. Step kinds:
+<!-- @ref:spec-composition -->
 
-**level** — plain multiplication on a level:
-`v' = v × p`, band `v' ∈ [v·p_lo, v·p_hi]`.
+[Typed composition and projections](docs/integration.md#child-and-descendant-outputs). Rationale: @link:paper-composition; implementation: @link:code-ledger.
 
-**gap** — transmission gap propagation (the IGE links). A parent gap
-`g` and transmission parameter `t` give:
-
-```
-g' = 1 − t·(1 − g)
-band: g'_lo = 1 − t_hi·(1 − g_lo),  g'_hi = 1 − t_lo·(1 − g_hi)
-```
-
-Worked line (the standard family, father shocked to 0.80):
-
-```
-child gap        = 0.9076                     (direct, oreopoulos2008 JOLE Table 2 col 3)
-grandchild gap   = 1 − 0.55·0.0924 = 0.9492   [0.906, 0.990]
-great-grandchild = 1 − 0.55·0.0508 = 0.9720   [0.944, 0.996]
-```
-
-v0 multiplied levels straight through (0.91 × 0.55 = 0.50) — that
-overstated the grandchild loss ~9×. The `gap` kind exists so that bug
-class cannot recurse.
-
-**direct** — a directly estimated effect on the outcome: `v' = p`
-(with its band). Used where the literature estimates the outcome
-itself, not a transmission step.
-
-**rate** — a rate ratio, recorded on the ledger and held there.
-Counts happen only at the boundary (§6).
-
-**level_ratio** — `n × p`. Additive in n. Never enters a ledger chain.
-
-**elasticity** — `%Δoutcome = e × %Δinput`, sign carried through.
-
-Parallel streams (divorce→child_earnings, family_size→child_earnings)
-are reported **side by side** with the displacement path. There is no
-silent composition: combining independent causes needs incidence
-weights and an additivity assumption the literature does not license.
-`combine_parallel` exists (gap-additive, floored at 0) for a future
-combined view, behind its own cited derivation.
-
-<!-- @ref:spec-pathways; connections: @link:code-worker; @link:code-family; @link:code-children; @link:code-community; @link:test-modules. -->
 ## 5. Modeled pathways
 
-- **Worker stream** (`worker.py`): earnings gap (direct), mortality
-  sustained ratio, mortality peak ratio — separate outcomes of one
-  shock, never multiplied together.
-- **Children line** (`children.py`): direct child gap, then gap-space
-  IGE to grandchild, then to great-grandchild with the honesty marker.
-- **Family streams** (`family.py`): divorce hazard (rate ratio),
-  family-size penalty (level-compounded per extra child), daughter
-  violence odds (odds ratio; upstream IPV incidence is queued — the
-  vignette reports it `blocked`).
-- **Community** (`community.py`): service jobs lost from a documented net
-  metro tradable-job loss (level ratio),
-  school-spending effect normalized linearly in
-  `(spend_pct/10) × (years/12)` — both normalizations are declared
-  assumptions — and youth-crime percent delta via the wage elasticity.
+<!-- @ref:spec-pathways -->
 
-<!-- @ref:spec-counts; connections: @link:code-mortality; @link:code-scenario; @link:paper-counts; @link:test-mathematics-v02. -->
+[Supported surfaces](docs/model_card.md#what-the-software-supports). Rationale: @link:paper-exposure; implementation: @link:code-worker.
+
 ## 6. Count conversion and baselines
 
-Relative effects become counts only against cited baselines
-(`params/baselines.csv`), each of which must reach `status=verified`
-with a value and a source before use:
+<!-- @ref:spec-counts -->
 
-```
-q(r) = r*m / (1-m+r*m)
-a = min(Y, 1); u = min(max(Y-1, 0), 4); b = max(Y-5, 0)
-excess_deaths = N * ((1-m)**Y - (1-q(r_peak))**a * (1-m)**u * (1-q(r_sust))**b)
-child_earnings_lost_$ = N · children · (1 − g_child) · L
-```
+[Count calling contracts](docs/integration.md#mortality-outputs). Rationale: @link:paper-counts; implementation: @link:code-mortality.
 
-where `m` is the cited baseline mortality rate, `Y` the exposure
-window including the peak year, and `L` cited median lifetime earnings.
-The peak coefficient applies to year 1. Years 2--5 have no landed
-coefficient and therefore remain at the baseline hazard; the year-6+
-coefficient is currently applied from follow-up year 6 onward. The September
-10 source check found available early-year estimates and an offset error:
-source +6 corresponds to follow-up year 7 when displacement is year 1.
-`source_aligned` is therefore a historical option name for an incomplete
-profile (see `docs/audits/mortality_source_reconciliation_2026-09-10.md` for the
-current production profile).
-`immediate_sustained` backfills persistence as a sensitivity assumption.
-`legacy_additive` retains the
-historical linear formula. Pending baselines
-block their outcome (`blocked`, with the fix named); `strict=True`
-raises instead. **No baseline value is ever guessed.**
-
-<!-- @ref:spec-uncertainty; connections: @link:code-distributions; @link:code-mc; @link:paper-uncertainty; @link:test-distributions. -->
 ## 7. Uncertainty propagation
 
-`mc.simulate` rebuilds the full module compute per draw, so nonlinear
-gap composition propagates correctly. Outputs carry p05/p50/p95/mean,
-the seed, the draw count, the sampler id, and a `-sampled` version
-mark. Methodology (mckay1979; iman1982; hersbach2000 in references.bib):
+<!-- @ref:spec-uncertainty -->
 
-1. **Latin Hypercube Sampling** over the parameter space — one draw
-   per stratum per marginal, converging faster than IID.
-2. **Log-space sampling for positive ratios** (rate ratios, odds
-   ratios, level ratios): a ratio's uncertainty is multiplicative;
-   linear sampling biases toward the top of the band.
-3. **Declared normal** rows: SE from the band half-width / 1.96,
-   clamped to the band (including endpoint probability mass).
-4. **Rank correlation** between parameters via Iman-Conover —
-   marginals preserved exactly. The declared matrix
-   (`params/correlations.csv`) has two declared -0.5 earnings/mortality
-   pairs. Literature motivates their direction; magnitude is judgment.
+[Uncertainty tools](docs/integration.md#uncertainty-and-experiment-tools). Rationale: @link:paper-uncertainty; implementation: @link:code-distributions.
 
-<!-- @ref:spec-inference; connections: @link:code-inference; @link:test-inference. -->
 ## 7b. Analytic inference (the same algebra, done exactly)
 
-`inference.py` propagates the first two moments of a chain in CLOSED
-FORM. Every ledger step is a product (level), a replacement (direct),
-or affine in each argument (gap) — so under parameter independence
-the mean and variance propagate exactly (§7's identities are in the
-module docstring). Three uses:
+<!-- @ref:spec-inference -->
 
-1. **Cross-check.** `analytic_vs_mc`: the MC mean must sit within ~3
-   sampling SE of the exact mean. On the grandchild line they agree
-   to 0.07 SE and the sds match to 4 decimals. A larger gap is a
-   sampler bug, and the test suite traps it.
-2. **Bands.** `analytic_chain` gives a normal-approximation p05/p95
-   for free (no seed). The MC exists to price the skewness this
-   misses — the normal-vs-MC quantile gap publishes as the output's
-   non-Gaussianity, not as error.
-3. **Exact decomposition.** `logspace_variance_shares`: for a purely
-   multiplicative (level) chain, Var[log Y] = Σ Var[ln Xi] and the
-   shares ARE the Sobol indices of log Y — first-order equals total,
-   no estimator, no seed. Non-level chains are REFUSED (log Y ≠ Σ ln
-   Xi for gap/direct steps — the level-ratio bug in analytic
-   disguise).
+[Analytic inference](docs/integration.md#uncertainty-and-experiment-tools). Rationale: @link:paper-inference; implementation: @link:code-inference.
 
-**Third moments and Cornish–Fisher bands.** The chain propagates
-E, E², E³ exactly (level: products; gap: the bilinear identity in
-`analytic_chain`'s docstring). Skewness γ₁ follows from raw moments;
-the Cornish–Fisher expansion turns it into quantile corrections
-`q_α ≈ μ + σ(z_α + (z_α²−1)γ₁/6)` that reduce exactly to the normal
-band at γ₁ = 0. On a deliberately skewed two-step log-uniform product
-chain, CF sits strictly closer to the MC quantile than the normal
-band (trap-pinned) — the correction does work, and the MC remains
-the referee.
-
-**Correlation stress** (`correlation_stress`) — the bound on the
-independence assumption. Two declared earnings/mortality pairs enter
-default Monte Carlo; analytic chains retain an independence assumption. The
-stress test induces Spearman ρ among a chosen block via Iman-Conover
-(marginals preserved; PSD violations refused at construction),
-rebuilds the band, redraws truths under the SAME dependence, and
-publishes the width move. Measured on the grandchild line at ρ = +0.5
-between the direct child effect and IGE transmission: the band
-NARROWS 18% — the gap step couples gradients of opposite sign
-(∂g'/∂g = t > 0, ∂g'/∂t = −(1−g) < 0), so positive correlation is
-cancellative. The independence assumption is therefore conservative
-against positive correlation of this pair, and the number publishes
-either way. Coverage stays nominal under declared dependence: the
-machinery tracks whatever it is told; only a citation can make the
-dependence real.
-
-**Coverage closure test** (`closure_coverage`) — what "a 90% band"
-means here and how it is earned: draw truths from the declared bands,
-build the MC band from an independent sample, and count coverage. On
-the grandchild line (600 trials): empirical 0.498/0.802/0.902/0.945
-against nominal 0.50/0.80/0.90/0.95 — all within 2 binomial SE. This
-validates the INTERVAL MACHINERY under the model's own assumptions.
-It does not validate the economics; that is V1's job. A test that
-sabotages the band fails the closure check — the test has teeth
-(trap-pinned in the suite).
-
-CLI: `downstream infer --outcome grandchild [--action chain|shares|
-closure|agree]`.
-
-**Property fuzz (test suite).** 24 randomly generated chains (mixed
-units, mixed level/direct/gap sequences, random bands) demand the
-exact moments agree with the MC sampler — mean within 4 sampling SE,
-variance within 6%, skewness sign exact when identifiable. Declared-
-`normal` sampling rows are REFUSED by the analytic layer (the sampler
-truncates them; the algebra has no truncated-normal rule) — when one
-is cited into the set, add the moment rule and unpin the trap.
-
-<!-- @ref:spec-sensitivity; connections: @link:doc-result-sensitivity; @link:code-sensitivity; @link:test-sensitivity-scoring. -->
 ## 8. Sensitivity analysis (what drives the range)
 
-`sensitivity.sobol_indices` computes first-order and total Sobol
-indices (sobol2001; saltelli2002) over the same parameter space:
-`S_total` is the share of output variance driven by each parameter,
-interactions included. It powers layer 3 of every explanation ("the
-range is mostly driven by X — pinning X down helps most") and ranks
-the extraction queue by precision value. Model evals =
-base x (N+2); the model evaluates in microseconds, so base sizes of
-a few hundred are cheap and seeded for reproducibility.
+<!-- @ref:spec-sensitivity -->
 
-<!-- @ref:spec-knobs; connections: @link:code-knobs; @link:test-knobs. -->
+[Sensitivity result contract](docs/integration.md#per-result-sensitivity). Rationale: @link:paper-sensitivity; implementation: @link:code-sensitivity.
+
 ## 8b. Knob experiments (how the model is explored)
 
-`knobs.py` is the experiment layer. Two tools, both fail-loud:
+<!-- @ref:spec-knobs -->
 
-- **`sweep`** — pin one parameter at each of a list of values (band
-  collapsed onto the value; the value must lie inside the parameter's
-  cited band — the experiment door does not widen the evidence) and
-  recompute the scenario. The table shows every modeled count plus the
-  blocked list at each value, with deltas against the first row.
-- **`value_of_information`** — narrow each parameter's band by a
-  factor toward its point, re-run the Monte Carlo on a paired seed,
-  and report the surviving output-band width. Ranked, this is the
-  extraction queue in OUTPUT units: which knob, turned next, removes
-  the most uncertainty. (For the grandchild line, halving the direct
-  child-earnings band removes ~40% of the p05-p95 width; the youth-
-  crime elasticity removes ~0 — it cannot reach that outcome.)
-- **`sobol_ci`** (sensitivity.py) — re-run the Saltelli estimator on
-  consecutive seeds and report the mean and sd of S_total across
-  designs. The sd is design noise, not a confidence interval on a
-  true index; it exists to check that a ranking separates by more
-  than its noise.
+[Experiment tools](docs/integration.md#uncertainty-and-experiment-tools). Rationale: @link:paper-sensitivity; implementation: @link:code-knobs.
 
-Honesty rules, tested: every overridden parameter set carries a
-`-knob` version marker (one experiment is never a published set);
-unknown links and out-of-band pins raise; zero-width bands are
-reported, not crashed on.
-
-CLI: `downstream knobs --action sweep --link X --values a,b,c` and
-`downstream knobs --action voi --outcome grandchild`; `downstream
-sensitivity --ci N`. Shell note: link ids contain `->`, quote them.
-
-
-
-`scoring.py` implements the verification layer for V1/V3
-(gneiting2007): sample-based CRPS (hersbach2000), band coverage, and
-PIT values with a calibration table. A published band that misses its
-stated coverage is a wrong model, whatever its citations say.
-
-<!-- @ref:spec-explanation; connections: @link:doc-rendering; @link:code-explanation; @link:code-render. -->
 ## 10. The explanation contract (how claims travel)
 
-`explanation.Explanation` is the data contract between the model and
-every renderer (CLI, web, paper): claim with band, cited step list
-with contribution shares, Sobol drivers, declared assumptions,
-blocked outcomes with fixes, falsifiers, version + seed. Hard rules,
-tested: no naked point estimates; every step cited; refusals named
-with their missing input. Rendering rules live in
-`docs/research/rendering.md`; the reference renderer is `render.py`.
+<!-- @ref:spec-explanation -->
 
-<!-- @ref:spec-scenarios; connections: @link:doc-exposure-semantics-0-4; @link:code-scenario; @link:test-exposure-semantics. -->
+[Result and explanation contracts](docs/integration.md#result-fields-and-units). Rationale: @link:paper-calculator; implementation: @link:code-explanation.
+
 ## 11. Scenario aggregation
 
-`scenario.compute_counts` takes an exposure (workers, family
-structure, tradable share, window) and returns modeled counts +
-multipliers + an explicit blocked list. Composition across units
-(summing deaths over workers) is linear-in-N by construction; the
-level (no-migration-dampener) caveat lives in the validation docs.
+<!-- @ref:spec-scenarios -->
 
-<!-- @ref:spec-validation; connections: @link:doc-scenario-evidence-protocol; @link:code-validate; @link:paper-validation; @link:test-validate. -->
+[Scenario input contract](docs/integration.md#exposure-and-event-metadata). Rationale: @link:paper-exposure; implementation: @link:code-scenario.
+
 ## 12. Validation program
 
-- **V0 — internal consistency (running):** the direct child estimate
-  (oreopoulos2008) must overlap the IGE-composed path
-  (jacobson1993 × IGE band). `downstream validate` runs it; a
-  divergence means one of the two literatures is misread.
-- **V1 — retrodiction (FIRST SCORECARD 2026-09-07, unit-level):** the
-  exposure bridge is transcribed (ADH T1 col10: 1pp shock displaces
-  2.52pp [1.74, 3.30] of working-age adults from manufacturing) and
-  the mortality stream is scored against ADH's measured CZ
-  differential. Model: 9.0 excess deaths per 100k adults [5.1, 14.5]
-  (all-adults variant, 10y window) vs measured 4.27 (SE 3.54). HONEST
-  MISS on the level: the measured CI covers the model point; the
-  model band overshoots the measured point. Three scope caveats
-  publish with it (S&vW identifies high-seniority men; the bridge
-  displaces adults 18-39 of both sexes; the measured outcome is a
-  male-female differential). The divorce column (T6 col2) is scored as a
-  SECOND non-circular stream (rege2007/charles2004 hazard + census
-  divorce baseline): model 0.031pp / 0.061pp of women (5y/10y) vs
-  measured 0.28pp (SE 0.15) — the channel explains ~11-22% of the
-  measured stock change; undershoot published with the remarriage-
-  margin explanation candidate. Remaining refusals (fertility, teen
-  births, unmarried share, poverty, headship, gender ratio) are
-  truly circular: ADH is their only parameter source. Circularity is
-  a property of the EVIDENCE GRAPH, not of ambition. Trap-pinned: the miss cannot be flipped to a pass by
-  code changes, only by new evidence. Spec: `validate.v1_backtest_spec()`;
-  scorecard: `validate.v1_retrodict()`; PANEL retrodiction LANDED 2026-09-07 on the authors' public-release
-  CZ panel (openICPSR 116320-V2, CC BY 4.0, cited per its terms;
-  extract committed to validation/adh_cz_panel.csv): within-period-
-  demeaned shock terciles give a measured widowed/divorced/separated
-  gap of +0.134pp vs modeled [0.045, 0.206] — SIGN AGREEMENT and
-  band coverage, the first panel PASS. Slope scoring: model p50
-  0.081 vs published 0.28, CRPS 0.176, PIT 1.0 — the unit-level
-  undershoot confirmed on panel data (remarriage margin the leading
-  candidate). The un-demeaned stacked tercile gap flips sign
-  (period confounding) — trap-pinned so the demeaning can never be
-  quietly dropped.
+<!-- @ref:spec-validation -->
 
-  V1 COMPLETE-ROUND ADDITIONS (2026-09-07, extract v2): the age-
-  matched mortality variant (WONDER 25-44 male, warehouse-pinned)
-  makes the mortality miss   SHARPER (model 12.5 [7.1, 20.1] vs
-  measured 4.27, CI covers neither direction) — the overprediction
-  is robust to baseline choice, and window semantics are CONFIRMED
-  cumulative-per-decade from the deposit Readme. The male-specific
-  shock tercile row PASSES with the model point within 2% of
-  measured (0.0626 vs 0.062). The earnings row (JLS stream,
-  incidence-weighted) sign-agrees but undershoots ~5x (model −$74
-  [−92, −55] vs measured −$353): the CZ p25 earnings response exceeds
-  the direct-displacement composition — evidence of local wage
-  spillovers the model does not encode (a missing LINK, now named in
-  the queue). SPILLOVER WIRED (v1.17, `validate.v1_panel`): the
-  landed adh2013 link (−0.822 log pts per $1k/worker, native panel
-  units) composes onto the non-displaced share — direct-only row
-  RETAINED beside the composed row −$165 [−237, −93] (closes 32.9%
-  of the point-gap; measured still outside, residual published).
-  The composed model's implied TOTAL male wage response −1.41 log
-  pts/$1k [−2.02, −0.79] sits inside the measured aggregate CI
-  (ADH 2013 T6 col2: −0.892, SE 0.294 → CI [−1.47, −0.32]) — the
-  residual p25 undershoot is distributional (bottom-quartile
-  concentration), not aggregate.
-- **V2 — back-tests (designed):** NAFTA, 2008-09 auto crisis, BRAC.
-- **V3 — prospective (designed):** pre-registered forecasts scored
-  with proper rules; misses published.
+[Evaluation operations](docs/evidence.md#evaluation-records). Rationale: @link:paper-validation; implementation: @link:code-validate.
 
-<!-- @ref:spec-variants; connections: @link:code-variants; @link:test-variants. -->
 ## 12b. Structural-variant ensemble (declared assumptions, priced)
 
-`variants.run_ensemble` runs the named composition-assumption
-alternates side by side and publishes the spread (plan #9):
-baseline; parallel_gap_additive (direct + divorce + family-size gaps
-added in gap space — the additivity SPEC §4 refuses to assume
-silently, priced here at −3.9pp of grandchild gap); ige_decay_half /
-ige_decay_power (geometric re-parameterizations of the same cited
-IGE band, 0.933 / 0.963 vs baseline 0.9492); closure_selection_contrast
-(v1.19 — the V2 Hilger item: the direct child anchor set aside, the
-children line stood on the JLS father-shock path through the same
-cited IGE band; child 0.89 [0.85, 0.94] INSIDE the direct band, so
-the design contrast reconciles rather than contradicts; direction
-pinned — dropping the closure anchor moves the modeled child loss UP).
-The baseline row always
-equals the shipped model (trap-pinned). No variant is silently
-substituted — the spread IS the result. CLI: `downstream ensemble`.
+<!-- @ref:spec-variants -->
 
-<!-- @ref:spec-queued-evidence; connections: @link:doc-queued-extractions; @link:doc-literature-acquisition-plan. -->
+[Structural alternatives](docs/integration.md#uncertainty-and-experiment-tools). Rationale: @link:paper-sensitivity; implementation: @link:code-variants.
+
 ## 13. Queued and excluded
 
-- Queued (structure known, number pending full-text extraction):
-  `docs/research/queued_extractions.md`. Each row names the study, the exact
-  table/figure to extract, and the priority.
-- No generic immigration-to-crime causal coefficient is admitted from the
-  pooled literature (ousey2018; butcher1998). Source-specific receiving
-  comparisons use separate typed exposure margins and retain signed,
-  null-compatible estimates. They do not supply a universal positive,
-  negative or zero effect. See `docs/integration.md`.
-- Excluded by source-class rule (queue-9): Duncan, Ziol-Guest &
-  Kalil 2010 (Child Development 81:306-325) — the early-poverty →
-  adult-attainment anchor the queue named — is observational OLS on
-  PSID cohorts, barred from setting a parameter point by CITING §1
-  (the thornton1980 precedent). Its long-run magnitudes survive only
-  as a cross-check note (zg2012 Table S5 col 1, recorded on the
-  akee2010 education row); the causal slot for unconditional early
-  income is filled by the akee2010 quasi-experiment instead.
-- Contested literature (native-wage effects: borjas2003 vs
-  ottaviano2012; Mariel: card1990 vs the re-analysis war) is not
-  encoded as a parameter. When a headline needs it, both positions are
-  computed as named alternate bands, never averaged silently.
+<!-- @ref:spec-queued-evidence -->
 
-<!-- @ref:spec-limitations; connections: @link:doc-model-card; @link:paper-limitations. -->
+[Acquisition/admission workflow](docs/evidence.md#add-or-revise-evidence). Rationale: @link:paper-parameters; implementation: @link:code-evidence.
+
 ## 14. Limitations (registered, not hidden)
 
-1. Deterministic gap and survival propagation inside a draw; interactions
-   between outcomes are not modeled.
-2. Parameter correlations are mechanically supported
-   (Iman-Conover) with two declared -0.5 earnings/mortality pairs. Their
-   magnitude is judgment. Sampling distributions are band-derived
-   (uniform, log-uniform, clamped normal/lognormal), not study-fitted.
-3. US-centric parameters applied to US populations; scope mismatches
-   are recorded per row.
-4. Displacement is treated as exogenous; the model does not select
-   who is displaced.
-5. The great-grandchild layer is the weakest-identified number in the
-   model (see the honesty statement shipped in its output).
+<!-- @ref:spec-limitations -->
 
-<!-- @ref:spec-layout; connections: @link:docs-index; @link:repository-overview. -->
+[Current model limits](docs/model_card.md#uncertainty-and-scientific-limits). Rationale: @link:paper-limitations; implementation: @link:code-scenario.
+
 ## 15. Layout
 
-```
-params/            VERSION, parameters.csv, nodes.csv, baselines.csv,
-                   correlations.csv, CHANGELOG.md, references.bib
-src/downstream/    units, params, citations, ledger, worker, children,
-                   family, community, vignette, scenario, mc,
-                   distributions, sensitivity, scoring, explanation,
-                   render, audit, validate, cli
-docs/              CITING.md, queued_extractions.md, prior_attempts.md,
-                   rendering.md, model_card.md
-paper/             make -> downstream.pdf
-```
+<!-- @ref:spec-layout -->
+
+[Implementation navigation](docs/development.md#find-the-implementation). Rationale: @link:paper-reproducibility; implementation: @link:repository-overview.

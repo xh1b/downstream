@@ -31,6 +31,7 @@ the bundled data when installed from a wheel.
 ## Before submitting
 
 ```sh
+make check-docs
 python -m ruff check src scripts
 python -m vulture
 downstream audit

@@ -232,8 +232,7 @@ remove all its links in the same commit. Verify relative file links and examples
 then run these checks before review:
 
 ```sh
-python3 scripts/refcheck.py check
-python3 scripts/tasks.py validate
+make check-docs
 ```
 
 Run the relevant tests or artifact build when behavior or rendered content

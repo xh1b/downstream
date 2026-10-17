@@ -10,6 +10,11 @@ and external contribution checks. Shared-checkout agents follow
 [AGENTS.md](../AGENTS.md): claim tasks, preserve concurrent work, commit isolated
 logical units on `master`, and keep remote operations separately authorized.
 
+Jump to [task workflow](#task-system-and-work-receipts), [tool map](#development-tools-and-their-checks),
+[implementation](#find-the-implementation), [paper](#paper-and-implementation),
+[tests/CI](#tests-and-quality-gates), [docs checks](#documentation-and-reference-checks),
+[release](#release-and-companion-handoff), or [troubleshooting](#troubleshooting).
+
 ## Environment and tool configuration
 
 Use Python 3.12 or later and install the `dev` extra from
@@ -88,6 +93,7 @@ frozen evidence gaps are reported separately by `validate --historical-details`.
 | --- | --- | --- |
 | Task board | `python3 scripts/tasks.py validate` | Card structure, relationships, refs and completion evidence links. |
 | Repository refs | `python3 scripts/refcheck.py check` | Unique anchors, resolvable stable links and token syntax. |
+| Documentation | `make check-docs` | Refs/tasks, exact-case paths/headings, lowercase filenames, executable examples and generated-doc freshness. |
 | Ruff | `python -m ruff check src scripts` | Configured Python correctness and unused-import rules. |
 | Vulture | `python -m vulture` | Unused code, with reasoned exceptions in [the whitelist](../scripts/vulture_whitelist.py). |
 | Evidence audit | `downstream audit` | Mechanical parameter, citation and evidence consistency. |
@@ -217,13 +223,14 @@ Use the full coverage and distribution sequence in
 [CONTRIBUTING.md](../CONTRIBUTING.md#before-submitting) for behavior/data release
 qualification. Generated evidence, pool-readiness and consumer-fixture reports
 also have `--check` modes; use the relevant checks after their inputs change.
-Reference and task validation do not check ordinary Markdown paths or equations.
-Verify actual path spelling, examples and affected builds when moving documents.
+Reference and task validation do not check equations. `make check-docs` adds
+ordinary Markdown path/heading, exact-case and example checks; relevant model
+tests and artifact review still establish the underlying behavior and explanation.
 
 ### CI and scheduled diagnostics
 
 [quality.yml](../.github/workflows/quality.yml) runs on pull requests, pushes to
-`master`, a daily schedule and manual dispatch. Its jobs cover lint/refs/tasks,
+`master`, a daily schedule and manual dispatch. Its jobs cover lint/docs/refs/tasks,
 fast tests on Python 3.12 and 3.14, full coverage on 3.12, and distribution
 checks on Linux/Windows across both versions. Mutation testing and benchmarks
 run only on the scheduled/manual paths. Mutmut's configured selection and copied
@@ -249,8 +256,7 @@ implementation should connect the paper's rationale and the software guide.
 The [token contract](../tasks/README.md#reference-tokens) defines syntax.
 
 ```sh
-python3 scripts/refcheck.py check
-python3 scripts/tasks.py validate
+make check-docs
 python3 scripts/refcheck.py show paper-counts
 python3 scripts/tasks.py refs @task:2026-10-17-documentation-consolidation
 ```
@@ -259,8 +265,15 @@ The [reference tests](../tests/test_refcheck.py) exercise duplicates, dangling
 refs, malformed names and source-comment tokens. Literal fixtures are excluded
 via the [allowlist](../scripts/refcheck-allowlist.txt). Ref checking scans tracked
 text, so include newly authored files in the commit before the final run.
-It does not validate ordinary Markdown paths or equations: inspect file links,
-examples and relevant builds as well. Historical task comments stay intact;
+[doccheck.py](../scripts/doccheck.py) adds exact-case local paths, Markdown
+headings, lowercase docs filenames and executed `pycon` examples in the five
+maintained guides. The full target also checks six generated outputs and runs
+the checker regressions. Use `python3 scripts/doccheck.py` for navigation only,
+or `--examples` and `--freshness` to select the additional checks. It does not
+execute shell recipes, task mutations, historical audit examples or remote links.
+Task threads and the historical migration map are outside live-link checking.
+Missing semantic bridges and incorrect equations still need code/paper review.
+Historical task comments stay intact;
 use a new receipt to document moved paths rather than rewriting discussion.
 
 ## Compare saved calculations
@@ -320,3 +333,16 @@ For consumer normalization, mixture, cache and deployment acceptance, use the
 qualification is recorded in the [0.4 review](audits/release_0_4.md) and task
 cards. Research milestones, V2 blockers and human calculator review remain
 visible there; a software-doc cleanup does not complete those scientific tasks.
+
+## Troubleshooting
+
+| Symptom | Check | Resolution |
+| --- | --- | --- |
+| Import/tool not found | Interpreter, active environment and Python version. | Use Python 3.12+ and the development extra from CONTRIBUTING; run all commands in the same environment. |
+| Docs checker reports an incorrectly cased path | Exact spelling in `git ls-files`, not whether the host filesystem opens it. | Correct the link or filename and its consumers; a case-insensitive machine can conceal a Linux failure. |
+| Generated-doc freshness fails | The named builder's diagnostic and changed source inputs. | Review the input change, regenerate that output without `--check`, inspect its diff and rerun checks. Never rewrite a historical evaluation to give it a current identity. |
+| Software reference is stale | Parser, dataclass fields and public signatures. | Run `python scripts/build_software_reference.py`; edit authored explanation outside the generated markers. |
+| Paper build lacks `latexmk` | Local LaTeX installation. | Install the required PDF tooling for a PDF build; HTML/data generation alone does not verify a rendered PDF. |
+| Task move/comment refuses a dirty card | `git status` and the card owner's in-progress edits. | Preserve and coordinate those edits; commit owned checklist/receipts before changing status. Do not stash or discard shared work. |
+| Task/comment ref does not resolve | `tasks.py show <id>` and `tasks.py refs <reference>`. | Use the permanent task ID/comment ref, repair the new reference and preserve prior discussion. |
+| Checks pass but candidate is not accepted/deployed | Task review status and companion receipts. | Keep local software qualification, owner acceptance, scientific validation and deployment claims separate. |

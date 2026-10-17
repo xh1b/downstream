@@ -14,7 +14,7 @@
     "src/downstream/child_support.py": "e6bce62094b7619bf1e3c31f5b555c10fb9fc372e894deaa08e66963fb810595",
     "src/downstream/children.py": "9ad563c2e9a68435ed2fe74803976c2a37b4891a86b064946b4330596783135b",
     "src/downstream/citations.py": "eca0f242fca52d2bfb0863f62f6675dd212613d0be46fae9d9c8192f9ec3d10c",
-    "src/downstream/cli.py": "a8182b685b56bad7cbfe47f6f9fd99dbd0113c2cb355731a18e7d25d10884ee8",
+    "src/downstream/cli.py": "31efb755a0aa2bf8a3d264d7ea408d17c5005b38587966b44de21415680f6a7b",
     "src/downstream/community.py": "1d7a1b0d28883992570cc7c81b88eed0258259a11c78f0f32dbc64587a1dbddf",
     "src/downstream/compare.py": "b46fe94e2241f0d80749603a3ce0797199a01a154f8a5d744d3264837f80d73b",
     "src/downstream/consumer.py": "1732eaf34175049dce636a37a51b2cf5097a1e10857de0c365a3900a88e17ced",
@@ -78,7 +78,7 @@
     "params/study_estimates.template.csv": "3f71fb5102d87827c926ac9c9ad09ce834798bb19c461cfca3f6854665cc66bf",
     "scripts/build_consumer_fixtures.py": "ef635d5043866360556e7b436f98aa74cad85436c735715e32fca75fc2e4beea"
   },
-  "source_content_sha256": "21d4364de5966ff14c3ac9a6391526860c6563cb09a4d7531a7ed1139c9ce962",
+  "source_content_sha256": "71517572eee5254995b5f9fb72627373b24806787a3f8e31720e52e5a7086eb6",
   "fixture_sampling": "128 draws/base, seed 1901; contract fixtures, not precision-qualified research intervals.",
   "fixtures": {
     "national": {

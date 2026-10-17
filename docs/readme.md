@@ -49,3 +49,5 @@ preserve it when moving that content. Code can cite the paper for rationale and
 a software guide for its calling contract. Tests link to the implementation
 and contract they verify. See the [token contract](../tasks/README.md#reference-tokens)
 and [development checks](development.md#documentation-and-reference-checks).
+Run `make check-docs` before review to check live navigation, executable examples
+and generated references; this target runs in CI.

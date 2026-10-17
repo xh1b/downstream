@@ -7,6 +7,7 @@
 """Build a self-contained, semantic HTML companion to the methods paper."""
 from __future__ import annotations
 
+import argparse
 import hashlib
 from html import escape
 import json
@@ -217,9 +218,21 @@ Joint mixture intervals remain unavailable until a joint draw/dependence calcula
 Reference result SHA-256 (12 significant digits): <code>{digest}</code>.</p></footer></body></html>'''
 
 
-if __name__ == '__main__':
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--check", action="store_true")
+    args = parser.parse_args(argv)
     output = ROOT / 'docs/methods.html'
     document = build()
-    if not output.exists() or output.read_text() != document:
+    current = output.read_text() if output.exists() else None
+    if args.check and current != document:
+        print(f"stale methods HTML: {output}", file=sys.stderr)
+        return 1
+    if not args.check and current != document:
         output.write_text(document, encoding='utf-8')
     print(output)
+    return 0
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())

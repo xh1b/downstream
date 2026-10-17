@@ -10,6 +10,12 @@ calling contracts are the dataclasses, loaders and public functions in
 and the outcome modules below. The paper explains equations and rationale
 (@link:paper-exposure, @link:paper-counts); this guide describes software use.
 
+Jump to [examples](#executable-examples), [input fields/API/CLI](#command-reference),
+[result fields](#result-fields-and-units), [errors and compatibility](#errors-and-compatibility),
+[cache identity](#identity-and-handoff), or [troubleshooting](#troubleshooting).
+Outcome contracts: [mortality](#mortality-outputs), [children](#child-and-descendant-outputs),
+[household](#annual-household-comparisons), [receiving community](#receiving-community-adapter).
+
 ## Choose an entry point
 
 | Input or purpose | Entry point | Contract checks |
@@ -21,24 +27,69 @@ and the outcome modules below. The paper explains equations and rationale
 | Supported male age-at-displacement strata | `downstream mortality-cohort` | [Mortality admission tests](../tests/test_mortality_admission_0_4.py) |
 | Child/descendant explanation or source support | `child_gap_view`, `child_support_report` | [Gap tests](../tests/test_child_gap_view.py), [support tests](../tests/test_child_support.py) |
 
-Load one bundle and pass its components together:
+## Executable examples
 
-```python
-from downstream.params import load_all
-from downstream.scenario import ScenarioInput, compute_counts
+<!-- @ref:integration-examples; @link:script-doccheck; @link:test-documentation-checks. -->
 
-bundle = load_all()
-result = compute_counts(
-    bundle["params"], bundle["baselines"],
-    ScenarioInput(displaced_workers=1000, n_children=2),
-)
+These examples run from the checkout root with the development environment.
+`make check-docs` executes every `pycon` block in the five maintained guides.
+The assertions check contracts, rather than pinning transient numerical outputs.
+Shell recipes and task-mutation commands are not executed by the docs checker.
+
+Load one bundle and inspect a conditional reference result:
+
+```pycon
+>>> from downstream.params import load_all
+>>> from downstream.scenario import ScenarioInput, compute_counts
+>>> bundle = load_all()
+>>> scenario = ScenarioInput(displaced_workers=1000, n_children=2)
+>>> result = compute_counts(bundle["params"], bundle["baselines"], scenario)
+>>> sorted(result["modeled"])
+['child_lifetime_earnings_lost_usd', 'excess_deaths']
+>>> result["modeled"]["excess_deaths"]["applicability"]["eligible_for_public_headline"]
+False
+>>> [row["outcome"] for row in result["blocked"]]
+['local_service_jobs_lost']
 ```
 
-This is an illustrative national reference. Two children is an assumption,
-not an observed family distribution. APIs that also load source contrasts
-need the custom `params_dir` passed through; missing custom files must not
-fall back to bundled evidence. CLI installation and examples are in the
-[root README](../README.md).
+The local-job result is blocked because worker displacement does not identify
+net tradable-job loss. The computed mortality/child reference remains available;
+its headline eligibility is a separate decision. Known-incompatible child
+metadata withholds the child path instead of assigning a zero response:
+
+```pycon
+>>> from downstream.params import load_all
+>>> from downstream.scenario import ScenarioInput, compute_counts
+>>> bundle = load_all()
+>>> target = ScenarioInput(1000, n_children=1, child_profiles=[{"age_at_displacement": 4, "sex": "Female"}])
+>>> result = compute_counts(bundle["params"], bundle["baselines"], target)
+>>> "child_lifetime_earnings_lost_usd" in result["modeled"]
+False
+>>> any(row["outcome"] == "child_lifetime_earnings_lost_usd" for row in result["blocked"])
+True
+>>> ScenarioInput(displaced_workers=-1)
+Traceback (most recent call last):
+...
+ValueError: displaced_workers must be finite and nonnegative
+```
+
+CLI output can be parsed without scraping human-readable summaries. This smoke
+example uses two draws to check shape only; it does not qualify interval precision:
+
+```pycon
+>>> import json, subprocess, sys
+>>> command = [sys.executable, "-m", "downstream.cli", "scenario", "--workers", "1000", "--draws", "2"]
+>>> completed = subprocess.run(command, capture_output=True, text=True, check=True)
+>>> result = json.loads(completed.stdout)
+>>> "parameter_interval_90" in result["modeled"]["excess_deaths"]
+True
+>>> result["exposure"]["displaced_workers"]
+1000.0
+```
+
+Custom-data APIs that load source contrasts also need the custom `params_dir`;
+missing custom files must not fall back to bundled evidence. See the
+[calling reference](#command-reference) and source-specific sections below.
 
 ## Exposure and event metadata
 
@@ -250,6 +301,20 @@ prediction interval.
 downstream household --input validation/household_five_year_input.json
 ```
 
+The checked-in household fixture can be used directly:
+
+```pycon
+>>> import json
+>>> from pathlib import Path
+>>> from downstream.household import household_comparison
+>>> payload = json.loads(Path("validation/household_five_year_input.json").read_text())
+>>> summary = household_comparison(payload)["summary"]["household"]
+>>> sorted(summary)
+['displacement', 'displacement_minus_reference', 'reference']
+>>> summary["displacement_minus_reference"]["gross_earnings_usd_2024"] < 0
+True
+```
+
 The [saved input](../validation/household_five_year_input.json),
 [result](../validation/household_five_year_result.json) and
 [reconciliation tests](../tests/test_household_summary.py) specify and verify it.
@@ -377,3 +442,243 @@ mixed fields; check JSON, HTML, Markdown and receipts for identical unavailable
 states, signs and interval meanings. Inspect cache coverage, fallback disclosure,
 runner selection and queue/lease behavior in the companion. Record deployment
 receipts there. Local fixtures do not establish that an integration is deployed.
+
+## Warehouse inputs
+
+<!-- @ref:integration-warehouse; @link:code-employer; @link:test-exposure-semantics. -->
+
+`entity --input-format warehouse --input row.json` accepts the existing
+upstream aggregate shape. This synthetic fixture preserves worker-equivalent
+components; it does not identify unique displaced people:
+
+```json
+{
+  "subject_id": "example",
+  "subject_type": "employer",
+  "source": "source aggregate and version",
+  "americans_displaced": 137.125,
+  "displacement_breakdown": {
+    "base": 100,
+    "wage_depression": 12.125,
+    "warn_layoffs": 25,
+    "total": 137.125,
+    "formula": "caller-owned upstream exposure method"
+  }
+}
+```
+
+`americans_displaced` must equal `total`; component sums must reconcile within
+0.002. Employer rows require `warn_layoffs`; person rows may omit it. Missing
+fields and empty breakdowns fail, including at zero exposure: known zero requires
+explicit zero components. Additional audit fields stay caller-owned and are
+not added into the exposure calculation.
+
+## Uncertainty and experiment tools
+
+The generated command inventory lists all supported tools. Their mathematical
+meaning is explained in the paper (@link:paper-uncertainty,
+@link:paper-inference, @link:paper-sensitivity). Important calling distinctions:
+
+- `simulate`, `sensitivity` and `knobs` accept a declared `--place` key. Place
+  measurements/pooling weights remain fixed; custom `simulate --links` chains
+  do not accept `--place`.
+- `infer` uses an independent-input analytic contract and refuses incompatible
+  repeated shared variables. It is not a substitute for the declared dependent
+  production sampler.
+- `uncertainty --input validation/uncertainty_budget_input.json` uses a separate
+  national baseline/exposure/process contract; it does not extend every entity,
+  county or demographic result into a full prediction interval.
+- `ensemble` reports named structural variants without inferred probabilities.
+  `policy --input comparison.json` subtracts supplied exposure scenarios; it
+  does not infer a policy-to-displacement causal bridge. Each case needs `name`,
+  `source`, `method` and a `scenario` with `displaced_workers`.
+- `source_profile` is the default mortality timing. `source_aligned`,
+  `immediate_sustained`, `legacy_additive` and `legacy_repeated` are explicit
+  historical/sensitivity choices. They are never silently substituted.
+
+Current dependence declarations live in [correlations.csv](../params/correlations.csv).
+Their magnitude is declared judgment; a sampler feature is not evidence of
+causal transport or an extracted study covariance.
+
+## Result fields and units
+
+<!-- @ref:integration-results; @link:code-scenario; @link:code-consumer. -->
+
+The scenario API returns a mapping; `sample_counts` adds sampling reports to
+that mapping. Other commands have their own shapes: household, receiving,
+forecast and comparison results must not be parsed as scenario records.
+
+| Field | Consumer contract |
+| --- | --- |
+| `engine_version`, `parameter_set_version` | Keep both version labels; they are not complete content identities. |
+| `label`, `exposure` | Caller label and actual scenario assumptions, including worker basis and follow-up. |
+| `modeled` | Available outcome records keyed by outcome name; never prefill a missing outcome with zero. |
+| `blocked` | Records with `outcome` and `reason`; preserve them even when other outcomes compute. |
+| `uncertainty` | Meaning of support bounds, fixed inputs and excluded uncertainties. |
+| `assumptions` | Mortality method/timing, source profile contract and place application. |
+| `multipliers`, `projection_eligibility` | Relative paths and evidence/projection status, separate from admitted absolute counts. |
+| `target_population`, `child_applicability` | Declared target information and child source compatibility; missing information stays unknown. |
+| `place` | Resolved place/provenance, or null at the national reference. |
+| `input_content_sha256` | Native scenario input identity; preserve it through display transforms. |
+| `parameter_uncertainty`, `predictive_uncertainty` | Optional sampling reports with their own availability, seed/design and exclusion metadata. |
+| `child_valuation` | Optional present-value projection; separate from undiscounted lifetime dollars. |
+
+An available scenario outcome retains `point`, `low`, `high`, `unit`, `steps`,
+`baseline`, `interpretation` and `applicability`, plus outcome-specific
+sensitivity/persistence reports where supplied. `parameter_interval_90` is
+optional. Read the returned `unit`; mortality expectations are expected counts,
+child dollars are aggregate lifetime `usd_2024`, and jobs use the independently
+declared net-employment basis. Household earnings are gross follow-up totals;
+receiving incidents are annual endpoint differences. These are distinct units
+and windows even when each value is numeric.
+
+The scenario has no universal JSON schema-version field. Exposure semantics,
+consumer reports and other adapters can carry their own named schemas. Retain
+each schema where present; do not manufacture one from an engine version.
+
+## Errors and compatibility
+
+<!-- @ref:integration-errors; @link:code-cli; @link:code-scenario; @link:code-bundle. -->
+
+| Situation | Software behavior | Caller action |
+| --- | --- | --- |
+| Valid input with an unsupported outcome | Scenario returns a blocked record; CLI can exit 0 with other results. | Inspect `blocked` and applicability, not just the process exit code. |
+| Missing/unverified required baseline | Normal mode blocks that conversion; `strict=True`/`--strict` raises/fails on missing baselines. | Supply compatible verified evidence; strict mode does not make every unavailable field an exception. |
+| Malformed values, unsupported unit labels or invalid metadata shapes | APIs raise contract errors such as `ValueError`; missing files can raise `OSError`. | Correct the input; do not retry unchanged data as if it were transient. |
+| Invalid CLI arguments or a caught data-contract failure | CLI writes errors to stderr and exits 2. `--help` exits 0. | Parse stdout as result data only after success. |
+| Incompatible mixture basis or source endpoints | Consumer helpers refuse incompatible points/experiments or mark joint analysis unavailable. | Refit compatible components; never inherit the first component's missing context. |
+| Bundle manifest/content mismatch | Bundle verification fails. | Rebuild from a fixed revision and verify the actual manifest. |
+
+Support the result shapes and schema names verified by your integration tests.
+Optional fields may be absent or explicitly unavailable; required fields must
+not be silently fabricated. A new engine pin requires rerunning the
+[acceptance fixtures](#scaling-mixtures-and-acceptance-fixtures) and
+[before/after comparison](development.md#compare-saved-calculations). Review
+changed field names, units, meanings, defaults and unavailable states as well
+as numerical deltas. Version labels alone do not promise schema compatibility.
+
+### Cache invalidation
+
+The [identity/handoff contract](#identity-and-handoff) defines the distinct
+native, exposure, bundle and adapter identities. Recompute when any consumed
+input, source content, engine/adapter code, place mixture, transport/cohort
+choice or requested sampling design changes. Keep display-only scaling separate
+from the cached native calculation. A cache hit requires the complete key and
+current schema/coverage checks; a plausible hash or equal point is insufficient.
+
+<!-- BEGIN GENERATED SOFTWARE REFERENCE -->
+
+## Command reference
+
+<!-- @ref:integration-command-reference -->
+
+Generated from the running CLI parser. Use `downstream <command> --help`
+for required arguments, option choices and defaults. This table is an
+inventory of commands, not a statement that every command returns the
+scenario result shape below.
+
+| Command | Parser description |
+| --- | --- |
+| `mortality-cohort` | exact age-stratum mortality with an explicit projection assumption |
+| `receiving-community` | source-specific immigrant-share crime-rate scenarios |
+| `household` | annual household earnings under a supplied displacement duration |
+| `uncertainty` | conditional parameter, exposure, baseline and process uncertainty budget |
+| `compare` | compare saved outputs or parameter snapshots from two versions |
+| `family` | standard-family vignette |
+| `scenario` | modeled counts for a displacement exposure |
+| `child-gaps` | child and descendant earnings gaps side by side |
+| `forecast-register` | freeze a prospective forecast locally |
+| `forecast-score` | score a completed registered forecast |
+| `synthesize` | random-effects synthesis of source-extracted, same-scale study estimates |
+| `county-posterior` | Gamma-Poisson county event/person-time rate posterior |
+| `county-wonder-posterior` | posterior directly from a validated CDC WONDER county export |
+| `bundle` | export a pinned standalone engine and data directory |
+| `policy` | compare baseline and policy exposure assumptions |
+| `entity` | modeled impacts from documented entity exposure |
+| `explain` | walk a claim from headline to citations |
+| `sensitivity` | Sobol decomposition of an outcome |
+| `knobs` | knob experiments (sweep a parameter / rank what is worth pinning) |
+| `simulate` | Monte Carlo over a link chain |
+| `infer` | exact moments, log-space shares, closure coverage |
+| `ensemble` | structural-variant ensemble (plan #9) |
+| `place` | place-resolved baselines + mobility modifier for one geography |
+| `build-places` | regenerate params/places.csv from the committed Atlas + WONDER county inputs |
+| `audit` | parameter/citation/DAG checks |
+| `export` | version-stamped parameter_set.json snapshot (consumed by production; refuses while audit has ERRORs) |
+| `validate` | V0 internal consistency + V1 target |
+| `citations` | citation coverage report |
+| `transmissions` | which outcomes walk to grandchildren, on whose evidence — and what is one extraction away |
+| `credits` | the computed collective behind the model |
+
+### Python calling signatures
+
+These signatures are inspected from the implementation. The APIs do not
+silently accept every JSON field; use the appropriate input record.
+
+```python
+def load_all(params_dir: 'str | Path | None' = None): ...
+def compute_counts(params: 'ParameterSet', baselines: 'dict[str, Baseline]', scenario: 'ScenarioInput', strict: 'bool' = False, places: 'dict | None' = None, place_key: 'str | None' = None, mortality_profiles: 'dict | None' = None, county_mortality: 'dict | None' = None, _raw: 'bool' = False, params_dir=None) -> 'dict': ...
+def sample_counts(params: 'ParameterSet', baselines: 'dict[str, Baseline]', scenario: 'ScenarioInput', *, draws: 'int' = 2000, seed: 'int' = 1901, strict: 'bool' = False, places: 'dict | None' = None, place_key: 'str | None' = None, mortality_profiles: 'dict | None' = None, county_mortality: 'dict | None' = None, nodes: 'dict | None' = None, params_dir=None, sensitivity_base: 'int | None' = None) -> 'dict': ...
+def compute_entity_counts(params: 'ParameterSet', baselines: 'dict[str, Baseline]', exposure: 'DocumentedExposure', scenario: 'ScenarioInput | None' = None, *, places: 'dict | None' = None, place_key: 'str | None' = None, mortality_profiles: 'dict | None' = None, county_mortality: 'dict | None' = None, strict: 'bool' = False, params_dir=None) -> 'dict': ...
+def child_gap_view(params: 'ParameterSet', baselines: 'dict[str, Baseline]', scenario: 'ScenarioInput', *, places=None, place_key=None, mortality_profiles=None, county_mortality=None, params_dir=None) -> 'dict': ...
+def child_support_report(scenario: 'ScenarioInput | None' = None, *, params_dir: 'str | Path | None' = None, parent_tenure_years: 'float | None' = None) -> 'dict': ...
+def household_comparison(payload, params_dir=None): ...
+def project_mortality_cohort(payload: 'dict', params_dir: 'Path | None' = None) -> 'dict': ...
+def receiving_comparison(params: 'ParameterSet', payload: 'dict') -> 'dict': ...
+def scale_outcome(row, factor): ...
+def mix_expected(results, weights, outcome): ...
+```
+
+### Scenario input fields
+
+`ScenarioInput` accepts the fields below. Defaults describe a reference
+scenario; they are not observed target data. Types and validation are
+defined by [scenario.py](../src/downstream/scenario.py).
+
+| Field | Declared type | Default |
+| --- | --- | --- |
+| `displaced_workers` | `float` | `required` |
+| `n_children` | `int` | `2` |
+| `tradable_share` | `float` | `1.0` |
+| `net_tradable_jobs_lost` | `float \| None` | `None` |
+| `local_job_mix` | `str \| None` | `None` |
+| `wage_multiplier` | `float \| None` | `None` |
+| `exposure_years` | `float` | `20.0` |
+| `label` | `str` | `'scenario'` |
+| `mortality_method` | `str` | `'odds_survival'` |
+| `mortality_timing` | `str` | `'source_profile'` |
+| `mortality_profile` | `str \| None` | `None` |
+| `mortality_mix` | `dict[str, float] \| None` | `None` |
+| `place_application` | `str` | `'initial_only'` |
+| `target_population` | `dict[str, str] \| None` | `None` |
+| `applicability_decisions` | `dict[str, dict] \| None` | `None` |
+| `child_profiles` | `list[dict] \| None` | `None` |
+| `child_income_quartile` | `int \| None` | `None` |
+| `income_rank_definition` | `str \| None` | `None` |
+| `real_discount_rate` | `float \| None` | `None` |
+| `valuation_year` | `int \| None` | `None` |
+
+`DocumentedExposure` requires `subject_id`, `subject_type`, `displaced_workers`, `source`, `method`.
+See [exposure metadata](#exposure-and-event-metadata) for normalized
+semantics and [warehouse inputs](#warehouse-inputs) for that separate adapter.
+
+<!-- END GENERATED SOFTWARE REFERENCE -->
+
+## Troubleshooting
+
+<!-- @ref:integration-troubleshooting; @link:integration-errors; @link:code-scenario. -->
+
+| Symptom | Inspect | Resolution |
+| --- | --- | --- |
+| Outcome missing or null | `blocked`, child/target applicability, baseline/source compatibility. | Follow the named missing input or refusal; do not display a fabricated zero. |
+| Number exists but headline eligibility is false | Outcome `applicability` and target metadata. | Keep it illustrative unless an actual reviewed transport decision is supplied; numerical success is not scientific admission. |
+| Local jobs are blocked | Separate `net_tradable_jobs_lost` and `local_job_mix`. | Supply documented net employment and its class; worker exposure and `tradable_share` do not infer them. |
+| No parameter interval | Deterministic versus sampled entry point, or tool-specific unavailable status. | Use `sample_counts`/CLI draws where supported; never infer an interval for an unsupported tool or mixture. |
+| Tiny counts round to zero on display | Native precision and source normalization basis. | Use the checked consumer/fixture construction; do not divide a rounded one-worker result and scale it back up. |
+| Same versions, changed hash or output | Full input/source/bundle/adapter identities and seed/design. | Compare fixed inputs and receipts; version labels alone do not identify code or all consumed source content. |
+| Mixture or scaling raises | Units, worker denominators, timing and input endpoints. | Refit compatible components and preserve every baseline; do not copy the first component's nested reports. |
+| Receiving adapter rejects worker counts | Selected source model, margin, share units and response window. | Provide its separate source-specific share/count exposure; no displacement-to-arrivals bridge is implemented. |
+| Custom parameters unexpectedly fail | The selected directory's source library and required files. | Supply the complete custom source set and pass `params_dir` through; do not substitute bundled contrasts. |
+
+For stale generated references, environment or task-command problems, see
+[development troubleshooting](development.md#troubleshooting).

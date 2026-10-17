@@ -80,7 +80,8 @@ def _county_mortality_arg(parser, params_dir: str, place_key: str | None):
         parser.error(f"cannot load county mortality table: {exc}")
 
 
-def _run_main(argv: list[str] | None = None) -> int:
+def build_parser() -> argparse.ArgumentParser:
+    """Build the CLI contract shared by execution and software-reference checks."""
     parser = argparse.ArgumentParser(prog="downstream")
     sub = parser.add_subparsers(dest="cmd", required=True)
     p = sub.add_parser("mortality-cohort", help="exact age-stratum mortality with an explicit projection assumption")
@@ -323,6 +324,11 @@ def _run_main(argv: list[str] | None = None) -> int:
     p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
     p.add_argument("--write", action="store_true", help="regenerate CREDITS.md")
 
+    return parser
+
+
+def _run_main(argv: list[str] | None = None) -> int:
+    parser = build_parser()
     args = parser.parse_args(argv)
     if args.cmd == "compare":
         from .compare import compare_documents, load_documents, render_comparison
