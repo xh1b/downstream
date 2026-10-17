@@ -2,7 +2,7 @@
 title: Check calculator keyboard navigation and zoom reflow
 area: calculator
 priority: P2
-assignee:
+assignee: codex-release-finish
 tags: [@tag:tooling]
 blocked-by: []
 ---
