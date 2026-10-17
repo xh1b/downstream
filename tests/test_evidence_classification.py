@@ -73,6 +73,13 @@ def test_report_does_not_count_contrasts_as_independent_studies(data):
     assert "female displacement mortality response" in text
 
 
+def test_committed_report_retains_navigation_and_current_source_identity(data):
+    text = REPORT.render(data)
+    assert text == (ROOT / 'docs/EVIDENCE_CLASSIFICATION_0_4.md').read_text()
+    assert '<!-- @' + 'ref:doc-evidence-classification-0-4;' in text
+    assert '@link:script-build-evidence-classification' in text
+
+
 def test_unclassified_parameter_cannot_be_exported_as_supported(tmp_path):
     source = default_dir() / "parameters.csv"
     with source.open(newline="") as handle:

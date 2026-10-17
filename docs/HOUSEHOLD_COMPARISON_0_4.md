@@ -70,6 +70,15 @@ housing or children's future earnings.
 
 ## Follow-up and calendar windows
 
+The saved [five-year input](../validation/household_five_year_input.json) and
+[result](../validation/household_five_year_result.json) include these summaries
+and explicit window fields. Reproduce the result with
+`downstream household --input validation/household_five_year_input.json`.
+The [saved-example regression](../tests/test_household_summary.py) checks it
+against the current household calculation. These are conditional gross-earnings
+and marginal state-time comparisons, with no household-resource or causal
+recovery claim.
+
 Annual `year_after_event` stays zero-based. The report also gives a one-based
 `follow_up_year_number` and each row's `[start, end_exclusive)` follow-up
 interval. Five years means intervals `[0,1)` through `[4,5)`, not six annual

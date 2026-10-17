@@ -34,6 +34,12 @@
   "annual": [
     {
       "year_after_event": 0,
+      "follow_up_year_number": 1,
+      "follow_up_interval_years": {
+        "start": 0,
+        "end_exclusive": 1
+      },
+      "calendar_year": null,
       "children_ages": [
         11,
         13
@@ -92,6 +98,12 @@
     },
     {
       "year_after_event": 1,
+      "follow_up_year_number": 2,
+      "follow_up_interval_years": {
+        "start": 1,
+        "end_exclusive": 2
+      },
+      "calendar_year": null,
       "children_ages": [
         12,
         14
@@ -146,10 +158,16 @@
         ],
         "expected_earnings_usd_2024": 86360.60500000001
       },
-      "displacement_minus_reference": -20808.97156740843
+      "displacement_minus_reference": -20808.971567408436
     },
     {
       "year_after_event": 2,
+      "follow_up_year_number": 3,
+      "follow_up_interval_years": {
+        "start": 2,
+        "end_exclusive": 3
+      },
+      "calendar_year": null,
       "children_ages": [
         13,
         15
@@ -204,10 +222,16 @@
         ],
         "expected_earnings_usd_2024": 95516.04786099494
       },
-      "displacement_minus_reference": -9729.531270970358
+      "displacement_minus_reference": -9729.531270970343
     },
     {
       "year_after_event": 3,
+      "follow_up_year_number": 4,
+      "follow_up_interval_years": {
+        "start": 3,
+        "end_exclusive": 4
+      },
+      "calendar_year": null,
       "children_ages": [
         14,
         16
@@ -262,10 +286,16 @@
         ],
         "expected_earnings_usd_2024": 97842.7161215216
       },
-      "displacement_minus_reference": -5957.7276818726095
+      "displacement_minus_reference": -5957.727681872595
     },
     {
       "year_after_event": 4,
+      "follow_up_year_number": 5,
+      "follow_up_interval_years": {
+        "start": 4,
+        "end_exclusive": 5
+      },
+      "calendar_year": null,
       "children_ages": [
         15,
         17
@@ -320,10 +350,112 @@
         ],
         "expected_earnings_usd_2024": 98588.83398786807
       },
-      "displacement_minus_reference": -4090.927757131998
+      "displacement_minus_reference": -4090.9277571320054
     }
   ],
-  "cumulative_earnings_difference_usd_2024": -105587.1582773834,
+  "cumulative_earnings_difference_usd_2024": -105587.15827738338,
+  "summary": {
+    "earnings_unit": "usd_2024",
+    "state_time_unit": "expected_person_years",
+    "state_time_interpretation": "Annual state probability times one scenario year; within-year spell lengths are not identified.",
+    "states": {
+      "E": "employed",
+      "U": "unemployed",
+      "N": "not in labor force"
+    },
+    "sign_convention": "displacement minus reference; negative earnings difference means less gross earnings",
+    "aggregation": "sum of marginal annual expectations; no member independence assumption",
+    "members": [
+      {
+        "id": "worker",
+        "reference": {
+          "gross_earnings_usd_2024": 314294.4968309132,
+          "expected_state_person_years": {
+            "E": 4.835299951244819,
+            "U": 0.04609379368525724,
+            "N": 0.11860625506992542
+          }
+        },
+        "displacement": {
+          "gross_earnings_usd_2024": 208707.33855352981,
+          "expected_state_person_years": {
+            "E": 3.2108821315927667,
+            "U": 1.3223129062449612,
+            "N": 0.46680496216227246
+          }
+        },
+        "displacement_minus_reference": {
+          "gross_earnings_usd_2024": -105587.15827738338,
+          "expected_state_person_years": {
+            "E": -1.6244178196520522,
+            "U": 1.276219112559704,
+            "N": 0.348198707092347
+          }
+        }
+      },
+      {
+        "id": "partner",
+        "reference": {
+          "gross_earnings_usd_2024": 214600.8644168548,
+          "expected_state_person_years": {
+            "E": 4.768908098152329,
+            "U": 0.01767528899872479,
+            "N": 0.21341661284894684
+          }
+        },
+        "displacement": {
+          "gross_earnings_usd_2024": 214600.8644168548,
+          "expected_state_person_years": {
+            "E": 4.768908098152329,
+            "U": 0.01767528899872479,
+            "N": 0.21341661284894684
+          }
+        },
+        "displacement_minus_reference": {
+          "gross_earnings_usd_2024": 0.0,
+          "expected_state_person_years": {
+            "E": 0.0,
+            "U": 0.0,
+            "N": 0.0
+          }
+        }
+      }
+    ],
+    "household": {
+      "reference": {
+        "gross_earnings_usd_2024": 528895.3612477679,
+        "expected_state_person_years": {
+          "E": 9.604208049397148,
+          "U": 0.06376908268398203,
+          "N": 0.33202286791887226
+        }
+      },
+      "displacement": {
+        "gross_earnings_usd_2024": 423308.2029703846,
+        "expected_state_person_years": {
+          "E": 7.979790229745095,
+          "U": 1.339988195243686,
+          "N": 0.6802215750112193
+        }
+      },
+      "displacement_minus_reference": {
+        "gross_earnings_usd_2024": -105587.15827738338,
+        "expected_state_person_years": {
+          "E": -1.6244178196520522,
+          "U": 1.276219112559704,
+          "N": 0.348198707092347
+        }
+      }
+    }
+  },
+  "window": {
+    "follow_up_years": 5,
+    "follow_up_start_year": 0,
+    "follow_up_end_year_exclusive": 5,
+    "calendar_start_year": null,
+    "calendar_end_year_exclusive": null,
+    "calendar_interpretation": "Calendar window unknown; no event calendar_year supplied."
+  },
   "source_sha256": "113561409acc078bf660154a73efadad092b35836cb11cd0c77594aa5885c0e3",
   "used_transition_cells_n": {
     "male|35-44|E": 470,
@@ -347,6 +479,7 @@
     "Recovery among observationally unemployed people may not transport to displaced workers.",
     "Household resources here are gross earnings only; taxes, transfers, savings, marriage, fertility and protective interventions remain unmodeled.",
     "Partner marginal expectations can be summed without identifying a joint distribution; cross-member dependence and responses are not estimated.",
+    "Expected state person-years sum annual state probabilities over one-year scenario intervals; within-year spells are not identified.",
     "Children age but no educational or earnings effect is inferred from this household baseline."
   ]
 }

@@ -19,6 +19,15 @@ def example():
     return json.loads((default_dir().parent / 'validation/household_five_year_input.json').read_text())
 
 
+def test_saved_five_year_example_includes_current_summary_and_window():
+    path = default_dir().parent / 'validation/household_five_year_result.json'
+    saved = json.loads(path.read_text())
+    result = household_comparison(example())
+    assert saved == json.loads(json.dumps(result))
+    assert saved['window']['follow_up_years'] == 5
+    assert saved['summary']['household']['displacement_minus_reference']
+
+
 def deterministic_cells(tmp_path, *, n=100, include_unemployed=True):
     path = tmp_path / 'baseline_employment_transitions.csv'
     with path.open('w', newline='') as handle:

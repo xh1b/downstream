@@ -4,7 +4,9 @@
 # @tag:consumer @tag:testing
 """Consumer acceptance must preserve normalization, scope and shared comparisons."""
 import copy
+import json
 import math
+from pathlib import Path
 
 import pytest
 
@@ -15,6 +17,16 @@ from scripts.build_consumer_fixtures import build
 @pytest.fixture(scope="module")
 def pack():
     return build()
+
+
+def test_committed_fixture_identity_matches_current_candidate(pack):
+    path = Path(__file__).resolve().parents[1] / 'validation/consumer_fixtures_0_4.json'
+    saved = json.loads(path.read_text())
+    for field in ('schema', 'engine_version', 'parameter_set_version',
+                  'source_files_sha256', 'source_content_sha256'):
+        assert saved[field] == pack[field]
+    assert saved['fixtures'].keys() == pack['fixtures'].keys()
+    assert saved['mixtures'].keys() == pack['mixtures'].keys()
 
 
 def test_fractional_display_keeps_native_precision_and_parameter_values(pack):
