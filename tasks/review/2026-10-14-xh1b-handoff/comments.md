@@ -45,3 +45,14 @@ The known nested-mixture incompatibility remains reproducible: main 21.716 agree
 done: active -> review.
 
 Model-side coordination and bundle/provenance handoff are ready for review; companion integration tasks remain open.
+
+## c-bbcdf95d0770
+
+- At: 2026-10-17 23:16 HKT
+- By: codex-release-finish
+
+Local consumer preparation completed; live acceptance remains separate
+
+The owner's continued 0.4 implementation request was applied locally to the companion. Its corrected pin now preserves nested expected-value mixtures, full source and child/valuation metadata, structural alternatives and signed sensitivity. Python/TypeScript fixture parity led to the upstream interval fix and superseding qualification: @task:2026-10-17-consumer-interval-alias#c-5935f5c415ec. The companion links a hash-bound readable methods artifact and exact source revision. [Handoff follow-up](../../../docs/audits/xh1b_handoff_2026-10-17.md#local-integration-follow-up--2026-10-17).
+
+No remote operation, live cache drain/restamp or deployment occurred. The served companion browser attempt was blocked by the browser client, so local unit/SSR checks do not close that acceptance. Companion operational cards retain cache freshness, browser/rendering, staging and owner promotion requirements.
