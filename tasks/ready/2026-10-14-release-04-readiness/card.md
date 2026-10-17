@@ -39,7 +39,7 @@ release acceptance; it does not authorize deployment or remote operations.
 - [x] Recheck source coefficients, scales, windows, overlap and null/beneficial estimates used by the release.
 - [x] Resolve the paper-review findings and check agreement among paper, HTML, model card and saved examples.
 - [x] Prepare consumer fixtures and a version/hash/cache handoff checklist for the companion project. [fixtures and companion acceptance](../../../docs/integration.md#scaling-mixtures-and-acceptance-fixtures)
-- [x] Freeze the final candidate; run full tests, coverage, audit, lint, wheel/sdist installation and previous-reviewed-version comparisons against that exact identity. [qualification receipt](@task:2026-10-17-candidate-qualification#c-b7561b16910e)
+- [x] Freeze the final candidate; run full tests, coverage, audit, lint, wheel/sdist installation and previous-reviewed-version comparisons against that exact identity. [corrected qualification receipt](@task:2026-10-17-consumer-interval-alias#c-5935f5c415ec)
 - [x] Prepare local release notes covering changed results, known validation misses, unmodeled uncertainty and unresolved research dependencies. [release notes](../../../docs/audits/release_0_4.md)
 - [ ] Review candidate receipts and obtain owner release/publication acceptance; companion integration and deployment require their own receipts.
 
