@@ -34,13 +34,14 @@ release acceptance; it does not authorize deployment or remote operations.
 ## Acceptance
 
 - [x] Audit new calculation paths; fix confirmed defects and retain numerical/source receipts.
-- [ ] Record SIPP held-out accuracy, survey uncertainty and the supported household prototype scope.
-- [ ] Document admitted cohort and exposure requirements, including how missing target information is handled.
+- [x] Record SIPP held-out accuracy, survey uncertainty and the supported household prototype scope. [held-out results](../../../docs/BASELINE_TRANSITION_R2_2026-09-14.md) [prototype and unavailable intervals](../../../docs/HOUSEHOLD_COMPARISON_0_4.md)
+- [x] Document admitted cohort and exposure requirements, including how missing target information is handled. [exposure and unknown-target contract](../../../docs/EXPOSURE_SEMANTICS_0_4.md)
 - [x] Recheck source coefficients, scales, windows, overlap and null/beneficial estimates used by the release.
 - [x] Resolve the paper-review findings and check agreement among paper, HTML, model card and saved examples.
-- [ ] Prepare consumer fixtures and a version/hash/cache handoff checklist for the companion project.
-- [ ] Run full tests, coverage, audit, lint, wheel/sdist installation and previous-version comparisons.
-- [ ] Publish changed results, known validation misses, unmodeled uncertainty and unresolved research dependencies.
+- [x] Prepare consumer fixtures and a version/hash/cache handoff checklist for the companion project. [fixtures and companion acceptance](../../../docs/CONSUMER_FIXTURES_0_4.md)
+- [ ] Freeze the final candidate; run full tests, coverage, audit, lint, wheel/sdist installation and previous-reviewed-version comparisons against that exact identity.
+- [x] Prepare local release notes covering changed results, known validation misses, unmodeled uncertainty and unresolved research dependencies. [release notes](../../../docs/RELEASE_0_4.md)
+- [ ] Review candidate receipts and obtain owner release/publication acceptance; companion integration and deployment require their own receipts.
 
 ## Related cards
 
@@ -62,9 +63,12 @@ separate scope decisions; they are not implicit acceptance requirements here.
 
 ## Board accuracy
 
-The migrated place-counterfactual card appears implemented: current code scales
-the displacement gap, and tests/test_place.py includes a null-effect regression.
-Verify its current receipts and move it through review before calling it open work.
+The [place-counterfactual task](@task:2026-10-14-place-counterfactual) is accepted in done/.
+The [consumer fixture task](@task:2026-10-14-consumer-contract-fixtures) and
+[exposure contract](@task:2026-10-14-exposure-semantics-contract) are also accepted.
+Their implementations must be preserved in the frozen-candidate handoff, rather
+than counted as missing model features. Current scope review:
+@task:2026-10-17-release-task-review.
 
 ## Selected work completed - 2026-10-14
 

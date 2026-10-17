@@ -10,7 +10,7 @@ expected-paths: []
 
 # R3 - Complete the five-year comparison and receiving-community scope
 
-## Context
+## Historical migration context
 
 Migrated from TODO entry 12, section "Forward milestones", original line 131.
 
@@ -25,7 +25,20 @@ gate passed (Light-Miller Criminology 2018; Bell-Fasani-Machin REStat 2013 publi
 is recorded as findings. Remaining receiving-community channels (rents, native wages, mental health, trust, voting)
 still queued; scenario wiring for an `--immigrant-influx` exposure is not built yet.
 
+## Current scope — 2026-10-17
+
+The annual five-year prototype and receiving adapter now exist. The migrated
+`immigrant_influx` rows were retired in v1.52; current source-specific share
+units are documented in the [receiving contract](../../../docs/RECEIVING_COMMUNITY_0_4.md).
+Do not rebuild the retired generic exposure or infer arrivals from displaced workers.
+The [five-year result](../../../validation/household_five_year_result.json) now
+includes reconciled gross earnings and state-time summaries. Taxes, transfers,
+monthly/joint outcomes and the remaining receiving channels are separate research.
+Scope review: @task:2026-10-17-release-task-review.
+
 ## Acceptance
 
-- [ ] Compare supported employment, earnings and household resources against a stated reference.
-- [ ] Screen remaining receiving-community channels and wire an explicit immigrant-influx exposure.
+- [x] Compare annual employment probabilities and gross earnings against a stated reference for the five-year prototype. [comparison scope](../../../docs/HOUSEHOLD_COMPARISON_0_4.md) [saved result](../../../validation/household_five_year_result.json)
+- [x] Wire explicit source-specific receiving shares/counts with baseline and transport refusals. [adapter and units](../../../docs/RECEIVING_COMMUNITY_0_4.md) [accepted implementation](@task:2026-10-15-receiving-community-adapter)
+- [ ] Admit supported household-resource components beyond gross earnings, with monthly/joint dependence requirements retained.
+- [ ] Screen remaining receiving channels through the existing extraction/admission process before exposing them.

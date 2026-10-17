@@ -22,3 +22,14 @@ published-profile variant remains blocked. See `docs/MORTALITY_SOURCE_RECONCILIA
 
 - [ ] Obtain phase-total covariance or document a defensible alternative before admitting the published profile.
 - [ ] Keep the additive published parameterization distinct from working-paper odds phases.
+
+## Scoped progress — 2026-10-17 review
+
+[Sharp marginal covariance bounds](../../../docs/MORTALITY_COVARIANCE_0_4.md)
+are implemented in the accepted
+[diagnostic task](@task:2026-10-15-mortality-covariance-diagnostic).
+They do not supply joint draws, a simultaneous band, cumulative-death bounds
+or published-version admission. The remaining work is source-version
+reconciliation and an admissible joint uncertainty contract, or actual covariance.
+Keep the current working-paper profile and its declared persistence alternative
+for the conditional 0.4 release. Scope review: @task:2026-10-17-release-task-review.

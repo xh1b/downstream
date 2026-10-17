@@ -24,3 +24,14 @@ with held-out validation.
 
 - [ ] Re-evaluate SIPP as a matched displacement bridge after transition validation.
 - [ ] Retain refusals for BRAC, NAFTA and auto-crisis candidates unless their missing alignment is resolved.
+
+## Baseline versus bridge — 2026-10-17 review
+
+The [held-out SIPP baseline](../../../docs/BASELINE_TRANSITION_R2_2026-09-14.md)
+already exists. The [evaluation protocol](../../../docs/SCENARIO_EVIDENCE_PROTOCOL.md)
+retains the refusal to treat that observational baseline as an identified
+causal displacement bridge. Re-running baseline calibration alone will not
+close this task: a new aligned exposure/treatment and independent outcome
+source must qualify first. Keep the dependency on
+@task:2026-10-14-matched-event-evaluation. Scope review:
+@task:2026-10-17-release-task-review.

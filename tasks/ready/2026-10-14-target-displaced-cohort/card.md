@@ -26,4 +26,12 @@ Interview age/family structure are not relabeled as historical event characteris
 
 - [x] Weighted CPS reference cohorts and BLS total reproduction are implemented.
 - [ ] Document a target-specific displacement bridge and demographic composition with provenance.
-- [ ] Keep generic CPS references distinct from H-1B-specific exposures.
+- [x] Keep generic CPS references distinct from H-1B-specific exposures. [exposure and cohort contract](../../../docs/EXPOSURE_SEMANTICS_0_4.md)
+
+## Release disposition — 2026-10-17
+
+The reference-only contract is implemented; a target-specific bridge is still
+an empirical dependency. Missing demographics and event timing remain unknown.
+Do not block a clearly labeled reference-scenario release on a fabricated bridge,
+or promote it to identified H-1B consequences. Scope review:
+@task:2026-10-17-release-task-review.
