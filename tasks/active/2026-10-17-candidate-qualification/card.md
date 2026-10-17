@@ -2,7 +2,7 @@
 title: Qualify a fixed local 0.4 candidate
 area: release
 priority: P1
-assignee:
+assignee: codex-release-finish
 tags: [@tag:tooling]
 blocked-by: []
 ---
