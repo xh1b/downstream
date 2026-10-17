@@ -57,3 +57,12 @@ The integration reference now derives the full CLI command inventory, eleven Pyt
 Validation: 102 focused tests passed, including 19 new checker/reference regressions. The final documentation gate passed 557 local links across 46 documents, 36 executable example statements and all six freshness checks. Refcheck passed 341 anchors/1461 links; task validation had zero errors/warnings. Ruff, Vulture, evidence audit (0 errors/warnings) and diff checks passed. make -C paper succeeded; the concurrent qualification work refreshed paper provenance in 429af53. The original CLI statement AST is identical after reversing the parser extraction, and all consumer fixture calculations are byte-equivalent after excluding only the two source-identity fields. No parameter or mathematical method changed.
 
 Concurrent release/calculator work was preserved. Newly created qualification evidence remains owned by codex-release-finish and was not staged or rewritten here.
+
+## c-2c5cfa9e60a5
+
+- At: 2026-10-17 21:59 HKT
+- By: codex-doc-reliability
+
+done: active -> review.
+
+All five approved documentation improvements are implemented and verified; ready for review.
