@@ -36,3 +36,12 @@ Complete the model-side 0.4 handoff
 [The handoff](../../../docs/audits/xh1b_handoff_2026-10-17.md) links the existing companion runner/website, cache/scheduler and exposure/page acceptance tasks. It records a fresh read-only inspection, seven passing old-pin tests, eight candidate worker cases, exact bundle/fixture identities and the qualified artifact archive. Engine stays 0.4.0 / parameters v1.52.
 
 The known nested-mixture incompatibility remains reproducible: main 21.716 agrees, but nested source-profile 17.02 must be 21.716 and no-sustained 12.12 must be 15.48. A synthetic mortality review no longer qualifies child outputs without age/income-rank inputs, which the current worker does not forward. These are explicit companion acceptance requirements; completing this local coordination card does not complete its runner, cache, rendering or deployment tasks. The pin and companion files remain untouched.
+
+## c-08b36805cfd0
+
+- At: 2026-10-17 22:02 HKT
+- By: codex-release-finish
+
+done: active -> review.
+
+Model-side coordination and bundle/provenance handoff are ready for review; companion integration tasks remain open.
