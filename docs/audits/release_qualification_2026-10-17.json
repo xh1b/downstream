@@ -93,7 +93,7 @@
     "docs": {
       "passed": true,
       "documents": 47,
-      "local_links": 566,
+      "local_links": 567,
       "example_statements": 36,
       "freshness_builders": 6
     },
@@ -308,5 +308,11 @@
     "companion adapter/cache/render/deployment acceptance",
     "actual native zoom, screen-reader, physical-device and participant testing",
     "empirical research dependencies retained on task cards"
-  ]
+  ],
+  "raw_archive": {
+    "path": "build/release04-qualification-20261017/qualification-artifacts.tar.gz",
+    "bytes": 7591507,
+    "sha256": "76889f9ed7c3e6949e8d439c8ee7b38ef3eb4e58c12ca12aa33c40c445e0da65",
+    "verified_file_hashes": 144
+  }
 }

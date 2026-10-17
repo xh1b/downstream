@@ -13,8 +13,10 @@ Work history: @task:2026-10-17-candidate-qualification.
 The retained inputs, before/after outputs, comparisons, coverage, build/install
 logs, bundle, distributions and environment are in
 `build/release04-qualification-20261017/`. The [machine-readable receipt](release_qualification_2026-10-17.json) records
-checks and artifact identities. Later receipt/task commits do not change the
-qualified engine or parameter bytes.
+checks and artifact identities. The compressed archive is `build/release04-qualification-20261017/qualification-artifacts.tar.gz`;
+all 144 archived file hashes verify. Its SHA-256 is
+`76889f9ed7c3e6949e8d439c8ee7b38ef3eb4e58c12ca12aa33c40c445e0da65`.
+Later receipt/task commits do not change the qualified engine or parameter bytes.
 
 ## Verification
 
