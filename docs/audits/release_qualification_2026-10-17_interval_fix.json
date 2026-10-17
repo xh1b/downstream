@@ -1,0 +1,201 @@
+{
+  "schema": "downstream-local-qualification/1",
+  "date": "2026-10-17",
+  "supersedes_candidate": "429af5397752a8fd4c1062b54b0835d82d2b13e4",
+  "candidate_revision": "b41ca50731eeca6ce0336a8a66d1a0fbdcd79d72",
+  "engine_version": "0.4.0",
+  "parameter_set_version": "v1.52",
+  "bundle_sha256": "99173fbf23e75037da3fb9b4a9017a1e56909260ccb112f9902bc5ac86242153",
+  "consumer_fixtures_sha256": "94cbc165a7106d523d426330b6a2314b5f9ba3fd839c7d98d425ab64aea1147a",
+  "full_suite": {
+    "passed": true,
+    "tests": 1463,
+    "subtests": 7,
+    "seconds": 358.58
+  },
+  "coverage": {
+    "covered_lines": 5149,
+    "num_statements": 5298,
+    "percent_covered": 96.33579436696746,
+    "percent_covered_display": "96.3",
+    "missing_lines": 149,
+    "excluded_lines": 15,
+    "percent_statements_covered": 97.18761796904492,
+    "percent_statements_covered_display": "97.2",
+    "num_branches": 2016,
+    "num_partial_branches": 109,
+    "covered_branches": 1897,
+    "missing_branches": 119,
+    "percent_branches_covered": 94.09722222222223,
+    "percent_branches_covered_display": "94.1"
+  },
+  "checks": {
+    "audit": {
+      "args": [
+        "/tmp/downstream-dependabot-py312.E8POxG/bin/python",
+        "-m",
+        "downstream.cli",
+        "audit"
+      ],
+      "returncode": 0,
+      "seconds": 0.19
+    },
+    "build": {
+      "args": [
+        "/tmp/downstream-dependabot-py312.E8POxG/bin/python",
+        "-m",
+        "build",
+        "--no-isolation",
+        "--outdir",
+        "/Users/jt/code/downstream/build/release04-qualification-20261017-interval-fix/dist"
+      ],
+      "returncode": 0,
+      "seconds": 2.242
+    },
+    "coverage-gate": {
+      "args": [
+        "/tmp/downstream-dependabot-py312.E8POxG/bin/python",
+        "scripts/quality_gate.py",
+        "/Users/jt/code/downstream/build/release04-qualification-20261017-interval-fix/coverage.json"
+      ],
+      "returncode": 0,
+      "seconds": 0.027
+    },
+    "coverage-json": {
+      "args": [
+        "/tmp/downstream-dependabot-py312.E8POxG/bin/python",
+        "-m",
+        "coverage",
+        "json",
+        "--data-file=/Users/jt/code/downstream/build/release04-qualification-20261017-interval-fix/.coverage",
+        "-o",
+        "/Users/jt/code/downstream/build/release04-qualification-20261017-interval-fix/coverage.json"
+      ],
+      "returncode": 0,
+      "seconds": 0.478
+    },
+    "docs": {
+      "args": [
+        "/tmp/downstream-dependabot-py312.E8POxG/bin/python",
+        "scripts/doccheck.py",
+        "--examples",
+        "--freshness"
+      ],
+      "returncode": 0,
+      "seconds": 1.235
+    },
+    "environment": {
+      "args": [
+        "/tmp/downstream-dependabot-py312.E8POxG/bin/python",
+        "-c",
+        "import importlib.metadata; print(*sorted(d.metadata['Name'] + '==' + d.version for d in importlib.metadata.distributions()), sep=chr(10))"
+      ],
+      "returncode": 0,
+      "seconds": 0.113
+    },
+    "full-py312": {
+      "args": [
+        "/tmp/downstream-dependabot-py312.E8POxG/bin/python",
+        "-m",
+        "coverage",
+        "run",
+        "--data-file=/Users/jt/code/downstream/build/release04-qualification-20261017-interval-fix/.coverage",
+        "-m",
+        "pytest",
+        "-q"
+      ],
+      "returncode": 0,
+      "seconds": 359.19
+    },
+    "installed-wheel": {
+      "args": [
+        "/tmp/downstream-dependabot-py312.E8POxG/bin/python",
+        "scripts/check_distribution.py",
+        "/Users/jt/code/downstream/build/release04-qualification-20261017-interval-fix/dist/downstream-0.4.0-py3-none-any.whl"
+      ],
+      "returncode": 0,
+      "seconds": 6.468
+    },
+    "refs": {
+      "args": [
+        "/tmp/downstream-dependabot-py312.E8POxG/bin/python",
+        "scripts/refcheck.py",
+        "check"
+      ],
+      "returncode": 0,
+      "seconds": 0.092
+    },
+    "ruff": {
+      "args": [
+        "/tmp/downstream-dependabot-py312.E8POxG/bin/python",
+        "-m",
+        "ruff",
+        "check",
+        "src",
+        "scripts"
+      ],
+      "returncode": 0,
+      "seconds": 0.069
+    },
+    "tasks": {
+      "args": [
+        "/tmp/downstream-dependabot-py312.E8POxG/bin/python",
+        "scripts/tasks.py",
+        "validate"
+      ],
+      "returncode": 0,
+      "seconds": 0.084
+    },
+    "vulture": {
+      "args": [
+        "/tmp/downstream-dependabot-py312.E8POxG/bin/python",
+        "-m",
+        "vulture"
+      ],
+      "returncode": 0,
+      "seconds": 0.296
+    }
+  },
+  "standalone_inventories": {
+    "passed": true,
+    "commands": 8,
+    "unchanged_vs_prior_04": true
+  },
+  "comparison": {
+    "changed": 199,
+    "added": 881,
+    "removed": 30,
+    "unchanged": 33654
+  },
+  "comparison_baseline": "Original retained and verified engine0.3.0/v1.49 output inventory; the local companion pin has since changed. The old standalone validation command remains unavailable because its data were not bundled.",
+  "consumer_fixture_comparison": {
+    "changed": 14,
+    "added": 0,
+    "removed": 0,
+    "unchanged": 8698
+  },
+  "source_stability": {
+    "source_files_unchanged": true
+  },
+  "paper_source_sha256": "8bf3f8279f832f05aa7e89e92eeb7650cf44539a94b341918b07a9dc847933ca",
+  "artifact_files_sha256": {
+    "build/release04-qualification-20261017-interval-fix/dist/downstream-0.4.0-py3-none-any.whl": "d9361b75f8467bbf1a816043ebdef8bf36a1b03605785f3bcf9155739063b804",
+    "build/release04-qualification-20261017-interval-fix/dist/downstream-0.4.0.tar.gz": "37e44922535410947a57a307f33a7c0b52ad604a70b66adb94e841dc58271f0e",
+    "build/release04-qualification-20261017-interval-fix/bundle/manifest.json": "b0a208faaefbdbc8c047a5d7b0f974eba37f5cde20f2a902c61305722ad12911",
+    "build/release04-qualification-20261017-interval-fix/consumer_fixtures_0_4.json": "94cbc165a7106d523d426330b6a2314b5f9ba3fd839c7d98d425ab64aea1147a",
+    "build/release04-qualification-20261017-interval-fix/after/parameters.json": "cf2729778db55cd07b7ac1f6149a08ea5b70eb5a03167e64f79df87be0309c30",
+    "paper/downstream.pdf": "69b502e30aa64a1dc998ceae1ceba8b2d26f7e80327e02c460ca5ba608d3c66c"
+  },
+  "fast_python314": {
+    "passed": true,
+    "tests": 197,
+    "seconds": 11.19
+  },
+  "raw_archive_directory": "build/release04-qualification-20261017-interval-fix",
+  "archive": {
+    "path": "build/release04-qualification-20261017-interval-fix/qualification-artifacts.tar.gz",
+    "sha256": "e82f05458cf49122b8de7fe894c691d9c464084dc5f443c25f7ef7f6f43d0a10",
+    "verified_files": 146,
+    "manifest": "artifact-files.sha256.json"
+  }
+}

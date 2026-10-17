@@ -238,3 +238,18 @@ assistive technology, physical devices and participants remain unverified.
 The [fresh companion handoff](xh1b_handoff_2026-10-17.md) reproduces the nested
 mixture limitation and names its existing integration tasks. Owner release
 acceptance and companion repin/cache/render/deployment receipts remain pending.
+
+
+## Corrected consumer intervals — October 17 follow-up
+
+The [latest qualification](release_qualification_2026-10-17_interval_fix.md)
+supersedes the earlier candidate after a shared-object scaling bug was found
+by cross-language fixture checks. Source-profile nested intervals now scale
+once. Default model calculations are unchanged. The corrected candidate passes
+1,463 tests plus 7 subtests and the full local distribution/coverage gates.
+Use its recorded bundle and fixture identities for the pending handoff.
+
+The [local handoff follow-up](xh1b_handoff_2026-10-17.md#local-integration-follow-up--2026-10-17)
+records the prepared companion pin, checked mixtures, preserved nested metadata
+and readable methods artifact. Earlier pending-local-pin statements above are
+historical. Live cache, served browser and deployment acceptance remain open.

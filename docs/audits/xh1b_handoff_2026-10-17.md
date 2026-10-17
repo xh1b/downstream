@@ -75,3 +75,19 @@ source identities and fallback reasons through runner, cache, explorer, HTML and
 Markdown. Include a mixture that distinguishes the nested comparison from its
 first component. Keep reference-exposure interpretation and missing demographics
 visible; a source response plus a local baseline does not establish target fit.
+
+## Local integration follow-up — 2026-10-17
+
+The local companion now selects the [corrected candidate](release_qualification_2026-10-17_interval_fix.md),
+including the interval-alias repair discovered during cross-language parity.
+Its adapter uses checked expected-value mixtures, preserves full-precision nested
+alternatives, source records, signed sensitivity and explicit child/valuation
+inputs, and keeps unavailable joint intervals unavailable. The website uses
+the same scaling semantics and exposes the structural comparison records.
+A content-addressed copy of the current methods HTML is linked as a readable
+artifact; PDF, parameter and model-card links name the exact source revision.
+
+Focused local model/consumer/display tests verify this preparation. These facts
+supersede the earlier local-pin and adapter status above. They do not establish
+remote publication, live cache freshness, served browser acceptance or deployment.
+Those remain the companion's separate acceptance work.

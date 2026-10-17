@@ -3,6 +3,9 @@
 <!-- @ref:release-qualification-2026-10-17; @tag:release -->
 <!-- @link:doc-open-source-release; @link:script-quality-gate; @link:script-check-distribution; @link:code-bundle; @link:code-compare. -->
 
+**Superseded for release use:** the [interval-alias follow-up](release_qualification_2026-10-17_interval_fix.md)
+qualifies a corrected bundle. The receipt and archive below identify the earlier candidate.
+
 Engine **0.4.0 / parameters v1.52**, committed candidate
 `429af5397752a8fd4c1062b54b0835d82d2b13e4`. This receipt qualifies the existing
 conditional scenario tool locally. [Release scope and scientific limits](release_0_4.md),

@@ -39,6 +39,7 @@ a correction. Generated reports are updated through their builders.
 ## Release and integration
 
 - [0.4 candidate qualification](release_0_4.md) — source corrections, checks and pending acceptance.
+- [Corrected October 17 qualification](release_qualification_2026-10-17_interval_fix.md) — latest candidate after the shared consumer-interval repair.
 - [October 17 fixed-candidate qualification](release_qualification_2026-10-17.md) — full tests/coverage, distributions, bundle identities and prior-pin comparison.
 - [XH1B integration review](xh1b_usage_plan_0_4.md) — inspected consumer behavior, integration gaps and priorities.
 - [October 17 XH1B handoff](xh1b_handoff_2026-10-17.md) — local companion probes, reproduced mixture limitation and existing integration task ownership.
