@@ -18,6 +18,38 @@ XH1B. The initial 0.5 label was premature and has been corrected; implementation
 and numerical results are retained. Future release numbering follows the
 owner's release decision, rather than each batch of model changes.
 
+## Candidate scope and remaining acceptance
+
+The 0.4 candidate is a conditional scenario tool with explicit source, exposure,
+population and uncertainty limits. Release acceptance covers the supported
+paths already implemented; new empirical claims require their own admission.
+The complete task-by-task review is recorded in
+[the October 17 scope review](@task:2026-10-17-release-task-review), and the
+[release qualification card](@task:2026-10-14-release-04-readiness) tracks completion.
+
+| Work | Required scope |
+|:---|:---|
+| Fixed-candidate qualification | Freeze the source revision, engine/parameter versions and input identity; regenerate bundle and consumer fixtures together; run full tests, coverage, audit, lint, sdist/wheel installation and a previous-reviewed-version comparison. Archive the actual outputs and review receipts. |
+| Companion handoff | Verify nested alternatives, signed sensitivity, applicability, normalization and mixtures through the companion adapter, caches and rendered formats using the [consumer contract](CONSUMER_FIXTURES_0_4.md). Fresh companion evidence is required before claiming a repin or deployment. |
+| Artifact consistency | Generated evidence/pool guides must retain navigation and current input hashes. Consumer fixture source identities and the [saved household comparison](HOUSEHOLD_COMPARISON_0_4.md) must match current code. Their regressions and generator checks are part of qualification. |
+| Calculator public readiness | Keep the existing chosen surface and viewport checks. Before claiming an evaluated public experience, complete keyboard-only, 200% zoom, screen-reader, physical-device and human comprehension checks under the [calculator protocol](CALCULATOR.md). |
+
+If household modeling is expanded in this cycle, the first substantive data
+priority is pooled SIPP trajectories and replicate-weight uncertainty. The
+current annual prototype can retain its explicitly limited gross-earnings
+and marginal state-time scope while those estimates remain unavailable.
+Taxes/transfers, monthly and joint outcomes are additional work, not implied
+by the existing five-year comparison.
+
+Wider child/mortality admission, compatible independent coefficient pools,
+published-profile source/covariance reconciliation, matched external event
+validation, transport/dependence models, protective combinations and new
+headline streams remain evidence or owner-decision tasks. Preserve their
+limitations in the conditional release. They cannot be closed by relabeling
+generic CPS composition, SIPP baseline calibration or successful software tests
+as causal validation. A future evaluated public experience retains its
+scientific and human-testing gates.
+
 ## Source correction
 
 Re-extraction of Sullivan–von Wachter's Table 5 found that the offset 4–5
