@@ -20,7 +20,7 @@ Retain engine 0.4.0. Companion website changes remain a separate handoff.
 
 - [x] Attach per-outcome effect-removal and supported-endpoint experiments with values, sources and signed changes. [evidence](../../../validation/result_sensitivity_reference_20261015.json)
 - [x] Preserve nonlinear interactions, subgroup selection, place inputs, fixed baselines and blocked outcomes. [evidence](../../../tests/test_result_sensitivity.py)
-- [x] Identify fixed inputs and unavailable ranges without inventing uncertainty distributions. [evidence](../../../docs/INTEGRATION.md#per-result-sensitivity)
+- [x] Identify fixed inputs and unavailable ranges without inventing uncertainty distributions. [evidence](../../../docs/integration.md#per-result-sensitivity)
 - [x] Offer correlation-aware parameter variance attribution separately from deterministic sensitivity. [evidence](../../../src/downstream/result_sensitivity.py)
-- [x] Exercise CLI, scenario, entity and valuation delivery; document exclusions and consumer scaling requirements. [evidence](../../../docs/INTEGRATION.md#per-result-sensitivity)
-- [x] Run numerical, regression and quality checks and retain a reproducible example. [evidence](../../../docs/INTEGRATION.md#per-result-sensitivity)
+- [x] Exercise CLI, scenario, entity and valuation delivery; document exclusions and consumer scaling requirements. [evidence](../../../docs/integration.md#per-result-sensitivity)
+- [x] Run numerical, regression and quality checks and retain a reproducible example. [evidence](../../../docs/integration.md#per-result-sensitivity)

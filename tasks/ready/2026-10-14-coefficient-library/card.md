@@ -20,7 +20,7 @@ horizon, uncertainty, and sample-overlap records. Existing synthesis code is not
 heterogeneity is not a target transport model. Twenty-three hash-pinned Table 5/7, Table 2/8 and Danish
 cumulative-hazard contrasts now ship in `params/study_estimates.csv`. These are three study samples, not twenty-three
 independent studies. Current groups are singleton/overlapping and are deliberately not pooled. Search/inclusion and
-overlap rules are frozen in `docs/research/SCENARIO_EVIDENCE_PROTOCOL.md`; independent full-text extraction remains open.
+overlap rules are frozen in `docs/research/scenario_evidence_protocol.md`; independent full-text extraction remains open.
 
 ## Acceptance
 

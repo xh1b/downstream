@@ -14,5 +14,5 @@ Human comprehension research stays on that parent task.
 
 - [x] Provide two selectable visual directions with editable exposure and clear comparison, units and horizons. [prototype](../../../calculator/index.html)
 - [x] Use generated engine data; preserve sensitivity, source versions, applicability and unavailable paths. [generator](../../../scripts/build_calculator.py)
-- [x] Provide keyboard/mobile-friendly controls and a reproducible build/check command. [implementation and remaining manual review](../../../docs/CALCULATOR.md)
-- [x] Record automated or browser checks and a concrete human comprehension-test protocol without fabricating participants. [automated checks](../../../tests/test_calculator.py) [protocol and browser limitation](../../../docs/CALCULATOR.md)
+- [x] Provide keyboard/mobile-friendly controls and a reproducible build/check command. [implementation and remaining manual review](../../../docs/calculator.md)
+- [x] Record automated or browser checks and a concrete human comprehension-test protocol without fabricating participants. [automated checks](../../../tests/test_calculator.py) [protocol and browser limitation](../../../docs/calculator.md)

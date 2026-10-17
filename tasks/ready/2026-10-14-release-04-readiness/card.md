@@ -5,7 +5,7 @@ priority: P1
 assignee:
 due:
 blocked-by: []
-expected-paths: [docs/audits/RELEASE_0_4.md, scripts/check_distribution.py, tests/]
+expected-paths: [docs/audits/release_0_4.md, scripts/check_distribution.py, tests/]
 ---
 
 # Qualify Downstream 0.4 for the XH1B handoff
@@ -34,13 +34,13 @@ release acceptance; it does not authorize deployment or remote operations.
 ## Acceptance
 
 - [x] Audit new calculation paths; fix confirmed defects and retain numerical/source receipts.
-- [x] Record SIPP held-out accuracy, survey uncertainty and the supported household prototype scope. [held-out results](../../../docs/audits/BASELINE_TRANSITION_R2_2026-09-14.md) [prototype and unavailable intervals](../../../docs/INTEGRATION.md#annual-household-comparisons)
-- [x] Document admitted cohort and exposure requirements, including how missing target information is handled. [exposure and unknown-target contract](../../../docs/INTEGRATION.md#exposure-and-event-metadata)
+- [x] Record SIPP held-out accuracy, survey uncertainty and the supported household prototype scope. [held-out results](../../../docs/audits/baseline_transition_r2_2026-09-14.md) [prototype and unavailable intervals](../../../docs/integration.md#annual-household-comparisons)
+- [x] Document admitted cohort and exposure requirements, including how missing target information is handled. [exposure and unknown-target contract](../../../docs/integration.md#exposure-and-event-metadata)
 - [x] Recheck source coefficients, scales, windows, overlap and null/beneficial estimates used by the release.
 - [x] Resolve the paper-review findings and check agreement among paper, HTML, model card and saved examples.
-- [x] Prepare consumer fixtures and a version/hash/cache handoff checklist for the companion project. [fixtures and companion acceptance](../../../docs/INTEGRATION.md#scaling-mixtures-and-acceptance-fixtures)
+- [x] Prepare consumer fixtures and a version/hash/cache handoff checklist for the companion project. [fixtures and companion acceptance](../../../docs/integration.md#scaling-mixtures-and-acceptance-fixtures)
 - [ ] Freeze the final candidate; run full tests, coverage, audit, lint, wheel/sdist installation and previous-reviewed-version comparisons against that exact identity.
-- [x] Prepare local release notes covering changed results, known validation misses, unmodeled uncertainty and unresolved research dependencies. [release notes](../../../docs/audits/RELEASE_0_4.md)
+- [x] Prepare local release notes covering changed results, known validation misses, unmodeled uncertainty and unresolved research dependencies. [release notes](../../../docs/audits/release_0_4.md)
 - [ ] Review candidate receipts and obtain owner release/publication acceptance; companion integration and deployment require their own receipts.
 
 ## Related cards
@@ -82,7 +82,7 @@ or completion of the remaining SIPP, cohort and XH1B handoff scope.
 ## Integration-informed sequencing - 2026-10-14
 
 The owner requested a current XH1B usage review. Follow
-`docs/audits/XH1B_USAGE_PLAN_0_4.md` for the next implementation order: exposure
+`docs/audits/xh1b_usage_plan_0_4.md` for the next implementation order: exposure
 semantics, then consumer fixtures and preservation of structural comparisons.
 The current companion adapter uses reference counts and does not consume the
 household prototype. Retain SIPP scope and held-out misses in release acceptance,

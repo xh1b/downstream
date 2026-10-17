@@ -5,7 +5,7 @@ priority: P3
 assignee: mira
 due:
 blocked-by: []
-expected-paths: [src/downstream/child_gap_view.py, tests/test_child_gap_view.py, docs/INTEGRATION.md]
+expected-paths: [src/downstream/child_gap_view.py, tests/test_child_gap_view.py, docs/integration.md]
 ---
 
 # Combined child-gap view, housing chain and explanation design
@@ -18,7 +18,7 @@ Migrated from TODO entry 36, section "Engine", original line 215.
 
 ## Acceptance
 
-- [x] Specify the combined child-gap view and housing-contagion evidence/estimand requirements. [API and missing bridges](../../../docs/INTEGRATION.md#child-and-descendant-outputs)
+- [x] Specify the combined child-gap view and housing-contagion evidence/estimand requirements. [API and missing bridges](../../../docs/integration.md#child-and-descendant-outputs)
 - [x] Design explanations that retain provenance and scope for each supported path. [structured report](../../../src/downstream/child_gap_view.py)
 - [x] Verify signed/null-compatible values, child/target refusals, source income contrasts, dollar-baseline absence, both place modes and unavailable housing totals. [14 contract tests](../../../tests/test_child_gap_view.py)
 

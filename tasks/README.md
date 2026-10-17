@@ -23,7 +23,9 @@ The initial import has 48 cards. Partial scopes keep their remaining work open;
 recent completed 0.4 work awaits owner review. No agent claims were invented.
 See [the migration map](MIGRATION.md) for every original entry and its card.
 
-For methods and implementation navigation, see [the documentation map](../docs/README.md).
+For the tooling/check map and a task-system quickstart, see the
+[development guide](../docs/development.md#task-system-and-work-receipts).
+For implementation and paper navigation, see [the documentation map](../docs/readme.md).
 
 ## Reference tokens
 
@@ -76,11 +78,11 @@ backfills, incremental scheduling and website surfaces remain in the companion
 repository's task system/backlog. Its design is `internal/docs/ENTITY_ANALYSIS.md`.
 The 0.4 update remains pending XH1B integration; another release needs an owner decision.
 
-The research plan is [LIFE_COURSE_RESEARCH_PLAN.md](../docs/research/LIFE_COURSE_RESEARCH_PLAN.md),
-with [CAUSAL_GRAPH_PLAN.md](../docs/research/CAUSAL_GRAPH_PLAN.md) for model design and
-[WEBSITE_EXPERIENCE_PLAN.md](../docs/research/WEBSITE_EXPERIENCE_PLAN.md) for the calculator.
-The [model card](../docs/MODEL_CARD.md) records assumptions and limitations.
-[QUEUED_EXTRACTIONS.md](../docs/research/QUEUED_EXTRACTIONS.md) remains authoritative for source-row status.
+The research plan is [life_course_research_plan.md](../docs/research/life_course_research_plan.md),
+with [causal_graph_plan.md](../docs/research/causal_graph_plan.md) for model design and
+[website_experience_plan.md](../docs/research/website_experience_plan.md) for the calculator.
+The [model card](../docs/model_card.md) records assumptions and limitations.
+[queued_extractions.md](../docs/research/queued_extractions.md) remains authoritative for source-row status.
 
 Improve estimates symmetrically when evidence supports smaller, larger, null or
 beneficial effects. Every numerical claim retains provenance; misses publish.

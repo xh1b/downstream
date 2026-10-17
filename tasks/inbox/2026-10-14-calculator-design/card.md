@@ -24,7 +24,7 @@ The [prototype comparison](@task:2026-10-15-calculator-prototype),
 [responsive layout](@task:2026-10-15-calculator-mobile) are implemented.
 The local HTTP browser checks cover 320/390/600/1440 px; they do not establish
 physical-device, zoom, assistive-technology or participant results.
-Keep the [existing 6–8-user protocol](../../../docs/CALCULATOR.md) and test the
+Keep the [existing 6–8-user protocol](../../../docs/calculator.md) and test the
 current chosen surface instead of commissioning another visual redesign.
 Scope review: @task:2026-10-17-release-task-review.
 

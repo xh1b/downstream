@@ -5,7 +5,7 @@ priority: P1
 assignee: codex
 due:
 blocked-by: []
-expected-paths: [docs/audits/XH1B_USAGE_PLAN_0_4.md]
+expected-paths: [docs/audits/xh1b_usage_plan_0_4.md]
 ---
 
 # Plan Downstream priorities from current XH1B usage

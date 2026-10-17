@@ -19,7 +19,7 @@ and structural assumptions in evidence records.
 
 ## Acceptance
 
-- [x] Resolve classification ambiguities and classify baseline transitions, direct/conditional effects, structural assumptions and boundary evidence. [generated inventory](../../../docs/audits/EVIDENCE_CLASSIFICATION_0_4.md) [admission/use checks](../../../tests/test_evidence_classification.py)
+- [x] Resolve classification ambiguities and classify baseline transitions, direct/conditional effects, structural assumptions and boundary evidence. [generated inventory](../../../docs/audits/evidence_classification_0_4.md) [admission/use checks](../../../tests/test_evidence_classification.py)
 
 ## Scope disposition
 

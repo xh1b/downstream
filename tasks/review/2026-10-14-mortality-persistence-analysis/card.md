@@ -5,7 +5,7 @@ priority: P1
 assignee: codex
 due:
 blocked-by: []
-expected-paths: [docs/audits/MORTALITY_PERSISTENCE_ANALYSIS_2026-10-14.md]
+expected-paths: [docs/audits/mortality_persistence_analysis_2026-10-14.md]
 ---
 
 # Analyze the mortality persistence comparison

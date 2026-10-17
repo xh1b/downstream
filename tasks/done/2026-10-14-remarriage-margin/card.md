@@ -18,4 +18,4 @@ Migrated from TODO entry 40, section "Extraction queue", original line 225.
 
 ## Acceptance
 
-- [x] Extract the candidate estimand, scope and uncertainty and apply the evidence admission contract. [screen and supported refusal](../../../docs/audits/REMARRIAGE_MARGIN_SCREEN_0_4.md) [structured source receipts](../../../validation/remarriage_margin_screen_20261015.json) [boundary checks](../../../tests/test_remarriage_screen.py)
+- [x] Extract the candidate estimand, scope and uncertainty and apply the evidence admission contract. [screen and supported refusal](../../../docs/audits/remarriage_margin_screen_0_4.md) [structured source receipts](../../../validation/remarriage_margin_screen_20261015.json) [boundary checks](../../../tests/test_remarriage_screen.py)
