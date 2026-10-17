@@ -42,3 +42,16 @@ Documentation source changes are landed
 @task:2026-10-17-doc-reliability is implemented in 41360ac and 9255ec0. The only engine-source change extracts the existing CLI parser into build_parser for code-derived documentation; reversing the extraction produces the exact original statement AST. Consumer fixtures were regenerated for the changed CLI source hash, with all calculations unchanged. Final make check-docs passes, with 36 executable example statements, all six freshness checks and 19 checker regressions; the affected regression group passes 102 tests. The root README/SPEC duplication is removed and integration/compatibility/cache/troubleshooting contracts are expanded.
 
 No further engine/parameter edits are planned for this task. Qualification can use the landed source identities; a small task-board completion commit will follow. Your release qualification audit and artifacts remain untouched.
+
+## c-b7561b16910e
+
+- At: 2026-10-17 22:02 HKT
+- By: codex-release-finish
+
+Complete local 0.4 qualification
+
+Candidate 429af5397752a8fd4c1062b54b0835d82d2b13e4, engine 0.4.0 / v1.52. Full Python 3.12 suite: 1,458 tests + 7 subtests; final committed documentation tests: 19 passed under appended coverage. Coverage is 97.2% statements / 94.1% branches; Python 3.14 fast selection: 151 passed. Runtime/parameter/build source bytes were unchanged during qualification; the single concurrently finalized documentation test file was rechecked explicitly.
+
+Ruff, Vulture, evidence audit (0 errors/warnings), 36 documentation examples, six generator freshness checks, refs and task validation pass. The sdist-built wheel passes 11 isolated command checks. All 74 bundle files verify; eight CLI inventories pass outside the checkout. The prior reviewed local 0.3/v1.49 pin comparison retains every field difference. Old validation data are absent from that consumer bundle, so the exact failure is archived and no before/after validation claim is made.
+
+Report: [qualification and exact identities](../../../docs/audits/release_qualification_2026-10-17.md). Machine receipt: [checks and artifact hashes](../../../docs/audits/release_qualification_2026-10-17.json). Raw outputs/bundle/distributions/environment/source manifests are retained in build/release04-qualification-20261017/qualification-artifacts.tar.gz (7,591,507 bytes), SHA-256 76889f9ed7c3e6949e8d439c8ee7b38ef3eb4e58c12ca12aa33c40c445e0da65; all 144 archived file hashes verify. No publication, companion repin/cache change, deployment or new independent causal validation is claimed.
