@@ -15,3 +15,10 @@ Created in inbox.
 triage: inbox -> ready.
 
 User explicitly requested code-to-paper rationale links.
+
+## c-b9bf0acae2e2
+
+- At: 2026-10-17 20:40 HKT
+- By: codex-doc-cleanup
+
+claim: ready -> active.

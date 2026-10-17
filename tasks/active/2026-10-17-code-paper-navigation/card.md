@@ -2,7 +2,7 @@
 title: Connect implementation rationale to the methods paper
 area: docs
 priority: P2
-assignee:
+assignee: codex-doc-cleanup
 tags: [@tag:tooling]
 blocked-by: []
 ---
