@@ -39,3 +39,10 @@ Confirmed fixes in b4a9480: both generated evidence/pool guide headers now come 
 Verification: 393 targeted task/reference/calculator/server/household/consumer/source/admission/paper/sensitivity/mortality tests passed in 56.96 seconds. Ruff, Vulture, git diff --check and task validation pass. Evidence audit: zero errors and zero warnings. This is a focused review receipt, not a new full-suite, coverage or distribution qualification of a frozen release candidate.
 
 make -C paper rebuilt the 20-page PDF successfully. Its manifest digest recomputes to d0020e87d8a8befb90e76ad52a79554120e606461fd594e42ec727a66bfcd2cd. Extracted text differs only in the source-digest prefix on page 14; that page was rendered and visually inspected. No LaTeX warnings, undefined references or overfull boxes; one existing underfull-box diagnostic remains. Rebuild/render receipts are in build/release-task-review-20261017/. No remote operation, publication, companion change or source-data acquisition occurred.
+
+## c-618a361e2d90
+
+- At: 2026-10-17 20:36 HKT
+- By: codex-release-review
+
+done: active -> review.
