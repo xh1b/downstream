@@ -19,5 +19,5 @@ currently produces a county effect.
 
 ## Acceptance
 
-- [x] Resolve 1-M*g versus a same-place exposure contrast and explain the intended counterfactual. [analysis](../../../docs/PLACE_COUNTERFACTUAL.md)
-- [x] Verify that a null displacement effect does not create an unintended county effect. [regression and receipt](../../../docs/PLACE_COUNTERFACTUAL.md#implementation-and-verification)
+- [x] Resolve 1-M*g versus a same-place exposure contrast and explain the intended counterfactual. [analysis](../../../docs/audits/PLACE_COUNTERFACTUAL.md)
+- [x] Verify that a null displacement effect does not create an unintended county effect. [regression and receipt](../../../docs/audits/PLACE_COUNTERFACTUAL.md#implementation-and-verification)

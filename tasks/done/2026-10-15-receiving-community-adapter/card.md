@@ -4,7 +4,7 @@ area: scenarios
 priority: P2
 assignee: eli
 parent: 2026-10-14-full-comparison
-expected-paths: [src/downstream/receiving_community.py, src/downstream/cli.py, tests/test_receiving_adapter.py, docs/RECEIVING_COMMUNITY_0_4.md]
+expected-paths: [src/downstream/receiving_community.py, src/downstream/cli.py, tests/test_receiving_adapter.py, docs/INTEGRATION.md]
 blocked-by: []
 ---
 
@@ -18,11 +18,11 @@ Do not propagate the generic legacy stock-elasticity interpretation.
 
 ## Acceptance
 
-- [x] Validate source-specific immigrant-share exposure, population margin, horizon and baseline units without converting displaced workers into arrivals. [contract](../../../docs/RECEIVING_COMMUNITY_0_4.md) [tests](../../../tests/test_receiving_adapter.py)
-- [x] Preserve source signs, uncertainty support, null contrasts, exact null-input behavior and declared unknown transport. [contract](../../../docs/RECEIVING_COMMUNITY_0_4.md) [tests](../../../tests/test_receiving_adapter.py)
-- [x] Keep violent and total-crime contrasts separate, with overlapping endpoints and incomplete channels explicit; do not sum them. [contract](../../../docs/RECEIVING_COMMUNITY_0_4.md) [tests](../../../tests/test_receiving_adapter.py)
-- [x] Provide a CLI and meaningful regression checks, including malformed inputs and unsupported margins/horizons. [contract](../../../docs/RECEIVING_COMMUNITY_0_4.md) [tests](../../../tests/test_receiving_adapter.py)
-- [x] Record primary-source unit checks, legacy-mapping discrepancy and any remaining source-version repair; do not invent an empirical bridge or change default coefficients. [contract](../../../docs/RECEIVING_COMMUNITY_0_4.md) [tests](../../../tests/test_receiving_adapter.py)
+- [x] Validate source-specific immigrant-share exposure, population margin, horizon and baseline units without converting displaced workers into arrivals. [contract](../../../docs/INTEGRATION.md#receiving-community-adapter) [tests](../../../tests/test_receiving_adapter.py)
+- [x] Preserve source signs, uncertainty support, null contrasts, exact null-input behavior and declared unknown transport. [contract](../../../docs/INTEGRATION.md#receiving-community-adapter) [tests](../../../tests/test_receiving_adapter.py)
+- [x] Keep violent and total-crime contrasts separate, with overlapping endpoints and incomplete channels explicit; do not sum them. [contract](../../../docs/INTEGRATION.md#receiving-community-adapter) [tests](../../../tests/test_receiving_adapter.py)
+- [x] Provide a CLI and meaningful regression checks, including malformed inputs and unsupported margins/horizons. [contract](../../../docs/INTEGRATION.md#receiving-community-adapter) [tests](../../../tests/test_receiving_adapter.py)
+- [x] Record primary-source unit checks, legacy-mapping discrepancy and any remaining source-version repair; do not invent an empirical bridge or change default coefficients. [contract](../../../docs/INTEGRATION.md#receiving-community-adapter) [tests](../../../tests/test_receiving_adapter.py)
 
 ## Source correction disposition
 

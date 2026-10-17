@@ -12,6 +12,6 @@ Child of task:2026-10-14-published-mortality-profile. Implement a diagnostic for
 ## Acceptance
 
 - [x] Validate component contracts and compute sharp PSD-compatible phase-total standard-error bounds. [implementation](../../../src/downstream/mortality_covariance.py)
-- [x] Record available source coefficients/SEs or label illustrative inputs and unresolved extraction gap; never invent covariance. [manuscript locator and transcription](../../../docs/MORTALITY_COVARIANCE_0_4.md)
+- [x] Record available source coefficients/SEs or label illustrative inputs and unresolved extraction gap; never invent covariance. [manuscript locator and transcription](../../../docs/audits/MORTALITY_COVARIANCE_0_4.md)
 - [x] Test analytic extrema, invalid inputs and missing-SE behavior. [33 focused checks](../../../tests/test_mortality_covariance.py)
-- [x] Document interpretation, reproducible diagnostic command and remaining parent blocker. [diagnostic scope](../../../docs/MORTALITY_COVARIANCE_0_4.md) [report command](../../../scripts/analyze_mortality_covariance.py)
+- [x] Document interpretation, reproducible diagnostic command and remaining parent blocker. [diagnostic scope](../../../docs/audits/MORTALITY_COVARIANCE_0_4.md) [report command](../../../scripts/analyze_mortality_covariance.py)

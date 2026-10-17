@@ -16,7 +16,7 @@ Migrated from TODO entry 41, section "Review priorities — 2026-09-10", origina
 
 - **[P1] Mortality profile:** source offsets, early effects, and the +6 boundary are fixed in the default working-paper
 profile. Published QJE Table 4 uses a different additive parameterization whose phase-total covariance is unavailable; a
-published-profile variant remains blocked. See `docs/MORTALITY_SOURCE_RECONCILIATION_2026-09-10.md`.
+published-profile variant remains blocked. See `docs/audits/MORTALITY_SOURCE_RECONCILIATION_2026-09-10.md`.
 
 ## Acceptance
 
@@ -25,7 +25,7 @@ published-profile variant remains blocked. See `docs/MORTALITY_SOURCE_RECONCILIA
 
 ## Scoped progress — 2026-10-17 review
 
-[Sharp marginal covariance bounds](../../../docs/MORTALITY_COVARIANCE_0_4.md)
+[Sharp marginal covariance bounds](../../../docs/audits/MORTALITY_COVARIANCE_0_4.md)
 are implemented in the accepted
 [diagnostic task](@task:2026-10-15-mortality-covariance-diagnostic).
 They do not supply joint draws, a simultaneous band, cumulative-death bounds

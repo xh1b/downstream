@@ -5,6 +5,7 @@ priority: P2
 assignee: codex-doc-cleanup
 tags: [@tag:tooling]
 blocked-by: []
+parent: 2026-10-17-documentation-consolidation
 ---
 
 Part of @task:2026-10-17-documentation-consolidation. Update generators and executable consumers of moved documentation, repair ordinary links and verify that generated outputs stay reproducible. Preserve historical task threads and frozen evidence.

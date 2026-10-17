@@ -26,7 +26,7 @@ Interview age/family structure are not relabeled as historical event characteris
 
 - [x] Weighted CPS reference cohorts and BLS total reproduction are implemented.
 - [ ] Document a target-specific displacement bridge and demographic composition with provenance.
-- [x] Keep generic CPS references distinct from H-1B-specific exposures. [exposure and cohort contract](../../../docs/EXPOSURE_SEMANTICS_0_4.md)
+- [x] Keep generic CPS references distinct from H-1B-specific exposures. [exposure and cohort contract](../../../docs/INTEGRATION.md#exposure-and-event-metadata)
 
 ## Release disposition — 2026-10-17
 

@@ -27,8 +27,8 @@ with held-out validation.
 
 ## Baseline versus bridge — 2026-10-17 review
 
-The [held-out SIPP baseline](../../../docs/BASELINE_TRANSITION_R2_2026-09-14.md)
-already exists. The [evaluation protocol](../../../docs/SCENARIO_EVIDENCE_PROTOCOL.md)
+The [held-out SIPP baseline](../../../docs/audits/BASELINE_TRANSITION_R2_2026-09-14.md)
+already exists. The [evaluation protocol](../../../docs/research/SCENARIO_EVIDENCE_PROTOCOL.md)
 retains the refusal to treat that observational baseline as an identified
 causal displacement bridge. Re-running baseline calibration alone will not
 close this task: a new aligned exposure/treatment and independent outcome

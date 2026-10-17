@@ -278,7 +278,7 @@ historical entries; new or edited criteria need evidence links. `done` and `acce
 always enforce the complete evidence checklist, including on legacy tasks.
 Existing comments remain byte-for-byte intact; only new entries get permanent ids.
 
-`docs/QUEUED_EXTRACTIONS.md` remains authoritative for extraction-row status;
+`docs/research/QUEUED_EXTRACTIONS.md` remains authoritative for extraction-row status;
 coordinate extraction work through cards without duplicating its table.
 XH1B integration tasks belong to the companion repository. Local cards track
 handoff and references; they do not authorize applying the pending update.

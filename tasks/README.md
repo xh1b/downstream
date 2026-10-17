@@ -76,11 +76,11 @@ backfills, incremental scheduling and website surfaces remain in the companion
 repository's task system/backlog. Its design is `internal/docs/ENTITY_ANALYSIS.md`.
 The 0.4 update remains pending XH1B integration; another release needs an owner decision.
 
-The research plan is [LIFE_COURSE_RESEARCH_PLAN.md](../docs/LIFE_COURSE_RESEARCH_PLAN.md),
-with [CAUSAL_GRAPH_PLAN.md](../docs/CAUSAL_GRAPH_PLAN.md) for model design and
-[WEBSITE_EXPERIENCE_PLAN.md](../docs/WEBSITE_EXPERIENCE_PLAN.md) for the calculator.
+The research plan is [LIFE_COURSE_RESEARCH_PLAN.md](../docs/research/LIFE_COURSE_RESEARCH_PLAN.md),
+with [CAUSAL_GRAPH_PLAN.md](../docs/research/CAUSAL_GRAPH_PLAN.md) for model design and
+[WEBSITE_EXPERIENCE_PLAN.md](../docs/research/WEBSITE_EXPERIENCE_PLAN.md) for the calculator.
 The [model card](../docs/MODEL_CARD.md) records assumptions and limitations.
-[QUEUED_EXTRACTIONS.md](../docs/QUEUED_EXTRACTIONS.md) remains authoritative for source-row status.
+[QUEUED_EXTRACTIONS.md](../docs/research/QUEUED_EXTRACTIONS.md) remains authoritative for source-row status.
 
 Improve estimates symmetrically when evidence supports smaller, larger, null or
 beneficial effects. Every numerical claim retains provenance; misses publish.

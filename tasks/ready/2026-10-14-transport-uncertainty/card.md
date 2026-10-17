@@ -25,7 +25,7 @@ dependence and earnings-profile uncertainty remain excluded.
 
 - [x] Documented baseline-count, declared exposure and independent-cohort process uncertainty are implemented.
 - [ ] Specify defensible transport, structural and cross-component dependence models where evidence permits.
-- [x] Keep excluded components and parameter-only intervals explicit. [uncertainty scope](../../../docs/MODEL_CARD.md) [result sensitivity contract](../../../docs/RESULT_SENSITIVITY.md)
+- [x] Keep excluded components and parameter-only intervals explicit. [uncertainty scope](../../../docs/MODEL_CARD.md) [result sensitivity contract](../../../docs/INTEGRATION.md#per-result-sensitivity)
 
 ## Release disposition — 2026-10-17
 
