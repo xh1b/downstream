@@ -17,7 +17,7 @@
     "src/downstream/cli.py": "31efb755a0aa2bf8a3d264d7ea408d17c5005b38587966b44de21415680f6a7b",
     "src/downstream/community.py": "1d7a1b0d28883992570cc7c81b88eed0258259a11c78f0f32dbc64587a1dbddf",
     "src/downstream/compare.py": "b46fe94e2241f0d80749603a3ce0797199a01a154f8a5d744d3264837f80d73b",
-    "src/downstream/consumer.py": "1732eaf34175049dce636a37a51b2cf5097a1e10857de0c365a3900a88e17ced",
+    "src/downstream/consumer.py": "973a645976970bc080db040325cd56c54395fbd78b92ad943f0abf9abf131eec",
     "src/downstream/county_mortality.py": "6dd990f4881b389f396e5456da7a225fa755a96f309680ad2309e41a95234467",
     "src/downstream/county_rates.py": "b86dc0f291ff997a035cc82735b1ac500b6e029a900c6ae61201072aa177bed4",
     "src/downstream/credits.py": "a2c8ede4533d36e1064e02a7beb391403cb9406a616b80ec613ce849ff6c3803",
@@ -78,7 +78,7 @@
     "params/study_estimates.template.csv": "3f71fb5102d87827c926ac9c9ad09ce834798bb19c461cfca3f6854665cc66bf",
     "scripts/build_consumer_fixtures.py": "ef635d5043866360556e7b436f98aa74cad85436c735715e32fca75fc2e4beea"
   },
-  "source_content_sha256": "71517572eee5254995b5f9fb72627373b24806787a3f8e31720e52e5a7086eb6",
+  "source_content_sha256": "9faaa12b6cd3a181a42582048a9f5d159e9a0778d2c27e558f02255b7178c169",
   "fixture_sampling": "128 draws/base, seed 1901; contract fixtures, not precision-qualified research intervals.",
   "fixtures": {
     "national": {
@@ -8269,10 +8269,10 @@
                 "sullivan2009"
               ],
               "parameter_interval_90": {
-                "p05": 3.517359375e-07,
-                "p50": 4.4516093750000006e-07,
-                "p95": 5.709421875000001e-07,
-                "mean": 4.56890625e-07
+                "p05": 0.0028138875,
+                "p50": 0.0035612875000000004,
+                "p95": 0.004567537500000001,
+                "mean": 0.003655125
               }
             },
             "no_sustained_excess": {
@@ -8927,10 +8927,10 @@
                 "sullivan2009"
               ],
               "parameter_interval_90": {
-                "p05": 1.40694375,
-                "p50": 1.78064375,
-                "p95": 2.28376875,
-                "mean": 1.8275625
+                "p05": 5.627775,
+                "p50": 7.122575,
+                "p95": 9.135075,
+                "mean": 7.31025
               }
             },
             "no_sustained_excess": {
@@ -10243,10 +10243,10 @@
                 "sullivan2009"
               ],
               "parameter_interval_90": {
-                "p05": 22511100.0,
-                "p50": 28490300.000000004,
-                "p95": 36540300.0,
-                "mean": 29241000.0
+                "p05": 22511.1,
+                "p50": 28490.300000000003,
+                "p95": 36540.3,
+                "mean": 29241.0
               }
             },
             "no_sustained_excess": {

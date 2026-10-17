@@ -55,8 +55,11 @@ def scale_outcome(row, factor):
         raise ValueError("outcome requires point, low and high")
     _scale_fields(out, [key for key in ("point", "low", "high", "undiscounted_point",
                                        "sensitivity_reference_point") if key in out], factor)
-    interval = out.get("parameter_interval_90")
+    # Sampling shares this interval with the nested source-profile variant.
+    # Detach it before scaling; deepcopy preserves aliases within the result.
+    interval = copy.deepcopy(out.get("parameter_interval_90"))
     if interval and interval.get("available") is not False:
+        out["parameter_interval_90"] = interval
         _scale_fields(interval, ("p05", "p50", "p95", "mean"), factor)
     removals = out.get("effect_removal_points")
     if removals and removals.get("available") is not False:

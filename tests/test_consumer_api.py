@@ -136,3 +136,23 @@ def test_null_mortality_contract_is_unknown_not_a_shared_declared_basis():
     source["components"] = {"follow_up_years": -1, "method": "odds_survival", "timing": "source_profile"}
     with pytest.raises(ValueError, match="follow-up must be finite"):
         mix_expected([packet(source)], [1], "excess_deaths")
+
+
+@pytest.mark.parametrize("factor", [0, .000125, .25, 1, 1000])
+def test_shared_source_profile_interval_scales_once_and_leaves_input_untouched(factor):
+    import copy
+
+    source = row()
+    interval = {"p05": 6.0, "p50": 10.0, "p95": 14.0, "mean": 10.5}
+    source["parameter_interval_90"] = interval
+    source["persistence_sensitivity"] = {
+        "available": True, "source_minus_no_sustained_point": 0,
+        "variants": {"source_profile": {
+            "point": 10.0, "low": 5.0, "high": 15.0, "parameter_interval_90": interval}},
+    }
+    before = copy.deepcopy(source)
+    scaled = scale_outcome(source, factor)
+    assert scaled["parameter_interval_90"] == scaled["persistence_sensitivity"]["variants"]["source_profile"]["parameter_interval_90"]
+    assert scaled["parameter_interval_90"]["mean"] == pytest.approx(10.5 * factor)
+    assert source == before
+    assert source["parameter_interval_90"] is interval

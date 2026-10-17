@@ -402,6 +402,8 @@ and experiment spans by `s`; output variance scales by `s²`. Coefficients,
 source endpoints, baseline rates, per-family schedules, metadata and variance
 indices do not scale. At zero exposure variance indices are undefined. Label
 the source basis separately; a display transform is not a native refit.
+Each reported interval scales exactly once, including when the sampled main
+result and its source-profile alternative share the same interval object.
 
 Mixture weights must be finite, nonnegative and sum to one. Active components
 need the same worker denominator; mortality additionally needs the same
