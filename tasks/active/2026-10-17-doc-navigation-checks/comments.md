@@ -15,3 +15,10 @@ Created in inbox.
 triage: inbox -> ready.
 
 User authorized generator and navigation repairs as part of the refactor.
+
+## c-831064a98d03
+
+- At: 2026-10-17 20:40 HKT
+- By: codex-doc-cleanup
+
+claim: ready -> active.

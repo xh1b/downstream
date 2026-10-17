@@ -2,7 +2,7 @@
 title: Repair documentation paths and verify generated review reports
 area: scripts
 priority: P2
-assignee:
+assignee: codex-doc-cleanup
 tags: [@tag:tooling]
 blocked-by: []
 ---
