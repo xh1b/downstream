@@ -55,3 +55,12 @@ Candidate 429af5397752a8fd4c1062b54b0835d82d2b13e4, engine 0.4.0 / v1.52. Full P
 Ruff, Vulture, evidence audit (0 errors/warnings), 36 documentation examples, six generator freshness checks, refs and task validation pass. The sdist-built wheel passes 11 isolated command checks. All 74 bundle files verify; eight CLI inventories pass outside the checkout. The prior reviewed local 0.3/v1.49 pin comparison retains every field difference. Old validation data are absent from that consumer bundle, so the exact failure is archived and no before/after validation claim is made.
 
 Report: [qualification and exact identities](../../../docs/audits/release_qualification_2026-10-17.md). Machine receipt: [checks and artifact hashes](../../../docs/audits/release_qualification_2026-10-17.json). Raw outputs/bundle/distributions/environment/source manifests are retained in build/release04-qualification-20261017/qualification-artifacts.tar.gz (7,591,507 bytes), SHA-256 76889f9ed7c3e6949e8d439c8ee7b38ef3eb4e58c12ca12aa33c40c445e0da65; all 144 archived file hashes verify. No publication, companion repin/cache change, deployment or new independent causal validation is claimed.
+
+## c-a8f2a60c3c4e
+
+- At: 2026-10-17 22:02 HKT
+- By: codex-release-finish
+
+done: active -> review.
+
+Full local qualification and archive are ready for review; owner release acceptance remains on the parent.
