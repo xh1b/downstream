@@ -1,5 +1,6 @@
 # @ref:code-uncertainty-budget
-# Method: @link:doc-probabilistic-roadmap.
+# Rationale: @link:paper-uncertainty-budget.
+# Software contract: @link:doc-integration.
 # Verification: @link:test-uncertainty-budget; @link:test-audit04-custom-inputs.
 # Related: @link:paper-uncertainty.
 # @tag:uncertainty

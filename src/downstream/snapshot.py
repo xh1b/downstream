@@ -1,5 +1,6 @@
 # @ref:code-snapshot
-# Method: @link:doc-version-comparison.
+# Rationale: @link:paper-reproducibility.
+# Software contract: @link:doc-version-comparison.
 # Verification: @link:test-export; @link:test-release-repairs.
 # @tag:consumer
 """Version-stamped parameter-set snapshot export.

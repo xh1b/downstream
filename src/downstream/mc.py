@@ -1,5 +1,6 @@
 # @ref:code-mc
-# Method: @link:doc-probabilistic-roadmap.
+# Rationale: @link:paper-sampling.
+# Software contract: @link:doc-integration.
 # Verification: @link:test-audit-repairs; @link:test-dist-v127; @link:test-explanation-properties.
 # Related: @link:paper-uncertainty.
 # @tag:uncertainty

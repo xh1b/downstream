@@ -141,6 +141,13 @@ the source-window response constant. Headline eligibility stays false. See
 [admission tests](../tests/test_mortality_admission_0_4.py) and the
 [applicability review](audits/MORTALITY_APPLICABILITY_0_4.md).
 
+The separate `mortality_covariance.linear_se_bounds` and
+`additive_phase_diagnostic` APIs inspect additive coefficients with unknown
+covariance; [analyze_mortality_covariance.py](../scripts/analyze_mortality_covariance.py)
+reproduces the diagnostic. They do not admit a response or generate joint
+mortality draws. The bound and proof are in @link:paper-mortality-covariance;
+the [review receipt](audits/MORTALITY_COVARIANCE_0_4.md) records source details.
+
 ### Persistence comparison
 
 <!-- @ref:doc-mortality-persistence-sensitivity -->

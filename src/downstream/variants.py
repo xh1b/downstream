@@ -1,5 +1,6 @@
 # @ref:code-variants
-# Method: @link:doc-causal-graph-plan.
+# Rationale: @link:paper-sensitivity.
+# Software contract: @link:doc-result-sensitivity.
 # Verification: @link:test-variants; @link:test-extraction-v119.
 # @tag:model
 """Structural-variant ensemble: named alternate composition assumptions.

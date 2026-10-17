@@ -1,5 +1,6 @@
 # @ref:code-employer
-# Method: @link:doc-exposure-semantics-0-4.
+# Rationale: @link:paper-exposure.
+# Software contract: @link:doc-exposure-semantics-0-4.
 # Verification: @link:test-employer; @link:test-audit04-custom-inputs; @link:test-employer-warehouse.
 # @tag:exposure
 """Adapt documented entity exposure to the scenario engine.

@@ -1,5 +1,6 @@
 # @ref:code-citations
-# Method: @link:doc-citing.
+# Rationale: @link:paper-parameters.
+# Software contract: @link:doc-citing.
 # Verification: @link:test-params; @link:test-credits.
 # @tag:evidence
 """references.bib parsing + citation coverage.

@@ -1,5 +1,5 @@
 # @ref:test-policy
-# Method: @link:doc-causal-graph-plan.
+# Method: @link:paper-composition.
 # Implementation: @link:code-policy; @link:code-params; @link:code-scenario.
 # @tag:policy @tag:testing
 from dataclasses import replace

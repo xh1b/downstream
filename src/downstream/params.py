@@ -1,5 +1,6 @@
 # @ref:code-params
-# Method: @link:doc-citing; @link:spec-composition.
+# Rationale: @link:paper-parameters.
+# Software contract: @link:doc-citing.
 # Verification: @link:test-params; @link:test-source-reextraction.
 # @tag:evidence
 """Parameter set, node registry, and baseline loading + DAG validation.

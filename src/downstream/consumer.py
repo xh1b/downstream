@@ -1,5 +1,6 @@
 # @ref:code-consumer
-# Method: @link:doc-consumer-fixtures-0-4.
+# Rationale: @link:paper-consumer-transforms.
+# Software contract: @link:doc-consumer-fixtures-0-4.
 # Verification: @link:test-consumer-api; @link:test-consumer-fixtures.
 # @tag:consumer
 """Checked display transforms for a fixed exposure basis and place mixtures.

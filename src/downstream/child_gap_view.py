@@ -1,5 +1,6 @@
 # @ref:code-child-gap-view
-# Method: @link:doc-child-gap-view.
+# Rationale: @link:paper-children.
+# Software contract: @link:doc-child-gap-view.
 # Verification: @link:test-child-gap-view; @link:test-child-gap-cli.
 # @tag:children
 """Side-by-side earnings gaps with the same contexts as scenario counts.

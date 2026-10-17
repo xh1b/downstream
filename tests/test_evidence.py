@@ -1,5 +1,5 @@
 # @ref:test-evidence
-# Method: @link:doc-literature-acquisition-plan.
+# Method: @link:doc-evidence.
 # Implementation: @link:code-evidence.
 # @tag:evidence @tag:testing
 from pathlib import Path

@@ -1,5 +1,6 @@
 % @ref:paper-methods
-% Method: @link:doc-paper; @link:specification.
+% Software/build: @link:doc-paper; @link:specification.
+% Implementation is authoritative; this paper explains its mathematics and rationale.
 % Related: @link:paper-build-tables.
 % @tag:methods
 % SPDX-License-Identifier: MIT
@@ -160,6 +161,10 @@ displacement effect comes from a study of high-seniority men. The child
 earnings link comes from Canadian father--son firm closures and uses a US
 male lifetime-earnings baseline in 2024 dollars. Applying either result to
 a mixed or unknown population requires a separate transport argument.
+% @ref:paper-receiving
+% Implementation: @link:code-receiving-community.
+% Software contract: @link:doc-receiving-community-0-4.
+% Verification: @link:test-receiving-adapter.
 Receiving-community crime links use source-specific population shares:
 an undocumented-share percentage-point change for Light--Miller's
 log-rate response, and a regular-resident share ratio for Bianchi's
@@ -171,6 +176,18 @@ with the 2012 published article remains pending. Correct units do not
 establish target transport. Optional incident differences
 use the same supplied post population in both rate scenarios and concern
 an annual endpoint, not cumulative crimes.
+For supplied reference and post shares $s_0,s_1$, the rate ratios are
+$R=\exp\{100\beta(s_1-s_0)\}$ for the unlogged percentage-point
+predictor \cite{lightmiller2018}, and
+$R=\exp\{\beta\log(s_1/s_0)\}$ for log shares
+\cite{bianchibuonannopinotti2012}. The second expression requires positive
+shares. Resident-count inputs first form each share using its own population
+denominator, rather than treating immigrant-stock growth as share growth.
+For an annual baseline rate $b$ per 100,000 and a supplied post population
+$P_1$, the signed endpoint difference is $(bP_1/100000)(R-1)$.
+Interpreting exponentiated log-rate predictions as arithmetic rate ratios
+assumes the residual retransformation factor is unchanged between scenarios.
+Neither this assumption nor compatible units establish target transport.
 
 The entity adapter accepts either a documented exposure or a warehouse
 aggregate with a stored total and components. The warehouse mapping checks
@@ -346,6 +363,35 @@ medians approximates, rather than equals, the median lifetime total.
 Exact source tables, windows, and arithmetic are retained in
 \nolinkurl{params/baselines.csv}.
 
+% @ref:paper-mortality-covariance
+% Implementation: @link:code-mortality-covariance.
+% Software contract: @link:integration-mortality.
+% Review: @link:doc-mortality-covariance-0-4.
+% Verification: @link:test-mortality-covariance.
+\subsubsection{Additive coefficients with unknown covariance}
+A separate diagnostic examines additive log-odds coefficients in the
+available published-version mortality manuscript \cite{sullivan2009}.
+It does not replace the production working-paper profile. The standard
+error of a phase sum cannot be obtained by adding variances unless the
+covariances are known or independence is justified. For one linear contrast
+$T=\sum_i a_i\beta_i$ with marginal errors $\sigma_i$, let
+$l_i=|a_i|\sigma_i$. Over positive-semidefinite covariance matrices with
+that diagonal, the sharp bounds are
+\begin{equation}
+ \max\{0,\,2\max_i l_i-\sum_i l_i\}
+ \;\leq\; \operatorname{SE}(T) \;\leq\; \sum_i l_i.
+\end{equation}
+To see attainability, represent the covariance as a Gram matrix of vectors
+with lengths $\sigma_i$. Align the weighted vectors for the upper bound;
+oppose the longest with the remainder, or close a polygon, for the lower
+bound. Signed weights are absorbed into vector direction. The extrema concern
+one contrast; separate phases need not attain their extrema jointly.
+The implementation also reports the point plus or minus 1.96 times the
+upper bound as an outer normal-approximation envelope, conditional on supplied
+marginal errors. It is not a source-reported confidence interval, a simultaneous
+band, or a joint draw model. These bounds neither resolve source timing and
+version differences nor propagate nonlinear twenty-year mortality uncertainty.
+
 % @ref:paper-children
 % Method: @link:doc-child-gap-view.
 % Implementation: @link:code-child-applicability; @link:code-valuation.
@@ -475,7 +521,8 @@ household prediction interval; this prototype remains ineligible for
 public headlines.
 
 % @ref:paper-uncertainty
-% Method: @link:doc-probabilistic-roadmap.
+% Software: @link:doc-integration.
+% Research context: @link:doc-probabilistic-roadmap.
 % Implementation: @link:code-mc; @link:code-inference.
 % Related: @link:figure-uncertainty.
 % @tag:uncertainty
@@ -583,10 +630,22 @@ price a hypothetical dependence choice without treating it as evidence.
 
 % @ref:paper-sensitivity
 % Method: @link:doc-result-sensitivity.
-% Implementation: @link:code-sensitivity; @link:code-knobs; @link:code-variants.
+% Implementation: @link:code-result-sensitivity; @link:code-sensitivity; @link:code-knobs; @link:code-variants.
 % Verification: @link:test-sensitivity-scoring.
 % @tag:uncertainty
 \subsection{Sensitivity, sweeps, and structural variants}
+Public scenario counts also attach deterministic effect-removal and
+one-input endpoint refits. Each experiment changes one admitted input while
+retaining the selected sources, baseline, population and other assumptions.
+A neutral ratio is one; a neutral additive/job or place-modifier coefficient
+is zero where defined by that outcome's implementation. The reported removal
+changes need not sum to the total because survival and composition are
+nonlinear. Removing an effect can also leave its observed support, so the
+experiment is a declared hypothetical comparison, not an identified causal
+share. Endpoint spans are conditional response ranges rather than variance
+indices. Fixed exposure, baseline and transport assumptions acquire no
+uncertainty distribution through these experiments.
+
 The sensitivity interface estimates first-order and total Sobol indices
 using a Saltelli-style design \cite{sobol2001,saltelli2002}. Seed replicates
 report design variation; that spread is not a confidence interval on the
@@ -622,7 +681,8 @@ future improvement; the current envelope is not a probabilistic policy
 effect interval and does not identify a policy-to-exposure bridge.
 
 % @ref:paper-synthesis
-% Method: @link:doc-pool-readiness-0-4.
+% Software: @link:doc-evidence.
+% Review: @link:doc-pool-readiness-0-4.
 % Implementation: @link:code-synthesis; @link:code-county-rates.
 % Verification: @link:test-synthesis.
 % @tag:evidence
@@ -771,7 +831,7 @@ These archived results are retained in
 Its compatible-pooling refusals preserve population, horizon, scale, and
 overlap differences rather than manufacture independent study counts.
 The source-selection and evaluation protocol in
-\nolinkurl{docs/SCENARIO_EVIDENCE_PROTOCOL.md} records a locally frozen
+\nolinkurl{docs/research/SCENARIO_EVIDENCE_PROTOCOL.md} records a locally frozen
 research round, not retrospective preregistration or an independently
 timestamped prospective forecast. No new matched independent event score
 is established by these software and baseline-data checks.
@@ -892,7 +952,7 @@ can improve sampled comparison precision; the current household prototype
 instead calculates marginal expectations exactly. Neither identifies one
 person's joint potential outcomes. A full life-course simulator and public
 applicability are not established. Milestones and acceptance criteria are recorded in
-\nolinkurl{docs/LIFE_COURSE_RESEARCH_PLAN.md}.
+\nolinkurl{docs/research/LIFE_COURSE_RESEARCH_PLAN.md}.
 
 % @ref:paper-calculator
 % Method: @link:doc-calculator; @link:doc-website-experience-plan.
@@ -916,7 +976,7 @@ capabilities are ready, but must be labeled as illustrative. Usability
 evaluation should measure whether visitors understand the comparison and
 its limits, rather than treating visual polish or expressed trust as
 evidence of comprehension. The separate product plan,
-\nolinkurl{docs/WEBSITE_EXPERIENCE_PLAN.md}, specifies the intended journey,
+\nolinkurl{docs/research/WEBSITE_EXPERIENCE_PLAN.md}, specifies the intended journey,
 visual direction, explanation patterns, and release criteria; it is a
 design proposal, not a description of a deployed service.
 
@@ -936,6 +996,22 @@ September 10 review repaired county predictive-baseline consistency,
 disconnected custom chains, ignored chain starting values, and the
 fixed copula seed used in sensitivity designs. Correlated Monte Carlo
 results can consequently change at the same historical user seed.
+
+% @ref:paper-consumer-transforms
+% Implementation: @link:code-consumer.
+% Software contract: @link:doc-consumer-fixtures-0-4.
+% Verification: @link:test-consumer-api; @link:test-consumer-fixtures.
+For an explicitly declared exposure basis, display scaling multiplies expected
+outcomes and their corresponding experiments by a nonnegative factor $s$;
+output variance scales by $s^2$. This is a display transformation, not a new
+cohort fit. Compatible place mixtures combine expectations as
+$\sum_k w_k E[X_k]$, retaining every component's baseline and applicability.
+Linearity of expectation does not require independent components, but it
+also does not identify a joint distribution. Quantiles and variance indices
+cannot generally be averaged. A positive-weight unavailable component leaves
+the total unavailable rather than contributing zero. The consumer helpers
+therefore withhold joint mixture intervals until a joint draw/dependence
+calculation exists.
 
 Running \texttt{make -C paper} regenerates tables and chart data, builds the PDF, and
 writes \nolinkurl{paper/generated/results.json}. This JSON contains the

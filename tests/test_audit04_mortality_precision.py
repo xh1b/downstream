@@ -1,5 +1,5 @@
 # @ref:test-audit04-mortality-precision
-# Method: @link:doc-mortality-source-reconciliation-2026-09-10.
+# Method: @link:paper-counts.
 # Implementation: @link:code-mortality; @link:code-params.
 # @tag:mortality @tag:testing
 """Independent high-precision checks for near-null survival contrasts."""

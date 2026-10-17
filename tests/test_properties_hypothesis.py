@@ -1,5 +1,5 @@
 # @ref:test-properties-hypothesis
-# Method: @link:doc-causal-graph-plan.
+# Method: @link:paper-composition.
 # Implementation: @link:code-ledger; @link:code-mortality; @link:code-params; @link:code-place.
 # @tag:model @tag:testing
 """Generative invariants for the numerical kernel (Hypothesis)."""

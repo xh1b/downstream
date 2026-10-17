@@ -1,5 +1,6 @@
 # @ref:code-inference
-# Method: @link:doc-probabilistic-roadmap.
+# Rationale: @link:paper-inference.
+# Software contract: @link:doc-integration.
 # Verification: @link:test-inference; @link:test-audit-repairs; @link:test-inference-fuzz.
 # Related: @link:paper-uncertainty.
 # @tag:uncertainty

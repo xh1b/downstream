@@ -1,5 +1,5 @@
 # @ref:test-admission-provenance
-# Method: @link:doc-pool-readiness-0-4.
+# Method: @link:doc-evidence.
 # Implementation: @link:code-admission; @link:code-study-library.
 # @tag:evidence @tag:testing
 """Admission and provenance contracts for support metadata.

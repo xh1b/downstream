@@ -1,5 +1,6 @@
 # @ref:code-bundle
-# Method: @link:doc-consumer-fixtures-0-4.
+# Rationale: @link:paper-reproducibility.
+# Software contract: @link:doc-consumer-fixtures-0-4.
 # Verification: @link:test-bundle; @link:test-bundle-fsm; @link:test-guard-rails.
 # @tag:consumer
 """Content-addressed, standalone engine and parameter export for consumers."""

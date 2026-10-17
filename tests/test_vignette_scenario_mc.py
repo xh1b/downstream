@@ -1,5 +1,5 @@
 # @ref:test-vignette-scenario-mc
-# Method: @link:doc-probabilistic-roadmap.
+# Method: @link:paper-uncertainty.
 # Implementation: @link:code-mc; @link:code-params; @link:code-scenario; @link:code-vignette;
 # @link:code-children.
 # @tag:uncertainty @tag:testing

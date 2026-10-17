@@ -1,5 +1,6 @@
 # @ref:code-policy
-# Method: @link:doc-causal-graph-plan.
+# Rationale: @link:paper-sensitivity.
+# Software contract: @link:doc-integration.
 # Verification: @link:test-policy; @link:test-audit04-custom-inputs; @link:test-guard-rails.
 # @tag:policy
 """Conditional policy contrasts with explicit exposure assumptions.

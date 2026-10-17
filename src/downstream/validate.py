@@ -1,5 +1,6 @@
 # @ref:code-validate
-# Method: @link:doc-scenario-evidence-protocol.
+# Rationale: @link:paper-validation.
+# Software contract: @link:evidence-evaluation.
 # Verification: @link:test-validate; @link:test-audit-repairs; @link:test-extraction-v117.
 # @tag:validation
 """Model validation, stage by stage.
@@ -127,7 +128,7 @@ def v1_backtest_spec() -> dict:
             "terciles and no sign flips. No parameter may be tuned to "
             "pass; a miss is published."
         ),
-        "status": "scaffolded - data plugs pending (see docs/QUEUED_EXTRACTIONS.md)",
+        "status": "scaffolded - data plugs pending (see docs/research/QUEUED_EXTRACTIONS.md)",
     }
 
 

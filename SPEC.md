@@ -3,11 +3,12 @@
 <!-- @ref:specification; @tag:model @tag:methods -->
 <!-- Context: @link:docs-index; @link:code-ledger; @link:code-scenario; @link:paper-model; @link:test-mathematics-v02. -->
 
-Versioned with the parameter set (`params/VERSION`). This document is
-the algorithm: what is computed, from what, with which citations, and
-what is deliberately not computed. Everything here is public by
-design. The companion research corpus is private; this repo carries
-only the model, the numbers, and their sources.
+This is a secondary algorithm and contract reference, versioned with
+`params/VERSION`. The [implementation](src/downstream/) and admitted data define
+actual behavior. The [paper](paper/downstream.tex) explains the mathematics and
+scientific choices; the [software guides](docs/README.md) cover use, integration
+and development. Resolve disagreements against code and tests, then repair the
+relevant explanation. Research directions below are proposals until implemented.
 
 <!-- @ref:spec-purpose; connections: @link:doc-model-card; @link:code-scenario. -->
 ## 1. Purpose and what the model computes
@@ -50,7 +51,7 @@ The ledger records each step so any output can be audited back to its
 studies.
 
 The graph expansion requirements are defined in
-`docs/CAUSAL_GRAPH_PLAN.md`. New links must also carry their causal estimand
+`docs/research/CAUSAL_GRAPH_PLAN.md`. New links must also carry their causal estimand
 (total, direct, mediated, null, or context-only), time semantics, and a
 unit-appropriate uncertainty representation before they can be composed.
 
@@ -220,7 +221,7 @@ coefficient is currently applied from follow-up year 6 onward. The September
 10 source check found available early-year estimates and an offset error:
 source +6 corresponds to follow-up year 7 when displacement is year 1.
 `source_aligned` is therefore a historical option name for an incomplete
-profile (see `docs/MORTALITY_SOURCE_RECONCILIATION_2026-09-10.md` for the
+profile (see `docs/audits/MORTALITY_SOURCE_RECONCILIATION_2026-09-10.md` for the
 current production profile).
 `immediate_sustained` backfills persistence as a sensitivity assumption.
 `legacy_additive` retains the
@@ -379,7 +380,7 @@ with contribution shares, Sobol drivers, declared assumptions,
 blocked outcomes with fixes, falsifiers, version + seed. Hard rules,
 tested: no naked point estimates; every step cited; refusals named
 with their missing input. Rendering rules live in
-`docs/RENDERING.md`; the reference renderer is `render.py`.
+`docs/research/RENDERING.md`; the reference renderer is `render.py`.
 
 <!-- @ref:spec-scenarios; connections: @link:doc-exposure-semantics-0-4; @link:code-scenario; @link:test-exposure-semantics. -->
 ## 11. Scenario aggregation
@@ -478,13 +479,13 @@ substituted — the spread IS the result. CLI: `downstream ensemble`.
 ## 13. Queued and excluded
 
 - Queued (structure known, number pending full-text extraction):
-  `docs/QUEUED_EXTRACTIONS.md`. Each row names the study, the exact
+  `docs/research/QUEUED_EXTRACTIONS.md`. Each row names the study, the exact
   table/figure to extract, and the priority.
 - No generic immigration-to-crime causal coefficient is admitted from the
   pooled literature (ousey2018; butcher1998). Source-specific receiving
   comparisons use separate typed exposure margins and retain signed,
   null-compatible estimates. They do not supply a universal positive,
-  negative or zero effect. See `docs/RECEIVING_COMMUNITY_0_4.md`.
+  negative or zero effect. See `docs/INTEGRATION.md`.
 - Excluded by source-class rule (queue-9): Duncan, Ziol-Guest &
   Kalil 2010 (Child Development 81:306-325) — the early-poverty →
   adult-attainment anchor the queue named — is observational OLS on

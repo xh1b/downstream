@@ -1,5 +1,5 @@
 # @ref:test-metamorphic
-# Method: @link:doc-mortality-source-reconciliation-2026-09-10.
+# Method: @link:paper-counts.
 # Implementation: @link:code-mortality; @link:code-params; @link:code-scenario.
 # @tag:mortality @tag:testing
 """Metamorphic checks for scenario arithmetic and mortality timing.

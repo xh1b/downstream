@@ -1,5 +1,6 @@
 # @ref:code-evidence
-# Method: @link:doc-literature-acquisition-plan.
+# Rationale: @link:paper-parameters.
+# Software contract: @link:doc-evidence.
 # Verification: @link:test-evidence; @link:test-evidence-classification; @link:test-guard-rails.
 # @tag:evidence
 """The acquired-paper registry.
@@ -99,7 +100,7 @@ def load_corpus(path: str | Path) -> tuple[EvidenceRecord, ...]:
     """Load the mechanically verified acquisition registry.
 
     This intentionally does not turn records into model parameters.  See
-    ``docs/CITING.md`` for the separate scientific-extraction gate.
+    ``docs/EVIDENCE.md`` for the separate scientific-extraction gate.
     """
     with open(path, newline="", encoding="utf-8") as handle:
         rows = [

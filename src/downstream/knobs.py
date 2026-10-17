@@ -1,5 +1,6 @@
 # @ref:code-knobs
-# Method: @link:doc-result-sensitivity.
+# Rationale: @link:paper-sensitivity.
+# Software contract: @link:doc-result-sensitivity.
 # Verification: @link:test-knobs; @link:test-guard-rails; @link:test-inference.
 # @tag:uncertainty
 """Knob experiments: turn a declared knob, measure what moves.

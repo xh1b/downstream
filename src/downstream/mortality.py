@@ -1,7 +1,7 @@
 # @ref:code-mortality
-# Method: @link:doc-mortality-source-reconciliation-2026-09-10.
+# Rationale: @link:paper-counts.
+# Software contract: @link:integration-mortality.
 # Verification: @link:test-mathematics-v02; @link:test-metamorphic; @link:test-audit04-mortality-precision.
-# Related: @link:paper-counts.
 # @tag:mortality
 """Odds-to-risk conversion and explicitly timed survival at the count boundary."""
 from __future__ import annotations

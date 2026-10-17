@@ -1,5 +1,5 @@
 # @ref:test-inference
-# Method: @link:doc-probabilistic-roadmap.
+# Method: @link:paper-uncertainty.
 # Implementation: @link:code-inference; @link:code-children; @link:code-params; @link:code-knobs;
 # @link:code-distributions.
 # @tag:uncertainty @tag:testing

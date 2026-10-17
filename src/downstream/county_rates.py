@@ -1,5 +1,6 @@
 # @ref:code-county-rates
-# Method: @link:doc-probabilistic-roadmap.
+# Rationale: @link:paper-synthesis.
+# Software contract: @link:doc-cdc-wonder-profile-import.
 # Verification: @link:test-county-rates; @link:test-county-eb-prior; @link:test-county-mortality.
 # @tag:uncertainty
 """Count-likelihood county baseline uncertainty.

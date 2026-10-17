@@ -1,5 +1,6 @@
 # @ref:code-credits
-# Method: @link:doc-attribution.
+# Rationale: @link:paper-reproducibility.
+# Software contract: @link:doc-attribution.
 # Verification: @link:test-credits; @link:test-release-repairs.
 # @tag:evidence
 """The credits engine: who built this model?

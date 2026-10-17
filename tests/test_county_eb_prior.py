@@ -1,5 +1,5 @@
 # @ref:test-county-eb-prior
-# Method: @link:doc-probabilistic-roadmap.
+# Method: @link:paper-uncertainty.
 # Implementation: @link:code-county-rates.
 # @tag:uncertainty @tag:testing
 """Empirical-Bayes prior-strength check for the county-mortality pooling.
@@ -7,7 +7,7 @@
 Pins the method-of-moments EB yardstick (county_rates.empirical_bayes_
 prior_person_years) against the committed male 45-54 export: the estimate
 is recorded as a sensitivity check on the DECLARED k = 2000 prior
-person-years (docs/DATA_SOURCES.md), never auto-imposed by the build.
+person-years (docs/audits/DATA_SOURCES.md), never auto-imposed by the build.
 """
 import dataclasses
 

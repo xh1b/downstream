@@ -1,5 +1,6 @@
 # @ref:code-receiving-community
-# Method: @link:doc-receiving-community-0-4.
+# Rationale: @link:paper-receiving.
+# Software contract: @link:doc-receiving-community-0-4.
 # Verification: @link:test-receiving-community; @link:test-receiving-adapter.
 # @tag:receiving
 """Source-specific receiving-community share scenarios, separate from displacement."""

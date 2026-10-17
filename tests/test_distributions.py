@@ -1,5 +1,5 @@
 # @ref:test-distributions
-# Method: @link:doc-probabilistic-roadmap.
+# Method: @link:paper-uncertainty.
 # Implementation: @link:code-distributions; @link:code-params.
 # @tag:uncertainty @tag:testing
 """Distribution, LHS, and correlation-induction checks."""

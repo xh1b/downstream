@@ -48,6 +48,9 @@ copying its derivation. The code remains authoritative if the two diverge.
 | What does the annual household model compute? | @link:paper-household | @link:code-household |
 | What do sampling, moments and sensitivity establish? | @link:paper-sampling, @link:paper-inference, @link:paper-sensitivity | @link:code-distributions, @link:code-inference, @link:code-result-sensitivity |
 | How are synthesis and county likelihoods qualified? | @link:paper-synthesis | @link:code-synthesis, @link:code-county-rates |
+| How do source-specific receiving responses map shares to rates? | @link:paper-receiving | @link:code-receiving-community |
+| What can missing covariance establish? | @link:paper-mortality-covariance | @link:code-mortality-covariance |
+| Why can expected mixtures be combined but not their quantiles? | @link:paper-consumer-transforms | @link:code-consumer |
 | Which validation claims are supported? | @link:paper-validation, @link:paper-independent-validation | @link:code-validate, @link:code-forecast-registry |
 
 Build from the repository root:

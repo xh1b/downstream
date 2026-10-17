@@ -1,5 +1,5 @@
 # @ref:test-review-20260910
-# Method: @link:doc-probabilistic-roadmap.
+# Method: @link:paper-uncertainty.
 # Implementation: @link:code-distributions; @link:code-ledger; @link:code-mc; @link:code-mortality;
 # @link:code-params.
 # @tag:uncertainty @tag:testing

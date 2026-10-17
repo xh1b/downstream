@@ -1,5 +1,6 @@
 # @ref:code-synthesis
-# Method: @link:doc-pool-readiness-0-4.
+# Rationale: @link:paper-synthesis.
+# Software contract: @link:doc-evidence.
 # Verification: @link:test-synthesis; @link:test-child-applicability; @link:test-guard-rails.
 # @tag:evidence
 """Study-level random-effects synthesis, separate from parameter admission.

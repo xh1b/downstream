@@ -1,5 +1,6 @@
 # @ref:code-place
-# Method: @link:doc-place-counterfactual.
+# Rationale: @link:paper-place.
+# Software contract: @link:doc-child-gap-view.
 # Verification: @link:test-place; @link:test-child-gap-view; @link:test-extraction-v130.
 # @tag:place
 """Place-resolved layer: partial pooling of county baselines + the

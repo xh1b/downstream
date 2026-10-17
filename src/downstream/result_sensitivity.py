@@ -1,5 +1,6 @@
 # @ref:code-result-sensitivity
-# Method: @link:doc-result-sensitivity.
+# Rationale: @link:paper-sensitivity.
+# Software contract: @link:doc-result-sensitivity.
 # Verification: @link:test-result-sensitivity.
 # @tag:uncertainty
 """Per-result counterfactual probes, separate from parameter variance attribution."""

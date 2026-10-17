@@ -1,5 +1,6 @@
 # @ref:code-child-applicability
-# Method: @link:doc-child-support-0-4.
+# Rationale: @link:paper-children.
+# Software contract: @link:doc-child-support-0-4.
 # Verification: @link:test-child-applicability; @link:test-audit04-custom-inputs.
 # @tag:children
 """Child eligibility and source income contrasts, without invented age curves."""

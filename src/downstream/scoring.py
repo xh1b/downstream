@@ -1,5 +1,6 @@
 # @ref:code-scoring
-# Method: @link:doc-scenario-evidence-protocol.
+# Rationale: @link:paper-validation.
+# Software contract: @link:evidence-evaluation.
 # Verification: @link:test-guard-rails; @link:test-sensitivity-scoring.
 # @tag:validation
 """Proper scoring rules for the validation program.

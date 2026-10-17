@@ -1,5 +1,6 @@
 # @ref:code-mortality-robustness
-# Method: @link:doc-mortality-persistence-sensitivity.
+# Rationale: @link:paper-counts.
+# Software contract: @link:doc-mortality-persistence-sensitivity.
 # Verification: @link:test-mortality-robustness.
 # @tag:mortality
 """Price a declared persistence assumption without pooling incompatible studies.

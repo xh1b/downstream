@@ -1,5 +1,6 @@
 # @ref:code-mortality-covariance
-# Method: @link:doc-mortality-covariance-0-4.
+# Rationale: @link:paper-mortality-covariance.
+# Software contract: @link:integration-mortality.
 # Verification: @link:test-mortality-covariance.
 # @tag:mortality
 """Unknown-covariance diagnostics for additive log-odds coefficients.

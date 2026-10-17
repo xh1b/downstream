@@ -1,5 +1,6 @@
 # @ref:code-cli
-# Method: @link:doc-model-card.
+# Rationale: @link:paper-model.
+# Software contract: @link:doc-model-card.
 # Verification: @link:test-cli-direct-contracts; @link:test-cli-smoke.
 # @tag:cli
 """downstream CLI.

@@ -1,5 +1,6 @@
 # @ref:code-family
-# Method: @link:doc-causal-graph-plan.
+# Rationale: @link:paper-composition.
+# Software contract: @link:doc-integration.
 # Verification: @link:test-modules; @link:test-remarriage-screen.
 # @tag:family
 """Family-stream outcomes: divorce, IPV transmission, family size.

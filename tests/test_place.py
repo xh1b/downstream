@@ -1,5 +1,5 @@
 # @ref:test-place
-# Method: @link:doc-place-counterfactual.
+# Method: @link:paper-place.
 # Implementation: @link:code-place; @link:code-audit; @link:code-params; @link:code-vignette;
 # @link:code-children.
 # @tag:place @tag:testing

@@ -1,5 +1,6 @@
 # @ref:code-compare
-# Method: @link:doc-version-comparison.
+# Rationale: @link:paper-reproducibility.
+# Software contract: @link:doc-version-comparison.
 # Verification: @link:test-compare.
 # @tag:consumer
 """Deterministic, field-complete comparison of saved calculations and parameters."""

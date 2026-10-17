@@ -1,5 +1,6 @@
 # @ref:code-children
-# Method: @link:doc-child-gap-view; @link:spec-composition.
+# Rationale: @link:paper-children.
+# Software contract: @link:doc-child-gap-view.
 # Verification: @link:test-modules; @link:test-child-gap-view; @link:test-transmissions.
 # @tag:children
 """Child and grandchild lines.

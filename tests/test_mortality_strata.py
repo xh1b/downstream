@@ -1,5 +1,5 @@
 # @ref:test-mortality-strata
-# Method: @link:doc-mortality-applicability-0-4.
+# Method: @link:integration-mortality.
 # Implementation: @link:code-mortality-strata.
 # @tag:mortality @tag:testing
 from copy import deepcopy

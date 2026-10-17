@@ -1,5 +1,5 @@
 # @ref:test-county-rates
-# Method: @link:doc-probabilistic-roadmap.
+# Method: @link:paper-uncertainty.
 # Implementation: @link:code-county-rates.
 # @tag:uncertainty @tag:testing
 import pytest

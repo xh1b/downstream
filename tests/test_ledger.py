@@ -1,5 +1,5 @@
 # @ref:test-ledger
-# Method: @link:doc-causal-graph-plan.
+# Method: @link:paper-composition.
 # Implementation: @link:code-ledger; @link:code-params; @link:code-children.
 # @tag:model @tag:testing
 """Compute checks for composition semantics — the core math."""

@@ -1,5 +1,6 @@
 # @ref:code-community
-# Method: @link:doc-exposure-semantics-0-4.
+# Rationale: @link:paper-exposure.
+# Software contract: @link:doc-exposure-semantics-0-4.
 # Verification: @link:test-modules; @link:test-exposure-semantics.
 # @tag:exposure
 """Community stream: local multipliers and school spending.

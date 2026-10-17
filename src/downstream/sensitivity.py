@@ -1,5 +1,6 @@
 # @ref:code-sensitivity
-# Method: @link:doc-result-sensitivity.
+# Rationale: @link:paper-sensitivity.
+# Software contract: @link:doc-result-sensitivity.
 # Verification: @link:test-knobs; @link:test-release-repairs; @link:test-review-20260910.
 # Related: @link:paper-uncertainty.
 # @tag:uncertainty

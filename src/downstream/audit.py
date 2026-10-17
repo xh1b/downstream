@@ -1,5 +1,6 @@
 # @ref:code-audit
-# Method: @link:doc-citing.
+# Rationale: @link:paper-parameters.
+# Software contract: @link:doc-citing.
 # Verification: @link:test-audit; @link:test-audit04-sources; @link:test-dist-v127.
 # @tag:evidence
 """The downstream audit.
@@ -252,7 +253,7 @@ def audit(params_dir: str | Path | None = None) -> list[Finding]:
                     "orphan",
                     f"parameters.csv:{p.link}: from_node {p.from_node!r} has no producer "
                     "and is not an entry node; upstream extraction must be queued in "
-                    "docs/QUEUED_EXTRACTIONS.md",
+                    "docs/research/QUEUED_EXTRACTIONS.md",
                 )
             )
 

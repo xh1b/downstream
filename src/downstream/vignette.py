@@ -1,5 +1,6 @@
 # @ref:code-vignette
-# Method: @link:doc-model-card.
+# Rationale: @link:paper-model.
+# Software contract: @link:doc-model-card.
 # Verification: @link:test-explanation-properties; @link:test-guard-rails; @link:test-place.
 # @tag:model
 """The standard family: a fully cited worked vignette.

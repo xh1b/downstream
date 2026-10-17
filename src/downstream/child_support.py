@@ -1,5 +1,6 @@
 # @ref:code-child-support
-# Method: @link:doc-child-support-0-4.
+# Rationale: @link:paper-children.
+# Software contract: @link:doc-child-support-0-4.
 # Verification: @link:test-child-support.
 # @tag:children
 """Inspect existing child earnings source support without inventing new effects."""

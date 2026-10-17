@@ -1,5 +1,6 @@
 # @ref:code-admission
-# Method: @link:doc-pool-readiness-0-4.
+# Rationale: @link:paper-synthesis.
+# Software contract: @link:doc-evidence.
 # Verification: @link:test-admission-provenance; @link:test-guard-rails; @link:test-synthesis.
 # @tag:evidence
 """Manual-review report for synthesized evidence versus a shipped parameter.

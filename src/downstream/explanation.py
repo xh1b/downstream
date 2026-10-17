@@ -1,5 +1,6 @@
 # @ref:code-explanation
-# Method: @link:doc-rendering.
+# Rationale: @link:paper-calculator.
+# Software contract: @link:calculator-output.
 # Verification: @link:test-explanation-properties; @link:test-guard-rails; @link:test-release-repairs.
 # @tag:rendering
 """The explanation object: a computed claim with its full derivation.

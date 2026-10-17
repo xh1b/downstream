@@ -1,5 +1,6 @@
 # @ref:code-render
-# Method: @link:doc-rendering.
+# Rationale: @link:paper-calculator.
+# Software contract: @link:calculator-output.
 # Verification: @link:test-explanation-properties; @link:test-guard-rails.
 # @tag:rendering
 """Text rendering of explanations.

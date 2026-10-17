@@ -1,5 +1,6 @@
 # @ref:code-brac
-# Method: @link:doc-data-sources.
+# Rationale: @link:paper-validation.
+# Software contract: @link:evidence-evaluation.
 # Verification: @link:test-brac; @link:test-adapter-adversarial.
 # @tag:data
 """Reproduce GAO-05-138 Appendix II's civilian-job exposure inventory.

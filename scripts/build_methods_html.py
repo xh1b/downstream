@@ -108,6 +108,11 @@ Fractional durations assume constant hazards within a phase. The five phases cov
 <p>Demographic profiles must match the admitted male 45–54 all-cause response. Other baseline rates do not establish effect transport.
 An explicit profile takes precedence over county mortality. County rates require compatible sex, age, cause, calendar window and national prior,
 and a Gamma–Poisson posterior verified against deaths and person-years. Suppressed counties remain absent; national fallback is disclosed.</p>
+<h3>Unknown-covariance diagnostic</h3><p>The separate additive-coefficient diagnostic uses marginal standard errors without inventing covariance.
+For one contrast T = sum(aᵢ βᵢ), let lᵢ = |aᵢ| SEᵢ. Its sharp standard-error bounds over compatible positive-semidefinite covariance matrices are
+max(0, 2 max(lᵢ) − sum(lᵢ)) and sum(lᵢ). A Gram-vector representation proves attainability by alignment or polygon closure.
+The point ± 1.96 times the upper bound is an outer normal-approximation envelope, not a source-reported interval or simultaneous band.
+Separate phase extrema need not be jointly attainable. This diagnostic does not replace the production mortality profile or create joint survival draws.</p>
 <h3>Child lifetime earnings</h3><p>Undiscounted lifetime loss = displaced workers × children per worker × relative adult earnings gap × the cited US male synthetic career earnings baseline.
 This is a lifetime dollar amount in 2024 dollars, not an annual loss. The baseline sums cross-sectional age-band medians and approximates individual lifetime sums;
 it excludes nonworking years. The Canadian father-son effect and US dollar conversion each require a transport decision.</p>
@@ -123,6 +128,9 @@ Light–Miller applies a percentage-point change in undocumented population shar
 Bianchi applies a log regular-resident share ratio to log total-crime rates. Both population denominators must be retained.
 Source windows and conditional fixed-effects versus IV roles remain distinct. Optional count differences use the same post population
 in both annual endpoint rate scenarios. No displaced-worker-to-arrival bridge, cumulative-crime extrapolation or additive crime total is supplied.</p>
+<p>With reference/post shares s₀ and s₁, Light–Miller uses exp(100 β (s₁ − s₀)); Bianchi uses exp(β log(s₁/s₀)) and requires positive shares.
+For baseline b incidents per 100,000 and post population P₁, the endpoint difference is (b P₁ / 100000) × (rate ratio − 1).
+The arithmetic rate interpretation assumes an unchanged residual retransformation factor. Correct source units do not establish target transport.</p>
 <h3>Local service jobs</h3><p>Local service jobs lost = T × ℓ, where T is independently documented net local loss of tradable jobs and ℓ is the multiplier for a declared job class.
 Manufacturing and high-tech multipliers represent different classes, not endpoints of one uncertainty interval. The tradable-share field is metadata and does not infer T from displaced workers.</p>
 <h3>Reference example</h3><p>For 1,000 displaced workers, two children per worker and 20 years of mortality follow-up,
@@ -135,6 +143,9 @@ unmodeled pathways and structural uncertainty are excluded. Latin hypercube samp
 Repeated relationship aliases share exactly one draw. Sobol attribution groups them, and dependent parameters are reported as joint blocks.
 Independent-step analytic moments refuse repeated shared variables. Predictive mortality, where available, adds binomial cohort variation in separately simulated exposed and counterfactual cohorts;
 their contrast is not an observable paired individual causal effect.</p>
+<p>Per-result effect-removal and one-input source-endpoint experiments refit the same scenario while retaining all other inputs and admission gates.
+A neutral ratio is one; additive/job and place-coefficient removal uses zero where the outcome defines it. Removal changes need not sum because propagation is nonlinear,
+and removal can leave observed support. These are hypothetical comparisons, not causal shares. Endpoint spans are not variance indices, and fixed inputs acquire no inferred distribution.</p>
 <p>A separate experimental uncertainty command samples a documented national event/person-time baseline using a Poisson likelihood and
 declared Jeffreys rate prior: Gamma(events + 0.5, rate = person-years). Baseline counts must reproduce the verified rate and match its
 sex, age, cause, calendar window and geography. Exposure is a caller-declared discrete uniform over integer bounds;
@@ -191,6 +202,11 @@ There are {len(synthesis['reports'])} compatible pooled reports and {len(synthes
 These are archived descriptive reproduction/baseline checks, not causal displacement validation or a new independent-event score.</p>
 <p>The evidence selection protocol is locally frozen research work, not retrospective preregistration or an independently timestamped forecast.
 The archived results are retained in validation/followthrough_evaluation_expanded_20261014.json.</p></section>
+<section id="consumer"><h2>Consumer scaling and mixtures</h2><p>Declared display factor s multiplies expected outcomes and corresponding experiments; output variance scales by s².
+Compatible mixtures use sum(wₖ E[Xₖ]) while retaining every baseline and applicability decision. Linearity of expectation does not require independence,
+but does not identify a joint distribution. Quantiles and variance indices cannot generally be averaged. A positive-weight unavailable component withholds the total.
+Joint mixture intervals remain unavailable until a joint draw/dependence calculation exists.</p>
+<p>The code and admitted data define behavior. The paper explains the mathematics; <a href="README.md">software guides</a> describe calling contracts and integration.</p></section>
 <section id="parameters"><h2>Parameter inventory</h2><p><a download="downstream-parameters.csv" href="{csv_uri}">Download the complete parameter CSV with full identifiers, precision and notes</a>.</p>
 <div class="scroll" role="region" aria-label="Parameter inventory" tabindex="0"><table><caption>Parameter support bands, destination units and evidence roles</caption>
 <thead><tr><th scope="col">Relationship and identifier</th><th scope="col">Point [low, high]</th><th scope="col">Unit</th><th scope="col">Evidence role</th><th scope="col">Sources, population and qualifications</th></tr></thead><tbody>{''.join(rows)}</tbody></table></div></section>

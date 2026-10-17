@@ -1,5 +1,6 @@
 # @ref:code-forecast-registry
-# Method: @link:doc-scenario-evidence-protocol.
+# Rationale: @link:paper-independent-validation.
+# Software contract: @link:evidence-evaluation.
 # Verification: @link:test-forecast-registry; @link:test-cli-direct-contracts; @link:test-forecast-fsm.
 # @tag:validation
 """Immutable local forecast registrations and separate outcome scoring.

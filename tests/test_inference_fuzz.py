@@ -1,5 +1,5 @@
 # @ref:test-inference-fuzz
-# Method: @link:doc-probabilistic-roadmap.
+# Method: @link:paper-uncertainty.
 # Implementation: @link:code-inference; @link:code-ledger; @link:code-params.
 # @tag:uncertainty @tag:testing
 """Property fuzz: the analytic layer vs the MC on random chains.

@@ -1,5 +1,6 @@
 # @ref:code-transmissions
-# Method: @link:doc-child-gap-view; @link:spec-composition.
+# Rationale: @link:paper-children.
+# Software contract: @link:doc-child-gap-view.
 # Verification: @link:test-transmissions.
 # @tag:children
 """Generational transmission: one parent->child edge, walked recursively.

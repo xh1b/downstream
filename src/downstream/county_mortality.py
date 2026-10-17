@@ -1,5 +1,6 @@
 # @ref:code-county-mortality
-# Method: @link:doc-cdc-wonder-profile-import.
+# Rationale: @link:paper-synthesis.
+# Software contract: @link:doc-cdc-wonder-profile-import.
 # Verification: @link:test-county-mortality; @link:test-adapter-adversarial; @link:test-guard-rails.
 # @tag:mortality
 """Validate profile-declared county aggregates exported by CDC WONDER.

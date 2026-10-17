@@ -1,7 +1,7 @@
 # @ref:code-scenario
-# Method: @link:doc-exposure-semantics-0-4; @link:spec-scenarios.
+# Rationale: @link:paper-exposure.
+# Software contract: @link:doc-exposure-semantics-0-4.
 # Verification: @link:test-vignette-scenario-mc; @link:test-exposure-semantics; @link:test-metamorphic.
-# Related: @link:paper-exposure.
 # @tag:exposure
 """Scenario aggregation: exposure counts -> modeled outcome counts.
 

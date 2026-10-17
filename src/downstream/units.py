@@ -1,5 +1,6 @@
 # @ref:code-units
-# Method: @link:doc-causal-graph-plan; @link:spec-composition.
+# Rationale: @link:paper-composition.
+# Software contract: @link:doc-development.
 # Verification: @link:test-ledger; @link:test-receiving-community.
 # @tag:model
 """Unit system for model nodes.

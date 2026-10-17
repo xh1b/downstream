@@ -1,5 +1,5 @@
 # @ref:test-build-places-adversarial
-# Method: @link:doc-place-counterfactual.
+# Method: @link:paper-place.
 # Implementation: @link:code-build-places.
 # @tag:place @tag:testing
 """Small hostile fixtures for Opportunity Atlas place-file ingestion."""

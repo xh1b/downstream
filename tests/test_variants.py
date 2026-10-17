@@ -1,5 +1,5 @@
 # @ref:test-variants
-# Method: @link:doc-causal-graph-plan.
+# Method: @link:paper-composition.
 # Implementation: @link:code-variants; @link:code-children; @link:code-params; @link:code-ledger.
 # @tag:model @tag:testing
 """Traps for the structural-variant ensemble.

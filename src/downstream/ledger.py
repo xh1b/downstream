@@ -1,5 +1,6 @@
 # @ref:code-ledger
-# Method: @link:doc-causal-graph-plan; @link:spec-composition.
+# Rationale: @link:paper-composition.
+# Software contract: @link:doc-development.
 # Verification: @link:test-ledger; @link:test-audit-repairs; @link:test-extraction-v112.
 # @tag:model
 """Deterministic ledger computation with explicit composition semantics.

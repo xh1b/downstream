@@ -1,7 +1,7 @@
 # @ref:code-household
-# Method: @link:doc-household-comparison-0-4.
+# Rationale: @link:paper-household.
+# Software contract: @link:doc-household-comparison-0-4.
 # Verification: @link:test-household; @link:test-household-summary.
-# Related: @link:paper-household.
 # @tag:household
 """Annual household-resource scenarios using observed SIPP baseline transitions.
 
