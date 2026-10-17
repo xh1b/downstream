@@ -69,6 +69,28 @@ def test_numeric_controls_labels_keyboard_and_mobile_provisions():
         assert text in html
 
 
+def test_symbol_controls_and_tables_have_readable_accessible_names():
+    from html.parser import HTMLParser
+
+    class Elements(HTMLParser):
+        def __init__(self):
+            super().__init__()
+            self.elements = []
+
+        def handle_starttag(self, tag, attrs):
+            self.elements.append((tag, dict(attrs)))
+
+    parser = Elements()
+    parser.feed(generated())
+    ids = {attrs['id']: (tag, attrs) for tag, attrs in parser.elements if 'id' in attrs}
+    assert ids['neutral'][1]['aria-label'] == 'Set all mortality odds ratios to one'
+    assert 'source offset six' in ids['tail-null'][1]['aria-label']
+    assert ids['child-loss'][1]['aria-live'] == 'polite'
+    labels = [attrs.get('aria-label') for tag, attrs in parser.elements if tag == 'table']
+    assert 'Expected deaths under current assumptions' in labels
+    assert 'Child earnings under current assumptions' in labels
+
+
 @pytest.mark.skipif(shutil.which("node") is None, reason="Node not installed")
 def test_browser_math_matches_independent_native_refits():
     from downstream.params import load_all

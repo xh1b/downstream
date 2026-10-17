@@ -129,7 +129,9 @@
     Object.assign(input, {type: "number", min: "0", max: "1000000", step: "any"});
     input.setAttribute("aria-label", `Odds ratio, source offset ${phase.label}`);
     cell.append(input);
-    row.append(text("td", phase.label), duration, cell,
+    const heading = text("th", phase.label);
+    heading.setAttribute("scope", "row");
+    row.append(heading, duration, cell,
       text("td", `${number(phase.low)}–${number(phase.high)}`), range, impact);
     return row;
   }

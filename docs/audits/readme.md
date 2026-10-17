@@ -34,6 +34,7 @@ a correction. Generated reports are updated through their builders.
 - [Same-place counterfactual review](place_counterfactual.md) — null-safe implementation and interpretation check.
 - [Testing quality review](testing_quality.md) — historical coverage, mutation and performance receipts.
 - [Calculator browser review](calculator_review_2026-10-15.md) — viewport and interaction checks, with remaining human review.
+- [Calculator keyboard and reflow review](calculator_accessibility_2026-10-17.md) — accessible names, keyboard paths and zoom-equivalent reflow, with explicit manual limits.
 
 ## Release and integration
 
