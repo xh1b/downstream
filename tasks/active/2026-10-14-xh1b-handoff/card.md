@@ -22,5 +22,5 @@ no published source provides; auto crisis has no quasi-experimental measured sid
 
 ## Acceptance
 
-- [ ] Link the companion project integration tasks for the runner, caches and website surfaces.
-- [ ] Record the model-side bundle and provenance handoff; keep 0.4 until the owner chooses another release.
+- [x] Link the companion project integration tasks for the runner, caches and website surfaces. [receipt](@task:2026-10-14-xh1b-handoff#c-d3b3d92ec040)
+- [x] Record the model-side bundle and provenance handoff; keep 0.4 until the owner chooses another release. [receipt](@task:2026-10-14-xh1b-handoff#c-d3b3d92ec040)
