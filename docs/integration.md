@@ -523,10 +523,27 @@ forecast and comparison results must not be parsed as scenario records.
 | `parameter_uncertainty`, `predictive_uncertainty` | Optional sampling reports with their own availability, seed/design and exclusion metadata. |
 | `child_valuation` | Optional present-value projection; separate from undiscounted lifetime dollars. |
 
-An available scenario outcome retains `point`, `low`, `high`, `unit`, `steps`,
-`baseline`, `interpretation` and `applicability`, plus outcome-specific
-sensitivity/persistence reports where supplied. `parameter_interval_90` is
-optional. Read the returned `unit`; mortality expectations are expected counts,
+Available scenario outcomes share `point`, `low`, `high`, `unit` and
+`applicability`. Preserve their outcome-specific metadata too: mortality and
+child-dollar rows provide `steps`, `baseline` and `interpretation`; local jobs
+provide fields such as `citation`, `tier`, `job_class`, `population_scope` and
+`support_note` instead. Public results attach sensitivity where supported;
+persistence and `parameter_interval_90` are optional. Do not require every
+outcome to have the same source-metadata shape.
+
+```pycon
+>>> from downstream.params import load_all
+>>> from downstream.scenario import ScenarioInput, compute_counts
+>>> bundle = load_all()
+>>> scenario = ScenarioInput(1000, net_tradable_jobs_lost=100, local_job_mix="manufacturing")
+>>> jobs = compute_counts(bundle["params"], bundle["baselines"], scenario)["modeled"]["local_service_jobs_lost"]
+>>> {"point", "low", "high", "unit", "applicability"} <= jobs.keys()
+True
+>>> "citation" in jobs and "job_class" in jobs
+True
+```
+
+Read the returned `unit`; mortality expectations are expected counts,
 child dollars are aggregate lifetime `usd_2024`, and jobs use the independently
 declared net-employment basis. Household earnings are gross follow-up totals;
 receiving incidents are annual endpoint differences. These are distinct units
