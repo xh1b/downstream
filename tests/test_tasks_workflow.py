@@ -321,20 +321,21 @@ class TaskTests(unittest.TestCase):
         self.assertEqual(self.git("rev-parse", "HEAD"), before)
         self.assertEqual(self.git("status", "--porcelain"), "")
 
-    def test_git_style_messages_keep_task_titles_and_multiline_details(self):
+    def test_board_messages_prefix_titles_without_repeated_action_lines(self):
         self.receipt()
         title = "Repair source input"
         body = "The parser retains source values.\n\n- [ ] Check the input.\n"
         self.run_cli("create", A, "--title", title, "--area", "scripts", "--file", "-", stdin=body)
         self.assertEqual(self.git("log", "-1", "--format=%B"),
-                         f"{title}\n\nboard: create {A}\n\n{body.rstrip()}")
+                         f"board(create): {title}\n\n{body.rstrip()}")
         self.assertIn(body, (self.board.BOARD / "inbox" / A / "card.md").read_text())
         self.run_cli("triage", A)
-        self.assertEqual(self.git("log", "-1", "--format=%B"), f"{title}\n\nboard: triage {A}")
+        self.assertEqual(self.git("log", "-1", "--format=%B"), f"board(triage): {title}")
+        self.assertEqual(self.git("log", "-1", "--skip=1", "--format=%B"), f"board(move): {title}")
         reason = "Start the repair\n\n- Preserve every value.\n- Keep the original scope."
         self.run_cli("claim", A, "--as", "worker", "--file", "-", stdin=reason)
         self.assertEqual(self.git("log", "-1", "--format=%B"),
-                         f"{title}\n\nboard: claim {A}\n\n{reason}")
+                         f"board(claim): {title}\n\n{reason}")
         path = self.board.BOARD / "active" / A / "comments.md"
         self.assertIn(reason, path.read_text())
         message = "The input check passes\n\n### Evidence\n\n- Keep full Markdown.\n\n```text\na\nb\n```"
@@ -348,10 +349,10 @@ class TaskTests(unittest.TestCase):
                 self.assertTrue(path.read_bytes().startswith(previous))
                 self.assertIn(message, path.read_text()[len(previous):])
                 self.assertEqual(self.git("log", "-1", "--format=%B"),
-                                 f"{title}\n\nboard: comment on {A}\n\n{message}")
+                                 f"board(comment): {title}\n\n{message}")
         self.run_cli("resolve", A, f"@task:{B}#{COMMENT}", "-m", message)
         self.assertEqual(self.git("log", "-1", "--format=%B"),
-                         f"{title}\n\nboard: resolve on {A}\n\n{message}")
+                         f"board(resolve): {title}\n\n{message}")
 
     def test_validation_keeps_review_evidence_and_structural_errors_visible(self):
         self.seed(A, "review", fields=f"blocked-by: [{B}]\n", body="- [x] Evidence missing.\n")

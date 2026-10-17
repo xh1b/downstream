@@ -179,8 +179,9 @@ prove the content of reports, external links, or commits. The reviewer checks th
 All mutating commands record a comment and commit explicit task paths.
 They refuse to run off `master`, mid-merge, or mid-rebase.
 Board changes are separate commits from implementation changes.
-Each automatic commit uses the task title as its summary. A blank line separates
-it from the board action and any supplied Markdown details.
+Each automatic commit uses `board(<action>): <title>` as its summary.
+Optional supplied Markdown details follow a blank line. Do not add a separate
+board action or task-ID paragraph.
 Commits use `git commit --only`. Unrelated staged files stay outside the commit
 and remain staged. Comments commit only `comments.md`.
 Path selection cannot separate two agents' edits within the same file.

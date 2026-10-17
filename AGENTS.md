@@ -8,7 +8,7 @@ isolation discipline. They are MUST-level rules, not style preferences.
 ## Git commits under concurrent agents (MUST follow)
 
 Use a one-line summary, then a blank line and optional Markdown details.
-Task-board commits use the existing task title as their summary.
+Task-board commits follow @link:task-command-reference.
 `--only` keeps unrelated staged paths outside the commit and leaves them staged.
 Path selection does not separate two agents' edits within the same file.
 Inspect and coordinate shared-file edits before committing that path.

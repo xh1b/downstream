@@ -711,12 +711,13 @@ def read_message(args: argparse.Namespace) -> str:
 
 
 def task_commit_message(card_dir: Path, action: str, text: str = "") -> str:
-    """Use the task title as the summary; retain action and Markdown details."""
+    """Prefix the task title with its action and retain supplied Markdown details."""
     title = read_card(card_dir, card_dir.parent.name, [])["title"]
-    details = f"board: {action}"
+    verb = (action.split() or ["update"])[0].lower()
+    message = f"board({verb}): {title}"
     if text:
-        details += "\n\n" + text.rstrip()
-    return f"{title}\n\n{details}"
+        message += "\n\n" + text.rstrip()
+    return message
 
 
 def finish_change(paths: list[str], message: str) -> int:
