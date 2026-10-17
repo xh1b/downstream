@@ -5,6 +5,7 @@ priority: P1
 assignee: codex-release-finish
 tags: [@tag:tooling]
 blocked-by: []
+parent: 2026-10-14-release-04-readiness
 ---
 
 Complete technical qualification under the release-readiness parent. Archive exact inputs, outputs, bundle, fixtures and distributions. No publication or deployment is authorized.

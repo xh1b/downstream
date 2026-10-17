@@ -5,6 +5,7 @@ priority: P2
 assignee: codex-release-finish
 tags: [@tag:tooling]
 blocked-by: []
+parent: 2026-10-14-calculator-design
 ---
 
 Complete locally verifiable keyboard, zoom/reflow and browser accessibility checks for the existing calculator. Keep screen-reader user, physical-device and participant testing explicit.
