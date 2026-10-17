@@ -206,7 +206,7 @@ The archived results are retained in validation/followthrough_evaluation_expande
 Compatible mixtures use sum(wₖ E[Xₖ]) while retaining every baseline and applicability decision. Linearity of expectation does not require independence,
 but does not identify a joint distribution. Quantiles and variance indices cannot generally be averaged. A positive-weight unavailable component withholds the total.
 Joint mixture intervals remain unavailable until a joint draw/dependence calculation exists.</p>
-<p>The code and admitted data define behavior. The paper explains the mathematics; <a href="README.md">software guides</a> describe calling contracts and integration.</p></section>
+<p>The code and admitted data define behavior. The paper explains the mathematics; <a href="readme.md">software guides</a> describe calling contracts and integration.</p></section>
 <section id="parameters"><h2>Parameter inventory</h2><p><a download="downstream-parameters.csv" href="{csv_uri}">Download the complete parameter CSV with full identifiers, precision and notes</a>.</p>
 <div class="scroll" role="region" aria-label="Parameter inventory" tabindex="0"><table><caption>Parameter support bands, destination units and evidence roles</caption>
 <thead><tr><th scope="col">Relationship and identifier</th><th scope="col">Point [low, high]</th><th scope="col">Unit</th><th scope="col">Evidence role</th><th scope="col">Sources, population and qualifications</th></tr></thead><tbody>{''.join(rows)}</tbody></table></div></section>

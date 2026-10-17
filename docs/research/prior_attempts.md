@@ -6,7 +6,7 @@ Connections: @link:code-household; @link:code-scenario; @link:doc-life-course-re
 @link:doc-causal-graph-plan; @link:docs-index; @link:test-household; @link:test-audit04-custom-inputs; @link:test-calculator.
 -->
 
-Related: [Documentation map](../README.md) · [life course research plan](LIFE_COURSE_RESEARCH_PLAN.md) · [causal graph plan](CAUSAL_GRAPH_PLAN.md).
+Related: [Documentation map](../readme.md) · [life course research plan](life_course_research_plan.md) · [causal graph plan](causal_graph_plan.md).
 Implementation: [household](../../src/downstream/household.py), [scenario](../../src/downstream/scenario.py). Checks: [household](../../tests/test_household.py), [audit04_custom_inputs](../../tests/test_audit04_custom_inputs.py), [calculator](../../tests/test_calculator.py).
 
 Updated September 10, 2026. This is a selective comparison based on primary
@@ -147,5 +147,5 @@ out-of-sample performance or make unsupported extrapolation easier to detect.
    integration feasibility are separate questions from conceptual usefulness.
 5. Expand the comparison before making a novelty or superiority claim.
 
-The forward research goals are in [LIFE_COURSE_RESEARCH_PLAN.md](LIFE_COURSE_RESEARCH_PLAN.md).
-The calculator design is in [WEBSITE_EXPERIENCE_PLAN.md](WEBSITE_EXPERIENCE_PLAN.md).
+The forward research goals are in [life_course_research_plan.md](life_course_research_plan.md).
+The calculator design is in [website_experience_plan.md](website_experience_plan.md).

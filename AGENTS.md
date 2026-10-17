@@ -138,7 +138,7 @@ Git history retains it. Do not recreate a competing TODO list.
 
 @ref:documentation-workflow
 
-Start with [the documentation map](docs/README.md) (@link:docs-index).
+Start with [the documentation map](docs/readme.md) (@link:docs-index).
 Make related documentation, implementation, tests, tasks and paper sources easy
 to find from one another. Improve these connections as part of the work you touch.
 Follow @link:reference-token-contract for token syntax and @link:task-workflow
@@ -149,7 +149,9 @@ for task ownership and receipts.
 - Code and admitted data define behavior. The paper explains the implementation,
   mathematics and scientific rationale; code should reference its relevant passages.
   The five maintained guides in `docs/` explain software use, integration and
-  development. Extend them before adding a top-level guide. Put dated reviews
+  development. Use lowercase Markdown filenames throughout `docs/`, including
+  indexes and supporting records. Extend the five guides before adding a top-level
+  guide. Put dated reviews
   and diagnostics in `docs/audits/`, and supporting research/design plans in
   `docs/research/`. Reviews need clear scope and evidence, not the guides’
   editorial standard. Keep work status and follow-up in tasks.

@@ -5,7 +5,7 @@
 Connections: @link:code-family; @link:code-admission; @link:doc-queued-extractions; @link:doc-citing; @link:docs-index; @link:test-remarriage-screen.
 -->
 
-Related: [Documentation map](../README.md) · [queued extractions](../research/QUEUED_EXTRACTIONS.md) · [citing](../EVIDENCE.md#citation-and-extraction-rules).
+Related: [Documentation map](../readme.md) · [queued extractions](../research/queued_extractions.md) · [citing](../evidence.md#citation-and-extraction-rules).
 Implementation: [family](../../src/downstream/family.py), [admission](../../src/downstream/admission.py). Checks: [remarriage_screen](../../tests/test_remarriage_screen.py).
 
 **Disposition: screen complete; no coefficient admitted.** The original task
@@ -42,7 +42,7 @@ draft, not fresh verification of the 2004 version of record.
 
 ## Admission decision
 
-Under [CITING](../EVIDENCE.md#citation-and-extraction-rules), a new parameter needs an eligible design, the intended
+Under [CITING](../evidence.md#citation-and-extraction-rules), a new parameter needs an eligible design, the intended
 estimand, compatible population/window and supported uncertainty. The available
 numbers fail the remarriage estimand match. The marital-history coefficients also
 fail causal identification for that target. A known signed coefficient and SE do

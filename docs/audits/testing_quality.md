@@ -8,7 +8,7 @@ Connections: @link:code-ledger; @link:code-validate; @link:doc-scenario-evidence
 @link:test-mathematics-v02.
 -->
 
-Related: [Documentation map](../README.md) · [scenario evidence protocol](../research/SCENARIO_EVIDENCE_PROTOCOL.md) · [open source release](../DEVELOPMENT.md#release-and-companion-handoff).
+Related: [Documentation map](../readme.md) · [scenario evidence protocol](../research/scenario_evidence_protocol.md) · [open source release](../development.md#release-and-companion-handoff).
 Implementation: [ledger](../../src/downstream/ledger.py), [validate](../../src/downstream/validate.py). Checks: [properties_hypothesis](../../tests/test_properties_hypothesis.py), [mathematics_v02](../../tests/test_mathematics_v02.py).
 
 ## Current gate

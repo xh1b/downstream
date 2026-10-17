@@ -5,13 +5,13 @@
 Connections: @link:code-household; @link:doc-psid-baseline-data-assessment-2026-09-13; @link:doc-baseline-transition-r2-2026-09-14; @link:docs-index; @link:test-household; @link:test-household-summary.
 -->
 
-Related: [Documentation map](../README.md) · [psid baseline data assessment 2026-09-13](PSID_BASELINE_DATA_ASSESSMENT_2026-09-13.md) · [baseline transition r2 2026-09-14](BASELINE_TRANSITION_R2_2026-09-14.md).
+Related: [Documentation map](../readme.md) · [psid baseline data assessment 2026-09-13](psid_baseline_data_assessment_2026-09-13.md) · [baseline transition r2 2026-09-14](baseline_transition_r2_2026-09-14.md).
 Implementation: [household](../../src/downstream/household.py). Checks: [household](../../tests/test_household.py), [household_summary](../../tests/test_household_summary.py).
 
 ## Scope and verdict
 
 This is the R2 dataset assessment that
-[PSID_BASELINE_DATA_ASSESSMENT_2026-09-13.md](PSID_BASELINE_DATA_ASSESSMENT_2026-09-13.md)
+[psid_baseline_data_assessment_2026-09-13.md](psid_baseline_data_assessment_2026-09-13.md)
 pointed to after PSID was ruled out on the ICPSR LLM policy. Same
 checklist — data suitability, geography access, attrition, survey
 weights, subgroup coverage, and now terms compatibility with this

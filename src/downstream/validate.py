@@ -128,7 +128,7 @@ def v1_backtest_spec() -> dict:
             "terciles and no sign flips. No parameter may be tuned to "
             "pass; a miss is published."
         ),
-        "status": "scaffolded - data plugs pending (see docs/research/QUEUED_EXTRACTIONS.md)",
+        "status": "scaffolded - data plugs pending (see docs/research/queued_extractions.md)",
     }
 
 

@@ -33,7 +33,7 @@ EvidenceFinding.estimand
 # - verify_bundle: counterpart of export_bundle for RECEIVING a
 #   published bundle; exercised by the bundle lifecycle state machine.
 # - build_places: data-derivation pipeline run ad hoc
-#   (docs/audits/DATA_SOURCES.md, QUEUED_EXTRACTIONS #30).
+#   (docs/audits/data_sources.md, QUEUED_EXTRACTIONS #30).
 # - beta_binomial_posterior: binomial-count posterior, sibling of
 #   the wired poisson_gamma_posterior.
 # - load_corpus / load_findings: evidence registry admission loaders.

@@ -4,7 +4,7 @@
 <!-- @link:docs-index; @link:code-cli; @link:code-scenario; @link:paper-exposure. -->
 
 Use the package or JSON CLI to evaluate a supplied scenario. Read the
-[model card](MODEL_CARD.md) before selecting a calculation. The authoritative
+[model card](model_card.md) before selecting a calculation. The authoritative
 calling contracts are the dataclasses, loaders and public functions in
 [scenario.py](../src/downstream/scenario.py), [employer.py](../src/downstream/employer.py)
 and the outcome modules below. The paper explains equations and rationale
@@ -131,7 +131,7 @@ Offset 0 is follow-up year one; +6 starts year seven. The standard response
 needs a compatible male 45–54 all-cause baseline. A verified rate for another
 group does not admit the displacement response for that group. Explicit
 profiles/mixtures retain population and source window. Unsupported positive
-exposure withholds the whole-cohort total. See [baseline import](EVIDENCE.md#mortality-baseline-import).
+exposure withholds the whole-cohort total. See [baseline import](evidence.md#mortality-baseline-import).
 
 The separate age-stratum tool uses Table 7 coefficients for men displaced at
 30–39, 40–49, 50–59 or 60–69 with tenure at least six years. Custom rows must
@@ -139,14 +139,14 @@ match treatment, comparator, scale, sex, exact age band, tenure and window.
 `constant_source_window_log_odds` changes attained-age baselines while holding
 the source-window response constant. Headline eligibility stays false. See
 [admission tests](../tests/test_mortality_admission_0_4.py) and the
-[applicability review](audits/MORTALITY_APPLICABILITY_0_4.md).
+[applicability review](audits/mortality_applicability_0_4.md).
 
 The separate `mortality_covariance.linear_se_bounds` and
 `additive_phase_diagnostic` APIs inspect additive coefficients with unknown
 covariance; [analyze_mortality_covariance.py](../scripts/analyze_mortality_covariance.py)
 reproduces the diagnostic. They do not admit a response or generate joint
 mortality draws. The bound and proof are in @link:paper-mortality-covariance;
-the [review receipt](audits/MORTALITY_COVARIANCE_0_4.md) records source details.
+the [review receipt](audits/mortality_covariance_0_4.md) records source details.
 
 ### Persistence comparison
 
@@ -160,7 +160,7 @@ exposure, baseline, early inputs and shared draws. Render each structure and
 its conditional interval separately, plus the shared-draw difference where
 available. Do not pool arms, assign probabilities or call their spread a
 confidence interval. This hybrid is not a Swedish-study replication. The
-[persistence analysis](audits/MORTALITY_PERSISTENCE_ANALYSIS_2026-10-14.md)
+[persistence analysis](audits/mortality_persistence_analysis_2026-10-14.md)
 retains the detailed review; the paper explains the survival calculation.
 
 ## Child and descendant outputs
@@ -290,7 +290,7 @@ Retain source causal role, version limits, fingerprints, fixed-input support
 and the unchanged residual retransformation-factor assumption. Headline
 eligibility stays false. Violent/total crime overlap and come from different
 populations; do not add them. Unmodeled channels stay unknown. The
-[evidence scan](audits/IMMIGRATION_REPLACEMENT_EVIDENCE_SCAN_2026-09-14.md)
+[evidence scan](audits/immigration_replacement_evidence_scan_2026-09-14.md)
 retains source-unit review.
 
 ## Per-result sensitivity

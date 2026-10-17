@@ -100,7 +100,7 @@ def load_corpus(path: str | Path) -> tuple[EvidenceRecord, ...]:
     """Load the mechanically verified acquisition registry.
 
     This intentionally does not turn records into model parameters.  See
-    ``docs/EVIDENCE.md`` for the separate scientific-extraction gate.
+    ``docs/evidence.md`` for the separate scientific-extraction gate.
     """
     with open(path, newline="", encoding="utf-8") as handle:
         rows = [

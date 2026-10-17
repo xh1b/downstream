@@ -5,7 +5,7 @@
 Connections: @link:code-place; @link:code-build-places; @link:code-county-rates; @link:doc-child-gap-view; @link:doc-cdc-wonder-profile-import; @link:docs-index; @link:test-place; @link:test-county-rates; @link:test-build-places-adversarial.
 -->
 
-Related: [Documentation map](../README.md) · [child gap view](../INTEGRATION.md#child-and-descendant-outputs) · [cdc wonder profile import](../EVIDENCE.md#mortality-baseline-import).
+Related: [Documentation map](../readme.md) · [child gap view](../integration.md#child-and-descendant-outputs) · [cdc wonder profile import](../evidence.md#mortality-baseline-import).
 Implementation: [place](../../src/downstream/place.py), [build_places](../../src/downstream/build_places.py), [county_rates](../../src/downstream/county_rates.py). Checks: [place](../../tests/test_place.py), [county_rates](../../tests/test_county_rates.py), [build_places_adversarial](../../tests/test_build_places_adversarial.py).
 
 Verified 2026-10-15 for engine 0.4.0, parameter set v1.51.

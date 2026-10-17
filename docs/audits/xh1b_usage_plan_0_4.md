@@ -6,7 +6,7 @@ Connections: @link:code-employer; @link:code-consumer; @link:doc-consumer-fixtur
 @link:test-exposure-semantics.
 -->
 
-Related: [Documentation map](../README.md) · [consumer fixtures 0 4](../INTEGRATION.md#scaling-mixtures-and-acceptance-fixtures) · [exposure semantics 0 4](../INTEGRATION.md#exposure-and-event-metadata).
+Related: [Documentation map](../readme.md) · [consumer fixtures 0 4](../integration.md#scaling-mixtures-and-acceptance-fixtures) · [exposure semantics 0 4](../integration.md#exposure-and-event-metadata).
 Implementation: [employer](../../src/downstream/employer.py), [consumer](../../src/downstream/consumer.py). Checks: [consumer_fixtures](../../tests/test_consumer_fixtures.py), [consumer_api](../../tests/test_consumer_api.py), [exposure_semantics](../../tests/test_exposure_semantics.py).
 
 Inspected 2026-10-14. Keep engine 0.4.0; current parameters are v1.51.
@@ -225,7 +225,7 @@ with its own stated scope while keeping engine 0.4.0 until the owner's decision.
 ## Source index for implementation
 
 In Downstream: `src/downstream/scenario.py`, `employer.py`, `mortality_robustness.py`,
-`child_applicability.py`, `valuation.py`, `docs/audits/RELEASE_0_4.md` and the task board.
+`child_applicability.py`, `valuation.py`, `docs/audits/release_0_4.md` and the task board.
 
 In XH1B: `scraper/scraper/entity_analysis.py`, `entity_analysis_worker.py`,
 `aggregate.py`, `scheduler.py`; `website/scripts/build-downstream-reference.py`,

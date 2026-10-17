@@ -5,7 +5,7 @@
 Connections: @link:code-scenario; @link:code-audit; @link:code-consumer; @link:doc-consumer-fixtures-0-4; @link:doc-model-card; @link:doc-open-source-release; @link:docs-index; @link:test-release-repairs; @link:test-consumer-fixtures; @link:test-exposure-semantics.
 -->
 
-Related: [Documentation map](../README.md) · [consumer fixtures 0 4](../INTEGRATION.md#scaling-mixtures-and-acceptance-fixtures) · [model card](../MODEL_CARD.md).
+Related: [Documentation map](../readme.md) · [consumer fixtures 0 4](../integration.md#scaling-mixtures-and-acceptance-fixtures) · [model card](../model_card.md).
 Implementation: [scenario](../../src/downstream/scenario.py), [audit](../../src/downstream/audit.py), [consumer](../../src/downstream/consumer.py). Checks: [release_repairs](../../tests/test_release_repairs.py), [consumer_fixtures](../../tests/test_consumer_fixtures.py), [exposure_semantics](../../tests/test_exposure_semantics.py).
 
 Engine 0.4.0 / parameters v1.52, 2026-10-15. This pending update implements the
@@ -30,9 +30,9 @@ The complete task-by-task review is recorded in
 | Work | Required scope |
 |:---|:---|
 | Fixed-candidate qualification | Freeze the source revision, engine/parameter versions and input identity; regenerate bundle and consumer fixtures together; run full tests, coverage, audit, lint, sdist/wheel installation and a previous-reviewed-version comparison. Archive the actual outputs and review receipts. |
-| Companion handoff | Verify nested alternatives, signed sensitivity, applicability, normalization and mixtures through the companion adapter, caches and rendered formats using the [consumer contract](../INTEGRATION.md#scaling-mixtures-and-acceptance-fixtures). Fresh companion evidence is required before claiming a repin or deployment. |
-| Artifact consistency | Generated evidence/pool guides must retain navigation and current input hashes. Consumer fixture source identities and the [saved household comparison](../INTEGRATION.md#annual-household-comparisons) must match current code. Their regressions and generator checks are part of qualification. |
-| Calculator public readiness | Keep the existing chosen surface and viewport checks. Before claiming an evaluated public experience, complete keyboard-only, 200% zoom, screen-reader, physical-device and human comprehension checks under the [calculator protocol](../CALCULATOR.md). |
+| Companion handoff | Verify nested alternatives, signed sensitivity, applicability, normalization and mixtures through the companion adapter, caches and rendered formats using the [consumer contract](../integration.md#scaling-mixtures-and-acceptance-fixtures). Fresh companion evidence is required before claiming a repin or deployment. |
+| Artifact consistency | Generated evidence/pool guides must retain navigation and current input hashes. Consumer fixture source identities and the [saved household comparison](../integration.md#annual-household-comparisons) must match current code. Their regressions and generator checks are part of qualification. |
+| Calculator public readiness | Keep the existing chosen surface and viewport checks. Before claiming an evaluated public experience, complete keyboard-only, 200% zoom, screen-reader, physical-device and human comprehension checks under the [calculator protocol](../calculator.md). |
 
 If household modeling is expanded in this cycle, the first substantive data
 priority is pooled SIPP trajectories and replicate-weight uncertainty. The
@@ -114,7 +114,7 @@ request and the incomplete Finnish re-extraction remain in the screening log.
 The previously recorded Swedish long-run null-compatible finding remains
 visible; missing uncertainty is not invented.
 
-`SCENARIO_EVIDENCE_PROTOCOL.md` freezes inclusion and scoring rules and records
+`scenario_evidence_protocol.md` freezes inclusion and scoring rules and records
 the subsequent acquisition amendment. These are locally reproducible records,
 not an independently timestamped prospective forecast. The original evaluation
 is retained; `validation/followthrough_evaluation_expanded_20261014.json` executes the
@@ -174,7 +174,7 @@ counts with both total-population denominators. It returns signed rate contrasts
 and optional same-population annual endpoint incident differences. It does not
 infer arrivals from displaced workers, annualize the ten-year source response,
 sum violent and total crime, or establish reviewed target transport.
-See [source and adapter checks](../INTEGRATION.md#receiving-community-adapter).
+See [source and adapter checks](../integration.md#receiving-community-adapter).
 
 The local calculator now uses numeric controls, equations and compact tables.
 Its mobile rules align wrapped labels, provide a wide rate/earnings field and
@@ -217,7 +217,7 @@ validation is claimed.
 The calculator now lives in `calculator/`. `make serve` builds current source
 data and serves the app at `http://127.0.0.1:8000/`. The server serves only the
 calculator; it does not expose repository files. `make calculator` builds the
-self-contained page. Setup, method and review receipts are in [CALCULATOR.md](../CALCULATOR.md).
+self-contained page. Setup, method and review receipts are in [calculator.md](../calculator.md).
 
 The HTTP app was reviewed in the in-app browser at 320, 390, 600 and 1440 px.
 No page-wide overflow was found; wrapped labels retained aligned numeric inputs.

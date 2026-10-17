@@ -5,7 +5,7 @@
 Connections: @link:code-scenario; @link:code-household; @link:code-policy; @link:doc-causal-graph-plan; @link:doc-prior-attempts; @link:doc-website-experience-plan; @link:docs-index; @link:test-household; @link:test-policy; @link:test-audit04-custom-inputs.
 -->
 
-Related: [Documentation map](../README.md) · [causal graph plan](CAUSAL_GRAPH_PLAN.md) · [prior attempts](PRIOR_ATTEMPTS.md).
+Related: [Documentation map](../readme.md) · [causal graph plan](causal_graph_plan.md) · [prior attempts](prior_attempts.md).
 Implementation: [scenario](../../src/downstream/scenario.py), [household](../../src/downstream/household.py), [policy](../../src/downstream/policy.py). Checks: [household](../../tests/test_household.py), [policy](../../tests/test_policy.py), [audit04_custom_inputs](../../tests/test_audit04_custom_inputs.py).
 
 Status: future direction agreed in conversation, September 10, 2026.
@@ -38,10 +38,10 @@ conversions, parameter sampling, analytic checks, sensitivity experiments, and
 partial external comparisons. It does not yet simulate a household's ordinary
 life course or establish arbitrary personalized treatment effects.
 
-The [model card](../MODEL_CARD.md) documents population applicability,
+The [model card](../model_card.md) documents population applicability,
 structural assumptions, and limits on independent validation. Public results
 must retain those qualifications and each outcome's applicability decision.
-The [related-work comparison](PRIOR_ATTEMPTS.md) identifies established models
+The [related-work comparison](prior_attempts.md) identifies established models
 to learn from; openness and multi-domain simulation alone are not novelty.
 
 ## The change in modeling approach
@@ -63,15 +63,15 @@ Longitudinal data such as [PSID](https://psidonline.isr.umich.edu/default.aspx)
 were first assessed, then ruled out for this project's workflow: PSID is
 distributed under ICPSR terms whose LLM policy forbids sharing the
 microdata with cloud LLM agents — the way this repository is built and
-operated ([2026-09-13 PSID assessment](../audits/PSID_BASELINE_DATA_ASSESSMENT_2026-09-13.md);
+operated ([2026-09-13 PSID assessment](../audits/psid_baseline_data_assessment_2026-09-13.md);
 it remains citation-only). The Census Bureau's
 [SIPP](https://www.census.gov/programs-surveys/sipp.html) was adopted in
-its place ([2026-09-13 SIPP assessment](../audits/SIPP_BASELINE_DATA_ASSESSMENT_2026-09-13.md)):
+its place ([2026-09-13 SIPP assessment](../audits/sipp_baseline_data_assessment_2026-09-13.md)):
 public-domain, redistributable, LLM-compatible, with declared
 limitations — short panels, coarse public geography, higher attrition.
 The first weighted December-to-December employment/earnings transitions
 were built and held-out checked on September 14, 2026
-([R2 artifact](../audits/BASELINE_TRANSITION_R2_2026-09-14.md)). They are validation
+([R2 artifact](../audits/baseline_transition_r2_2026-09-14.md)). They are validation
 artifacts, not an integrated life-course simulator. Pooling sparse cells,
 replicate-weight uncertainty and monthly transitions remain next R2 steps.
 
@@ -195,7 +195,7 @@ set meeting this contract is a stronger milestone than a large unvalidated graph
 - **Prospective:** independently timestamp one forecast before its outcome
   window and publish its eventual result, including failure.
 - **Understanding:** evaluate interpretation and usefulness with the website
-  tasks in [WEBSITE_EXPERIENCE_PLAN.md](WEBSITE_EXPERIENCE_PLAN.md).
+  tasks in [website_experience_plan.md](website_experience_plan.md).
 
 Potential research outputs include a benchmark of compatible event studies,
 a reproducible evidence registry, an evaluation of composition restrictions,
@@ -212,5 +212,5 @@ that the complete life simulator already exists.
    limited scenarios; conduct comprehension interviews before visual polish.
 
 Scientific tasks are tracked through these milestone IDs. The graph work is
-specified in [CAUSAL_GRAPH_PLAN.md](CAUSAL_GRAPH_PLAN.md); extraction mechanics
-remain in [LITERATURE_ACQUISITION_PLAN.md](LITERATURE_ACQUISITION_PLAN.md).
+specified in [causal_graph_plan.md](causal_graph_plan.md); extraction mechanics
+remain in [literature_acquisition_plan.md](literature_acquisition_plan.md).

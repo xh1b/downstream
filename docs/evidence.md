@@ -20,15 +20,15 @@ audit is a software check; it does not establish causal identification.
 | Study contrasts | Version-pinned estimates with scale, SE and sample overlap | [study_estimates.csv](../params/study_estimates.csv), [study_library.py](../src/downstream/study_library.py) |
 | Baselines and profiles | Reference levels, populations and windows | [baselines.csv](../params/baselines.csv), [mortality_profiles.csv](../params/mortality_profiles.csv) |
 | Household transitions | Observed conditional employment shares | [baseline_employment_transitions.csv](../params/baseline_employment_transitions.csv), [household.py](../src/downstream/household.py) |
-| Review outputs | Classification, compatibility and source checks | [Audit collection](audits/README.md) |
-| Pending extraction status | Source-row queue, coordinated through tasks | [Extraction register](research/QUEUED_EXTRACTIONS.md) |
+| Review outputs | Classification, compatibility and source checks | [Audit collection](audits/readme.md) |
+| Pending extraction status | Source-row queue, coordinated through tasks | [Extraction register](research/queued_extractions.md) |
 
 Extraction precision (`tier`), source applicability (`evidence_role`) and the
 ledger's runtime `causal_role` are separate. A precisely extracted association
 does not become a displacement effect. A direct source estimate can still
 require conditional target transport. A loaded finding/contrast does not
 become an admitted parameter automatically. See the generated
-[classification review](audits/EVIDENCE_CLASSIFICATION_0_4.md).
+[classification review](audits/evidence_classification_0_4.md).
 
 ## Citation and extraction rules
 
@@ -71,7 +71,7 @@ source arithmetic; [audit tests](../tests/test_audit.py) check the mechanical ga
 
 ## Add or revise evidence
 
-1. Claim a task and check the [extraction register](research/QUEUED_EXTRACTIONS.md).
+1. Claim a task and check the [extraction register](research/queued_extractions.md).
    Preserve the source/version, raw artifact hash, locator and access date.
 2. Record treatment/comparator, population/subgroup, outcome definition, scale,
    follow-up, design, uncertainty and overlap before assessing usability.
@@ -95,7 +95,7 @@ python3 scripts/build_pool_readiness.py --check
 Remove `--check` to regenerate those audit reports after a source/code change.
 Their builders are [classification](../scripts/build_evidence_classification.py)
 and [pool readiness](../scripts/build_pool_readiness.py); their output belongs
-in `docs/audits/`. The [readiness report](audits/POOL_READINESS_0_4.md) preserves
+in `docs/audits/`. The [readiness report](audits/pool_readiness_0_4.md) preserves
 scale/window/subgroup mismatches. Annual odds ratios, cumulative hazard ratios,
 hazard ratios, risk differences and log earnings coefficients are not freely
 interchangeable. Subgroups and phases are not independent replications.
@@ -133,26 +133,26 @@ Explicit `--mortality-mix profile_a:0.4,profile_b:0.6` needs unique verified
 profiles and weights summing to one. Every response must also be admitted:
 baseline availability for women or other age groups does not qualify the
 standard male 45–54 response. Predictive cohort uncertainty remains unavailable
-without stratum-specific counts. See [integration limits](INTEGRATION.md#mortality-outputs)
+without stratum-specific counts. See [integration limits](integration.md#mortality-outputs)
 and [profile tests](../tests/test_mortality_profiles.py).
 
 The old all-ages county export is context only because its parameter block
-does not reproduce the filters. The [source inventory review](audits/DATA_SOURCES.md)
+does not reproduce the filters. The [source inventory review](audits/data_sources.md)
 retains historical acquisition details; current importer behavior lives in code.
 
 ## Household and other source data
 
 Preserve raw input manifests and derivations separately from admitted tables.
 The [SIPP manifest](../validation/sipp/MANIFEST.md) and
-[transition review](audits/BASELINE_TRANSITION_R2_2026-09-14.md) explain the
+[transition review](audits/baseline_transition_r2_2026-09-14.md) explain the
 existing ordinary December-to-December transition artifact. Its held-out
 baseline check does not validate a causal displacement-recovery model.
 Sparse cells require explicit acceptance in the household API; uncertainty
 about survey design and complete trajectories remains unquantified.
 
 Keep source restrictions and redistribution terms with imported material.
-The historical [PSID](audits/PSID_BASELINE_DATA_ASSESSMENT_2026-09-13.md) and
-[SIPP](audits/SIPP_BASELINE_DATA_ASSESSMENT_2026-09-13.md) assessments are review
+The historical [PSID](audits/psid_baseline_data_assessment_2026-09-13.md) and
+[SIPP](audits/sipp_baseline_data_assessment_2026-09-13.md) assessments are review
 records, not permission to reuse arbitrary data. Do not commit credentials,
 restricted microdata or private records. Follow existing acquisition tooling
 and retain its provenance rather than creating an unrecorded manual data path.
@@ -163,7 +163,7 @@ and retain its provenance rather than creating an unrecorded manual data path.
 <!-- @link:code-validate; @link:code-scoring; @link:code-forecast-registry; @link:paper-validation; @link:paper-independent-validation. -->
 
 `downstream validate` reports the software's V0/V1 diagnostics and gated V2
-status. The [evaluation protocol](research/SCENARIO_EVIDENCE_PROTOCOL.md)
+status. The [evaluation protocol](research/scenario_evidence_protocol.md)
 records source-selection and frozen external-event requirements. It was written
 after existing anchors were known, so it does not retrospectively preregister
 them. Saved evaluations retain the protocol hash used at execution; do not
@@ -203,4 +203,4 @@ Cite the paper or repository together with engine version, parameter version,
 content identity, inputs and seed where sampled. A published number needs a
 reproducible source revision and its scientific citations, not just “the model.”
 For rebuilding and comparing the resulting artifacts, see
-[development](DEVELOPMENT.md).
+[development](development.md).

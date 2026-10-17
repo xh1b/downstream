@@ -10,6 +10,102 @@ and external contribution checks. Shared-checkout agents follow
 [AGENTS.md](../AGENTS.md): claim tasks, preserve concurrent work, commit isolated
 logical units on `master`, and keep remote operations separately authorized.
 
+## Environment and tool configuration
+
+Use Python 3.12 or later and install the `dev` extra from
+[CONTRIBUTING.md](../CONTRIBUTING.md#development-setup). The engine has no runtime
+package dependencies; development tools are configured in
+[pyproject.toml](../pyproject.toml), with resolved versions in
+[uv.lock](../uv.lock). Use the repository virtual environment consistently when
+running the commands below. Node is needed for browser JavaScript checks;
+LaTeX and `latexmk` are needed for PDF builds.
+
+## Task system and work receipts
+
+<!-- @ref:development-task-system; @tag:tooling -->
+<!-- @link:script-tasks; @link:task-workflow; @link:task-command-reference; @link:test-tasks-board; @link:test-tasks-workflow. -->
+
+All work tracking lives in `tasks/`. Start with the
+[board overview](../tasks/README.md); the authoritative format, ownership,
+reference and transition rules are in [tasks/AGENTS.md](../tasks/AGENTS.md)
+(@link:task-workflow). [scripts/tasks.py](../scripts/tasks.py) is the executable
+implementation. There is no separate task database or root TODO backlog.
+
+Read-only discovery and validation:
+
+```sh
+python3 scripts/tasks.py list
+python3 scripts/tasks.py next
+python3 scripts/tasks.py show <id>
+python3 scripts/tasks.py tags
+python3 scripts/tasks.py refs @task:<id>
+python3 scripts/tasks.py validate
+```
+
+A task's directory ID is permanent; its column records status. The normal
+sequence is `inbox → ready → active → review → done`. `done` means work is
+ready for review; `accept` records owner/reviewer acceptance. Dependencies in
+`blocked-by` must be accepted before `next` offers dependent work. Parent and
+related-task links provide context without automatically blocking or completing
+anything. `expected-paths` is advisory, not a file lock.
+
+Create and claim an authorized scope, then record findings and evidence:
+
+```sh
+python3 scripts/tasks.py create <id> --title 'Task summary' --area docs --tags tooling --file /tmp/task-body.md
+python3 scripts/tasks.py triage <id>
+python3 scripts/tasks.py claim <id> --as <agent-name>
+python3 scripts/tasks.py comment <id> --as <agent-name> --file /tmp/receipt.md
+```
+
+The task body contains acceptance criteria. Each completed criterion needs a
+Markdown evidence link on the same line; link to code, tests, a report or a
+permanent comment receipt. Inspect, validate and commit checklist edits before
+calling `done`. The owner or trusted reviewer then uses `accept`, or
+`request-changes` with a reason. Use the CLI for all column moves, comments,
+replies and resolutions; do not rename card IDs or move task directories by hand.
+
+Mutating board commands **make local Git commits**. They require `master`,
+refuse an in-progress merge/rebase and protect dirty cards. Comments are
+append-only; use a new reply or resolution to correct prior discussion.
+Board commits stay separate from implementation commits. Follow the shared
+checkout rules in [root AGENTS.md](../AGENTS.md) for explicit pathspecs,
+concurrent edits and remote authorization.
+
+`drop`, `cancel` and `reopen` cover released ownership, closure and resumed work;
+see the [command reference](../tasks/AGENTS.md#process-and-commands) and
+`python3 scripts/tasks.py <command> --help` for arguments. Task validation
+checks structure, references, relationships and evidence-link presence; it
+does not execute tests or independently verify a receipt's claims. Historical
+frozen evidence gaps are reported separately by `validate --historical-details`.
+
+## Development tools and their checks
+
+<!-- @ref:development-tooling; @tag:tooling @tag:testing -->
+<!-- @link:quality-workflow; @link:package-configuration; @link:script-quality-gate; @link:script-benchmark. -->
+
+| Tool | What to run | What it checks |
+| --- | --- | --- |
+| Task board | `python3 scripts/tasks.py validate` | Card structure, relationships, refs and completion evidence links. |
+| Repository refs | `python3 scripts/refcheck.py check` | Unique anchors, resolvable stable links and token syntax. |
+| Ruff | `python -m ruff check src scripts` | Configured Python correctness and unused-import rules. |
+| Vulture | `python -m vulture` | Unused code, with reasoned exceptions in [the whitelist](../scripts/vulture_whitelist.py). |
+| Evidence audit | `downstream audit` | Mechanical parameter, citation and evidence consistency. |
+| pytest / Hypothesis | `python -m pytest -q <test-paths>` | Named regressions, mathematical properties and workflow lifecycles. |
+| Coverage.py | `python -m coverage run -m pytest` | Full-suite statement and branch execution. |
+| Coverage gate | `python -m coverage json -o coverage.json`, then `python scripts/quality_gate.py coverage.json` | At least 95% statements and 90% branches. |
+| mutmut | `python -m mutmut run --max-children 4`, then `python -m mutmut results --all true` | Mutation diagnostics on the configured numerical kernel. |
+| Benchmark | `python scripts/benchmark.py` | Local timings with Python/platform metadata; no fixed performance gate. |
+| Distribution build | `python -m build`, then `python scripts/check_distribution.py <wheel>` | Wheel built from sdist and installed-package contracts in isolation. |
+| Calculator | `make check-calculator` | Generated browser app matches current sources/inputs. |
+| Paper | `make -C paper` | Tables/HTML from the engine, then compiled manuscript. |
+
+See [evidence operations](evidence.md#add-or-revise-evidence) for report builders
+and [calculator checks](calculator.md#build-and-verify) for browser/native parity.
+The task-board Markdown formatting rules live in
+[tasks/.markdownlint.json](../tasks/.markdownlint.json); the checked-in quality
+workflow runs task/ref validation, without a separate Markdown-lint job.
+
 ## Find the implementation
 
 | Responsibility | Main modules | Representative checks |
@@ -83,7 +179,7 @@ Run focused public-contract and numerical tests during development. For a
 behavior/data change, run the complete checks in [CONTRIBUTING.md](../CONTRIBUTING.md):
 Ruff, Vulture, evidence audit, branch coverage and installed distributions.
 The coverage gate is 95% statements and 90% branches; historical percentages
-and test counts belong in [review receipts](audits/TESTING_QUALITY.md), not
+and test counts belong in [review receipts](audits/testing_quality.md), not
 in the current software contract.
 
 Use fixtures for source transcription and named regressions, properties for
@@ -100,6 +196,46 @@ Intentional unused API surface needs a reason in
 campaigns are separate diagnostics; do not impose machine-specific timing
 thresholds in ordinary tests. See the [quality workflow](../.github/workflows/quality.yml)
 for the executable job selection.
+
+### Choosing and reproducing checks
+
+For a focused change, run the affected public-contract tests first. The
+following group checks the development tooling itself:
+
+```sh
+python -m pytest -q tests/test_refcheck.py tests/test_tasks_board.py tests/test_tasks_workflow.py
+```
+
+The fast numerical/lifecycle selection is defined directly in the
+[quality workflow](../.github/workflows/quality.yml). To reproduce it locally:
+
+```sh
+python -m pytest -q tests/test_mathematics_v02.py tests/test_properties_hypothesis.py tests/test_ledger.py tests/test_place.py tests/test_build_places_adversarial.py tests/test_v2_backtest.py tests/test_forecast_fsm.py tests/test_bundle_fsm.py tests/test_compare.py tests/test_release_repairs.py
+```
+
+Use the full coverage and distribution sequence in
+[CONTRIBUTING.md](../CONTRIBUTING.md#before-submitting) for behavior/data release
+qualification. Generated evidence, pool-readiness and consumer-fixture reports
+also have `--check` modes; use the relevant checks after their inputs change.
+Reference and task validation do not check ordinary Markdown paths or equations.
+Verify actual path spelling, examples and affected builds when moving documents.
+
+### CI and scheduled diagnostics
+
+[quality.yml](../.github/workflows/quality.yml) runs on pull requests, pushes to
+`master`, a daily schedule and manual dispatch. Its jobs cover lint/refs/tasks,
+fast tests on Python 3.12 and 3.14, full coverage on 3.12, and distribution
+checks on Linux/Windows across both versions. Mutation testing and benchmarks
+run only on the scheduled/manual paths. Mutmut's configured selection and copied
+inputs are in `pyproject.toml`; the mutation results are diagnostic, without a
+mutation-score release threshold. Timing comparisons require matching hardware
+and Python; benchmark results are not a numerical correctness check.
+
+[compare.yml](../.github/workflows/compare.yml) produces the before/after model
+inventory. [publish-paper.yml](../.github/workflows/publish-paper.yml) builds and
+publishes methods-paper releases separately from engine/data release review.
+The workflow files define current job selection and artifacts; local success
+does not assert that a hosted run or deployment occurred.
 
 ## Documentation and reference checks
 
@@ -180,7 +316,7 @@ companion deployment are owner actions, distinct from local qualification.
 The `paper-v*` workflow publishes methods-paper artifacts separately.
 
 For consumer normalization, mixture, cache and deployment acceptance, use the
-[integration checklist](INTEGRATION.md#identity-and-handoff). Current candidate
-qualification is recorded in the [0.4 review](audits/RELEASE_0_4.md) and task
+[integration checklist](integration.md#identity-and-handoff). Current candidate
+qualification is recorded in the [0.4 review](audits/release_0_4.md) and task
 cards. Research milestones, V2 blockers and human calculator review remain
 visible there; a software-doc cleanup does not complete those scientific tasks.

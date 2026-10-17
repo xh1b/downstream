@@ -5,7 +5,7 @@
 Connections: @link:code-mortality; @link:code-mortality-robustness; @link:doc-mortality-persistence-sensitivity; @link:doc-mortality-source-reconciliation-2026-09-10; @link:docs-index; @link:script-analyze-mortality-persistence; @link:test-mortality-robustness; @link:test-audit04-mortality-precision.
 -->
 
-Related: [Documentation map](../README.md) · [mortality persistence sensitivity](../INTEGRATION.md#persistence-comparison) · [mortality source reconciliation 2026-09-10](MORTALITY_SOURCE_RECONCILIATION_2026-09-10.md).
+Related: [Documentation map](../readme.md) · [mortality persistence sensitivity](../integration.md#persistence-comparison) · [mortality source reconciliation 2026-09-10](mortality_source_reconciliation_2026-09-10.md).
 Implementation: [mortality](../../src/downstream/mortality.py), [mortality_robustness](../../src/downstream/mortality_robustness.py). Checks: [mortality_robustness](../../tests/test_mortality_robustness.py), [audit04_mortality_precision](../../tests/test_audit04_mortality_precision.py).
 
 2026-10-14. Engine 0.4.0 / parameters v1.51. No production default changes.
@@ -95,7 +95,7 @@ The [2009 manuscript](https://www.movingforwardnetwork.com/wp-content/uploads/20
 also describes persistent effects and uses a different, additive Table 4
 parameterization. This is a manuscript cross-check, not a new verified
 published-version extraction. The covariance problem in the existing
-[source reconciliation](MORTALITY_SOURCE_RECONCILIATION_2026-09-10.md) remains.
+[source reconciliation](mortality_source_reconciliation_2026-09-10.md) remains.
 Missing covariance prevents ordinary phase-sum intervals; it does not prevent
 an explicitly labeled point-profile check in future work.
 

@@ -5,7 +5,7 @@
 Connections: @link:code-params; @link:code-evidence; @link:code-admission; @link:doc-literature-acquisition-plan; @link:doc-citing; @link:docs-index; @link:test-source-reextraction; @link:test-admission-provenance.
 -->
 
-Related: [Documentation map](../README.md) · [literature acquisition plan](LITERATURE_ACQUISITION_PLAN.md) · [citing](../EVIDENCE.md#citation-and-extraction-rules).
+Related: [Documentation map](../readme.md) · [literature acquisition plan](literature_acquisition_plan.md) · [citing](../evidence.md#citation-and-extraction-rules).
 Implementation: [params](../../src/downstream/params.py), [evidence](../../src/downstream/evidence.py), [admission](../../src/downstream/admission.py). Checks: [source_reextraction](../../tests/test_source_reextraction.py), [admission_provenance](../../tests/test_admission_provenance.py).
 
 Structure exists in the model; the NUMBER is pending a full-text
@@ -191,7 +191,7 @@ without its stated precondition.
 
 ## Receiving-community channel queue (opened 2026-09-14)
 
-From `docs/audits/IMMIGRATION_REPLACEMENT_EVIDENCE_SCAN_2026-09-14.md`: screen
+From `docs/audits/immigration_replacement_evidence_scan_2026-09-14.md`: screen
 the six verified anchor channels through the admission contract. The
 crime channel carries one extra gate — an INDEPENDENCE CHECK (below)
 because the leading meta-analysis (Ousey & Kubrin 2018) is contested

@@ -6,7 +6,7 @@
 
 This is a mechanical import, not evidence extraction.  Each record is marked
 ``unreviewed`` until a researcher records the estimand, uncertainty, scope,
-and graph-overlap decision under docs/EVIDENCE.md.
+and graph-overlap decision under docs/evidence.md.
 """
 
 from __future__ import annotations

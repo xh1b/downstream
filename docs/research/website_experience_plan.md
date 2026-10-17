@@ -7,13 +7,13 @@ Connections: @link:code-explanation; @link:code-render; @link:doc-calculator; @l
 @link:test-release-repairs.
 -->
 
-Related: [Documentation map](../README.md) · [calculator](../CALCULATOR.md) · [rendering](RENDERING.md).
+Related: [Documentation map](../readme.md) · [calculator](../calculator.md) · [rendering](rendering.md).
 Implementation: [explanation](../../src/downstream/explanation.py), [render](../../src/downstream/render.py). Checks: [explanation_properties](../../tests/test_explanation_properties.py), [guard_rails](../../tests/test_guard_rails.py), [release_repairs](../../tests/test_release_repairs.py).
 
 Status: product and design proposal, September 10, 2026. This plan concerns
 usefulness, comprehension, trust, and visual quality. It does not prescribe
 frameworks, components, databases, deployment, or other implementation choices.
-The research dependencies are in [LIFE_COURSE_RESEARCH_PLAN.md](LIFE_COURSE_RESEARCH_PLAN.md).
+The research dependencies are in [life_course_research_plan.md](life_course_research_plan.md).
 
 ## 1. The product promise
 

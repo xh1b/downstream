@@ -7,7 +7,7 @@ Downstream is a citation-calibrated scenario engine for consequences of worker
 displacement, with separate source-specific adapters and experimental comparison
 tools. The code and admitted data define its behavior. The
 [methods paper](../paper/downstream.tex) explains the math and scientific
-limitations; [integration](INTEGRATION.md) describes the calling contracts.
+limitations; [integration](integration.md) describes the calling contracts.
 
 Engine **0.4.0**, parameters **v1.52**. These labels identify the development
 candidate, not a deployed companion release or scientific acceptance. Output
@@ -48,8 +48,8 @@ male Pennsylvania mass layoffs, with a compatible US male 45–54 baseline.
 The child earnings source is Canadian father-son firm closure evidence,
 converted to a US synthetic lifetime earnings baseline in 2024 dollars.
 Neither source automatically transports to mixed/unknown target populations.
-See [mortality](INTEGRATION.md#mortality-outputs) and
-[child contracts](INTEGRATION.md#child-and-descendant-outputs).
+See [mortality](integration.md#mortality-outputs) and
+[child contracts](integration.md#child-and-descendant-outputs).
 
 ## Uncertainty and scientific limits
 
@@ -67,7 +67,7 @@ Mortality persistence alternatives retain early risk and vary later risk;
 their spread is not a confidence interval or a replication of another study.
 
 The source library retains overlapping contrasts from a small number of study
-samples. Its [compatibility review](audits/POOL_READINESS_0_4.md) does not establish
+samples. Its [compatibility review](audits/pool_readiness_0_4.md) does not establish
 a pool of independent estimates. Age-stratum mortality holds a source-window
 response constant as baselines age. Household gross earnings omit taxes,
 transfers, savings, housing and joint-resource distributions. Receiving outputs
@@ -85,7 +85,7 @@ no completed real prospective event validation.
 The new household and age-stratum paths have not passed independent causal
 event validation. Baseline held-out calibration is descriptive evidence about
 that baseline. Read the paper's validation sections (@link:paper-validation,
-@link:paper-independent-validation) and the [evaluation workflow](EVIDENCE.md#evaluation-records).
+@link:paper-independent-validation) and the [evaluation workflow](evidence.md#evaluation-records).
 Human calculator comprehension and physical-device/accessibility review remain
 open; browser viewport checks are recorded separately in audits.
 

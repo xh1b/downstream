@@ -7,13 +7,13 @@ Connections: @link:code-ledger; @link:code-units; @link:code-variants; @link:cod
 @link:docs-index; @link:paper-composition; @link:spec-composition; @link:test-ledger; @link:test-modules; @link:test-variants.
 -->
 
-Related: [Documentation map](../README.md) · [life course research plan](LIFE_COURSE_RESEARCH_PLAN.md) · [evidence classification 0 4](../audits/EVIDENCE_CLASSIFICATION_0_4.md).
+Related: [Documentation map](../readme.md) · [life course research plan](life_course_research_plan.md) · [evidence classification 0 4](../audits/evidence_classification_0_4.md).
 Implementation: [ledger](../../src/downstream/ledger.py), [units](../../src/downstream/units.py), [variants](../../src/downstream/variants.py), [policy](../../src/downstream/policy.py), [family](../../src/downstream/family.py). Checks: [ledger](../../tests/test_ledger.py), [modules](../../tests/test_modules.py), [variants](../../tests/test_variants.py).
 
 Updated September 10, 2026. This is the model-design companion to
-[LIFE_COURSE_RESEARCH_PLAN.md](LIFE_COURSE_RESEARCH_PLAN.md), which defines the
+[life_course_research_plan.md](life_course_research_plan.md), which defines the
 research milestones and their order. The calculator experience is planned in
-[WEBSITE_EXPERIENCE_PLAN.md](WEBSITE_EXPERIENCE_PLAN.md).
+[website_experience_plan.md](website_experience_plan.md).
 
 The revised sequence prioritizes corrected estimands, baseline household
 trajectories, and independent validation before a distant multigenerational
@@ -141,6 +141,6 @@ for a defined scenario, evidence quality, evaluability, and reduction of
 uncertainty in existing results, rather than graph size alone.
 
 Extraction mechanics remain in
-[LITERATURE_ACQUISITION_PLAN.md](LITERATURE_ACQUISITION_PLAN.md). Research status
+[literature_acquisition_plan.md](literature_acquisition_plan.md). Research status
 and milestone completion belong in the life-course plan and the top-level
 TODO, avoiding multiple conflicting schedules.

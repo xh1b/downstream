@@ -5,7 +5,7 @@
 Connections: @link:code-mortality-profiles; @link:code-mortality-strata; @link:doc-mortality-source-reconciliation-2026-09-10; @link:doc-mortality-covariance-0-4; @link:docs-index; @link:script-build-age-mortality; @link:script-build-cohort-projection; @link:test-mortality-admission-0-4; @link:test-mortality-profiles; @link:test-mortality-strata.
 -->
 
-Related: [Documentation map](../README.md) · [mortality source reconciliation 2026-09-10](MORTALITY_SOURCE_RECONCILIATION_2026-09-10.md) · [mortality covariance 0 4](MORTALITY_COVARIANCE_0_4.md).
+Related: [Documentation map](../readme.md) · [mortality source reconciliation 2026-09-10](mortality_source_reconciliation_2026-09-10.md) · [mortality covariance 0 4](mortality_covariance_0_4.md).
 Implementation: [mortality_profiles](../../src/downstream/mortality_profiles.py), [mortality_strata](../../src/downstream/mortality_strata.py). Checks: [mortality_admission_0_4](../../tests/test_mortality_admission_0_4.py), [mortality_profiles](../../tests/test_mortality_profiles.py), [mortality_strata](../../tests/test_mortality_strata.py).
 
 Mortality baseline coverage and causal-response coverage are different. A

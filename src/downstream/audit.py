@@ -253,7 +253,7 @@ def audit(params_dir: str | Path | None = None) -> list[Finding]:
                     "orphan",
                     f"parameters.csv:{p.link}: from_node {p.from_node!r} has no producer "
                     "and is not an entry node; upstream extraction must be queued in "
-                    "docs/research/QUEUED_EXTRACTIONS.md",
+                    "docs/research/queued_extractions.md",
                 )
             )
 

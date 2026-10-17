@@ -5,7 +5,7 @@
   "source_files_sha256": {
     "src/downstream/__init__.py": "a3964f1df2d223167207f6beaaa5014856a6962363e96ca86fa896c1620a4c82",
     "src/downstream/admission.py": "fbd5c4e063fc0beaec640047bbf36d84baeddaa48e3ac837cd92c190ad05d5e0",
-    "src/downstream/audit.py": "7aa8077ebe62eb75189caf37f3eb9947a00a82e5b91b93212a6c795ddbeb0da2",
+    "src/downstream/audit.py": "5f2ace0e46430343d100d138b1745e0cd26f2ce65f06117905f3fbf30d185995",
     "src/downstream/brac.py": "d7e3611883673d26580e67c5c751c77a8972f90275bc464d7834b5314a73028c",
     "src/downstream/build_places.py": "5e0633b4a06b1d179b9db705c5e341f0a6143fa36a26561b50c01985eb88a036",
     "src/downstream/bundle.py": "eea004ca6c70132365b38e05394ced53ac01d99f38bbbe0dd181f84ab6e0b878",
@@ -23,7 +23,7 @@
     "src/downstream/credits.py": "a2c8ede4533d36e1064e02a7beb391403cb9406a616b80ec613ce849ff6c3803",
     "src/downstream/distributions.py": "666a3a5996af172c79acd3a79b7ba0928a36262230364de7c16eec2e450db8e1",
     "src/downstream/employer.py": "14a5d17d87763896fc0798dc2d23d6fee53a7337278f9cdac7d3ac67f8b85c67",
-    "src/downstream/evidence.py": "7fd8f179c06a25dc83899d0d2b865c1cdfd77ce9c9ef3e72dd8982a2451f7394",
+    "src/downstream/evidence.py": "7da6d8876758ec19524a61c3c7d6f438b34844727f277aef50112ce84d5445e6",
     "src/downstream/explanation.py": "428bbc92bdc930551661df74f42016931af5a250de40c38fe8ba6b428bd6cc56",
     "src/downstream/family.py": "79b4d710db6e2b5c64216b3e8e1582c121d4709b2ea2f2e7fdaf35a3cd42bf05",
     "src/downstream/forecast_registry.py": "83a2aab9aa48c7f0b870adc2d05202f0fd283da34d203d068471345b84bd6d66",
@@ -52,12 +52,12 @@
     "src/downstream/transmissions.py": "f2439a0dc6eae413989616041326d9838e4fcb4278dd8d189a11b483129fa67a",
     "src/downstream/uncertainty_budget.py": "a4a397b4c45dbce60a074d1e9e68978d7c16d9cbcdb16a734f91606fb23c2477",
     "src/downstream/units.py": "f2d745a07d00643f09eb2168e4433f7fa0cc200e5488cff72775fe9e0f9f1903",
-    "src/downstream/validate.py": "d71ff6e77de8a1583866b171b01b468991ef9e390f5bf1dbbc59e0e4b8d5ebfe",
+    "src/downstream/validate.py": "f16a7d0f48fb1cac33b43aad5a807a1e541deed37625a69eadf66ba21e91eb91",
     "src/downstream/valuation.py": "489b392082e94e54564383436537002e59af50483ab4a78accb69119059e420f",
     "src/downstream/variants.py": "0f6d1b90d93d633964592af528b3e34b889548789bf5cd607a0aa0544c6b6c29",
     "src/downstream/vignette.py": "2c2b6a622aa82b4ed06f1f998ec3ef61516fa98e65016c08445745b50eaaf635",
     "src/downstream/worker.py": "01b56ba3587b1c3d8d984b57995ec7266ced52b4454d7b29435b873c630ba4e8",
-    "params/CHANGELOG.md": "c6430cebadb48be200fb163111f1c82796ed9272667945e5abdb76ed5f921fa3",
+    "params/CHANGELOG.md": "819cd1ac384685c941c1d91164ac1db9678e041537e561c6a5a6cb22b9e1a2e1",
     "params/VERSION": "8625eb078bed9a91a410f0a64c716bf4ed5c05dabff1489072087da67d5317b4",
     "params/age_mortality.csv": "9db45c7d220ff080913c65de747f0fc749c523bed3c584bc7bc7b0d1a1356f12",
     "params/baseline_employment_transitions.csv": "113561409acc078bf660154a73efadad092b35836cb11cd0c77594aa5885c0e3",
@@ -78,7 +78,7 @@
     "params/study_estimates.template.csv": "3f71fb5102d87827c926ac9c9ad09ce834798bb19c461cfca3f6854665cc66bf",
     "scripts/build_consumer_fixtures.py": "ef635d5043866360556e7b436f98aa74cad85436c735715e32fca75fc2e4beea"
   },
-  "source_content_sha256": "31989b63ee86ef5e83b88a44d2eb02e0c5b8290786c98b1996ad1bf6c3784f20",
+  "source_content_sha256": "21d4364de5966ff14c3ac9a6391526860c6563cb09a4d7531a7ed1139c9ce962",
   "fixture_sampling": "128 draws/base, seed 1901; contract fixtures, not precision-qualified research intervals.",
   "fixtures": {
     "national": {

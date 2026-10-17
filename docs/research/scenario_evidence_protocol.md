@@ -6,7 +6,7 @@ Connections: @link:code-validate; @link:code-scoring; @link:code-forecast-regist
 @link:script-acquire-followthrough-sources; @link:script-build-displaced-cohort; @link:script-evaluate-followthrough; @link:test-validate; @link:test-v2-backtest; @link:test-forecast-fsm.
 -->
 
-Related: [Documentation map](../README.md) · [data sources](../audits/DATA_SOURCES.md) · [evidence classification 0 4](../audits/EVIDENCE_CLASSIFICATION_0_4.md).
+Related: [Documentation map](../readme.md) · [data sources](../audits/data_sources.md) · [evidence classification 0 4](../audits/evidence_classification_0_4.md).
 Implementation: [validate](../../src/downstream/validate.py), [scoring](../../src/downstream/scoring.py), [forecast_registry](../../src/downstream/forecast_registry.py). Checks: [validate](../../tests/test_validate.py), [v2_backtest](../../tests/test_v2_backtest.py), [forecast_fsm](../../tests/test_forecast_fsm.py).
 
 Protocol fixed on 2026-10-14 for the next acquisition/evaluation round.

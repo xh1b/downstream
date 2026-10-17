@@ -3,7 +3,7 @@
 <!-- @ref:audit-calculator-browser; @tag:calculator -->
 
 Review receipt retained from the calculator guide. Current software instructions:
-[calculator](../CALCULATOR.md) (@link:doc-calculator).
+[calculator](../calculator.md) (@link:doc-calculator).
 
 The local HTTP app was inspected in the in-app browser at 320, 390, 600 and
 1440 px widths. Page width matched viewport width in all four cases.

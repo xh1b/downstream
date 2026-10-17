@@ -6,7 +6,7 @@ Connections: @link:code-explanation; @link:code-render; @link:doc-website-experi
 @link:doc-calculator; @link:docs-index; @link:test-explanation-properties; @link:test-guard-rails.
 -->
 
-Related: [Documentation map](../README.md) · [website experience plan](WEBSITE_EXPERIENCE_PLAN.md) · [calculator](../CALCULATOR.md).
+Related: [Documentation map](../readme.md) · [website experience plan](website_experience_plan.md) · [calculator](../calculator.md).
 Implementation: [explanation](../../src/downstream/explanation.py), [render](../../src/downstream/render.py). Checks: [explanation_properties](../../tests/test_explanation_properties.py), [guard_rails](../../tests/test_guard_rails.py).
 
 The problem this solves: the model makes claims like "a town hit by
@@ -130,7 +130,7 @@ Every step above must be tiered, cited, and Sobol-attributed before
 that sentence may render on any surface. Until then the claim is
 BLOCKED and renders (if at all) with its missing pieces named. The
 explanation object carries `blocked` for exactly this case — the
-template is complete in `docs/research/QUEUED_EXTRACTIONS.md`.
+template is complete in `docs/research/queued_extractions.md`.
 
 ## 5. Language rules (the whole system, one list)
 

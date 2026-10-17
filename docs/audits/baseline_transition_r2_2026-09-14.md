@@ -5,12 +5,12 @@
 Connections: @link:code-household; @link:doc-sipp-baseline-data-assessment-2026-09-13; @link:doc-household-comparison-0-4; @link:docs-index; @link:script-build-baseline-transitions; @link:test-household; @link:test-household-summary.
 -->
 
-Related: [Documentation map](../README.md) · [sipp baseline data assessment 2026-09-13](SIPP_BASELINE_DATA_ASSESSMENT_2026-09-13.md) · [household comparison 0 4](../INTEGRATION.md#annual-household-comparisons).
+Related: [Documentation map](../readme.md) · [sipp baseline data assessment 2026-09-13](sipp_baseline_data_assessment_2026-09-13.md) · [household comparison 0 4](../integration.md#annual-household-comparisons).
 Implementation: [household](../../src/downstream/household.py). Checks: [household](../../tests/test_household.py), [household_summary](../../tests/test_household_summary.py).
 
 Status: **built and held-out validated, 2026-09-14.** This is the first
 baseline-trajectory artifact under the R2 milestone of
-`docs/research/LIFE_COURSE_RESEARCH_PLAN.md`. It estimates the *ordinary*
+`docs/research/life_course_research_plan.md`. It estimates the *ordinary*
 (no-displacement-event) year-over-year employment-state transitions and
 earnings changes that any event scenario in this repo must be compared
 against. It is a validation artifact, **not** a parameter landing: no

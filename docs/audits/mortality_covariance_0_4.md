@@ -5,7 +5,7 @@
 Connections: @link:code-mortality-covariance; @link:doc-mortality-applicability-0-4; @link:doc-pool-readiness-0-4; @link:docs-index; @link:script-analyze-mortality-covariance; @link:test-mortality-covariance.
 -->
 
-Related: [Documentation map](../README.md) · [mortality applicability 0 4](MORTALITY_APPLICABILITY_0_4.md) · [pool readiness 0 4](POOL_READINESS_0_4.md).
+Related: [Documentation map](../readme.md) · [mortality applicability 0 4](mortality_applicability_0_4.md) · [pool readiness 0 4](pool_readiness_0_4.md).
 Implementation: [mortality_covariance](../../src/downstream/mortality_covariance.py). Checks: [mortality_covariance](../../tests/test_mortality_covariance.py).
 
 The missing covariance does not prevent us from bounding each additive phase's
@@ -15,7 +15,7 @@ production profile, scenario output or CLI behavior.
 
 ## Source and additive parameterization
 
-The [existing reconciliation](MORTALITY_SOURCE_RECONCILIATION_2026-09-10.md)
+The [existing reconciliation](mortality_source_reconciliation_2026-09-10.md)
 distinguishes the published article's additive parameterization from the directly
 reported working-paper phases. On 2026-10-15, the available [2009 author-manuscript
 copy](https://www.movingforwardnetwork.com/wp-content/uploads/2023/04/Sullivan_Job-Displacement-and-Mortality_2009.pdf)

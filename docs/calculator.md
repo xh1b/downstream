@@ -6,7 +6,7 @@ Connections: @link:code-mortality; @link:code-scenario; @link:paper-calculator; 
 @link:test-calculator; @link:test-calculator-server.
 -->
 
-[Documentation](README.md) · [Integration contracts](INTEGRATION.md) · [Development](DEVELOPMENT.md)
+[Documentation](readme.md) · [Integration contracts](integration.md) · [Development](development.md)
 
 The calculator is a small browser implementation checked against the Python
 engine. Code defines behavior; the [paper](../paper/downstream.tex) explains
@@ -135,7 +135,7 @@ valid calculation and mark the input.
 
 ## Review status
 
-The [browser review](audits/CALCULATOR_REVIEW_2026-10-15.md) records viewport,
+The [browser review](audits/calculator_review_2026-10-15.md) records viewport,
 interaction and refactor checks. Those receipts describe the tested revision.
 Physical-device, zoom, screen-reader and participant testing remain open on
 @task:2026-10-14-calculator-design. Record new results there and in a dated

@@ -7,7 +7,7 @@ Connections: @link:code-distributions; @link:code-mc; @link:code-inference; @lin
 @link:test-uncertainty-budget.
 -->
 
-Related: [Documentation map](../README.md) · [result sensitivity](../INTEGRATION.md#per-result-sensitivity) · [scenario evidence protocol](SCENARIO_EVIDENCE_PROTOCOL.md).
+Related: [Documentation map](../readme.md) · [result sensitivity](../integration.md#per-result-sensitivity) · [scenario evidence protocol](scenario_evidence_protocol.md).
 Implementation: [distributions](../../src/downstream/distributions.py), [mc](../../src/downstream/mc.py), [inference](../../src/downstream/inference.py), [uncertainty_budget](../../src/downstream/uncertainty_budget.py), [county_rates](../../src/downstream/county_rates.py). Checks: [distributions](../../tests/test_distributions.py), [inference](../../tests/test_inference.py), [uncertainty_budget](../../tests/test_uncertainty_budget.py).
 
 This document distinguishes implemented probability machinery from research
@@ -15,9 +15,9 @@ work that requires new data. It prevents a convenient sampler from being
 mistaken for evidence about a causal bridge.
 
 This is a methods backlog supporting
-[LIFE_COURSE_RESEARCH_PLAN.md](LIFE_COURSE_RESEARCH_PLAN.md). Research milestone
+[life_course_research_plan.md](life_course_research_plan.md). Research milestone
 order is defined there; the user-facing treatment of uncertainty is planned
-in [WEBSITE_EXPERIENCE_PLAN.md](WEBSITE_EXPERIENCE_PLAN.md).
+in [website_experience_plan.md](website_experience_plan.md).
 
 ## Landed in the current engine
 
