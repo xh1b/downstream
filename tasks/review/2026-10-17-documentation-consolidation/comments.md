@@ -48,3 +48,12 @@ The review was split into @task:2026-10-17-software-guides, @task:2026-10-17-cod
 Code/admitted data define behavior; all 54 module headers point to specific paper rationale and software contracts. The paper and semantic HTML explain the identified gaps in existing math. The rebuilt 21-page PDF was rendered and visually checked. Generated review reports and consumer fixtures are fresh; the evaluator runs at the migrated protocol path while old evaluation JSON stays byte-identical. No parameter or mathematical implementation changed.
 
 Verification: 494 ordinary file/heading links pass, 327 refs and 1432 stable links pass, task validation has zero errors/warnings, Ruff/Vulture/evidence audit pass, and focused test runs pass (89 tests and 231 tests). Build and path repair commits: 8ac9edf, 612b658, b49c335; individual task threads retain reproduction details and receipts. Existing scientific validation and human-review blockers remain outside this documentation refactor.
+
+## c-0dc0a2cd636f
+
+- At: 2026-10-17 20:56 HKT
+- By: codex-doc-cleanup
+
+done: active -> review.
+
+All three implementation tasks are complete and verified; the documentation refactor is ready for review.
