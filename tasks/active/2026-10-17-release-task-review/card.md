@@ -9,10 +9,10 @@ blocked-by: []
 
 Review every remaining task against current implementation and receipts; verify repository navigation coverage, repair confirmed gaps, and distinguish release work from research dependencies.
 
-- [ ] Review every inbox, ready and review task and record an evidence-backed 0.4 disposition.
-- [ ] Verify navigation coverage and fix confirmed link/ref gaps.
-- [ ] Reconcile stale release/task descriptions without losing historical evidence or accepting unreviewed work.
-- [ ] Record verification and a prioritized release recommendation.
+- [x] Review every inbox, ready and review task and record an evidence-backed 0.4 disposition. [receipt](@task:2026-10-17-release-task-review#c-58acce20734e)
+- [x] Verify navigation coverage and fix confirmed link/ref gaps. [receipt](@task:2026-10-17-release-task-review#c-58acce20734e)
+- [x] Reconcile stale release/task descriptions without losing historical evidence or accepting unreviewed work. [receipt](@task:2026-10-17-release-task-review#c-58acce20734e)
+- [x] Record verification and a prioritized release recommendation. [receipt](@task:2026-10-17-release-task-review#c-58acce20734e)
 
 ## Review scope and recommendation — 2026-10-17
 
@@ -108,3 +108,17 @@ links. The generators now own those headers, with freshness/navigation regressio
 
 Further publication, companion integration, research acquisition and human
 participant work remain on the corresponding existing cards.
+
+## Final verification
+
+[The final receipt](@task:2026-10-17-release-task-review#c-58acce20734e)
+records 393 passing focused tests, all four generator freshness checks, lint,
+the zero-error/warning evidence audit, 314 resolved anchors/1357 links and
+904 existing maintained Markdown file targets. Full-suite/coverage/distribution
+qualification on one frozen candidate remains an explicit release task.
+
+The [paper](../../../paper/downstream.pdf) was rebuilt after the validation
+artifact refresh. Its manifest digest verifies, text changes only in the page-14
+source fingerprint, and the changed page was rendered and inspected. Build and
+render receipts are in `build/release-task-review-20261017/` (ignored, reproducible).
+No manuscript source or scientific default changed.
