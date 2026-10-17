@@ -2,7 +2,7 @@
 title: Scale aliased consumer intervals exactly once
 area: engine
 priority: P1
-assignee:
+assignee: codex-release-finish
 blocked-by: []
 ---
 
