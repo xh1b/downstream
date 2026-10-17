@@ -2,7 +2,7 @@
 title: Lowercase documentation filenames and complete the development tooling guide
 area: docs
 priority: P2
-assignee:
+assignee: codex-doc-cleanup
 tags: [@tag:tooling]
 blocked-by: []
 ---
