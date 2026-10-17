@@ -15,3 +15,10 @@ Created in inbox.
 triage: inbox -> ready.
 
 User authorized the documentation refactor this session.
+
+## c-c75438240498
+
+- At: 2026-10-17 20:40 HKT
+- By: codex-doc-cleanup
+
+claim: ready -> active.

@@ -2,7 +2,7 @@
 title: Consolidate implementation and integration software guides
 area: docs
 priority: P2
-assignee:
+assignee: codex-doc-cleanup
 tags: [@tag:tooling]
 blocked-by: []
 ---
