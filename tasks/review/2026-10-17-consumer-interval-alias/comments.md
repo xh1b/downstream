@@ -37,3 +37,12 @@ The corrected fixed source is b41ca50731eeca6ce0336a8a66d1a0fbdcd79d72, bundle S
 [Corrected qualification](../../../docs/audits/release_qualification_2026-10-17_interval_fix.md) and [machine receipt](../../../docs/audits/release_qualification_2026-10-17_interval_fix.json) are committed in f56ace0. The new archive SHA is e82f05458cf49122b8de7fe894c691d9c464084dc5f443c25f7ef7f6f43d0a10, with all 146 evidence files verified. The previous sealed archive is retained unchanged and marked superseded.
 
 The local companion selects the corrected bundle and fixtures. Its Python and TypeScript scaling regressions verify fractional, zero, reference and large exposures, preserved source metadata, signed alternatives and the shared-object case. Local integration/display tests pass; the handoff follow-up records preparation without claiming live cache, browser or deployment acceptance. Owner publication and independent review remain separate.
+
+## c-b46befe54790
+
+- At: 2026-10-17 23:16 HKT
+- By: codex-release-finish
+
+done: active -> review.
+
+Submit corrected interval scaling, superseding qualification and local consumer parity for independent review.
