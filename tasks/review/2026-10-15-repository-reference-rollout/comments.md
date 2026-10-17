@@ -54,3 +54,14 @@ Work landed in scoped local commits on master. Unrelated concurrent work was lef
 - By: codex-repo-links
 
 done: active -> review.
+
+## c-ea7c306eb55b
+
+- At: 2026-10-17 20:33 HKT
+- By: codex-release-review
+
+Follow-up coverage review and generated-navigation repair
+
+The owner requested a review of all remaining tasks and whether navigation is complete. @task:2026-10-17-release-task-review records the full disposition. Confirmed file-level coverage: all 54 engine modules, 25 Python scripts, 42 Markdown guides, seven authored LaTeX sources and four authored calculator assets. Of 110 test files, test_refcheck.py is the documented deliberate-fixture exception; generated calculator/index.html links to unique authored anchors. Initial 898 and final 904 maintained Markdown file targets resolve.
+
+Two reproducibility gaps remained: evidence-classification and pool-readiness guides contained manually added navigation that their source generators did not retain, and their source hashes were stale. b4a9480 moves those headers into generator output, refreshes the reports and adds committed-report freshness/navigation regressions. Consumer fixture source identities and the saved five-year household report were also refreshed with regressions. Current refcheck: 314 anchors, 1357 links, zero failures. Historical receipts/comments and the frozen legacy evidence ledger are preserved; this follow-up does not claim every raw data/archive file needs navigation metadata or confer scientific validation.
