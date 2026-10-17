@@ -64,3 +64,12 @@ Report: [qualification and exact identities](../../../docs/audits/release_qualif
 done: active -> review.
 
 Full local qualification and archive are ready for review; owner release acceptance remains on the parent.
+
+## c-174b3eac99d3
+
+- At: 2026-10-17 23:16 HKT
+- By: codex-release-finish
+
+Earlier candidate superseded by the corrected interval qualification
+
+Cross-language parity exposed a recursive shared-interval scaling defect after this receipt. @task:2026-10-17-consumer-interval-alias#c-5935f5c415ec records the fix, refreshed fixture/paper identities, complete repeated qualification and sealed evidence archive. Use source b41ca50731eeca6ce0336a8a66d1a0fbdcd79d72 and bundle 99173fbf23e75037da3fb9b4a9017a1e56909260ccb112f9902bc5ac86242153 for review. Preserve this earlier receipt and archive as historical evidence. Owner release/publication acceptance remains open.
