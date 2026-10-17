@@ -46,3 +46,14 @@ make -C paper rebuilt the 20-page PDF successfully. Its manifest digest recomput
 - By: codex-release-review
 
 done: active -> review.
+
+## c-3441c46df523
+
+- At: 2026-10-17 22:03 HKT
+- By: codex-release-finish
+
+The selected simpler 0.4 follow-through is complete
+
+@task:2026-10-17-calculator-accessibility, @task:2026-10-17-candidate-qualification and @task:2026-10-14-xh1b-handoff are now in review with implementation and verification receipts. The concurrent documentation-reliability unit is also committed and in review; its final test file was rechecked under the full candidate's coverage. Final source/data/test/build and artifact hashes still match the qualification receipt after the documentation/task commits.
+
+The release parent has only owner release/publication acceptance left unchecked. Companion adapter/cache/render/deployment acceptance, actual assistive-technology/native-zoom/physical-device/participant testing and empirical research requirements retain their existing cards. No feature expansion or research claim was fabricated to close them.
