@@ -45,3 +45,12 @@ The evaluator executed into a new temporary output and retained its honest indep
 The path/build repair commit is b49c335
 
 The preceding receipt's placeholder commit sentence was unintended. b49c335 is the implementation commit for audit builders, migrated paths and regenerated reports; the listed checks refer to that work.
+
+## c-771eeac16c6e
+
+- At: 2026-10-17 20:55 HKT
+- By: codex-doc-cleanup
+
+done: active -> review.
+
+Builders, links, freshness checks and focused regressions pass.
