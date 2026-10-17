@@ -11,6 +11,15 @@ acceptance requirements. Work history: @task:2026-10-14-xh1b-handoff.
 The companion pin, database, caches, generated website and deployed pages
 were not changed. Model-side readiness does not establish companion acceptance.
 
+The [fixed-candidate qualification](release_qualification_2026-10-17.md)
+identifies source revision `429af5397752a8fd4c1062b54b0835d82d2b13e4`, the
+tested sdist/wheel and full comparison. Its 74-file standalone bundle verifies
+as SHA-256 `6af38c54fa3131a0a5665ea034d664c64bf64152132fa7ae1f62f02fced611d2`.
+The consumer fixture file SHA-256 is
+`d6b29db411020f35c6c989f88878330a3bd9be070d1c1c1dc4e44e6da586e866`.
+Both are retained together with exact parameter exports and raw probe results
+in `build/release04-qualification-20261017/`.
+
 ## Inspection and executable probes
 
 The existing local companion pin verifies as engine 0.3.0 / parameters v1.49,

@@ -224,3 +224,17 @@ No page-wide overflow was found; wrapped labels retained aligned numeric inputs.
 Fractional exposure, tail-null and reset controls worked. This completes the
 responsive browser-viewport check that was blocked by the earlier file preview.
 Physical devices, zoom, assistive technology and human participants remain untested.
+
+## October 17 local qualification
+
+The [fixed-candidate receipt](release_qualification_2026-10-17.md) records
+1,458 passing tests plus 7 subtests, a final 19-test documentation rerun,
+97.2% statement / 94.1% branch coverage, eleven isolated wheel checks and
+eight standalone-bundle inventories. The prior local 0.3/v1.49 pin comparison
+retains all field differences and the unavailable baseline-validation status.
+The [calculator review](calculator_accessibility_2026-10-17.md) adds keyboard,
+accessible-name and zoom-equivalent reflow checks; actual native zoom,
+assistive technology, physical devices and participants remain unverified.
+The [fresh companion handoff](xh1b_handoff_2026-10-17.md) reproduces the nested
+mixture limitation and names its existing integration tasks. Owner release
+acceptance and companion repin/cache/render/deployment receipts remain pending.

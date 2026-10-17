@@ -1,0 +1,312 @@
+{
+  "schema": "downstream-local-qualification/1",
+  "date": "2026-10-17",
+  "candidate_revision": "429af5397752a8fd4c1062b54b0835d82d2b13e4",
+  "engine_version": "0.4.0",
+  "parameter_set_version": "v1.52",
+  "bundle_sha256": "6af38c54fa3131a0a5665ea034d664c64bf64152132fa7ae1f62f02fced611d2",
+  "source_stability": {
+    "source_files_unchanged": false,
+    "runtime_parameters_build_and_other_test_files_unchanged": true,
+    "changed_paths": [
+      "tests/test_doccheck.py"
+    ],
+    "final_committed_test_rerun": "final-doc-tests.log",
+    "coverage_appended_after_final_test_rerun": true,
+    "committed_candidate_revision": "429af5397752a8fd4c1062b54b0835d82d2b13e4",
+    "committed_source_manifest_sha256": "256939a0977ef2330f193fd8148e2015b78314f758fed244692080ae5398badb"
+  },
+  "environment": {
+    "python": "3.12.14 (main, Aug 12 2026, 13:57:54) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "executable": "/tmp/downstream-dependabot-py312.E8POxG/bin/python",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "distributions": {
+      "downstream": "0.4.0",
+      "click": "8.5.0",
+      "platformdirs": "4.13.0",
+      "packaging": "26.3",
+      "Pygments": "2.21.0",
+      "rich": "15.0.0",
+      "vulture": "2.16",
+      "mutmut": "3.8.0",
+      "iniconfig": "2.3.1",
+      "mdit-py-plugins": "0.6.1",
+      "build": "1.6.1",
+      "pluggy": "1.7.0",
+      "pytest": "9.1.1",
+      "setuptools": "84.0.0",
+      "ruff": "0.17.0",
+      "mdurl": "0.1.2",
+      "pyproject_hooks": "1.3.3",
+      "PyYAML": "6.0.3",
+      "textual": "8.2.8",
+      "sortedcontainers": "2.4.0",
+      "linkify-it-py": "2.2.0",
+      "markdown-it-py": "4.2.0",
+      "setproctitle": "1.3.8",
+      "libcst": "1.9.0",
+      "typing_extensions": "4.16.0",
+      "coverage": "7.16.2",
+      "hypothesis": "6.169.4"
+    }
+  },
+  "checks": {
+    "full_suite": {
+      "passed": true,
+      "tests": 1458,
+      "subtests": 7,
+      "seconds": 318.86
+    },
+    "final_documentation_tests": {
+      "passed": true,
+      "tests": 19,
+      "coverage_appended": true
+    },
+    "coverage": {
+      "covered_lines": 5148,
+      "num_statements": 5297,
+      "percent_covered": 96.33529331327773,
+      "percent_covered_display": "96.3",
+      "missing_lines": 149,
+      "excluded_lines": 15,
+      "percent_statements_covered": 97.18708703039457,
+      "percent_statements_covered_display": "97.2",
+      "num_branches": 2016,
+      "num_partial_branches": 109,
+      "covered_branches": 1897,
+      "missing_branches": 119,
+      "percent_branches_covered": 94.09722222222223,
+      "percent_branches_covered_display": "94.1"
+    },
+    "fast_py314": {
+      "passed": true,
+      "tests": 151
+    },
+    "ruff": true,
+    "vulture": true,
+    "audit": {
+      "errors": 0,
+      "warnings": 0,
+      "info": 57,
+      "pass": true
+    },
+    "docs": {
+      "passed": true,
+      "documents": 47,
+      "local_links": 566,
+      "example_statements": 36,
+      "freshness_builders": 6
+    },
+    "refs": true,
+    "tasks": true,
+    "sdist_to_wheel_build": true,
+    "isolated_wheel_commands": 11,
+    "standalone_bundle_commands": 8,
+    "verified_bundle_files": 74,
+    "companion_pinned_tests": 7,
+    "candidate_companion_cases": 8
+  },
+  "comparison": {
+    "baseline": {
+      "source": "Existing local XH1B reviewed pin; no deployment state inspected",
+      "companion_revision": "ed168f16dfbf0d8645702945f249f1d038a62261",
+      "bundle_source": "/Users/jt/code/xh1b/scraper/vendor/downstream",
+      "engine_version": "0.3.0",
+      "parameter_set_version": "v1.49",
+      "bundle_sha256": "bb2b77ddfb379bb71d40b91abb25658940160a679c3a22be1ac7f116f8a1a606",
+      "manifest_sha256": "cabb9061249f7dad69436337f3b1ea027f3fd7e4d4e0ad0f8650f3aedb5b76c5",
+      "pin_worktree_status": "",
+      "commands": {
+        "audit": {
+          "status": "ok",
+          "args": [
+            "audit"
+          ]
+        },
+        "parameters": {
+          "status": "ok",
+          "args": [
+            "export"
+          ]
+        },
+        "family": {
+          "status": "ok",
+          "args": [
+            "family"
+          ]
+        },
+        "scenario-zero": {
+          "status": "ok",
+          "args": [
+            "scenario",
+            "--workers",
+            "0",
+            "--draws",
+            "200",
+            "--seed",
+            "1901"
+          ]
+        },
+        "scenario-person": {
+          "status": "ok",
+          "args": [
+            "scenario",
+            "--workers",
+            "1",
+            "--draws",
+            "200",
+            "--seed",
+            "1901"
+          ]
+        },
+        "scenario-cohort": {
+          "status": "ok",
+          "args": [
+            "scenario",
+            "--workers",
+            "1000",
+            "--net-tradable-jobs-lost",
+            "1000",
+            "--local-job-mix",
+            "manufacturing",
+            "--draws",
+            "200",
+            "--seed",
+            "1901"
+          ]
+        },
+        "validation": {
+          "status": "unavailable",
+          "returncode": 2,
+          "args": [
+            "validate"
+          ],
+          "stderr": "downstream: error: [Errno 2] No such file or directory: '/Users/jt/code/xh1b/scraper/vendor/downstream/validation/adh2019_measured_coefficients.csv'\n"
+        },
+        "transmissions": {
+          "status": "ok",
+          "args": [
+            "transmissions"
+          ]
+        },
+        "inference": {
+          "status": "ok",
+          "args": [
+            "infer",
+            "--outcome",
+            "grandchild"
+          ]
+        }
+      }
+    },
+    "commands": {
+      "audit": [
+        "audit"
+      ],
+      "parameters": [
+        "export"
+      ],
+      "family": [
+        "family"
+      ],
+      "scenario-zero": [
+        "scenario",
+        "--workers",
+        "0",
+        "--draws",
+        "200",
+        "--seed",
+        "1901"
+      ],
+      "scenario-person": [
+        "scenario",
+        "--workers",
+        "1",
+        "--draws",
+        "200",
+        "--seed",
+        "1901"
+      ],
+      "scenario-cohort": [
+        "scenario",
+        "--workers",
+        "1000",
+        "--net-tradable-jobs-lost",
+        "1000",
+        "--local-job-mix",
+        "manufacturing",
+        "--draws",
+        "200",
+        "--seed",
+        "1901"
+      ],
+      "validation": [
+        "validate"
+      ],
+      "transmissions": [
+        "transmissions"
+      ],
+      "inference": [
+        "infer",
+        "--outcome",
+        "grandchild"
+      ]
+    },
+    "summary": {
+      "changed": 199,
+      "added": 881,
+      "removed": 30,
+      "unchanged": 33654
+    },
+    "validation_compared": false,
+    "validation_limitation": "Prior consumer bundle omits external validation datasets; exact failure is retained. Current validation runs separately and from installed wheel."
+  },
+  "companion_probe": {
+    "scope": "Synthetic direct worker execution only; no DB, cache, website, deployment or repin",
+    "runtime": "3.12.14 (main, Aug 12 2026, 13:57:54) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "companion_revision": "7a09ce8e324e25e97ed858a999f618032e3a28c0",
+    "companion_sources": {
+      "scraper/scraper/entity_analysis.py": "bae7d745a11ee911b49fd6b78e05a2b0a13993742d83b938b3be06937e074b3d",
+      "scraper/scraper/entity_analysis_worker.py": "3fe89ba1d4455cb95c8f8756d29629c1b6307021a2482ea4cbbb23c42ba3c8bc",
+      "website/src/lib/downstream-analysis.ts": "5210b548cd47e7f7d87328bcbb2a1490321f0860d4f48917348b3f5fc85c7503",
+      "website/src/lib/queries/downstream.ts": "ee8a2f6adcca6a702851ba256882705bc7cc17db51d448424afd29e4890024f0"
+    },
+    "cases": 8,
+    "checks": {
+      "incompatible_population_blocked": true,
+      "default_not_headline": true,
+      "fallback_share": 0.3,
+      "independent_tradable_point": 16.0,
+      "synthetic_mortality_reviewed": true,
+      "child_without_ages_and_income_rank_stays_illustrative": true
+    },
+    "mixture_compatibility": {
+      "main_point_observed": 21.716,
+      "main_point_expected": 21.716,
+      "source_profile_observed": 17.02,
+      "source_profile_expected": 21.716,
+      "no_sustained_observed": 12.12,
+      "no_sustained_expected": 15.48
+    },
+    "bundle_sha256": "6af38c54fa3131a0a5665ea034d664c64bf64152132fa7ae1f62f02fced611d2"
+  },
+  "artifact_files_sha256": {
+    "build/release04-qualification-20261017/dist/downstream-0.4.0-py3-none-any.whl": "a580178e2b889f6b57f2939db5eea68b642fa2108ad54b4cf9afc1fa2ecfca73",
+    "build/release04-qualification-20261017/dist/downstream-0.4.0.tar.gz": "3a0919ea92774b257f21873e72b507979760dd7294989b9e9cd897c11e33fa21",
+    "build/release04-qualification-20261017/bundle/manifest.json": "f1aa5a7890432d9c00943e4beee4857ed15fcfaf8ce2aeadd060a69ae6637468",
+    "build/release04-qualification-20261017/consumer_fixtures_0_4.json": "d6b29db411020f35c6c989f88878330a3bd9be070d1c1c1dc4e44e6da586e866",
+    "build/release04-qualification-20261017/after/parameters.json": "cf2729778db55cd07b7ac1f6149a08ea5b70eb5a03167e64f79df87be0309c30",
+    "build/release04-qualification-20261017/comparison.csv": "a6148d5bb237aab3165709e8a2f59ca9736e6051ba4fa4c1a116277aec5fed50",
+    "build/release04-qualification-20261017/comparison.json": "534678527151bc1871fb94241ddd71437378dfe270ee5a1cb00f419a97c3d233",
+    "build/release04-qualification-20261017/comparison.markdown": "bc2e91ee87e6c6fc8b0168edb32a5fcd3f8ffb7f45687f82144f542c85327c57",
+    "paper/downstream.pdf": "3726276e4db17e69ab7dedb730daafbd2f39dc8934ce9df1f40ae177cfe8195b"
+  },
+  "paper_source_sha256": "689ff559d3af01da8f14c4b5e467bf6cde6924fc618bcd8618c1ea58e15130a4",
+  "raw_archive_directory": "build/release04-qualification-20261017",
+  "remaining_acceptance": [
+    "owner release/publication decision",
+    "companion adapter/cache/render/deployment acceptance",
+    "actual native zoom, screen-reader, physical-device and participant testing",
+    "empirical research dependencies retained on task cards"
+  ]
+}
