@@ -2,7 +2,7 @@
 title: Fix board commit prefixes and remove repeated action lines
 area: scripts
 priority: P2
-assignee:
+assignee: board-message-fix
 blocked-by: []
 ---
 
