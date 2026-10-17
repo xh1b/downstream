@@ -2,7 +2,7 @@
 title: Make documentation concise, executable and continuously checked
 area: docs
 priority: P2
-assignee:
+assignee: codex-doc-reliability
 tags: [@tag:tooling]
 blocked-by: []
 ---
