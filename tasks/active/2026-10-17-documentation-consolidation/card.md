@@ -2,7 +2,7 @@
 title: Consolidate maintained documentation and archive audit records
 area: docs
 priority: P2
-assignee:
+assignee: codex-doc-cleanup
 tags: [@tag:tooling]
 blocked-by: []
 ---

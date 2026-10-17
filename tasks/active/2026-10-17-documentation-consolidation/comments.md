@@ -15,3 +15,10 @@ Created in inbox.
 triage: inbox -> ready.
 
 User requested documentation consolidation and an audit archive.
+
+## c-9b3cee1f3ea2
+
+- At: 2026-10-17 20:37 HKT
+- By: codex-doc-cleanup
+
+claim: ready -> active.
