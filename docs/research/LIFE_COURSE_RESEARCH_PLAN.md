@@ -5,8 +5,8 @@
 Connections: @link:code-scenario; @link:code-household; @link:code-policy; @link:doc-causal-graph-plan; @link:doc-prior-attempts; @link:doc-website-experience-plan; @link:docs-index; @link:test-household; @link:test-policy; @link:test-audit04-custom-inputs.
 -->
 
-Related: [Documentation map](README.md) · [causal graph plan](CAUSAL_GRAPH_PLAN.md) · [prior attempts](PRIOR_ATTEMPTS.md).
-Implementation: [scenario](../src/downstream/scenario.py), [household](../src/downstream/household.py), [policy](../src/downstream/policy.py). Checks: [household](../tests/test_household.py), [policy](../tests/test_policy.py), [audit04_custom_inputs](../tests/test_audit04_custom_inputs.py).
+Related: [Documentation map](../README.md) · [causal graph plan](CAUSAL_GRAPH_PLAN.md) · [prior attempts](PRIOR_ATTEMPTS.md).
+Implementation: [scenario](../../src/downstream/scenario.py), [household](../../src/downstream/household.py), [policy](../../src/downstream/policy.py). Checks: [household](../../tests/test_household.py), [policy](../../tests/test_policy.py), [audit04_custom_inputs](../../tests/test_audit04_custom_inputs.py).
 
 Status: future direction agreed in conversation, September 10, 2026.
 Capabilities below are goals unless explicitly described as current. This
@@ -38,7 +38,7 @@ conversions, parameter sampling, analytic checks, sensitivity experiments, and
 partial external comparisons. It does not yet simulate a household's ordinary
 life course or establish arbitrary personalized treatment effects.
 
-The [model card](MODEL_CARD.md) documents population applicability,
+The [model card](../MODEL_CARD.md) documents population applicability,
 structural assumptions, and limits on independent validation. Public results
 must retain those qualifications and each outcome's applicability decision.
 The [related-work comparison](PRIOR_ATTEMPTS.md) identifies established models
@@ -63,15 +63,15 @@ Longitudinal data such as [PSID](https://psidonline.isr.umich.edu/default.aspx)
 were first assessed, then ruled out for this project's workflow: PSID is
 distributed under ICPSR terms whose LLM policy forbids sharing the
 microdata with cloud LLM agents — the way this repository is built and
-operated ([2026-09-13 PSID assessment](PSID_BASELINE_DATA_ASSESSMENT_2026-09-13.md);
+operated ([2026-09-13 PSID assessment](../audits/PSID_BASELINE_DATA_ASSESSMENT_2026-09-13.md);
 it remains citation-only). The Census Bureau's
 [SIPP](https://www.census.gov/programs-surveys/sipp.html) was adopted in
-its place ([2026-09-13 SIPP assessment](SIPP_BASELINE_DATA_ASSESSMENT_2026-09-13.md)):
+its place ([2026-09-13 SIPP assessment](../audits/SIPP_BASELINE_DATA_ASSESSMENT_2026-09-13.md)):
 public-domain, redistributable, LLM-compatible, with declared
 limitations — short panels, coarse public geography, higher attrition.
 The first weighted December-to-December employment/earnings transitions
 were built and held-out checked on September 14, 2026
-([R2 artifact](BASELINE_TRANSITION_R2_2026-09-14.md)). They are validation
+([R2 artifact](../audits/BASELINE_TRANSITION_R2_2026-09-14.md)). They are validation
 artifacts, not an integrated life-course simulator. Pooling sparse cells,
 replicate-weight uncertainty and monthly transitions remain next R2 steps.
 

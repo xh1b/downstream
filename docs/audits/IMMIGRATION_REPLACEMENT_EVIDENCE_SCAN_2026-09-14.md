@@ -5,12 +5,12 @@
 Connections: @link:code-receiving-community; @link:doc-receiving-community-0-4; @link:doc-queued-extractions; @link:docs-index; @link:test-receiving-community; @link:test-receiving-adapter.
 -->
 
-Related: [Documentation map](README.md) · [receiving community 0 4](RECEIVING_COMMUNITY_0_4.md) · [queued extractions](QUEUED_EXTRACTIONS.md).
-Implementation: [receiving_community](../src/downstream/receiving_community.py). Checks: [receiving_community](../tests/test_receiving_community.py), [receiving_adapter](../tests/test_receiving_adapter.py).
+Related: [Documentation map](../README.md) · [receiving community 0 4](../INTEGRATION.md#receiving-community-adapter) · [queued extractions](../research/QUEUED_EXTRACTIONS.md).
+Implementation: [receiving_community](../../src/downstream/receiving_community.py). Checks: [receiving_community](../../tests/test_receiving_community.py), [receiving_adapter](../../tests/test_receiving_adapter.py).
 
 Status: **first-pass scan, anchors verified by search 2026-09-14; nothing
 admitted yet.** Motivation: running the 1,000-worker displacement scenario
-with replacement inflows (`docs/BASELINE_TRANSITION_R2_2026-09-14.md` is
+with replacement inflows (`docs/audits/BASELINE_TRANSITION_R2_2026-09-14.md` is
 the displacement side) showed the engine is **silent** on the
 receiving community: there is no parameter connecting a local
 immigration inflow to any outcome. Silence is not an estimated zero —
@@ -239,5 +239,5 @@ v1.52. Light–Miller is semi-log per percentage-point undocumented population
 share, not log-log immigrant-stock growth. Bianchi's exposure is the ratio of
 regular-resident population shares, not stock alone. Typed source inputs,
 refusals and source-version limits are recorded in
-[the receiving adapter contract](RECEIVING_COMMUNITY_0_4.md); the historical
+[the receiving adapter contract](../INTEGRATION.md#receiving-community-adapter); the historical
 independence gate does not remove these unit, design or transport conditions.

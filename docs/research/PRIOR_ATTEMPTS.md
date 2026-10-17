@@ -6,8 +6,8 @@ Connections: @link:code-household; @link:code-scenario; @link:doc-life-course-re
 @link:doc-causal-graph-plan; @link:docs-index; @link:test-household; @link:test-audit04-custom-inputs; @link:test-calculator.
 -->
 
-Related: [Documentation map](README.md) · [life course research plan](LIFE_COURSE_RESEARCH_PLAN.md) · [causal graph plan](CAUSAL_GRAPH_PLAN.md).
-Implementation: [household](../src/downstream/household.py), [scenario](../src/downstream/scenario.py). Checks: [household](../tests/test_household.py), [audit04_custom_inputs](../tests/test_audit04_custom_inputs.py), [calculator](../tests/test_calculator.py).
+Related: [Documentation map](../README.md) · [life course research plan](LIFE_COURSE_RESEARCH_PLAN.md) · [causal graph plan](CAUSAL_GRAPH_PLAN.md).
+Implementation: [household](../../src/downstream/household.py), [scenario](../../src/downstream/scenario.py). Checks: [household](../../tests/test_household.py), [audit04_custom_inputs](../../tests/test_audit04_custom_inputs.py), [calculator](../../tests/test_calculator.py).
 
 Updated September 10, 2026. This is a selective comparison based on primary
 project documentation and research papers, not a systematic review or a

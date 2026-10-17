@@ -146,9 +146,13 @@ for task ownership and receipts.
 
 ### Markdown documentation
 
-- Put new maintained design notes, methods, contracts, guides, decisions and
-  reports in `docs/` as Markdown (`.md`). Use clear filenames and headings;
-  reuse the existing document for a topic before creating another one.
+- Code and admitted data define behavior. The paper explains the implementation,
+  mathematics and scientific rationale; code should reference its relevant passages.
+  The five maintained guides in `docs/` explain software use, integration and
+  development. Extend them before adding a top-level guide. Put dated reviews
+  and diagnostics in `docs/audits/`, and supporting research/design plans in
+  `docs/research/`. Reviews need clear scope and evidence, not the guides’
+  editorial standard. Keep work status and follow-up in tasks.
 - Keep root README and subsystem READMEs as concise entry points. Link new
   documents from the relevant README or existing guide so readers can discover
   them. Use descriptive relative Markdown links for files and normal links for

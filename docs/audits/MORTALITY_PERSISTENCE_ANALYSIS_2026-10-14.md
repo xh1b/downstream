@@ -5,8 +5,8 @@
 Connections: @link:code-mortality; @link:code-mortality-robustness; @link:doc-mortality-persistence-sensitivity; @link:doc-mortality-source-reconciliation-2026-09-10; @link:docs-index; @link:script-analyze-mortality-persistence; @link:test-mortality-robustness; @link:test-audit04-mortality-precision.
 -->
 
-Related: [Documentation map](README.md) · [mortality persistence sensitivity](MORTALITY_PERSISTENCE_SENSITIVITY.md) · [mortality source reconciliation 2026-09-10](MORTALITY_SOURCE_RECONCILIATION_2026-09-10.md).
-Implementation: [mortality](../src/downstream/mortality.py), [mortality_robustness](../src/downstream/mortality_robustness.py). Checks: [mortality_robustness](../tests/test_mortality_robustness.py), [audit04_mortality_precision](../tests/test_audit04_mortality_precision.py).
+Related: [Documentation map](../README.md) · [mortality persistence sensitivity](../INTEGRATION.md#persistence-comparison) · [mortality source reconciliation 2026-09-10](MORTALITY_SOURCE_RECONCILIATION_2026-09-10.md).
+Implementation: [mortality](../../src/downstream/mortality.py), [mortality_robustness](../../src/downstream/mortality_robustness.py). Checks: [mortality_robustness](../../tests/test_mortality_robustness.py), [audit04_mortality_precision](../../tests/test_audit04_mortality_precision.py).
 
 2026-10-14. Engine 0.4.0 / parameters v1.51. No production default changes.
 
@@ -173,7 +173,7 @@ coefficients are pooled in this analysis.
 ## Reproduction and verification
 
 Run `.venv/bin/python scripts/analyze_mortality_persistence.py`.
-[The saved result](../validation/mortality_persistence_analysis_20261014.json)
+[The saved result](../../validation/mortality_persistence_analysis_20261014.json)
 contains input hashes, all twenty annual survivor calculations, attenuation
 probes, the same-study diagnostic and paired sampling results. Independent annual
 survivor recurrence agrees with the production log-survival function within

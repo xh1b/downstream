@@ -2,12 +2,16 @@
 
 <!-- @ref:doc-calculator; @tag:calculator -->
 <!--
-Connections: @link:code-mortality; @link:code-scenario; @link:doc-rendering; @link:doc-exposure-semantics-0-4; @link:docs-index; @link:calculator-math; @link:calculator-app; @link:calculator-template; @link:calculator-style; @link:script-build-calculator; @link:script-serve-calculator;
+Connections: @link:code-mortality; @link:code-scenario; @link:paper-calculator; @link:paper-counts; @link:doc-exposure-semantics-0-4; @link:docs-index; @link:calculator-math; @link:calculator-app; @link:calculator-template; @link:calculator-style; @link:script-build-calculator; @link:script-serve-calculator;
 @link:test-calculator; @link:test-calculator-server.
 -->
 
-Related: [Documentation map](README.md) · [rendering](RENDERING.md) · [exposure semantics 0 4](EXPOSURE_SEMANTICS_0_4.md).
-Implementation: [mortality](../src/downstream/mortality.py), [scenario](../src/downstream/scenario.py). Checks: [calculator](../tests/test_calculator.py), [calculator_server](../tests/test_calculator_server.py).
+[Documentation](README.md) · [Integration contracts](INTEGRATION.md) · [Development](DEVELOPMENT.md)
+
+The calculator is a small browser implementation checked against the Python
+engine. Code defines behavior; the [paper](../paper/downstream.tex) explains
+survival and child conversion (@link:paper-counts, @link:paper-children).
+This guide covers running, editing and checking the app.
 
 Run from the repository root:
 
@@ -24,7 +28,7 @@ The server builds current source data at startup and serves only the calculator.
 Restart it after changing source files. It listens on this computer's loopback
 address. Repository files and directory listings are not served.
 
-The app lives in [`calculator/`](../calculator/). `make calculator` rebuilds
+The app lives in [`calculator/`](../calculator). `make calculator` rebuilds
 its self-contained [index.html](../calculator/index.html) for offline use or
 static hosting. No account, Node packages or external assets are required.
 
@@ -70,12 +74,10 @@ page, mutate inputs or retain state. Phase durations are intersections of the
 follow-up horizon with source intervals [0, 1), [1, 2), [2, 4), [4, 6) and [6, ∞).
 Changing one odds ratio creates a new input value for each sensitivity experiment.
 
-The survival equations are `S₀ = exp(−λT)` and `S₁ = ∏ᵢ(1 − pᵢ)^tᵢ`.
-Expected excess deaths are `N(S₀ − S₁)`. The implementation sums log-survival
-terms and forms `log(S₁/S₀)` directly. It factors the survival difference by
-the larger survival, so `expm1` always receives a nonpositive argument. This
-retains small effects and avoids overflow for protective odds. Exposed deaths
-use directly accumulated exposed log-survival to avoid cancellation.
+For the survival equations and their rationale, see @link:paper-counts.
+`math.js` uses log survival and cancellation-safe differences so small effects
+and extreme protective inputs remain numerically stable. The independent
+native parity tests below check that implementation choice.
 
 `app.js` reads inputs, checks the shared validation rules, calls `analyze`,
 then renders totals, phase rows, curve geometry and the receipt. Formatting and
@@ -84,6 +86,9 @@ comes from its control; there is no separate mutable preset or result cache.
 An invalid edit marks each invalid field and keeps the last valid result on screen.
 
 ## Design and language
+
+<!-- @ref:calculator-output; @tag:rendering -->
+<!-- @link:code-explanation; @link:code-render; @link:paper-calculator; @link:test-guard-rails. -->
 
 The page uses one layout. Numeric inputs, equations and tables occupy the
 main surface. Method, source scope, unavailable paths and data are collapsed.
@@ -128,31 +133,10 @@ and E ≤ 1,000,000,000 USD 2024. All inputs must be finite. These are interface
 limits, not source-support or transport claims. Invalid edits keep the last
 valid calculation and mark the input.
 
-## Browser review — 2026-10-15
+## Review status
 
-The local HTTP app was inspected in the in-app browser at 320, 390, 600 and
-1440 px widths. Page width matched viewport width in all four cases.
-Inputs aligned within each row. The risk table scrolled inside its container.
-At 390 px, controls measured 44 px high. At 600 px, all three top inputs
-shared the same vertical position despite the wrapped rate label.
-
-Live checks retained the exact 0.125 exposure label and displayed 0.00359
-expected excess deaths. The tail-null control displayed 20.52; reset restored
-28.76. No browser console errors were reported. See the
-[390 px screenshot](images/calculator-mobile-390.jpg).
-
-Earlier `file://` preview access was denied. The dedicated local HTTP server
-now supplies the application through a supported URL. Physical phone testing,
-200% zoom, screen-reader review and participant testing remain open.
-Viewport emulation does not establish those results.
-
-After the functional JavaScript refactor, the local server was restarted and
-the page reloaded. Browser checks confirmed fractional exposure (0.125 →
-0.00359 excess deaths), invalid-edit retention, tail-null (20.52), Q3 signed
-child earnings and reset (28.76). No console errors were reported.
-
-Human testing remains on task:2026-10-14-calculator-design. Test 6–8 intended
-users. Ask them to identify units, source versus custom inputs, D₀/D₁/ΔD,
-the lifetime child conversion, removal effects and unsupported target transport.
-Record unaided errors and needed assistance. Revise recurring errors and repeat.
-No participant results are claimed.
+The [browser review](audits/CALCULATOR_REVIEW_2026-10-15.md) records viewport,
+interaction and refactor checks. Those receipts describe the tested revision.
+Physical-device, zoom, screen-reader and participant testing remain open on
+@task:2026-10-14-calculator-design. Record new results there and in a dated
+audit; do not turn historical observations into a current verification claim.

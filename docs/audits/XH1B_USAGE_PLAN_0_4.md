@@ -6,8 +6,8 @@ Connections: @link:code-employer; @link:code-consumer; @link:doc-consumer-fixtur
 @link:test-exposure-semantics.
 -->
 
-Related: [Documentation map](README.md) · [consumer fixtures 0 4](CONSUMER_FIXTURES_0_4.md) · [exposure semantics 0 4](EXPOSURE_SEMANTICS_0_4.md).
-Implementation: [employer](../src/downstream/employer.py), [consumer](../src/downstream/consumer.py). Checks: [consumer_fixtures](../tests/test_consumer_fixtures.py), [consumer_api](../tests/test_consumer_api.py), [exposure_semantics](../tests/test_exposure_semantics.py).
+Related: [Documentation map](../README.md) · [consumer fixtures 0 4](../INTEGRATION.md#scaling-mixtures-and-acceptance-fixtures) · [exposure semantics 0 4](../INTEGRATION.md#exposure-and-event-metadata).
+Implementation: [employer](../../src/downstream/employer.py), [consumer](../../src/downstream/consumer.py). Checks: [consumer_fixtures](../../tests/test_consumer_fixtures.py), [consumer_api](../../tests/test_consumer_api.py), [exposure_semantics](../../tests/test_exposure_semantics.py).
 
 Inspected 2026-10-14. Keep engine 0.4.0; current parameters are v1.51.
 
@@ -22,7 +22,7 @@ This review reads the local companion checkout and executes its Python worker
 with synthetic inputs. It does not inspect a database, a browser or deployed
 pages. It does not repin XH1B or change either project's runtime code.
 
-[The inspection receipt](../validation/xh1b_usage_inspection_20261014.json)
+[The inspection receipt](../../validation/xh1b_usage_inspection_20261014.json)
 records both Git revisions, inspected source hashes, the verified bundle,
 synthetic inputs and outputs. Candidate checks execute the existing companion
 worker against this repository's source and parameters without copying or
@@ -225,7 +225,7 @@ with its own stated scope while keeping engine 0.4.0 until the owner's decision.
 ## Source index for implementation
 
 In Downstream: `src/downstream/scenario.py`, `employer.py`, `mortality_robustness.py`,
-`child_applicability.py`, `valuation.py`, `docs/RELEASE_0_4.md` and the task board.
+`child_applicability.py`, `valuation.py`, `docs/audits/RELEASE_0_4.md` and the task board.
 
 In XH1B: `scraper/scraper/entity_analysis.py`, `entity_analysis_worker.py`,
 `aggregate.py`, `scheduler.py`; `website/scripts/build-downstream-reference.py`,

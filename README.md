@@ -17,7 +17,7 @@ consequences then emerge from cited bridges, not from a hand-written narrative.
 The engine adds an effect only when the evidence supports the bridge, the
 bridge is compatible, and the uncertainty is explicit. Current results remain
 conditional on the supplied exposure and stated transport assumptions. They
-do not predict the future of an identified person. See `SPEC.md` for the full design rules.
+do not predict the future of an identified person. See the [paper](paper/downstream.tex) for mathematical explanation and [software docs](docs/README.md) for implementation contracts.
 
 <!-- BEGIN GENERATED ATTRIBUTION -->
 The bibliography contains 110 sources and 216 named author records (people and organizations), 1979-2026.
@@ -38,7 +38,7 @@ make serve
 Open **[127.0.0.1:8000](http://127.0.0.1:8000/)**. Press `Ctrl+C` to stop.
 Use `make serve PORT=8001` if the port is busy.
 
-The app lives in [`calculator/`](calculator/). It calculates in the browser;
+The app lives in [`calculator/`](calculator). It calculates in the browser;
 the local server builds its source data at startup. No Node packages are needed.
 See [calculator setup and method](docs/CALCULATOR.md).
 
@@ -75,7 +75,7 @@ regression examples.
 The pending 0.4.0 update adds reproducible reference cohorts, sourced subgroup scenarios,
 age-timed child present values, household earnings comparisons, and a separate
 baseline/exposure/process uncertainty budget. See the
-[update record](docs/RELEASE_0_4.md) for the source correction, verification,
+[update record](docs/audits/RELEASE_0_4.md) for the source correction, verification,
 and research dependencies that remain open.
 These changes have not yet been applied to XH1B.
 
@@ -90,7 +90,7 @@ python -m mutmut results --all true     # all mutation results
 ```
 
 The benchmarks are comparison baselines. They are not a performance gate. See
-`docs/TESTING_QUALITY.md` for the measured baseline and scaling notes. GitHub
+`docs/audits/TESTING_QUALITY.md` for the measured baseline and scaling notes. GitHub
 Actions runs a fast property/FSM/CLI suite on each change, the full coverage
 gate on pull requests, and a scheduled mutation-plus-benchmark job.
 
@@ -261,7 +261,7 @@ each applied coefficient's value/source, its removal experiment and refits at
 supported endpoints. Fixed inputs and unavailable ranges remain explicit.
 Entity results and policy-arm scenario records inherit these reports.
 Add `--sensitivity-base 512` to `scenario` for a separate correlation-aware
-parameter variance breakdown. See [the result contract and example](docs/RESULT_SENSITIVITY.md).
+parameter variance breakdown. See [the result contract and example](docs/INTEGRATION.md#per-result-sensitivity).
 
 ## Mortality persistence comparison (0.4.0)
 
@@ -277,7 +277,7 @@ For 1,000 workers over 20 years, the reference point is 28.76 excess deaths
 and the alternative is 20.52. This prices the long-run persistence assumption
 without replacing the source anchor or treating a nonsignificant finding as
 proof of zero. Both retain the population-applicability and fixed-baseline
-limits. See [the method and reproducible example](docs/MORTALITY_PERSISTENCE_SENSITIVITY.md).
+limits. See [the method and reproducible example](docs/INTEGRATION.md#persistence-comparison).
 Parameters v1.50 correct the offset +4–5 source standard error to 0.138,
 widening intervals while preserving the point estimate. Revision v1.51
 re-executes all five source transformations, corrects working-paper tiers and
@@ -344,7 +344,7 @@ timestamp to establish public preregistration.
 
 | Path | Content |
 | --- | --- |
-| `SPEC.md` | the algorithm: graph primitives, composition, uncertainty, citation rules |
+| `SPEC.md` | secondary algorithm reference; code and admitted data define behavior |
 | `params/` | versioned parameter set, node units, baselines, `references.bib` |
 | `src/downstream/` | DAG engine, typed ledger, modules, Monte Carlo, audit, validation |
 | `tests/` | the compute checks (`pytest`) |
@@ -352,7 +352,7 @@ timestamp to establish public preregistration.
 | `CREDITS.md` | every researcher, study, and DOI, computed from the bibliography |
 | `scripts/` | quality gate, benchmarks, data acquisition, task board CLI |
 | `tasks/` | task cards and agent workflow; `python3 scripts/tasks.py list` |
-| `docs/` | plans and binding rules; see below |
+| `docs/` | software guides, with reviews in `audits/` and supporting plans in `research/` |
 
 Current work is tracked in [the task board](tasks/README.md), using the XH1B card format.
 Run `python3 scripts/tasks.py next` to see claimable work.
@@ -360,15 +360,13 @@ Run `python3 scripts/tasks.py next` to see claimable work.
 Start with [the documentation map](docs/README.md) for connected guides, code,
 tests and paper sources.
 
-Key documents:
-
-- `docs/CITING.md` — the binding citation and evidence-tier rules
-- `docs/ATTRIBUTION.md` — how credit is given and kept exact
-- `docs/QUEUED_EXTRACTIONS.md` — modeled links that await their number
-- `docs/PRIOR_ATTEMPTS.md` — SimPaths, LifeSim, DYNASIM, the Future Elderly Model
-- `docs/MODEL_CARD.md` — model scope, limits, and evaluation
-- Plans: `docs/LIFE_COURSE_RESEARCH_PLAN.md`, `docs/CAUSAL_GRAPH_PLAN.md`,
-  `docs/WEBSITE_EXPERIENCE_PLAN.md`, `docs/LITERATURE_ACQUISITION_PLAN.md`
+The implementation and admitted data define behavior. The [paper](paper/downstream.tex)
+explains the math and scientific choices. Five software guides cover
+[scope](docs/MODEL_CARD.md), [integration](docs/INTEGRATION.md),
+[evidence/data operations](docs/EVIDENCE.md), [the calculator](docs/CALCULATOR.md)
+and [development](docs/DEVELOPMENT.md). Dated reviews live in
+[docs/audits](docs/audits/README.md); research and design plans are separate in
+[docs/research](docs/research/README.md).
 
 ## Companion project
 
@@ -391,8 +389,8 @@ downstream compare --before old-results/ --after new-results/ --format csv --out
 ```
 
 Run each version's own engine with identical inputs before comparing its
-saved JSON. See [version comparisons](docs/VERSION_COMPARISON.md) and the
-[release checklist](docs/OPEN_SOURCE_RELEASE.md).
+saved JSON. See [version comparisons](docs/DEVELOPMENT.md#compare-saved-calculations) and the
+[release checklist](docs/DEVELOPMENT.md#release-and-companion-handoff).
 
 ## License
 
@@ -403,23 +401,23 @@ MIT. See `LICENSE`.
 - [Calculator](calculator/index.html): edit exposure, timing, baseline,
   odds ratios and child earnings inputs. Survival and sensitivity recalculate in
   the browser. See [method and checks](docs/CALCULATOR.md).
-- [Child-gap view](docs/CHILD_GAP_VIEW.md): `downstream child-gaps --workers 1000`.
-- [Evidence classification](docs/EVIDENCE_CLASSIFICATION_0_4.md): inspect source
+- [Child-gap view](docs/INTEGRATION.md#child-and-descendant-outputs): `downstream child-gaps --workers 1000`.
+- [Evidence classification](docs/audits/EVIDENCE_CLASSIFICATION_0_4.md): inspect source
   applicability separately from structural runtime use.
-- [Consumer fixtures](docs/CONSUMER_FIXTURES_0_4.md): normalization and mixture
+- [Consumer fixtures](docs/INTEGRATION.md#scaling-mixtures-and-acceptance-fixtures): normalization and mixture
   expectations for the pending companion handoff.
 
-- [Exposure semantics](docs/EXPOSURE_SEMANTICS_0_4.md): caller-owned quantity,
+- [Exposure semantics](docs/INTEGRATION.md#exposure-and-event-metadata): caller-owned quantity,
   event time, overlap and provenance contract.
-- [Child source support](docs/CHILD_SUPPORT_0_4.md): current eligibility and signed
+- [Child source support](docs/INTEGRATION.md#inspect-source-support): current eligibility and signed
   income contrasts; `python scripts/inspect_child_support.py`.
-- [Pool readiness](docs/POOL_READINESS_0_4.md): compatibility and sample overlap.
-- [Mortality covariance](docs/MORTALITY_COVARIANCE_0_4.md): additive phase precision
+- [Pool readiness](docs/audits/POOL_READINESS_0_4.md): compatibility and sample overlap.
+- [Mortality covariance](docs/audits/MORTALITY_COVARIANCE_0_4.md): additive phase precision
   bounds with unknown covariance.
 
-- [Receiving-community comparisons](docs/RECEIVING_COMMUNITY_0_4.md): typed share
+- [Receiving-community comparisons](docs/INTEGRATION.md#receiving-community-adapter): typed share
   exposures and optional annual endpoint incident differences, separate from displacement.
-- [Household summaries](docs/HOUSEHOLD_COMPARISON_0_4.md): paired member and household
+- [Household summaries](docs/INTEGRATION.md#annual-household-comparisons): paired member and household
   gross earnings and expected state person-years.
-- [Remarriage screen](docs/REMARRIAGE_MARGIN_SCREEN_0_4.md): source-based refusal of an
+- [Remarriage screen](docs/audits/REMARRIAGE_MARGIN_SCREEN_0_4.md): source-based refusal of an
   unsupported transition coefficient.

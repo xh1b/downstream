@@ -5,8 +5,8 @@
 Connections: @link:code-mortality-profiles; @link:code-mortality-strata; @link:doc-mortality-source-reconciliation-2026-09-10; @link:doc-mortality-covariance-0-4; @link:docs-index; @link:script-build-age-mortality; @link:script-build-cohort-projection; @link:test-mortality-admission-0-4; @link:test-mortality-profiles; @link:test-mortality-strata.
 -->
 
-Related: [Documentation map](README.md) · [mortality source reconciliation 2026-09-10](MORTALITY_SOURCE_RECONCILIATION_2026-09-10.md) · [mortality covariance 0 4](MORTALITY_COVARIANCE_0_4.md).
-Implementation: [mortality_profiles](../src/downstream/mortality_profiles.py), [mortality_strata](../src/downstream/mortality_strata.py). Checks: [mortality_admission_0_4](../tests/test_mortality_admission_0_4.py), [mortality_profiles](../tests/test_mortality_profiles.py), [mortality_strata](../tests/test_mortality_strata.py).
+Related: [Documentation map](../README.md) · [mortality source reconciliation 2026-09-10](MORTALITY_SOURCE_RECONCILIATION_2026-09-10.md) · [mortality covariance 0 4](MORTALITY_COVARIANCE_0_4.md).
+Implementation: [mortality_profiles](../../src/downstream/mortality_profiles.py), [mortality_strata](../../src/downstream/mortality_strata.py). Checks: [mortality_admission_0_4](../../tests/test_mortality_admission_0_4.py), [mortality_profiles](../../tests/test_mortality_profiles.py), [mortality_strata](../../tests/test_mortality_strata.py).
 
 Mortality baseline coverage and causal-response coverage are different. A
 verified mortality rate for a demographic group never admits the default
@@ -54,6 +54,6 @@ effect estimate and an explicit projection/transport contract.
 This is a code and existing-source-contract review, not a fresh extraction or
 new evidence admission. Sources and numerical defaults are unchanged.
 
-Implementation: [mortality_strata.py](../src/downstream/mortality_strata.py).
-Admission/refusal checks: [test_mortality_admission_0_4.py](../tests/test_mortality_admission_0_4.py).
-Existing baseline profile gate: [mortality_profiles.py](../src/downstream/mortality_profiles.py).
+Implementation: [mortality_strata.py](../../src/downstream/mortality_strata.py).
+Admission/refusal checks: [test_mortality_admission_0_4.py](../../tests/test_mortality_admission_0_4.py).
+Existing baseline profile gate: [mortality_profiles.py](../../src/downstream/mortality_profiles.py).

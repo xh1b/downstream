@@ -38,13 +38,13 @@ python -m coverage run -m pytest
 python -m coverage json -o coverage.json
 python scripts/quality_gate.py coverage.json
 python -m build
-python scripts/check_distribution.py dist/downstream-0.2.0-py3-none-any.whl
+python scripts/check_distribution.py dist/downstream-0.4.0-py3-none-any.whl
 ```
 
 Use the wheel filename produced by the build if the engine version changes.
 The coverage gate requires 95% statements and 90% branches. Run focused tests
 while developing, then the complete gate before submitting. Benchmark and
-mutation campaigns run separately; see [testing quality](docs/TESTING_QUALITY.md).
+mutation campaigns run separately; see [development](docs/DEVELOPMENT.md#tests-and-quality-gates).
 
 Add regression coverage for meaningful behavior changes. Preserve deterministic
 seeds and explicit uncertainty. Do not regenerate unrelated data or format the
@@ -52,8 +52,10 @@ whole codebase as part of a small fix. Use synthetic examples in issues and test
 
 ## Evidence contributions
 
-Read [citation rules](docs/CITING.md), [attribution](docs/ATTRIBUTION.md),
-[model limits](docs/MODEL_CARD.md), and `SPEC.md` before editing the graph.
+Read [evidence operations](docs/EVIDENCE.md), [model limits](docs/MODEL_CARD.md)
+and the relevant [paper passage](docs/DEVELOPMENT.md#paper-and-implementation)
+before editing the graph. Code and admitted data define behavior; the paper
+explains mathematical and scientific choices.
 Each admitted row needs a source locator, extraction tier, units, uncertainty
 envelope, population scope, and evidence role. Distinguish source estimates
 from composition and transport assumptions. Missing evidence stays explicit.
@@ -82,7 +84,7 @@ Fork PR checks use a read-only token and no secrets. GitHub may require a
 maintainer to approve a first-time contributor's workflow run. Scheduled
 mutation testing is separate from PR checks.
 
-See [version comparisons](docs/VERSION_COMPARISON.md) for local reports and
+See [version comparisons](docs/DEVELOPMENT.md#compare-saved-calculations) for local reports and
 comparisons between release tags. Keep PRs focused and respond to review
 comments with the source or test that supports your change.
 
@@ -94,7 +96,9 @@ credentials, or private records. See [conduct](CODE_OF_CONDUCT.md) and
 ## Connected documentation
 
 Use [the documentation map](docs/README.md) to find existing methods and contracts.
-Keep maintained Markdown in `docs/`, link it from the relevant entry point, and
+Extend the five maintained software guides in `docs/`; put reviews in
+`docs/audits/` and supporting research/design material in `docs/research/`. Link
+from the relevant entry point, and
 connect implementation and verification with the [reference-token conventions](tasks/README.md).
 Use source comments for paper navigation metadata. Run `python3 scripts/refcheck.py check`
 and `python3 scripts/tasks.py validate` alongside the relevant behavior or build checks.

@@ -7,8 +7,8 @@ Connections: @link:code-ledger; @link:code-units; @link:code-variants; @link:cod
 @link:docs-index; @link:paper-composition; @link:spec-composition; @link:test-ledger; @link:test-modules; @link:test-variants.
 -->
 
-Related: [Documentation map](README.md) · [life course research plan](LIFE_COURSE_RESEARCH_PLAN.md) · [evidence classification 0 4](EVIDENCE_CLASSIFICATION_0_4.md).
-Implementation: [ledger](../src/downstream/ledger.py), [units](../src/downstream/units.py), [variants](../src/downstream/variants.py), [policy](../src/downstream/policy.py), [family](../src/downstream/family.py). Checks: [ledger](../tests/test_ledger.py), [modules](../tests/test_modules.py), [variants](../tests/test_variants.py).
+Related: [Documentation map](../README.md) · [life course research plan](LIFE_COURSE_RESEARCH_PLAN.md) · [evidence classification 0 4](../audits/EVIDENCE_CLASSIFICATION_0_4.md).
+Implementation: [ledger](../../src/downstream/ledger.py), [units](../../src/downstream/units.py), [variants](../../src/downstream/variants.py), [policy](../../src/downstream/policy.py), [family](../../src/downstream/family.py). Checks: [ledger](../../tests/test_ledger.py), [modules](../../tests/test_modules.py), [variants](../../tests/test_variants.py).
 
 Updated September 10, 2026. This is the model-design companion to
 [LIFE_COURSE_RESEARCH_PLAN.md](LIFE_COURSE_RESEARCH_PLAN.md), which defines the

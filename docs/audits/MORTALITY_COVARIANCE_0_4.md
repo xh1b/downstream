@@ -5,8 +5,8 @@
 Connections: @link:code-mortality-covariance; @link:doc-mortality-applicability-0-4; @link:doc-pool-readiness-0-4; @link:docs-index; @link:script-analyze-mortality-covariance; @link:test-mortality-covariance.
 -->
 
-Related: [Documentation map](README.md) · [mortality applicability 0 4](MORTALITY_APPLICABILITY_0_4.md) · [pool readiness 0 4](POOL_READINESS_0_4.md).
-Implementation: [mortality_covariance](../src/downstream/mortality_covariance.py). Checks: [mortality_covariance](../tests/test_mortality_covariance.py).
+Related: [Documentation map](../README.md) · [mortality applicability 0 4](MORTALITY_APPLICABILITY_0_4.md) · [pool readiness 0 4](POOL_READINESS_0_4.md).
+Implementation: [mortality_covariance](../../src/downstream/mortality_covariance.py). Checks: [mortality_covariance](../../tests/test_mortality_covariance.py).
 
 The missing covariance does not prevent us from bounding each additive phase's
 standard error. It still prevents reproducing the authors' ordinary phase-sum
@@ -76,7 +76,7 @@ and source-version admission. The parent published-profile task remains open.
 
 ## Implementation and reproduction
 
-[The diagnostic module](../src/downstream/mortality_covariance.py) validates finite
+[The diagnostic module](../../src/downstream/mortality_covariance.py) validates finite
 coefficients, nonnegative marginal errors, named weights and nonempty contrasts.
 If an active component SE is missing, it returns the point but withholds uncertainty;
 it never fills the gap. Overflow produces an explicit error rather than nonstandard

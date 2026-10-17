@@ -6,8 +6,8 @@ Connections: @link:code-evidence; @link:code-admission; @link:doc-citing; @link:
 @link:test-evidence; @link:test-admission-provenance.
 -->
 
-Related: [Documentation map](README.md) · [citing](CITING.md) · [queued extractions](QUEUED_EXTRACTIONS.md).
-Implementation: [evidence](../src/downstream/evidence.py), [admission](../src/downstream/admission.py). Checks: [evidence](../tests/test_evidence.py), [admission_provenance](../tests/test_admission_provenance.py).
+Related: [Documentation map](../README.md) · [citing](../EVIDENCE.md#citation-and-extraction-rules) · [queued extractions](QUEUED_EXTRACTIONS.md).
+Implementation: [evidence](../../src/downstream/evidence.py), [admission](../../src/downstream/admission.py). Checks: [evidence](../../tests/test_evidence.py), [admission_provenance](../../tests/test_admission_provenance.py).
 
 ## Purpose
 
@@ -18,7 +18,7 @@ life events, intermediate states, and later outcomes.
 
 This plan acquires papers and their machine-readable receipts. It does not
 automatically turn a paper into a parameter: extraction and the rules in
-`docs/CITING.md` remain the gate for every numerical edge.
+`docs/EVIDENCE.md` remain the gate for every numerical edge.
 
 Acquisition priorities now follow
 [LIFE_COURSE_RESEARCH_PLAN.md](LIFE_COURSE_RESEARCH_PLAN.md): source corrections,

@@ -5,8 +5,8 @@
 Connections: @link:code-place; @link:code-build-places; @link:code-county-rates; @link:doc-child-gap-view; @link:doc-cdc-wonder-profile-import; @link:docs-index; @link:test-place; @link:test-county-rates; @link:test-build-places-adversarial.
 -->
 
-Related: [Documentation map](README.md) · [child gap view](CHILD_GAP_VIEW.md) · [cdc wonder profile import](CDC_WONDER_PROFILE_IMPORT.md).
-Implementation: [place](../src/downstream/place.py), [build_places](../src/downstream/build_places.py), [county_rates](../src/downstream/county_rates.py). Checks: [place](../tests/test_place.py), [county_rates](../tests/test_county_rates.py), [build_places_adversarial](../tests/test_build_places_adversarial.py).
+Related: [Documentation map](../README.md) · [child gap view](../INTEGRATION.md#child-and-descendant-outputs) · [cdc wonder profile import](../EVIDENCE.md#mortality-baseline-import).
+Implementation: [place](../../src/downstream/place.py), [build_places](../../src/downstream/build_places.py), [county_rates](../../src/downstream/county_rates.py). Checks: [place](../../tests/test_place.py), [county_rates](../../tests/test_county_rates.py), [build_places_adversarial](../../tests/test_build_places_adversarial.py).
 
 Verified 2026-10-15 for engine 0.4.0, parameter set v1.51.
 
@@ -46,15 +46,15 @@ place interaction and mortality-baseline selection are separate operations.
 
 ## Implementation and verification
 
-- [Place derivation and structural designation](../src/downstream/place.py)
+- [Place derivation and structural designation](../../src/downstream/place.py)
   (`mobility_modifier`, `modifier_parameter`).
-- [Child composition](../src/downstream/children.py) (`child_line`) and
-  [ledger gap scaling](../src/downstream/ledger.py) (`GAP_SCALE`).
-- [Place tests](../tests/test_place.py) include the null-displacement invariant,
+- [Child composition](../../src/downstream/children.py) (`child_line`) and
+  [ledger gap scaling](../../src/downstream/ledger.py) (`GAP_SCALE`).
+- [Place tests](../../tests/test_place.py) include the null-displacement invariant,
   national-reference identity, default scenario/vignette use, missing-data
   blocking, generic county-mortality rejection and explicit legacy repetition.
-- [Transmission tests](../tests/test_transmissions.py) and
-  [ledger tests](../tests/test_ledger.py) cover downstream composition.
+- [Transmission tests](../../tests/test_transmissions.py) and
+  [ledger tests](../../tests/test_ledger.py) cover downstream composition.
 
 Receipt: `.venv/bin/python -m pytest tests/test_place.py tests/test_ledger.py
  tests/test_transmissions.py -q` — **83 passed in 4.58 seconds**.

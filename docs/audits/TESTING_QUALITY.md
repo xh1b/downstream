@@ -1,6 +1,6 @@
 # Testing quality review — 2026-09-09
 
-<!-- @ref:doc-testing-quality; @tag:testing -->
+<!-- @ref:audit-testing-quality; @link:doc-testing-quality; @tag:testing -->
 <!--
 Connections: @link:code-ledger; @link:code-validate; @link:doc-scenario-evidence-protocol;
 @link:doc-open-source-release; @link:docs-index; @link:script-quality-gate; @link:quality-workflow;
@@ -8,8 +8,8 @@ Connections: @link:code-ledger; @link:code-validate; @link:doc-scenario-evidence
 @link:test-mathematics-v02.
 -->
 
-Related: [Documentation map](README.md) · [scenario evidence protocol](SCENARIO_EVIDENCE_PROTOCOL.md) · [open source release](OPEN_SOURCE_RELEASE.md).
-Implementation: [ledger](../src/downstream/ledger.py), [validate](../src/downstream/validate.py). Checks: [properties_hypothesis](../tests/test_properties_hypothesis.py), [mathematics_v02](../tests/test_mathematics_v02.py).
+Related: [Documentation map](../README.md) · [scenario evidence protocol](../research/SCENARIO_EVIDENCE_PROTOCOL.md) · [open source release](../DEVELOPMENT.md#release-and-companion-handoff).
+Implementation: [ledger](../../src/downstream/ledger.py), [validate](../../src/downstream/validate.py). Checks: [properties_hypothesis](../../tests/test_properties_hypothesis.py), [mathematics_v02](../../tests/test_mathematics_v02.py).
 
 ## Current gate
 
@@ -204,14 +204,14 @@ the benchmark output as a trend baseline and investigate material regressions.
 
 ## Reference tooling and source navigation
 
-<!-- @ref:test-refcheck; @link:script-refcheck; @link:reference-token-contract. @tag:tooling @tag:testing -->
+<!-- @link:test-refcheck; @link:script-refcheck; @link:reference-token-contract. @tag:tooling @tag:testing -->
 
-[Reference-checker tests](../tests/test_refcheck.py) exercise duplicate anchors,
+[Reference-checker tests](../../tests/test_refcheck.py) exercise duplicate anchors,
 dangling links, malformed names, source-comment tokens and fenced examples.
 Their literal fixtures are exempt from repository scanning through
-[the fixture allowlist](../scripts/refcheck-allowlist.txt); this section is the
+[the fixture allowlist](../../scripts/refcheck-allowlist.txt); this section is the
 verification anchor for that intentionally exempt file.
-[Task workflow tests](../tests/test_tasks_workflow.py) and
-[board safeguards](../tests/test_tasks_board.py) cover task references, tags,
+[Task workflow tests](../../tests/test_tasks_workflow.py) and
+[board safeguards](../../tests/test_tasks_board.py) cover task references, tags,
 comments and isolated local commits. Run the reference and task validators
 before review. These checks establish navigability, not scientific validity.

@@ -5,8 +5,8 @@
 Connections: @link:code-household; @link:doc-psid-baseline-data-assessment-2026-09-13; @link:doc-baseline-transition-r2-2026-09-14; @link:docs-index; @link:test-household; @link:test-household-summary.
 -->
 
-Related: [Documentation map](README.md) · [psid baseline data assessment 2026-09-13](PSID_BASELINE_DATA_ASSESSMENT_2026-09-13.md) · [baseline transition r2 2026-09-14](BASELINE_TRANSITION_R2_2026-09-14.md).
-Implementation: [household](../src/downstream/household.py). Checks: [household](../tests/test_household.py), [household_summary](../tests/test_household_summary.py).
+Related: [Documentation map](../README.md) · [psid baseline data assessment 2026-09-13](PSID_BASELINE_DATA_ASSESSMENT_2026-09-13.md) · [baseline transition r2 2026-09-14](BASELINE_TRANSITION_R2_2026-09-14.md).
+Implementation: [household](../../src/downstream/household.py). Checks: [household](../../tests/test_household.py), [household_summary](../../tests/test_household_summary.py).
 
 ## Scope and verdict
 
