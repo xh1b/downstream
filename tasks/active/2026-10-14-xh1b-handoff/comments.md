@@ -18,3 +18,10 @@ Result sensitivity now has its own consumer contract: docs/RESULT_SENSITIVITY.md
 triage: inbox -> ready.
 
 Owner authorized remaining simple 0.4 work. Scope is local companion-task inspection and a verified model bundle/provenance handoff; no companion repin or deployment.
+
+## c-d4863556697a
+
+- At: 2026-10-17 21:40 HKT
+- By: codex-release-finish
+
+claim: ready -> active.

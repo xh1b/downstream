@@ -2,7 +2,7 @@
 title: Coordinate the pending 0.4 update with XH1B integration
 area: integration
 priority: P2
-assignee:
+assignee: codex-release-finish
 due:
 blocked-by: []
 expected-paths: []
