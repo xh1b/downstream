@@ -15,3 +15,10 @@ Created in inbox.
 triage: inbox -> ready.
 
 Owner requested a complete remaining-task and navigation review for the next 0.4 release.
+
+## c-d04250289f91
+
+- At: 2026-10-17 20:23 HKT
+- By: codex-release-review
+
+claim: ready -> active.

@@ -2,7 +2,7 @@
 title: Review remaining tasks and reconcile the 0.4 release scope
 area: release
 priority: P1
-assignee:
+assignee: codex-release-review
 tags: [@tag:tooling]
 blocked-by: []
 ---
