@@ -63,3 +63,16 @@ The owner authorized the remaining publication/integration work. Source is now p
 Fresh Linux CI exposed platform-specific exact-string freshness failures. Reproduced 57 computed floats with at most 16 ULP difference using the read-only same checkout in official Linux Python 3.12. Commit 7f6663c preserves full stored precision and bounds freshness checks at 32 ULP, while keeping zero, types, structure, metadata/source hashes and authored markup exact. Eleven helper regressions plus consumer/calculator checks pass (34 total). e6aa746 refreshes only the paper fingerprint; page 15 was rendered and inspected. d7691da corrects one remaining old byte-equality test assertion; all 17 affected tests pass. Final local wheel-from-sdist passes all eleven isolated CLI checks; make check-docs, Ruff and Vulture pass. The latest Linux/Windows lint, fast and four distribution jobs pass; full coverage CI is pending at this receipt. The prior run passed 1,473 tests and failed only that repaired byte assertion. No green overall CI claim yet.
 
 Fixture SHA is now 1c806cc6707e9c30d995fc420e145f5eb52c866cde82d0758ef4c5c5f030c055 because generator/helper provenance changed; calculation values are unchanged. The companion now selects the final source in its prepared native build. This is preparation, not a live deployment or cache refresh. The existing companion operational cards retain their actual prerequisites and acceptance requirements. Broader source-support and human/independent validation gates remain explicit; the stable release stays a draft while publication acceptance is unresolved.
+
+## c-979ce3740755
+
+- At: 2026-10-18 14:18 HKT
+- By: codex-release-finish
+
+Final 0.4 software checks pass; publication and live acceptance remain gated
+
+[Publication preparation receipt](../../../docs/audits/release_publication_2026-10-18.md) and [machine receipt](../../../docs/audits/release_publication_2026-10-18.json) record final source d7691dac652a81bddb16c9f91a9cf8ecd88b70db. Final CI run 39102846907 passes 1,474 tests in 399.52 seconds, 97.2% statement / 94.1% branch coverage, lint, Python 3.12/3.14 fast checks and all four Windows/Linux distributions. The scheduled mutation job is intentionally skipped on push. All eleven final local installed-wheel checks pass. Fresh make check-docs passes with 49 documents, 586 local links, 36 examples and 19 checker regressions.
+
+All five uploaded artifact digests match the draft manifest and its exact source target. The sealed local evidence archive verifies all 15 evidence files; SHA 7ed6015b70fb1cee65f13ba3ee97ede0aa2f59e8f636353abb53b603673f6c0e. Previous archives are preserved. The companion's final prepared native payload selects this source, keeps current estimate-availability gates and excludes private docs/tasks. It has not been deployed or used to rewrite live caches.
+
+The stable GitHub release remains a draft pending source-support and publication acceptance. Human/browser and independent validation claims remain unverified. Existing companion source and stale-data prerequisites block the guarded rollout/cache refresh; their cards retain those requirements. This task is not self-accepted and its final acceptance criterion remains open. No health/source gate was bypassed and no production promotion occurred.
