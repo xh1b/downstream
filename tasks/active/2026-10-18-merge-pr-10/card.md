@@ -2,7 +2,7 @@
 title: Merge PR 10 locally and verify Hypothesis update
 area: tooling
 priority: P2
-assignee:
+assignee: codex-pr10
 tags: [@tag:tooling]
 blocked-by: []
 ---
