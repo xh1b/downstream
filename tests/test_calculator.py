@@ -14,6 +14,8 @@ import subprocess
 
 import pytest
 
+from scripts.build_calculator import same_html
+
 ROOT = Path(__file__).resolve().parents[1]
 DIRECTORY = ROOT / "calculator"
 
@@ -37,7 +39,7 @@ def node(code, *args):
 
 def test_generated_data_freshness_source_identity_and_small_surface():
     html = generated()
-    assert (DIRECTORY / "index.html").read_text() == html
+    assert same_html((DIRECTORY / "index.html").read_text(), html)
     # Embedded copies reference the unique anchors in their authored sources.
     assert "@ref:" not in html
     for anchor in ("calculator-template", "calculator-math", "calculator-app", "calculator-style"):
