@@ -1,0 +1,35 @@
+{
+  "source_commit": "d7691dac652a81bddb16c9f91a9cf8ecd88b70db",
+  "engine_version": "0.4.0",
+  "parameter_set_version": "v1.52",
+  "bundle_sha256": "99173fbf23e75037da3fb9b4a9017a1e56909260ccb112f9902bc5ac86242153",
+  "consumer_fixtures_sha256": "1c806cc6707e9c30d995fc420e145f5eb52c866cde82d0758ef4c5c5f030c055",
+  "source_results_sha256": "f9583e8f9f80fb1d6f8c6cf24dfb4500b4cbe42d27ce8aed9b3e470c98f2b9c3",
+  "assets_sha256": {
+    "downstream-0.4.0.tar.gz": "0f85a7769763be3d2e67afc66847c31dea7b39ad6ca87b29a83215dc5294b3a7",
+    "downstream-0.4.0-py3-none-any.whl": "0a876b4a7f3dc6efc5ed576f963fc5fa50550df1b70523a2562e208c7ce1be2a",
+    "downstream.pdf": "636dd41293e9f0517b3907b973c83ab953c0a94db2c3d1b1fcf3fab811e295d1",
+    "methods.html": "48a2c71b96fb17262004b7956772ad848b8c0897319ab6ebe6057d507b530338",
+    "consumer_fixtures_0_4.json": "1c806cc6707e9c30d995fc420e145f5eb52c866cde82d0758ef4c5c5f030c055"
+  },
+  "schema": "downstream-publication-preparation/1",
+  "date": "2026-10-18",
+  "ci": {
+    "run_id": 39102846907,
+    "url": "https://github.com/xh1b/downstream/actions/runs/39102846907",
+    "conclusion": "success",
+    "tests": 1474,
+    "seconds": 399.52,
+    "statement_coverage": 97.2,
+    "branch_coverage": 94.1,
+    "scheduled_mutation_job": "skipped on push"
+  },
+  "source_published": true,
+  "stable_release_published": false,
+  "release_status": "draft; source-support and publication acceptance remain open",
+  "archive": {
+    "path": "build/release04-publication-20261018/publication-artifacts.tar.gz",
+    "sha256": "7ed6015b70fb1cee65f13ba3ee97ede0aa2f59e8f636353abb53b603673f6c0e",
+    "verified_files": 15
+  }
+}
