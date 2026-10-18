@@ -34,3 +34,12 @@ Use @task:2026-10-17-consumer-interval-alias#c-5935f5c415ec and the superseding 
 Reviewing the remaining ready/inbox work against the release scope finds no further small model/software requirement for the conditional 0.4 candidate. Cohort acquisition, compatible independent pools, wider mortality/child strata, published-profile covariance, pooled SIPP survey uncertainty, household dynamics, transport/dependence uncertainty and matched/prospective evaluation require new evidence or substantive research. Do not fabricate inputs or mark those criteria complete. Their existing cards remain authoritative.
 
 Owner release/publication acceptance remains unchecked. Companion live cache freshness and exposure restamps, served-browser checks and staging/promotion remain separate. Actual assistive technology, native zoom, physical-device and participant checks remain unverified. Those limits are explicit in the candidate and maintained release notes.
+
+## c-b76250094333
+
+- At: 2026-10-18 13:46 HKT
+- By: codex-release-finish
+
+claim: ready -> active.
+
+Owner now requests publication and integration into the new XH1B build. Recheck the fixed candidate, publish through supported paths and retain human/independent acceptance limits.

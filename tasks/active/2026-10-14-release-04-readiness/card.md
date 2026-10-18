@@ -2,7 +2,7 @@
 title: Qualify Downstream 0.4 for the XH1B handoff
 area: release
 priority: P1
-assignee:
+assignee: codex-release-finish
 due:
 blocked-by: []
 expected-paths: [docs/audits/release_0_4.md, scripts/check_distribution.py, tests/]
