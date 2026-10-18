@@ -16,7 +16,26 @@ from pathlib import Path
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "src"))
+from scripts.artifact_checks import same_json  # noqa: E402
+
+
+def same_html(saved: str, expected: str) -> bool:
+    """Keep authored HTML exact; compare only embedded result floats by ULP."""
+    marker = '<script id="engine-data" type="application/json">'
+    saved_head, found, saved_tail = saved.partition(marker)
+    expected_head, _, expected_tail = expected.partition(marker)
+    if not found or saved_head != expected_head:
+        return False
+    saved_json, found, saved_end = saved_tail.partition('</script>')
+    expected_json, _, expected_end = expected_tail.partition('</script>')
+    if not found or saved_end != expected_end:
+        return False
+    try:
+        return same_json(json.loads(saved_json), json.loads(expected_json))
+    except ValueError:
+        return False
 
 
 def build() -> str:
@@ -68,7 +87,7 @@ def main() -> int:
     path = ROOT / "calculator" / "index.html"
     expected = build()
     if args.check:
-        if not path.exists() or path.read_text() != expected:
+        if not path.exists() or not same_html(path.read_text(), expected):
             print("Calculator HTML is stale; run scripts/build_calculator.py")
             return 1
         print("Calculator HTML matches current engine and authored UI inputs")

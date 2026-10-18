@@ -271,6 +271,14 @@ maintained guides. The full target also checks six generated outputs and runs
 the checker regressions. Use `python3 scripts/doccheck.py` for navigation only,
 or `--examples` and `--freshness` to select the additional checks. It does not
 execute shell recipes, task mutations, historical audit examples or remote links.
+The consumer-fixture and calculator checks preserve exported full precision.
+Their [comparison helper](../scripts/artifact_checks.py) permits at most 32
+floating-point steps (ULP) for finite computed JSON floats, covering observed
+Linux/macOS math-library variation amplified by subtraction. Zero, numeric
+types, structure, source hashes and metadata remain exact. Calculator HTML
+outside its embedded result JSON remains byte-exact. This allowance neither
+rounds results nor changes the engine or source inputs; its [regressions](../tests/test_artifact_checks.py)
+reject larger numeric drift and changed metadata or authored markup.
 Task threads and the historical migration map are outside live-link checking.
 Missing semantic bridges and incorrect equations still need code/paper review.
 Historical task comments stay intact;

@@ -76,9 +76,10 @@
     "params/references.bib": "2b022848da937459f0ff8e9488b013c2a03ba3554c272ff567de426d36f93c12",
     "params/study_estimates.csv": "12ea8fee6af9b0d3200989186714b7e02b77e8931f40ea1b36c84bfd6e3fdc74",
     "params/study_estimates.template.csv": "3f71fb5102d87827c926ac9c9ad09ce834798bb19c461cfca3f6854665cc66bf",
-    "scripts/build_consumer_fixtures.py": "ef635d5043866360556e7b436f98aa74cad85436c735715e32fca75fc2e4beea"
+    "scripts/build_consumer_fixtures.py": "4964e76a53088d8fdc1fc348b052a83f1514f901effb2648998a903ab515adfd",
+    "scripts/artifact_checks.py": "15342ed61b943d73774a1aa346137e715cb4256e28ca9e49cf2a7af0904cf62e"
   },
-  "source_content_sha256": "9faaa12b6cd3a181a42582048a9f5d159e9a0778d2c27e558f02255b7178c169",
+  "source_content_sha256": "9f4a45eb6d12fbe6b21939b0571168c5c6e77cc99e517d69f1d7ae3184c7b7d7",
   "fixture_sampling": "128 draws/base, seed 1901; contract fixtures, not precision-qualified research intervals.",
   "fixtures": {
     "national": {

@@ -13,7 +13,9 @@ from pathlib import Path
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "src"))
+from scripts.artifact_checks import same_json  # noqa: E402
 from downstream.consumer import mix_expected, scale_outcome  # noqa: E402
 
 
@@ -94,7 +96,7 @@ def build():
                           "expected": {key: mix_expected(results, weights, key)
                                        for key in ("excess_deaths", "child_lifetime_earnings_lost_usd")}}
     files = (sorted((ROOT / "src/downstream").glob("*.py")) + sorted(directory.glob("*"))
-             + [ROOT / "scripts/build_consumer_fixtures.py"])
+             + [ROOT / "scripts/build_consumer_fixtures.py", ROOT / "scripts/artifact_checks.py"])
     hashes = {str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest()
               for p in files if p.is_file()}
     return {"schema": "downstream-consumer-fixtures/1", "engine_version": __version__,
@@ -112,7 +114,7 @@ def main():
     args = parser.parse_args()
     rendered = json.dumps(build(), indent=2, allow_nan=False) + "\n"
     if args.check:
-        if args.out.read_text() != rendered:
+        if not same_json(json.loads(args.out.read_text()), json.loads(rendered)):
             parser.error("consumer fixtures differ; regenerate on the intended fixed candidate")
     else:
         args.out.write_text(rendered)
