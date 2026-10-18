@@ -9,5 +9,5 @@ blocked-by: []
 
 Merge [PR #10](https://github.com/xh1b/downstream/pull/10) into local master as requested.
 
-- [ ] Preserve PR history in local master.
-- [ ] Verify the updated Hypothesis requirement and record checks.
+- [x] Preserve PR history in local master. [receipt](@task:2026-10-18-merge-pr-10#c-9be1068e7ff3)
+- [x] Verify the updated Hypothesis requirement and record checks. [receipt](@task:2026-10-18-merge-pr-10#c-9be1068e7ff3)
