@@ -43,3 +43,10 @@ Owner release/publication acceptance remains unchecked. Companion live cache fre
 claim: ready -> active.
 
 Owner now requests publication and integration into the new XH1B build. Recheck the fixed candidate, publish through supported paths and retain human/independent acceptance limits.
+
+## c-9aecdb68f2ea
+
+- At: 2026-10-18 13:52 HKT
+- By: codex-release-finish
+
+Source publication reached GitHub and the 0.4 artifacts are uploaded as a draft. Fresh Linux CI fails consumer-fixture and calculator freshness while local make check-docs passes. Investigating cross-platform generation before final publication; no tag/release was published.
