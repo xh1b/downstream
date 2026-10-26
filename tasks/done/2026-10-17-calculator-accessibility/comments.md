@@ -40,3 +40,14 @@ Global refcheck currently reports two dangling links from concurrent documentati
 - By: codex-release-finish
 
 done: active -> review.
+
+## c-e6f191b3307b
+
+- At: 2026-10-27 06:42 HKT
+- By: codex-review
+
+accept: review -> done.
+
+Reviewed retained keyboard/accessibility-tree evidence and 640/320px reflow results; visually inspected the 640px focus capture and mobile capture. Accessible-name/table/error regressions pass. Native zoom, screen-reader/device and participant testing remain on the parent.
+
+Verification receipt: @task:2026-10-27-review-acceptance#c-845b5298b984. Accepted under the owner's request to verify and complete review tasks.
