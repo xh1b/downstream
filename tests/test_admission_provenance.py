@@ -58,8 +58,7 @@ def test_every_shipped_step_publishes_studied_population():
     params = parts["params"]
     for link in ("displacement->worker_earnings",
                  "displacement->child_earnings",
-                 "child_earnings->grandchild_earnings",
-                 "grandchild_earnings->greatgrandchild_earnings"):
+                 "child_earnings->grandchild_earnings"):
         p = params.by_link(link)
         assert p.population_scope.strip()
     # A public chain built through the vignette path must publish the
@@ -205,7 +204,7 @@ def test_shipped_rows_classified_and_roles_match_composition():
 
 def test_chain_refuses_boundary_role_link():
     parts = load_all()
-    with pytest.raises(ValueError, match="evidence_role=boundary"):
+    with pytest.raises(ValueError, match="evidence_role=boundary|source withdrawn"):
         validate_chain(parts["params"], ["divorce->child_earnings"], ["direct"],
                        parts["nodes"])
 
@@ -236,8 +235,8 @@ def test_mortality_profile_steps_carry_evidence_role():
 def test_vignette_visibly_blocks_boundary_streams():
     out = standard_family(load_all()["params"])
     family = out["family_stream"]
-    assert "evidence_role=boundary" in family["family_size_penalty"]["blocked"]
-    assert "evidence_role=boundary" in family["daughter_violence_odds"]["blocked"]
+    assert "source withdrawn" in family["family_size_penalty"]["blocked"]
+    assert "source withdrawn" in family["daughter_violence_odds"]["blocked"]
     # The divorce row is conditional and stays a computable parallel stream.
     assert "blocked" not in family["divorce_hazard"]
     notes = " ".join(out["composition_notes"])

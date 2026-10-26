@@ -31,7 +31,7 @@
     "seed": 1901,
     "sampler": "lhs+iman-conover",
     "correlations_applied": 2,
-    "parameter_set_version": "v1.51-sampled"
+    "parameter_set_version": "v1.53-sampled"
   },
   "sampled_inputs": {
     "sampled_workers": {
@@ -99,7 +99,7 @@
   },
   "fixed_input_reference": {
     "label": "scenario",
-    "parameter_set_version": "v1.51",
+    "parameter_set_version": "v1.53",
     "engine_version": "0.4.0",
     "uncertainty": {
       "band_kind": "parameter-support envelope, not a confidence interval",
@@ -333,6 +333,225 @@
             "scope": "Parameter uncertainty conditional on each structure; fixed inputs and exclusions are the same as the parent scenario."
           }
         },
+        "sensitivity": {
+          "schema": "downstream-result-sensitivity/1",
+          "reference_point": 28.758728902534,
+          "unit": "deaths",
+          "method": "one-input-at-a-time engine refits",
+          "effect_drivers": [
+            {
+              "input_id": "earnings_shock->mortality_sustained",
+              "input_value": 1.1354,
+              "input_unit": "odds_ratio",
+              "citation": "sullivan2009",
+              "tier": "canonical",
+              "population_scope": "US high-seniority displaced men born 1930-1959",
+              "evidence_role": "conditional",
+              "effect_removed": {
+                "input_value": 1.0,
+                "point": 20.52335161286114,
+                "change_from_reference": -8.235377289672858,
+                "reference_minus_variant": 8.235377289672858
+              },
+              "supported_range": {
+                "input_low": 1.0335,
+                "input_high": 1.2474,
+                "at_input_low": {
+                  "input_value": 1.0335,
+                  "point": 22.568592172031305,
+                  "change_from_reference": -6.190136730502694,
+                  "reference_minus_variant": 6.190136730502694
+                },
+                "at_input_high": {
+                  "input_value": 1.2474,
+                  "point": 35.508834631969044,
+                  "change_from_reference": 6.750105729435045,
+                  "reference_minus_variant": -6.750105729435045
+                },
+                "outcome_low": 22.568592172031305,
+                "outcome_high": 35.508834631969044,
+                "endpoint_span": 12.940242459937739,
+                "scope": "One input at its source endpoints; all others fixed."
+              }
+            },
+            {
+              "input_id": "earnings_shock->mortality_peak",
+              "input_value": 2.6698,
+              "input_unit": "odds_ratio",
+              "citation": "sullivan2009",
+              "tier": "canonical",
+              "population_scope": "US high-seniority displaced men born 1930-1959",
+              "evidence_role": "conditional",
+              "effect_removed": {
+                "input_value": 1.0,
+                "point": 21.535767916608425,
+                "change_from_reference": -7.222960985925575,
+                "reference_minus_variant": 7.222960985925575
+              },
+              "supported_range": {
+                "input_low": 2.1144,
+                "input_high": 3.3711,
+                "at_input_low": {
+                  "input_value": 2.1144,
+                  "point": 26.369397768890185,
+                  "change_from_reference": -2.3893311336438146,
+                  "reference_minus_variant": 2.3893311336438146
+                },
+                "at_input_high": {
+                  "input_value": 3.3711,
+                  "point": 31.75723936206895,
+                  "change_from_reference": 2.998510459534952,
+                  "reference_minus_variant": -2.998510459534952
+                },
+                "outcome_low": 26.369397768890185,
+                "outcome_high": 31.75723936206895,
+                "endpoint_span": 5.387841593178766,
+                "scope": "One input at its source endpoints; all others fixed."
+              }
+            },
+            {
+              "input_id": "earnings_shock->mortality_offsets_2_3",
+              "input_value": 1.7315,
+              "input_unit": "odds_ratio",
+              "citation": "sullivan2009",
+              "tier": "canonical",
+              "population_scope": "US high-seniority displaced men born 1930-1959",
+              "evidence_role": "conditional",
+              "effect_removed": {
+                "input_value": 1.0,
+                "point": 22.418895940858363,
+                "change_from_reference": -6.339832961675636,
+                "reference_minus_variant": 6.339832961675636
+              },
+              "supported_range": {
+                "input_low": 1.3238,
+                "input_high": 2.2649,
+                "at_input_low": {
+                  "input_value": 1.3238,
+                  "point": 25.23368733472294,
+                  "change_from_reference": -3.5250415678110585,
+                  "reference_minus_variant": 3.5250415678110585
+                },
+                "at_input_high": {
+                  "input_value": 2.2649,
+                  "point": 33.338723259735694,
+                  "change_from_reference": 4.579994357201695,
+                  "reference_minus_variant": -4.579994357201695
+                },
+                "outcome_low": 25.23368733472294,
+                "outcome_high": 33.338723259735694,
+                "endpoint_span": 8.105035925012753,
+                "scope": "One input at its source endpoints; all others fixed."
+              }
+            },
+            {
+              "input_id": "earnings_shock->mortality_offset_1",
+              "input_value": 1.9838,
+              "input_unit": "odds_ratio",
+              "citation": "sullivan2009",
+              "tier": "canonical",
+              "population_scope": "US high-seniority displaced men born 1930-1959",
+              "evidence_role": "conditional",
+              "effect_removed": {
+                "input_value": 1.0,
+                "point": 24.503159961371235,
+                "change_from_reference": -4.255568941162764,
+                "reference_minus_variant": 4.255568941162764
+              },
+              "supported_range": {
+                "input_low": 1.3697,
+                "input_high": 2.8732,
+                "at_input_low": {
+                  "input_value": 1.3697,
+                  "point": 26.10718521098967,
+                  "change_from_reference": -2.6515436915443296,
+                  "reference_minus_variant": 2.6515436915443296
+                },
+                "at_input_high": {
+                  "input_value": 2.8732,
+                  "point": 32.57074071499211,
+                  "change_from_reference": 3.8120118124581133,
+                  "reference_minus_variant": -3.8120118124581133
+                },
+                "outcome_low": 26.10718521098967,
+                "outcome_high": 32.57074071499211,
+                "endpoint_span": 6.463555504002443,
+                "scope": "One input at its source endpoints; all others fixed."
+              }
+            },
+            {
+              "input_id": "earnings_shock->mortality_offsets_4_5",
+              "input_value": 1.2712,
+              "input_unit": "odds_ratio",
+              "citation": "sullivan2009",
+              "tier": "canonical",
+              "population_scope": "US high-seniority displaced men born 1930-1959",
+              "evidence_role": "conditional",
+              "effect_removed": {
+                "input_value": 1.0,
+                "point": 26.410930345352227,
+                "change_from_reference": -2.347798557181772,
+                "reference_minus_variant": 2.347798557181772
+              },
+              "supported_range": {
+                "input_low": 0.97,
+                "input_high": 1.6661,
+                "at_input_low": {
+                  "input_value": 0.97,
+                  "point": 26.150639185138125,
+                  "change_from_reference": -2.608089717395874,
+                  "reference_minus_variant": 2.608089717395874
+                },
+                "at_input_high": {
+                  "input_value": 1.6661,
+                  "point": 32.160631407267815,
+                  "change_from_reference": 3.4019025047338154,
+                  "reference_minus_variant": -3.4019025047338154
+                },
+                "outcome_low": 26.150639185138125,
+                "outcome_high": 32.160631407267815,
+                "endpoint_span": 6.009992222129689,
+                "scope": "One input at its source endpoints; all others fixed."
+              }
+            }
+          ],
+          "fixed_inputs": {
+            "displaced_workers": 1000,
+            "follow_up_years": 20.0,
+            "resolved_baseline": {
+              "value": 0.004944,
+              "annual_probability": 0.004931798548274205,
+              "unit": "deaths_per_person_year",
+              "citation": "cdc_wonder D76 (Underlying Cause of Death, 1999-2020), Male 45-54 years, pooled 2015-2019: 514314 deaths / 104024440 person-years = 494.4 per 100k; pulled 2026-09-06 via scraper.cli wonder-mortality into warehouse wonder_mortality",
+              "population": "US prime-age men (45-54)",
+              "notes": "Pre-pandemic window: excludes 2020 (COVID-distorted; 2020 crude rate 601.5/100k). Single-year 2019 = 490.0/100k. Ages 45-54 match the Sullivan & von Wachter prime-age counterfactual population",
+              "sex": "Male",
+              "age": "45-54 years",
+              "years": "2015-2019",
+              "cause": "All causes",
+              "geography": "US"
+            },
+            "mortality_method": "odds_survival",
+            "mortality_timing": "source_profile",
+            "target_population": null
+          },
+          "fixed_input_ranges": {
+            "available": false,
+            "reason": "No sensitivity ranges supplied for these inputs; no distributions inferred."
+          },
+          "variance_attribution": {
+            "available": false,
+            "reason": "Not requested.",
+            "request": "scenario --sensitivity-base N"
+          },
+          "interpretation": "Signed changes under declared input experiments; not causal shares or confidence intervals.",
+          "limitations": [
+            "Removal experiments may lie outside source support and are hypothetical, not new study estimates.",
+            "Other inputs are fixed; individual removal changes need not sum to the total because effects interact.",
+            "Endpoint spans measure range sensitivity, not shares of uncertainty or output variance.",
+            "Baseline, exposure, demographic, timing and transport uncertainty are not quantified here."
+          ]
+        },
         "parameter_interval_90": {
           "p05": 22.0449,
           "p50": 29.1305,
@@ -382,6 +601,80 @@
           "reason": "Target cohort applicability and transport have not been established for this outcome; display as an illustrative reference calculation."
         },
         "interpretation": "Conditional modeled expected difference; parameter bands are support envelopes, not a confidence interval.",
+        "sensitivity": {
+          "schema": "downstream-result-sensitivity/1",
+          "reference_point": 478894046.40000015,
+          "unit": "usd_2024",
+          "method": "one-input-at-a-time engine refits",
+          "effect_drivers": [
+            {
+              "input_id": "displacement->child_earnings",
+              "input_value": 0.9076,
+              "input_unit": "earnings_ratio",
+              "citation": "oreopoulos2008",
+              "tier": "EXACT",
+              "population_scope": "Canada 39k father-son pairs firm closures",
+              "evidence_role": "conditional",
+              "effect_removed": {
+                "input_value": 1.0,
+                "point": 0.0,
+                "change_from_reference": -478894046.40000015,
+                "reference_minus_variant": 478894046.40000015
+              },
+              "supported_range": {
+                "input_low": 0.844,
+                "input_high": 0.976,
+                "at_input_low": {
+                  "input_value": 0.844,
+                  "point": 808522416.0000001,
+                  "change_from_reference": 329628369.59999996,
+                  "reference_minus_variant": -329628369.59999996
+                },
+                "at_input_high": {
+                  "input_value": 0.976,
+                  "point": 124388064.0000001,
+                  "change_from_reference": -354505982.40000004,
+                  "reference_minus_variant": 354505982.40000004
+                },
+                "outcome_low": 124388064.0000001,
+                "outcome_high": 808522416.0000001,
+                "endpoint_span": 684134352.0,
+                "scope": "One input at its source endpoints; all others fixed."
+              }
+            }
+          ],
+          "fixed_inputs": {
+            "displaced_workers": 1000,
+            "children_per_worker": 2,
+            "child_profiles": null,
+            "child_income_quartile": null,
+            "income_rank_definition": null,
+            "lifetime_baseline": {
+              "value": 2591418.0,
+              "unit": "usd_2024",
+              "citation": "SSA Annual Statistical Supplement 2025, Table 4.B6 (CWHS/Master Earnings File, 1 percent sample): male median earnings by age, 2023 (preliminary) \u2014 synthetic career ages 20-64 = 5x(24218+42561+52485+60423+64962+67506+68160+64854)+2x60666+3x56666 = 2517175 usd_2023; CPI-U annual averages 304.702->313.689 (BLS series CUUR0000SA0, pulled 2026-09-06) -> 2591418 usd_2024; warehouse ssa_median_earnings (pulled via ssa-earnings-download)",
+              "population": "US male median lifetime earnings",
+              "notes": "Derivation declared: the cross-sectional age profile summed over a 45-year working life (ages 20-64) is a synthetic cohort \u2014 the sum of age-band medians approximates rather than equals the median of individual lifetime sums; median-of-workers semantics excludes non-working years; 2023 medians are preliminary (SSA replaces them with final data in a later edition)"
+            },
+            "place": null
+          },
+          "fixed_input_ranges": {
+            "available": false,
+            "reason": "No sensitivity ranges supplied for these inputs; no distributions inferred."
+          },
+          "variance_attribution": {
+            "available": false,
+            "reason": "Not requested.",
+            "request": "scenario --sensitivity-base N"
+          },
+          "interpretation": "Signed changes under declared input experiments; not causal shares or confidence intervals.",
+          "limitations": [
+            "Removal experiments may lie outside source support and are hypothetical, not new study estimates.",
+            "Other inputs are fixed; individual removal changes need not sum to the total because effects interact.",
+            "Endpoint spans measure range sensitivity, not shares of uncertainty or output variance.",
+            "Baseline, exposure, demographic, timing and transport uncertainty are not quantified here."
+          ]
+        },
         "parameter_interval_90": {
           "p05": 158288021.0661,
           "p50": 466315691.415,
@@ -424,9 +717,16 @@
         "high": 0.9904
       },
       "greatgrandchild_earnings": {
-        "point": 0.972,
-        "low": 0.9438,
-        "high": 0.9962
+        "label": "greatgrandchild",
+        "unit": "gap_multiplier",
+        "available": false,
+        "point": null,
+        "low": null,
+        "high": null,
+        "steps": [],
+        "blocked": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified.",
+        "source_status": "withdrawn",
+        "withdrawn_input": "grandchild_earnings->greatgrandchild_earnings"
       }
     },
     "projection_eligibility": {
@@ -441,9 +741,9 @@
         "reason": "combines a direct child estimate with an intergenerational persistence assumption; not an identified displacement intervention effect"
       },
       "greatgrandchild": {
-        "status": "structural_projection",
+        "status": "source_withdrawn",
         "eligible_for_validated_direct_contrast": false,
-        "reason": "repeats an intergenerational persistence assumption beyond the identification core"
+        "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
       }
     },
     "target_population": null,
@@ -470,7 +770,7 @@
         "A subgroup's nonsignificant coefficient is retained with its uncertainty, not replaced with zero."
       ]
     },
-    "input_content_sha256": "c92fec6d88326c11430c5009a6346a5ed153c1790976b7875db95f8d25a31212",
+    "input_content_sha256": "98604c841d7d8978310410a11112bd9e06df56d30a1ff110c5eae3d69fefb5f1",
     "parameter_uncertainty": {
       "interval": "central 90% Monte Carlo interval (p05\u2013p95)",
       "scope": "parameter uncertainty only",
@@ -490,7 +790,7 @@
       "seed": 1901,
       "sampler": "lhs+iman-conover",
       "correlations_applied": 2,
-      "parameter_set_version": "v1.51-sampled",
+      "parameter_set_version": "v1.53-sampled",
       "outcomes": {
         "excess_deaths": {
           "p05": 22.0449,

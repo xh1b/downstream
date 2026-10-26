@@ -80,15 +80,15 @@ def test_repeated_relationship_shares_exact_draw_and_sensitivity_block():
     draw = plan(params, nodes, 10, 19)
     for row in draw.u:
         sampled = materialize_parameter_set(params, nodes, row, draw.dists)
-        assert sampled.by_link(links[0]).point == sampled.by_link(links[1]).point
-    with pytest.raises(ValueError, match='reused parameter'):
+        assert sampled.retained_by_link(links[0]).point == sampled.retained_by_link(links[1]).point
+    with pytest.raises(ValueError, match='source withdrawn'):
         analytic_chain(params, ['displacement->child_earnings', *links], ['direct', 'gap', 'gap'], nodes)
     def compute(ps):
-        return child_line(ps)['greatgrandchild'].point
+        return child_line(ps)['grandchild'].point
     sob = sobol_indices(params, compute, nodes, base=16)
-    assert any(row['links'] == links for row in sob['indices'])
+    assert any(row['links'] == links[:1] for row in sob['indices'])
     blocks = correlated_block_sobol(params, compute, nodes, [], base=16)
-    assert any(row['links'] == links for row in blocks['blocks'])
+    assert any(row['links'] == links[:1] for row in blocks['blocks'])
 
 
 def test_custom_link_sampling_uses_custom_correlations(tmp_path):
@@ -263,7 +263,7 @@ def test_closure_truths_preserve_shared_relationship():
     links = ['child_earnings->grandchild_earnings', 'grandchild_earnings->greatgrandchild_earnings']
     seen = []
     def compute(ps):
-        left, right = (ps.by_link(link).point for link in links)
+        left, right = (ps.retained_by_link(link).point for link in links)  # archived numerical alias fixture
         assert left == right
         seen.append(left)
         return left * right

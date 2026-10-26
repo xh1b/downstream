@@ -35,7 +35,7 @@ from .place import load_places, PRIOR_N, DOSE_YEARS
 
 from .mortality import source_profile_contract
 
-SCHEMA = "downstream-parameter-set/2"
+SCHEMA = "downstream-parameter-set/3"
 
 
 def build(params_dir: str | Path | None = None) -> dict:
@@ -52,9 +52,11 @@ def build(params_dir: str | Path | None = None) -> dict:
         lines = "\n".join(f"  - [{f.check}] {f.message}" for f in blocking)
         raise ValueError(f"audit errors block export ({len(blocking)}):\n{lines}")
 
+    from .source_support import is_withdrawn, policy, policy_sha256
     cited: set[str] = set()
     for p in params.parameters:
-        cited.update(p.citation_keys)
+        if not is_withdrawn(p.link):
+            cited.update(p.citation_keys)
     return {
         "schema": SCHEMA,
         "version": params.version,
@@ -87,8 +89,19 @@ def build(params_dir: str | Path | None = None) -> dict:
                 "dist": p.dist,
                 "evidence_role": p.evidence_role,
             }
-            for p in params.parameters
+            for p in params.parameters if not is_withdrawn(p.link)
         ],
+        "source_support_policy_sha256": policy_sha256(),
+        "withdrawn_parameters": [
+            {**asdict(p), "source_support": policy()['withdrawn_parameters'][p.link]}
+            for p in params.parameters if is_withdrawn(p.link)
+        ],
+        "unidentified_reference_archive": {
+            key: {"title": bib[key].title, "year": bib[key].year,
+                  "evidence": bib[key].evidence, "fields": dict(bib[key].fields),
+                  "status": "unidentified_not_cited"}
+            for key in policy()['unidentified_references'] if key in bib
+        },
         "nodes": [
             {"name": n.name, "unit": n.unit, "description": n.description}
             for n in nodes.values()

@@ -73,7 +73,7 @@
     "seed": 1901,
     "sampler": "lhs+iman-conover",
     "correlations_applied": 2,
-    "parameter_set_version": "v1.52-sampled"
+    "parameter_set_version": "v1.53-sampled"
   },
   "sampled_inputs": {
     "sampled_workers": {
@@ -141,7 +141,7 @@
   },
   "fixed_input_reference": {
     "label": "scenario",
-    "parameter_set_version": "v1.52",
+    "parameter_set_version": "v1.53",
     "engine_version": "0.4.0",
     "uncertainty": {
       "band_kind": "parameter-support envelope, not a confidence interval",
@@ -759,9 +759,16 @@
         "high": 0.9904
       },
       "greatgrandchild_earnings": {
-        "point": 0.972,
-        "low": 0.9438,
-        "high": 0.9962
+        "label": "greatgrandchild",
+        "unit": "gap_multiplier",
+        "available": false,
+        "point": null,
+        "low": null,
+        "high": null,
+        "steps": [],
+        "blocked": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified.",
+        "source_status": "withdrawn",
+        "withdrawn_input": "grandchild_earnings->greatgrandchild_earnings"
       }
     },
     "projection_eligibility": {
@@ -776,9 +783,9 @@
         "reason": "combines a direct child estimate with an intergenerational persistence assumption; not an identified displacement intervention effect"
       },
       "greatgrandchild": {
-        "status": "structural_projection",
+        "status": "source_withdrawn",
         "eligible_for_validated_direct_contrast": false,
-        "reason": "repeats an intergenerational persistence assumption beyond the identification core"
+        "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
       }
     },
     "target_population": null,
@@ -805,7 +812,7 @@
         "A subgroup's nonsignificant coefficient is retained with its uncertainty, not replaced with zero."
       ]
     },
-    "input_content_sha256": "b054021bcaae2183037ccd10e1cbeebfdc01955969b1ef4e81c221caa4a7ccd9",
+    "input_content_sha256": "98604c841d7d8978310410a11112bd9e06df56d30a1ff110c5eae3d69fefb5f1",
     "parameter_uncertainty": {
       "interval": "central 90% Monte Carlo interval (p05\u2013p95)",
       "scope": "parameter uncertainty only",
@@ -825,7 +832,7 @@
       "seed": 1901,
       "sampler": "lhs+iman-conover",
       "correlations_applied": 2,
-      "parameter_set_version": "v1.52-sampled",
+      "parameter_set_version": "v1.53-sampled",
       "outcomes": {
         "excess_deaths": {
           "p05": 22.6085,

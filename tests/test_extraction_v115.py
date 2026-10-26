@@ -1,3 +1,4 @@
+# Historical transcription regressions inspect retained records, not current source admission.
 # @ref:test-extraction-v115
 # Method: @link:doc-citing.
 # Implementation: @link:code-params; @link:code-audit.
@@ -20,7 +21,7 @@ PARAMS = load(PARAMS_DIR / "parameters.csv")
 
 
 def test_gop_win_probability_row_matches_autor_table4_col6():
-    p = PARAMS.by_link("import_shock->gop_win_probability")
+    p = PARAMS.retained_by_link("import_shock->gop_win_probability")
     assert p.point == pytest.approx(24.08, abs=1e-6)
     assert p.low == pytest.approx(24.08 - 1.96 * 12.07, abs=5e-3)
     assert p.high == pytest.approx(24.08 + 1.96 * 12.07, abs=5e-3)
@@ -29,7 +30,7 @@ def test_gop_win_probability_row_matches_autor_table4_col6():
 
 
 def test_vote_share_nulls_declared_on_row():
-    p = PARAMS.by_link("import_shock->gop_win_probability")
+    p = PARAMS.retained_by_link("import_shock->gop_win_probability")
     assert "-1.08" in p.notes      # all-districts vote share, SE 5.98
     assert "re-sorting" in p.notes # the honest interpretation
     assert "2010" in p.notes       # timing: null before 2010
@@ -39,14 +40,14 @@ def test_carneiro_corroboration_sits_on_existing_rows_not_new_parameter():
     assert all(p.link != "carneiro2021" for p in PARAMS.parameters)
     for link in ("family_income_shock->child_achievement_sd",
                  "eitc_exposure->adult_earnings_early"):
-        notes = PARAMS.by_link(link).notes
+        notes = PARAMS.retained_by_link(link).notes
         assert "CARNEIRO" in notes
         assert "NOT a composed row" in notes
     # timing windows quoted
-    assert "12-17" in PARAMS.by_link("eitc_exposure->adult_earnings_early").notes
+    assert "12-17" in PARAMS.retained_by_link("eitc_exposure->adult_earnings_early").notes
 
 
 def test_version_bumped_and_audit_clean():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.52"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.53"
     errors = [f for f in audit(PARAMS_DIR) if f.severity == ERROR]
     assert errors == []

@@ -199,9 +199,10 @@ def test_sobol_ci_output_is_labeled_as_design_noise():
     )
     assert "not a confidence interval" in out["note"]
     groups = [set(row["links"]) for row in out["indices"]]
-    assert set.union(*groups) == {p.link for p in PARAMS.parameters}
-    assert sum(map(len, groups)) == len(PARAMS.parameters)
-    assert {"child_earnings->grandchild_earnings", "grandchild_earnings->greatgrandchild_earnings"} in groups
+    from downstream.source_support import is_withdrawn
+    assert set.union(*groups) == {p.link for p in PARAMS.parameters if not is_withdrawn(p.link)}
+    assert sum(map(len, groups)) == 51
+    assert {"child_earnings->grandchild_earnings"} in groups
     assert out["model_evals"] == calls
     assert "independent inputs" in out["correlation_note"]
 

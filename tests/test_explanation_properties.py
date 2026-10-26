@@ -105,7 +105,11 @@ def test_property_bands_never_invert_under_random_parameters():
     rng = random.Random(17)
     for _ in range(50):
         ps = _sampled_params(params, rng)
+        from downstream.source_support import UnavailableLedger
         for ledger in child_line(ps).values():
+            if isinstance(ledger, UnavailableLedger):
+                assert ledger.as_dict()["point"] is None
+                continue
             if hasattr(ledger, "point"):
                 assert ledger.low <= ledger.point <= ledger.high
         for ledger in worker_outcomes(ps).values():

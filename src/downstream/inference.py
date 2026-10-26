@@ -172,6 +172,8 @@ def analytic_chain(
     steps = []
     from .distributions import shared_parameter_indices
     aliases = shared_parameter_indices(params)
+    for link in links:
+        params.by_link(link)  # source availability precedes independence calculations
     identities = {p.link: params.parameters[aliases[i]].link for i, p in enumerate(params.parameters)}
     active_links = set()
     for link, kind in zip(links, kinds):

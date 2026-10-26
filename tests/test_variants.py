@@ -35,15 +35,13 @@ def test_baseline_row_equals_shipped_model():
 
 def test_registry_ids_stable_and_all_present():
     out = run_ensemble(PARAMS)
-    assert tuple(r["variant"] for r in out["variants"]) == VARIANT_IDS
+    assert {r["variant"] for r in out["variants"] + out["unavailable_variants"]} == set(VARIANT_IDS)
 
 
-def test_gap_additive_adds_harm_never_removes():
+def test_gap_additive_variant_is_withdrawn_without_entering_spread():
     out = run_ensemble(PARAMS)
-    by = {r["variant"]: r for r in out["variants"]}
-    assert by["parallel_gap_additive"]["child_gap"]["point"] < by["baseline"]["child_gap"]["point"], (
-        "composing additional disadvantage streams must not RAISE child earnings"
-    )
+    assert out['unavailable_variants'][0]['variant'] == 'parallel_gap_additive'
+    assert not any(row['variant'] == 'parallel_gap_additive' for row in out['variants'])
 
 
 def test_decay_ordering_brackets_baseline():

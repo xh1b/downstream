@@ -1,4 +1,4 @@
-# Downstream 0.4.0 — pending update and review follow-through
+# Downstream 0.4.0 — conditional scenario release
 
 <!-- @ref:doc-release-0-4; @tag:release -->
 <!--
@@ -8,7 +8,7 @@ Connections: @link:code-scenario; @link:code-audit; @link:code-consumer; @link:d
 Related: [Documentation map](../readme.md) · [consumer fixtures 0 4](../integration.md#scaling-mixtures-and-acceptance-fixtures) · [model card](../model_card.md).
 Implementation: [scenario](../../src/downstream/scenario.py), [audit](../../src/downstream/audit.py), [consumer](../../src/downstream/consumer.py). Checks: [release_repairs](../../tests/test_release_repairs.py), [consumer_fixtures](../../tests/test_consumer_fixtures.py), [exposure_semantics](../../tests/test_exposure_semantics.py).
 
-Engine 0.4.0 / parameters v1.52, 2026-10-15. This pending update implements the
+Engine 0.4.0 / parameters v1.53, 2026-10-27. This release implements the
 review's scenario improvements and records unresolved empirical requirements
 in the `tasks/` board. Software correctness and source reproduction do not establish
 that the effects transport to a particular policy or population.
@@ -253,3 +253,29 @@ The [local handoff follow-up](xh1b_handoff_2026-10-17.md#local-integration-follo
 records the prepared companion pin, checked mixtures, preserved nested metadata
 and readable methods artifact. Earlier pending-local-pin statements above are
 historical. Live cache, served browser and deployment acceptance remain open.
+
+
+## October 27 stable-release preparation
+
+The owner required engine repair/withdrawal before stable publication. Parameters
+v1.53 preserve all original CSV records while withdrawing 16 inputs from
+calculation: seven source mismatches and nine unverified numerical extractions.
+The [source policy](../evidence.md#source-withdrawals-and-retained-records) records
+the exact dispositions and public review provenance. Snapshots use schema 3,
+with 51 available parameters and an explicit 16-record withdrawal archive.
+Great-grandchild earnings and the additive divorce/family-size variant are
+unavailable. These changes do not invent replacement inputs or claim a fresh
+source audit of every retained study. Mortality and direct-child reference
+estimates retain their numerical values; version/content identities change.
+
+The [uncertainty assumption cases](../integration.md#declared-uncertainty-assumption-cases)
+add caller-declared mortality log-odds transport scales and independent/aligned/
+opposed baseline and exposure ranks. Case-specific conditional intervals and
+paired differences retain both persistence structures. Cases carry provenance,
+remain headline-ineligible and supply no inferred model probabilities or full
+uncertainty interval. Calibrated target transport/dependence and independent
+causal validation remain separate evidence requirements.
+
+Publication and companion operational receipts are recorded on
+@task:2026-10-27-publish-04. Historical candidate/source identities above are
+retained as dated receipts and do not identify this refreshed candidate.

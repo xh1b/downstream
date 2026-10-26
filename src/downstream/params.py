@@ -2,6 +2,7 @@
 # Rationale: @link:paper-parameters.
 # Software contract: @link:doc-citing.
 # Verification: @link:test-params; @link:test-source-reextraction.
+# Source admission: @link:code-source-support; @link:source-withdrawal-contract.
 # @tag:evidence
 """Parameter set, node registry, and baseline loading + DAG validation.
 
@@ -61,6 +62,13 @@ class ParameterSet:
     parameters: tuple[Parameter, ...]
 
     def by_link(self, link: str) -> Parameter:
+        from .source_support import require_supported
+        parameter = self.retained_by_link(link)
+        require_supported(link)
+        return parameter
+
+    def retained_by_link(self, link: str) -> Parameter:
+        """Inspect original records, including withdrawals; does not admit calculation."""
         for p in self.parameters:
             if p.link == link:
                 return p

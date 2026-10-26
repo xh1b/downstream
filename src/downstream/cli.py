@@ -859,9 +859,12 @@ def _run_main(argv: list[str] | None = None) -> int:
         return 0
 
     if args.cmd == "citations":
-        bib = parts["bib"]
+        from .source_support import is_withdrawn, policy
+        bib = {key: entry for key, entry in parts["bib"].items() if key not in policy()["unidentified_references"]}
         used: dict[str, list[str]] = {}
         for pr in params.parameters:
+            if is_withdrawn(pr.link):
+                continue
             for k in pr.citation_keys:
                 used.setdefault(k, []).append(pr.link)
         rows = []
@@ -878,6 +881,7 @@ def _run_main(argv: list[str] | None = None) -> int:
         _dump(
             {
                 "bib_entries": len(bib),
+                "unidentified_reference_archive": policy()["unidentified_references"],
                 "cited": len(used),
                 "uncited": sorted(set(bib) - set(used)),
                 "entries": rows,
@@ -894,11 +898,12 @@ def _run_main(argv: list[str] | None = None) -> int:
             except KeyError as e:
                 parser.error(str(e))
             ledgers = walk(params, t)
+            from .source_support import UnavailableLedger
             _dump({
                 "outcome": t.outcome,
                 "unit": t.unit,
                 "generations": {
-                    label: {
+                    label: led.as_dict() if isinstance(led, UnavailableLedger) else {
                         "point": led.point, "low": led.low, "high": led.high,
                         "steps": [s.as_dict() for s in led.steps],
                     }

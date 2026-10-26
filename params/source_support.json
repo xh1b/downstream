@@ -1,0 +1,110 @@
+{
+  "schema": "downstream-source-support/1",
+  "review_date": "2026-10-18",
+  "implemented_date": "2026-10-27",
+  "review_source": "https://xh1b.org/downstream",
+  "public_review_snapshot_sha256": "865610b0388ba554ea99222ef1fa8dd062f0032244d93500610d6440db8a61d3",
+  "interpretation": "Withdrawal records preserve prior values without admitting them for calculation. Absence from this list is not a fresh independent source verification.",
+  "withdrawn_parameters": {
+    "divorce->child_earnings": {
+      "status": "withdrawn",
+      "finding": "sourceMismatch",
+      "reason": "Gruber studies childhood exposure to unilateral-divorce laws. That treatment is not parental divorce itself. The results differ by gender and do not establish a common 0.95 child-earnings multiplier.",
+      "range_status": "Model band; the cited source does not establish this parameter."
+    },
+    "family_size->child_earnings": {
+      "status": "withdrawn",
+      "finding": "sourceMismatch",
+      "reason": "Black, Devereux and Salvanes study education. The family-size effect becomes negligible after birth-order controls and twin-IV checks. The paper does not establish a 0.98 earnings multiplier per additional child.",
+      "range_status": "Model band; the cited source does not establish this parameter."
+    },
+    "grandchild_earnings->greatgrandchild_earnings": {
+      "status": "withdrawn",
+      "finding": "notVerified",
+      "reason": "The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified.",
+      "range_status": "Assumed persistence band; source support unresolved."
+    },
+    "ipv_exposure->daughter_violence_odds": {
+      "status": "withdrawn",
+      "finding": "notVerified",
+      "reason": "The exact 2.5 daughter partner-violence odds ratio was not verified. Widom studies later official arrests after abuse or neglect. Ehrensaft’s abstract supports a relationship with adult partner violence, but does not establish this number or range.",
+      "range_status": "Unverified model band."
+    },
+    "wage_ratio->household_ipv": {
+      "status": "withdrawn",
+      "finding": "sourceMismatch",
+      "reason": "Aizer’s −0.813 coefficient relates log female assault hospitalizations to the level of the female/male wage ratio. It is a semi-elasticity per unit ratio, not the log–log elasticity used by this model link.",
+      "range_status": "The coefficient’s SE is 0.317; its interval does not resolve the unit mismatch."
+    },
+    "displacement->college_enrollment": {
+      "status": "withdrawn",
+      "finding": "notVerified",
+      "reason": "Hilger’s abstract describes a small college-enrollment response. The original pinned coefficient, standard error and enrollment baseline could not be checked against the original table. The unsupported conversion is excluded from public estimates.",
+      "range_status": "Exact source interval and denominator unverified."
+    },
+    "displacement->parental_income_shortrun": {
+      "status": "withdrawn",
+      "finding": "notVerified",
+      "reason": "Hilger’s abstract describes large family-income losses. The original pinned loss, standard error and annual-income baseline could not be checked against the original table. The amount is excluded from public estimates.",
+      "range_status": "Exact source interval and denominator unverified."
+    },
+    "unemployment_rate->property_crime": {
+      "status": "withdrawn",
+      "finding": "notVerified",
+      "reason": "The paper’s identity is established. The specified Table 5 coefficient of 5.018 and its standard error could not be read from an accessible original. A secondary transcription is not accepted as numerical verification.",
+      "range_status": "Source-table extraction unverified."
+    },
+    "eitc_exposure->adult_earnings_early": {
+      "status": "withdrawn",
+      "finding": "notVerified",
+      "reason": "The exact $564 earnings coefficient and SE 244.9 could not be checked against Bastian and Michelmore’s original Table 2. A percentage result in an abstract does not verify this dollar amount.",
+      "range_status": "Source-table extraction unverified."
+    },
+    "import_shock->gop_win_probability": {
+      "status": "withdrawn",
+      "finding": "sourceMismatch",
+      "reason": "The published Table 4 verifies 24.08 (SE 12.07), but the dose is a percentage-point change in employment-weighted Chinese import penetration. It is not $1,000 per worker. The model’s dollar-input interpretation is unsupported.",
+      "range_status": "The published coefficient interval cannot repair the exposure-unit mismatch."
+    },
+    "eviction_order->eviction_earnings_response": {
+      "status": "withdrawn",
+      "finding": "sourceMismatch",
+      "reason": "Table VI reports −$613 for quarters 5–8 with a comparison mean of $4,254. The model instead divides by $4,300, the quarters 1–4 mean. The withdrawn ratio mixes follow-up periods.",
+      "range_status": "The source SE is 248; the model’s denominator is from the wrong period."
+    },
+    "household_ipv->child_internalizing_sd": {
+      "status": "withdrawn",
+      "finding": "notVerified",
+      "reason": "The original repository abstract confirms mean weighted d = 0.48. The exact stored confidence limits could not be checked against the full text. These are exposure associations across studies, not an intervention estimate.",
+      "range_status": "Mean confirmed; exact interval unverified."
+    },
+    "household_ipv->child_externalizing_sd": {
+      "status": "withdrawn",
+      "finding": "notVerified",
+      "reason": "The original repository abstract confirms mean weighted d = 0.47. The exact stored confidence limits could not be checked against the full text. These are exposure associations across studies, not an intervention estimate.",
+      "range_status": "Mean confirmed; exact interval unverified."
+    },
+    "unemployment_status->mental_health_sd": {
+      "status": "withdrawn",
+      "finding": "notVerified",
+      "reason": "The publisher’s text describes d = 0.51. The exact outlier-excluded table and stored 0.47–0.54 interval could not be checked. The abstract’s overall d = 0.54 is a different summary.",
+      "range_status": "Exact source interval unverified."
+    },
+    "import_shock->radical_right_vote_share": {
+      "status": "withdrawn",
+      "finding": "sourceMismatch",
+      "reason": "The inspected manuscript reports 0.132 (SE 0.051) in vote-share fractions per €1,000 per worker, measured over the two years before an election. Converting the outcome to 13.2 percentage points does not convert euros to US dollars or establish persistence.",
+      "range_status": "Rounded coefficient ± 1.96 standard errors; the exposure-unit mismatch remains."
+    },
+    "displacement_event->exam_noncompletion_hazard": {
+      "status": "withdrawn",
+      "finding": "sourceMismatch",
+      "reason": "The 0.0054 effect (SE 0.0027) is verified. The 0.0785 denominator is labeled “Constant” in a controlled regression, not a verified control-group mean. The withdrawn ratio relies on that unsupported baseline interpretation.",
+      "range_status": "Coefficient uncertainty scaled by an unsupported denominator; not an estimated hazard ratio."
+    }
+  },
+  "unidentified_references": [
+    "adermon2018",
+    "lindo2018"
+  ]
+}

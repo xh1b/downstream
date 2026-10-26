@@ -22,6 +22,9 @@ DEFAULT_CHILDREN = 3
 
 
 def _ledger_dict(ledger) -> dict:
+    from .source_support import UnavailableLedger
+    if isinstance(ledger, UnavailableLedger):
+        return ledger.as_dict()
     return {
         "label": ledger.label,
         "unit": ledger.unit,
@@ -59,7 +62,11 @@ def standard_family(
     line = child_line(params, place_modifier=modifier)
 
     divorce = divorce_hazard(params)
-    daughter = daughter_violence_odds(params)
+    from .source_support import SourceUnavailable, UnavailableLedger
+    try:
+        daughter = daughter_violence_odds(params)
+    except SourceUnavailable as exc:
+        daughter = UnavailableLedger('daughter_violence_odds', 'odds_ratio', exc)
     # The standard family identifies a displaced tradable worker, not a job
     # class. Moretti's multipliers are class-specific (1.6 manufacturing,
     # ~5 high-tech) and the row's span crosses classes, so the community
@@ -109,14 +116,14 @@ def standard_family(
             "family_size_penalty": {
                 "outcome": "family_size_penalty",
                 "blocked": (
-                    "evidence_role=boundary: the per-extra-child row is a "
+                    "source withdrawn: the cited source does not support the per-extra-child earnings row. It is a "
                     "family-size estimand, not a displacement consequence; "
                     "it stays outside the default displacement view"
                 ),
             },
             "daughter_violence_odds": {
                 **_ledger_dict(daughter),
-                "blocked": (
+                "blocked": str(daughter.source_error) if isinstance(daughter, UnavailableLedger) else (
                     "evidence_role=boundary: no admitted displacement-to-IPV "
                     "incidence edge exists (upstream household_ipv incidence "
                     "not yet parameterized; Aizer 2010 extraction queued)"
@@ -130,7 +137,7 @@ def standard_family(
             "divorce stays a parallel conditional stream; the family-size "
             "and daughter-violence rows are boundary-only and visibly blocked; "
             "parallel streams are never composed silently",
-            "great-grandchild layer carries the weakest-identification honesty statement",
+            "great-grandchild earnings are unavailable following source withdrawal",
         ],
     }
     if place_block is not None:

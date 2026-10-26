@@ -169,15 +169,16 @@ def value_of_information(
     rows = []
     from .distributions import shared_parameter_indices
     aliases = shared_parameter_indices(params)
+    from .source_support import is_withdrawn
     for i, p in enumerate(params.parameters):
-        if aliases[i] != i:
-            continue
         lo, hi = sorted((p.low, p.high))
         if not lo <= p.point <= hi:
             raise ValueError(
                 f"parameter {p.link!r} has point {p.point} outside its own "
                 f"band [{lo}, {hi}] — fix params/parameters.csv"
             )
+        if aliases[i] != i or is_withdrawn(p.link):
+            continue
         if hi == lo:
             width_after = base_width  # already pinned; nothing to shrink
             rows.append(

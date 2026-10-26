@@ -202,7 +202,7 @@ def test_cli_and_old_link_migration(tmp_path, capsys):
     assert main(["receiving-community", "--input", str(path)]) == 0
     result = json.loads(capsys.readouterr().out)
     assert result["model"] == "bianchi_2010"
-    assert result["parameter_set_version"] == "v1.52"
+    assert result["parameter_set_version"] == "v1.53"
     assert not result["eligible_for_public_headline"]
     with pytest.raises(SystemExit) as exc:
         main(["simulate", "--links", "immigrant_influx->receiving_violent_crime_rate",

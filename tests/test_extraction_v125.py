@@ -1,3 +1,4 @@
+# Historical transcription regressions inspect retained records, not current source admission.
 # @ref:test-extraction-v125
 # Method: @link:doc-citing.
 # Implementation: @link:code-params; @link:code-audit; @link:code-citations.
@@ -38,18 +39,18 @@ LINK = "unemployment_status->mental_health_sd"
 
 
 def test_version_is_v125():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.52"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.53"
 
 
 def test_row_exact_meta():
-    p = PARAMS.by_link(LINK)
+    p = PARAMS.retained_by_link(LINK)
     assert p.point == pytest.approx(0.51, abs=1e-6)
     assert p.low == pytest.approx(0.47) and p.high == pytest.approx(0.54)
     assert p.tier == "EXACT" and p.citation == "paul2009"
 
 
 def test_band_is_reported_ci():
-    p = PARAMS.by_link(LINK)
+    p = PARAMS.retained_by_link(LINK)
     assert "CI" in p.notes
     # all-studies variant recorded beside, not averaged into the point
     assert "0.54" in p.notes and "k=323" in p.notes
@@ -61,42 +62,42 @@ def test_unstable_findings_not_landed():
     links = {q.link for q in PARAMS.parameters}
     tail = [l for l in links if "duration" in l or "long_term" in l]
     assert tail == []
-    p = PARAMS.by_link(LINK)
+    p = PARAMS.retained_by_link(LINK)
     assert "UNSTABLE" in p.notes
     assert "not landed" in p.notes or "NOT landed" in p.notes
     assert "U-shape" in p.notes and "vanished" in p.notes
 
 
 def test_causality_anchors_beside_not_averaged():
-    p = PARAMS.by_link(LINK)
+    p = PARAMS.retained_by_link(LINK)
     assert "factory-closure" in p.notes and ".38" in p.notes
     assert "(CI .25-.51" in p.notes
     assert "never averaged" in p.notes
     assert "0.25" in p.notes and "0.29" in p.notes  # retest-corrected pair
     # the point stays the cross-sectional overall
-    assert PARAMS.by_link(LINK).point == pytest.approx(0.51, abs=1e-6)
+    assert PARAMS.retained_by_link(LINK).point == pytest.approx(0.51, abs=1e-6)
 
 
 def test_case_rate_anchor():
     # the practical-importance translation: 34% vs 16% case rates
-    p = PARAMS.by_link(LINK)
+    p = PARAMS.retained_by_link(LINK)
     assert "34%" in p.notes and "16%" in p.notes
 
 
 def test_selection_declared():
-    p = PARAMS.by_link(LINK)
+    p = PARAMS.retained_by_link(LINK)
     assert "SELECTION" in p.notes and ".23" in p.notes and ".15" in p.notes
     assert "OTHER way" in p.notes
 
 
 def test_moderator_scope_declared():
-    p = PARAMS.by_link(LINK)
+    p = PARAMS.retained_by_link(LINK)
     assert "men stronger" in p.notes and "blue-collar" in p.notes
     assert "9 months" in p.notes and ".73" in p.notes
 
 
 def test_boundary_discipline():
-    p = PARAMS.by_link(LINK)
+    p = PARAMS.retained_by_link(LINK)
     assert "NEVER" in p.notes and "PARALLEL" in p.notes
     outs = {q.link for q in PARAMS.parameters
             if q.from_node == "unemployment_status"} - {LINK}

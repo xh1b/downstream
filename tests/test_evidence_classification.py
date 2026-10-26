@@ -51,7 +51,7 @@ def test_boundary_evidence_has_no_generic_chain_permission(data):
     for row in data["parameters"]:
         if row["evidence_role"] == "boundary":
             assert row["chain_kind"] is None
-            with pytest.raises(ValueError, match="boundary"):
+            with pytest.raises(ValueError, match="boundary|source withdrawn"):
                 validate_chain(params, [row["link"]], ["direct"], nodes)
 
 

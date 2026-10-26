@@ -204,3 +204,40 @@ content identity, inputs and seed where sampled. A published number needs a
 reproducible source revision and its scientific citations, not just “the model.”
 For rebuilding and comparing the resulting artifacts, see
 [development](development.md).
+
+
+## Source withdrawals and retained records
+
+<!-- @ref:source-withdrawal-contract; @tag:evidence -->
+<!-- @link:code-source-support; @link:code-params; @link:code-ledger; @link:test-source-withdrawals. -->
+
+Parameters v1.53 retain all 67 original CSV records while withdrawing 16 from
+calculation: seven source/estimand/unit mismatches and nine unverified numerical
+extractions. The authoritative [source-support policy](../params/source_support.json)
+records every link, reason, finding class and public review provenance. These
+are conservative withdrawals, not replacement estimates or a fresh review of all
+remaining sources. Absence from the withdrawal list does not establish new source
+verification or target transport.
+
+`ParameterSet.by_link` and ledger composition refuse these inputs with
+`SourceUnavailable`, including after overrides, sampling and variant construction.
+`retained_by_link` explicitly inspects original records; inspection does not
+admit them for calculation. Custom parameter directories cannot replace the
+engine's reviewed withdrawal policy. Reinstatement requires supported source
+corrections and a reviewed policy/version change.
+
+Grouped reports retain supported branches and expose unavailable branches with
+null numeric fields and the named source reason. A known zero, favorable effect,
+transport decision or place modifier does not restore a withdrawn input. The
+later earnings transmission and daughter partner-violence result are unavailable;
+the additive divorce/family-size variant is excluded from ensemble spreads.
+Direct child and supported mortality paths retain their numerical results.
+
+Snapshot schema `downstream-parameter-set/3` separates 51 available `parameters`
+from 16 original `withdrawn_parameters`. The latter carry their original values
+and source-support disposition explicitly as an archive. `citations` covers
+available inputs; `unidentified_reference_archive` retains the original
+`adermon2018` and `lindo2018` records without citing them as identified sources.
+The effective policy SHA-256 accompanies exports. Older consumers must handle
+this schema and unavailable branches before repinning; deployment and cache
+refresh retain the companion's separate acceptance requirements.

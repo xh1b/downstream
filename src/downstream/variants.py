@@ -157,13 +157,16 @@ def run_ensemble(params: ParameterSet) -> dict:
         base["child"], base["grandchild"],
     )
 
-    pa = _parallel_additive_child(params)
-    _row(
-        "parallel_gap_additive",
-        "direct + divorce + family-size gaps added in gap space (declared "
-        "additivity; the literature does not license it — SPEC 4)",
-        pa["child"], pa["grandchild"],
-    )
+    from .source_support import SourceUnavailable
+    unavailable = []
+    try:
+        pa = _parallel_additive_child(params)
+    except SourceUnavailable as exc:
+        unavailable.append({'variant': 'parallel_gap_additive', 'available': False,
+                            'withdrawn_input': exc.link, 'reason': str(exc)})
+    else:
+        _row('parallel_gap_additive', 'Declared additive parallel-gap combination',
+             pa['child'], pa['grandchild'])
 
     for name, expo, desc in (
         ("ige_decay_half", 0.5, "grandchild transmission t^0.5 (persistence strengthens)"),
@@ -211,6 +214,7 @@ def run_ensemble(params: ParameterSet) -> dict:
         "experiment": "structural_variant_ensemble",
         "parameter_set_version": params.version,
         "variants": rows,
+        "unavailable_variants": unavailable,
         "spread": {
             "child_point_min": round(min(child_pts), 4),
             "child_point_max": round(max(child_pts), 4),

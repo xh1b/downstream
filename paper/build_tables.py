@@ -84,6 +84,7 @@ def plot_data(name, rows):
 
 def main():
     OUT.mkdir(exist_ok=True)
+    from downstream.source_support import is_withdrawn, UnavailableLedger
     parts = load_all(ROOT / 'params')
     ps = parts['params']
     validation = run(ps)
@@ -110,12 +111,12 @@ def main():
           'reference_scenario': reference, 'archived_followthrough_evaluation': evaluation}, indent=2) + '\n')
     macros = [r'\newcommand{\CorrelationCount}{' + str(len(correlations)) + '}',
               r'\newcommand{\ParameterVersion}{' + tex(ps.version) + '}',
-              r'\newcommand{\ParameterCount}{' + str(len(ps.parameters)) + '}',
+              r'\newcommand{\ParameterCount}{' + str(sum(not is_withdrawn(p.link) for p in ps.parameters)) + '}',
               r'\newcommand{\SourceDigest}{' + digest.hexdigest()[:16] + '}',
               r'\newcommand{\PanelCount}{' + str(validation['v1_panel']['panel']['cz_periods']) + '}']
     for name, ledger in child_line(ps).items():
         if name in {'child', 'grandchild', 'greatgrandchild'}:
-            macros.append('\\newcommand{\\' + name.title() + 'Point}{' + n(ledger.point) + '}')
+            macros.append('\\newcommand{\\' + name.title() + 'Point}{' + ('unavailable' if isinstance(ledger, UnavailableLedger) else n(ledger.point)) + '}')
     v0 = validation['v0_internal_consistency']
     macros += [r'\newcommand{\VzeroDirect}{' + band(v0['direct']) + '}',
                r'\newcommand{\VzeroComposed}{' + band(v0['ige_composed']) + '}']
@@ -142,6 +143,8 @@ def main():
 
     rows = []
     for p in ps.parameters:
+        if is_withdrawn(p.link):
+            continue
         refs = ','.join(k.strip() for k in p.citation.split(';'))
         rows.append(tex(p.link.replace('_', ' ').replace('->', ' → ')) + ' & ' + band(vars(p)) + ' & ' +
                     tex(p.tier).replace('-', r'-\allowbreak ') + r' & \cite{' + refs + r'} \\')

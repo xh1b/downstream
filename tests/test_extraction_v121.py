@@ -1,3 +1,4 @@
+# Historical transcription regressions inspect retained records, not current source admission.
 # @ref:test-extraction-v121
 # Method: @link:doc-citing.
 # Implementation: @link:code-params; @link:code-audit; @link:code-citations.
@@ -38,13 +39,13 @@ EARNINGS = "eviction_order->eviction_earnings_response"
 
 
 def test_version_is_v121():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.52"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.53"
 
 
 def test_shelter_row_matches_table_v_col3():
     # Table V col 3: IV +3.4pp (SE 1.7) on the 0.009 non-evicted base
     delta, se, base = 0.034, 0.017, 0.009
-    p = PARAMS.by_link(SHELTER)
+    p = PARAMS.retained_by_link(SHELTER)
     assert p.point == pytest.approx((base + delta) / base, abs=1e-3)
     assert p.low == pytest.approx((base + delta - 1.96 * se) / base, abs=1e-3)
     assert p.high == pytest.approx((base + delta + 1.96 * se) / base, abs=1e-3)
@@ -52,7 +53,7 @@ def test_shelter_row_matches_table_v_col3():
 
 
 def test_shelter_band_state_pinned():
-    p = PARAMS.by_link(SHELTER)
+    p = PARAMS.retained_by_link(SHELTER)
     assert p.point == pytest.approx(4.778, abs=1e-3)
     assert p.low == pytest.approx(1.076, abs=1e-3)
     assert p.high == pytest.approx(8.480, abs=1e-3)
@@ -61,7 +62,7 @@ def test_shelter_band_state_pinned():
 def test_shelter_timing_declared():
     # year-2 shelter null; services persist (+3.6pp, SE 1.5) - the
     # acute-spike-then-persistent-contact structure must survive edits
-    p = PARAMS.by_link(SHELTER)
+    p = PARAMS.retained_by_link(SHELTER)
     assert "year-2 emergency-shelter IV is null" in p.notes
     assert "+3.6pp" in p.notes
     # the superseded NYC-only application estimate stays a cross-check,
@@ -72,7 +73,7 @@ def test_shelter_timing_declared():
 def test_earnings_row_is_gap_multiplier_on_4300_base():
     # Table VI: Q5-8 IV -$613 (SE 248) on the $4,300 non-evicted mean
     delta, se, base = 613, 248, 4300
-    p = PARAMS.by_link(EARNINGS)
+    p = PARAMS.retained_by_link(EARNINGS)
     assert p.point == pytest.approx(1 - delta / base, abs=1e-4)
     assert p.low == pytest.approx(1 - (delta + 1.96 * se) / base, abs=1e-4)
     assert p.high == pytest.approx(1 - (delta - 1.96 * se) / base, abs=1e-4)
@@ -83,7 +84,7 @@ def test_earnings_row_is_gap_multiplier_on_4300_base():
 def test_earnings_year1_null_not_promoted():
     # the year-1 estimate is -$323 (SE 175) and NOT significant; the
     # point is the sustained year-2 window (stevens2011 timing pattern)
-    p = PARAMS.by_link(EARNINGS)
+    p = PARAMS.retained_by_link(EARNINGS)
     assert "-$323" in p.notes
     assert "NOT significant" in p.notes
     assert p.point == pytest.approx(0.8574, abs=1e-3)
@@ -95,7 +96,7 @@ def test_desmond_refusal_encoded():
     assert "eviction_order->worker_earnings" not in {q.link for q in PARAMS.parameters}
     # (b) the refusal is documented on the earnings row and cites the
     #     refuting employment nulls
-    p = PARAMS.by_link(EARNINGS)
+    p = PARAMS.retained_by_link(EARNINGS)
     assert "desmond2016" in p.notes and "NOT encoded" in p.notes
     assert "-1.5pp" in p.notes and "-1.8pp" in p.notes
     # (c) desmond2016 is a bib entry but cites NO parameter row
@@ -106,7 +107,7 @@ def test_desmond_refusal_encoded():
 
 def test_version_of_record_correction_recorded():
     # the 2018 WP the queue named is subsumed; the row must say so
-    p = PARAMS.by_link(SHELTER)
+    p = PARAMS.retained_by_link(SHELTER)
     assert "version of record is collinson2024" in p.notes
     assert "w30382" in p.notes
     assert BIB["collinson2024"].evidence == "fulltext-table"

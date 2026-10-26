@@ -26,6 +26,7 @@ from typing import Callable
 
 from .distributions import materialize_parameter_set, plan, shared_parameter_indices, validate_sample_count
 from .params import Correlation, ParameterSet, spearman_matrix
+from .source_support import is_withdrawn
 
 
 def sobol_indices(
@@ -74,6 +75,8 @@ def sobol_indices(
     out = []
     aliases = shared_parameter_indices(params)
     for j in sorted(set(aliases)):
+        if is_withdrawn(rows[j].link):
+            continue
         # AB_j = A with column j drawn from B (the standard pairing).
         fj = []
         for i in range(base):
@@ -104,7 +107,7 @@ def sobol_indices(
         out.append(
             {
                 "link": rows[j].link,
-                "links": [rows[k].link for k, alias in enumerate(aliases) if alias == j],
+                "links": [rows[k].link for k, alias in enumerate(aliases) if alias == j and not is_withdrawn(rows[k].link)],
                 "S_first": round(s_first, 4),
                 "S_total": round(t_total, 4),
             }
@@ -113,7 +116,7 @@ def sobol_indices(
     return {
         "base": base,
         "seed": seed,
-        "model_evals": base * (len(set(aliases)) + 2),
+        "model_evals": base * (len(out) + 2),
         "output_variance": round(total_var, 8),
         "indices": out,
         "note": (
@@ -164,6 +167,8 @@ def correlated_block_sobol(
     seen: set[int] = set()
     blocks: list[list[int]] = []
     for root in range(len(rows)):
+        if is_withdrawn(rows[root].link):
+            continue
         if root in seen:
             continue
         stack, component = [root], []
@@ -207,7 +212,7 @@ def correlated_block_sobol(
         first = sum((f_b[i] - mean_b) * (d[i] - mean_d) for i in range(base)) / (base * total_var)
         total = .5 * sum((f_a[i] - f_ab[i]) ** 2 for i in range(base)) / (base * total_var)
         effects.append({
-            "links": [rows[j].link for j in block],
+            "links": [rows[j].link for j in block if not is_withdrawn(rows[j].link)],
             "S_first": round(first, 4),
             "S_total": round(total, 4),
         })

@@ -1,3 +1,4 @@
+# Historical transcription regressions inspect retained records, not current source admission.
 # @ref:test-extraction-v120
 # Method: @link:doc-citing.
 # Implementation: @link:code-params; @link:code-audit; @link:code-citations.
@@ -34,7 +35,7 @@ LINK = "displacement->grade_retention_hazard"
 
 
 def test_row_matches_table4_col1_child_fe():
-    p = PARAMS.by_link(LINK)
+    p = PARAMS.retained_by_link(LINK)
     # Table 4 col 1: +0.0081 (SE 0.0038) on the 0.055 sample average
     coef, se, base = 0.0081, 0.0038, 0.055
     assert p.point == pytest.approx(1 + coef / base, abs=1e-4)
@@ -45,14 +46,14 @@ def test_row_matches_table4_col1_child_fe():
 
 def test_multiplier_band_state_pinned():
     # exact corners so a base or SE swap cannot pass unnoticed
-    p = PARAMS.by_link(LINK)
+    p = PARAMS.retained_by_link(LINK)
     assert p.point == pytest.approx(1.1473, abs=1e-3)
     assert p.low == pytest.approx(1.0119, abs=1e-3)
     assert p.high == pytest.approx(1.2827, abs=1e-3)
 
 
 def test_queue_target_correction_recorded_no_test_scores():
-    p = PARAMS.by_link(LINK)
+    p = PARAMS.retained_by_link(LINK)
     assert "NO math/reading test scores" in p.notes
     assert "grade retention" in p.notes
     # the correction must be dated so it reads as a decision, not drift
@@ -60,20 +61,20 @@ def test_queue_target_correction_recorded_no_test_scores():
 
 
 def test_timing_identification_declared():
-    p = PARAMS.by_link(LINK)
+    p = PARAMS.retained_by_link(LINK)
     # current-year null 0.0032 (SE 0.0040) is the no-pre-trend argument
     assert "0.0032" in p.notes
     assert "current-year" in p.notes and "null" in p.notes
 
 
 def test_heterogeneity_scope_declared():
-    p = PARAMS.by_link(LINK)
+    p = PARAMS.retained_by_link(LINK)
     assert "HS education or less" in p.notes
     assert "conservative" in p.notes
 
 
 def test_parallel_stream_never_composed_with_achievement_sd():
-    p = PARAMS.by_link(LINK)
+    p = PARAMS.retained_by_link(LINK)
     assert "PARALLEL" in p.notes
     assert "child_achievement_sd" in p.notes
     assert "NEVER chained" in p.notes
@@ -104,7 +105,7 @@ def test_bib_has_no_duplicate_keys():
 
 
 def test_hilger_cross_check_noted_values_unchanged():
-    p = PARAMS.by_link("displacement->parental_income_shortrun")
+    p = PARAMS.retained_by_link("displacement->parental_income_shortrun")
     assert "STEVENS-SCHALLER 2011 CROSS-CHECK" in p.notes
     assert "-10.9%" in p.notes
     # the note appends; the anchor values must not move
@@ -116,12 +117,12 @@ def test_dag_wiring_valid():
     allp = load_all()
     assert "grade_retention_hazard" in allp["nodes"]
     # the link's endpoints resolve to real nodes
-    p = PARAMS.by_link(LINK)
+    p = PARAMS.retained_by_link(LINK)
     assert p.from_node == "displacement_event"
     assert p.to_node == "grade_retention_hazard"
 
 
 def test_version_bumped_and_audit_clean():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.52"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.53"
     errors = [f for f in audit(PARAMS_DIR) if f.severity == ERROR]
     assert errors == []

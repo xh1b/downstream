@@ -1,3 +1,4 @@
+# Historical transcription regressions inspect retained records, not current source admission.
 # @ref:test-extraction-v113
 # Method: @link:doc-citing.
 # Implementation: @link:code-params; @link:code-audit.
@@ -23,7 +24,7 @@ NODES = load_nodes(PARAMS_DIR / "nodes.csv")
 
 
 def test_college_enrollment_row_matches_hilger_table3_row1():
-    p = PARAMS.by_link("displacement->college_enrollment")
+    p = PARAMS.retained_by_link("displacement->college_enrollment")
     # -0.432pp (SE 0.094) on a 40.66% base -> relative multiplier
     assert p.point == pytest.approx(1 - 0.432 / 40.66, abs=5e-5)
     assert p.low == pytest.approx(1 - (0.432 + 1.96 * 0.094) / 40.66, abs=5e-5)
@@ -34,14 +35,14 @@ def test_college_enrollment_row_matches_hilger_table3_row1():
 def test_college_effect_is_small_and_band_excludes_zero_harm():
     # the honest headline: ~1% relative enrollment drop, far below the
     # closure-based claims; the band's low end is still only -1.5%
-    p = PARAMS.by_link("displacement->college_enrollment")
+    p = PARAMS.retained_by_link("displacement->college_enrollment")
     assert 0.98 <= p.point <= 0.999
     assert p.low > 0.98
     assert "wrong-signed" in p.notes or "selection" in p.notes
 
 
 def test_income_bridge_row_and_scope_guard():
-    p = PARAMS.by_link("displacement->parental_income_shortrun")
+    p = PARAMS.retained_by_link("displacement->parental_income_shortrun")
     assert p.point == pytest.approx((59832 - 8138.09) / 59832, abs=5e-5)
     assert p.low == pytest.approx((59832 - 8138.09 - 1.96 * 219.53) / 59832, abs=5e-5)
     assert p.high == pytest.approx((59832 - 8138.09 + 1.96 * 219.53) / 59832, abs=5e-5)
@@ -49,12 +50,12 @@ def test_income_bridge_row_and_scope_guard():
     assert "NOT the long-run" in p.notes or "SHORT-RUN" in p.notes
     assert NODES["parental_income_shortrun"].unit == "gap_multiplier"
     # and the long-run worker band is unchanged by this landing
-    w = PARAMS.by_link("displacement->worker_earnings")
+    w = PARAMS.retained_by_link("displacement->worker_earnings")
     assert (w.point, w.low, w.high) == (0.80, 0.75, 0.85)
 
 
 def test_property_crime_row_matches_raphael_table5_full_spec_2sls():
-    p = PARAMS.by_link("unemployment_rate->property_crime")
+    p = PARAMS.retained_by_link("unemployment_rate->property_crime")
     assert p.point == pytest.approx(5.018, abs=5e-4)
     assert p.low == pytest.approx(5.018 - 1.96 * 1.134, abs=5e-4)
     assert p.high == pytest.approx(5.018 + 1.96 * 1.134, abs=5e-4)
@@ -72,7 +73,7 @@ def test_unemployment_crime_pair_is_boundary_applied():
 
 
 def test_dahl_row_verified_against_published_version():
-    p = PARAMS.by_link("family_income_shock->child_achievement_sd")
+    p = PARAMS.retained_by_link("family_income_shock->child_achievement_sd")
     assert (p.point, p.low, p.high) == (0.0610, pytest.approx(0.0157, abs=1e-9),
                                         pytest.approx(0.1063, abs=1e-9))
     # published AER copy checked 2026-09-07: same coefficient and SE; N drifted
@@ -80,6 +81,6 @@ def test_dahl_row_verified_against_published_version():
 
 
 def test_version_bumped_and_audit_clean():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.52"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.53"
     errors = [f for f in audit(PARAMS_DIR) if f.severity == ERROR]
     assert errors == []

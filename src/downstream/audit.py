@@ -73,6 +73,11 @@ def audit(params_dir: str | Path | None = None) -> list[Finding]:
     baselines: dict = parts["baselines"]
     bib: dict = parts["bib"]
 
+    from .source_support import policy
+    withdrawals = policy()['withdrawn_parameters']
+    findings.append(Finding(INFO, 'source-withdrawals',
+        f'{sum(p.link in withdrawals for p in params.parameters)} retained input records are withdrawn from calculation; source_support.json records reasons.'))
+
     if params.version == "unversioned":
         findings.append(Finding(WARN, "version", "params/VERSION missing; outputs stamp 'unversioned'"))
 

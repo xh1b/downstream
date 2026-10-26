@@ -1,3 +1,4 @@
+# Historical transcription regressions inspect retained records, not current source admission.
 # @ref:test-extraction-v122
 # Method: @link:doc-citing.
 # Implementation: @link:code-params; @link:code-audit; @link:code-citations.
@@ -38,13 +39,13 @@ LINK = "foreclosure_order->house_price_gap"
 
 
 def test_version_is_v122():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.52"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.53"
 
 
 def test_row_matches_preferred_did():
     # "each foreclosure that takes place 0.05 miles away lowers the
     # price of a house by about 1%" - lead-vs-lag DiD preferred
-    p = PARAMS.by_link(LINK)
+    p = PARAMS.retained_by_link(LINK)
     assert p.point == pytest.approx(0.99, abs=1e-6)
     assert p.tier == "EXACT-results" and p.citation == "campbell2011"
     assert p.low == pytest.approx(0.9875) and p.high == pytest.approx(0.9925)
@@ -53,7 +54,7 @@ def test_row_matches_preferred_did():
 def test_band_is_declared_rounding_not_fake_ci():
     # the DiD reports NO SE; the band must SAY it is the rounding band
     # (point +/-25%) - a fabricated 1.96-SE interval is the failure
-    p = PARAMS.by_link(LINK)
+    p = PARAMS.retained_by_link(LINK)
     assert "NO standard error" in p.notes or "NO SE" in p.notes
     assert "rounding band" in p.notes
     assert p.low == pytest.approx(1 - 0.01 * 1.25, abs=1e-6)
@@ -62,7 +63,7 @@ def test_band_is_declared_rounding_not_fake_ci():
 
 def test_inflated_hedonics_recorded_not_landed():
     # the SE-carrying associations stay in the notes as spread context
-    p = PARAMS.by_link(LINK)
+    p = PARAMS.retained_by_link(LINK)
     assert "-1.8%" in p.notes and "-1.1%" in p.notes
     assert "-9.1%" in p.notes and "-7.3%" in p.notes
     assert "clustering-inflated" in p.notes
@@ -71,7 +72,7 @@ def test_inflated_hedonics_recorded_not_landed():
 
 
 def test_identification_limit_declared():
-    p = PARAMS.by_link(LINK)
+    p = PARAMS.retained_by_link(LINK)
     assert "NOT structural" in p.notes or "not structural" in p.notes
     assert "no instrument" in p.notes
     assert "lead-vs-lag" in p.notes
@@ -80,7 +81,7 @@ def test_identification_limit_declared():
 
 
 def test_venue_correction_recorded():
-    p = PARAMS.by_link(LINK)
+    p = PARAMS.retained_by_link(LINK)
     assert "AER 101(5):2108-31" in p.notes
     assert "Immergluck" in p.notes and "CRIME paper" in p.notes
     e = BIB["campbell2011"]
@@ -94,7 +95,7 @@ def test_venue_correction_recorded():
 def test_parallel_stream_never_composed():
     # the spillover is a housing-market level response: no edge from
     # house_price_gap into the earnings multiplier or the child chains
-    p = PARAMS.by_link(LINK)
+    p = PARAMS.retained_by_link(LINK)
     assert "parallel" in p.notes.lower() and "never composed" in p.notes.lower()
     downstream_links = {
         q.link
@@ -111,13 +112,13 @@ def test_parallel_stream_never_composed():
 def test_zero_distance_tail_declared():
     # the same-location DiD (-2%) and the 99.9th-percentile dummies
     # (-21% to -26%) must stay findable for the housing-contagion item
-    p = PARAMS.by_link(LINK)
+    p = PARAMS.retained_by_link(LINK)
     assert "zero distance -2%" in p.notes
     assert "99.9th" in p.notes
 
 
 def test_persistence_and_aggregate_context():
-    p = PARAMS.by_link(LINK)
+    p = PARAMS.retained_by_link(LINK)
     assert "Table 14" in p.notes
     assert "$406,000" in p.notes and "$110,000" in p.notes
 

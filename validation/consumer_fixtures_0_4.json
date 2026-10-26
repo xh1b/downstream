@@ -1,65 +1,66 @@
 {
   "schema": "downstream-consumer-fixtures/1",
   "engine_version": "0.4.0",
-  "parameter_set_version": "v1.52",
+  "parameter_set_version": "v1.53",
   "source_files_sha256": {
     "src/downstream/__init__.py": "a3964f1df2d223167207f6beaaa5014856a6962363e96ca86fa896c1620a4c82",
     "src/downstream/admission.py": "fbd5c4e063fc0beaec640047bbf36d84baeddaa48e3ac837cd92c190ad05d5e0",
-    "src/downstream/audit.py": "5f2ace0e46430343d100d138b1745e0cd26f2ce65f06117905f3fbf30d185995",
+    "src/downstream/audit.py": "bb2654c5c325c2eea6784d2ffe867b03370294aeba3bedd490ac4417ff8a9965",
     "src/downstream/brac.py": "d7e3611883673d26580e67c5c751c77a8972f90275bc464d7834b5314a73028c",
     "src/downstream/build_places.py": "5e0633b4a06b1d179b9db705c5e341f0a6143fa36a26561b50c01985eb88a036",
     "src/downstream/bundle.py": "eea004ca6c70132365b38e05394ced53ac01d99f38bbbe0dd181f84ab6e0b878",
     "src/downstream/child_applicability.py": "05ed27794e6ff8e13d658909bec7ae34b9573ff7b133cf710b6696b6e853c183",
-    "src/downstream/child_gap_view.py": "d9bd3ea3dcf9047dfdd88ee522d168811179d360ebac69e441d1039e26205402",
+    "src/downstream/child_gap_view.py": "46e1b464fcb63e02cb10c5bc59afb488ed9d62dce1ee216db8a77514d7692db0",
     "src/downstream/child_support.py": "3be23b991b7ee2ac67bd7f8094dd86d774ec310adce147e3e9d98e68aec82ea9",
-    "src/downstream/children.py": "9ad563c2e9a68435ed2fe74803976c2a37b4891a86b064946b4330596783135b",
+    "src/downstream/children.py": "ba7ba27d3b557f9097f24bc49cb69940a6f0af7750e0c8f48fb6aaf4985a19ca",
     "src/downstream/citations.py": "eca0f242fca52d2bfb0863f62f6675dd212613d0be46fae9d9c8192f9ec3d10c",
-    "src/downstream/cli.py": "31efb755a0aa2bf8a3d264d7ea408d17c5005b38587966b44de21415680f6a7b",
+    "src/downstream/cli.py": "838538d899f8fa6d3262fb6fdedbdd8abe945601dfbc3cd209d9b2d7aa1c149c",
     "src/downstream/community.py": "1d7a1b0d28883992570cc7c81b88eed0258259a11c78f0f32dbc64587a1dbddf",
     "src/downstream/compare.py": "b46fe94e2241f0d80749603a3ce0797199a01a154f8a5d744d3264837f80d73b",
     "src/downstream/consumer.py": "973a645976970bc080db040325cd56c54395fbd78b92ad943f0abf9abf131eec",
     "src/downstream/county_mortality.py": "6dd990f4881b389f396e5456da7a225fa755a96f309680ad2309e41a95234467",
     "src/downstream/county_rates.py": "b86dc0f291ff997a035cc82735b1ac500b6e029a900c6ae61201072aa177bed4",
-    "src/downstream/credits.py": "a2c8ede4533d36e1064e02a7beb391403cb9406a616b80ec613ce849ff6c3803",
+    "src/downstream/credits.py": "ecdb41db35a72e3b0807e8c6374358a7c60126f85398042dac95516bafbde9ca",
     "src/downstream/distributions.py": "666a3a5996af172c79acd3a79b7ba0928a36262230364de7c16eec2e450db8e1",
     "src/downstream/employer.py": "14a5d17d87763896fc0798dc2d23d6fee53a7337278f9cdac7d3ac67f8b85c67",
     "src/downstream/evidence.py": "7da6d8876758ec19524a61c3c7d6f438b34844727f277aef50112ce84d5445e6",
-    "src/downstream/explanation.py": "428bbc92bdc930551661df74f42016931af5a250de40c38fe8ba6b428bd6cc56",
+    "src/downstream/explanation.py": "e20c3761d2faefe8683c5c250b996883127593ebb1cebb7d5468ee94bfcfdeab",
     "src/downstream/family.py": "79b4d710db6e2b5c64216b3e8e1582c121d4709b2ea2f2e7fdaf35a3cd42bf05",
     "src/downstream/forecast_registry.py": "83a2aab9aa48c7f0b870adc2d05202f0fd283da34d203d068471345b84bd6d66",
     "src/downstream/household.py": "e6b1516930e6baa0a24f3207b1b9aead6c359482039ad2aa7c3e465c11a59070",
-    "src/downstream/inference.py": "feb6696897eb9b237b5da9f785e3cfefe30207fac2b620f1ff766c4cb19c19fb",
-    "src/downstream/knobs.py": "b458e6bbc6e945036860bcaf1fcdf463ba4c9066469532b318ffbacf17390c74",
-    "src/downstream/ledger.py": "5a01525623653f89d1a938973c057f98d021b74962daeaff03f5d9b3d3b0161a",
+    "src/downstream/inference.py": "a110ac56a61d08f7b9868e0316e7aa2fcaf6f286410384616b06ad848d9daa88",
+    "src/downstream/knobs.py": "5dbd6a7edce3650b1b2c4d7abf14bc166acc20acdc1b54f03480e188a1fa1f6b",
+    "src/downstream/ledger.py": "cbf02f278a799037a3ed19274503ca957e391b74abca38cbb9d1ac96039d64d0",
     "src/downstream/mc.py": "9c266fb07c9611624fdfd72e8d9944d4955fea66fe77d0d2feb7a1e3d95aa89d",
     "src/downstream/mortality.py": "b05934506faee9d6721e2808ba6d70eb246beaa06f52a1d31264271180322aec",
     "src/downstream/mortality_covariance.py": "88facacdcb17497413b667953b9ce636ab3792380bd75c9df2f0dcc44432c1b6",
     "src/downstream/mortality_profiles.py": "5e595b60c417fce141a273a2d7fc83c485bb0b19e54eb01005d1094c4bf1badf",
     "src/downstream/mortality_robustness.py": "3b8e4721b79fac2de641f0a3c52460a7262b565b4b63ca71dfce7165f57b5a22",
     "src/downstream/mortality_strata.py": "2ecd152cf279f61013ca8836f6c201a17c0f549cce1f9f63eaa130ea540af713",
-    "src/downstream/params.py": "6f6c074b55e88935baab79c4c7ed978edaf9594e0c4df613b820c1c99cf58997",
+    "src/downstream/params.py": "11c2279a31d8f4a0b838301787c66fb34e434a81349dc101753bfc5319bf104e",
     "src/downstream/place.py": "d2cbe5118837a76b7b58d8f372b52aefb6e58e9ad687dd10be91be7764b5fadf",
     "src/downstream/policy.py": "531c72a58ce9220fd45c1b1154998654fb5f3db39cf9789d80bef3cf7bdb45e4",
     "src/downstream/receiving_community.py": "ebd6ff3d6561327df4111261f37f379c1b79b9f4f3b69fb49f65f5981562ab86",
     "src/downstream/render.py": "e3aff0535c050bbdb831b821cb98def0d9eaccbb4c6bd709f428f7dd7fa8667c",
     "src/downstream/result_sensitivity.py": "50e2c0dba0172982c4a9ad1481b210005916e914764d482bb0e7f38a1be5ea18",
-    "src/downstream/scenario.py": "01f3647b02e1884540a243e59381842c8e57c4b78bda544c056bf7a4ceddc17f",
+    "src/downstream/scenario.py": "d1eb4794ebc88a18d66d1b48ba63bf5f3ce141b343fb9f74270c3c41505ef578",
     "src/downstream/scoring.py": "160d6a3d2a9ef9a94b5e35994454c7462906d9ec19d3bf33b2c642ef4601c5e3",
-    "src/downstream/sensitivity.py": "eceb73f546bb426e11721c33e830b6c28d03066ffda8ce548d6578e5d06e1636",
-    "src/downstream/snapshot.py": "99a4de00ce7743e656faa76dad4af57ba7bf02ea57845eca223d8303a2ea1c8b",
+    "src/downstream/sensitivity.py": "dc884479b17dcae9c3ad0ee9b898932812e21a350df2c0b289b25536d30c575b",
+    "src/downstream/snapshot.py": "fd4079f3070477c3ed2c295f8bd4991725870dc781b5ff0648186d9f152f522a",
+    "src/downstream/source_support.py": "57ef10a4992fc705d63f2f00bfb1521ddbf0306a48d22775059ed1ad3b18167e",
     "src/downstream/study_library.py": "a9f03def1f8190e3efd74dad11ec3db733a002fd62993e95eb16075c9940d945",
     "src/downstream/synthesis.py": "c3e54bed03e82fc0db4be61353f51b1f2cc4b1b0fe6059b7b6d206ff6c001c46",
-    "src/downstream/transmissions.py": "f2439a0dc6eae413989616041326d9838e4fcb4278dd8d189a11b483129fa67a",
+    "src/downstream/transmissions.py": "c96c8b07095415c3c1f15124858739265b19892ca35878e709cf4d4300f7decb",
     "src/downstream/uncertainty_budget.py": "fd855321177e6273ff50e0c561b85f4051257a1fe8d269fb7884452b21abe52b",
     "src/downstream/uncertainty_cases.py": "23d89f8d50344e74042e089a33acec0a95a43e1ea8048b038c1beb637047d811",
     "src/downstream/units.py": "f2d745a07d00643f09eb2168e4433f7fa0cc200e5488cff72775fe9e0f9f1903",
     "src/downstream/validate.py": "f16a7d0f48fb1cac33b43aad5a807a1e541deed37625a69eadf66ba21e91eb91",
     "src/downstream/valuation.py": "489b392082e94e54564383436537002e59af50483ab4a78accb69119059e420f",
-    "src/downstream/variants.py": "0f6d1b90d93d633964592af528b3e34b889548789bf5cd607a0aa0544c6b6c29",
-    "src/downstream/vignette.py": "2c2b6a622aa82b4ed06f1f998ec3ef61516fa98e65016c08445745b50eaaf635",
+    "src/downstream/variants.py": "6c6b0942c550bd5e2d6555dd0282fb974f06944279ffd72c843312f9fc720ad2",
+    "src/downstream/vignette.py": "39a3cf98ca95df3132fa0e26edabb6aa682ac6403b7bfc92524ca18e7d8036a5",
     "src/downstream/worker.py": "01b56ba3587b1c3d8d984b57995ec7266ced52b4454d7b29435b873c630ba4e8",
-    "params/CHANGELOG.md": "819cd1ac384685c941c1d91164ac1db9678e041537e561c6a5a6cb22b9e1a2e1",
-    "params/VERSION": "8625eb078bed9a91a410f0a64c716bf4ed5c05dabff1489072087da67d5317b4",
+    "params/CHANGELOG.md": "b04f7311c4d8e734ac186ed34289057e57155dd80451ae9888376d91e4d8fb14",
+    "params/VERSION": "a15152d7a0dc289263a08221e2891447cc88e4c5317342ef5a26d6a5090f998c",
     "params/age_mortality.csv": "9db45c7d220ff080913c65de747f0fc749c523bed3c584bc7bc7b0d1a1356f12",
     "params/baseline_employment_transitions.csv": "113561409acc078bf660154a73efadad092b35836cb11cd0c77594aa5885c0e3",
     "params/baselines.csv": "f67538abe22be16a159c5e95b8c69fb5c803d39b2faaf7580db703f6c3a72246",
@@ -75,12 +76,13 @@
     "params/parameters.csv": "f6ce70a100042189691eb10291c9ead48655cbf37dc49d49c4ac2ce4a3a468d6",
     "params/places.csv": "2bc1faa2955354c57ae467473aaea9bd58cdf044304d363b2f8b06869d6f45d4",
     "params/references.bib": "2b022848da937459f0ff8e9488b013c2a03ba3554c272ff567de426d36f93c12",
+    "params/source_support.json": "f3fd03d09581a5715b7aceb13364074197c5c0233c1c63e3a6fa6b6a7b60b49d",
     "params/study_estimates.csv": "12ea8fee6af9b0d3200989186714b7e02b77e8931f40ea1b36c84bfd6e3fdc74",
     "params/study_estimates.template.csv": "3f71fb5102d87827c926ac9c9ad09ce834798bb19c461cfca3f6854665cc66bf",
     "scripts/build_consumer_fixtures.py": "4964e76a53088d8fdc1fc348b052a83f1514f901effb2648998a903ab515adfd",
     "scripts/artifact_checks.py": "15342ed61b943d73774a1aa346137e715cb4256e28ca9e49cf2a7af0904cf62e"
   },
-  "source_content_sha256": "1b27fbf555cc614b32a09cc374756931ade9d45b8ecad13e182d2256b72e2cc4",
+  "source_content_sha256": "c238a8684aab8032009d96d901feb4bc04f3125d629e5a29c6a79191b0fd3de2",
   "fixture_sampling": "128 draws/base, seed 1901; contract fixtures, not precision-qualified research intervals.",
   "fixtures": {
     "national": {
@@ -113,7 +115,7 @@
       "precision": "Raw engine totals with public applicability, provenance and sensitivity.",
       "result": {
         "label": "scenario",
-        "parameter_set_version": "v1.52",
+        "parameter_set_version": "v1.53",
         "engine_version": "0.4.0",
         "uncertainty": {
           "band_kind": "parameter-support envelope, not a confidence interval",
@@ -891,9 +893,16 @@
             "high": 0.9904
           },
           "greatgrandchild_earnings": {
-            "point": 0.972,
-            "low": 0.9438,
-            "high": 0.9962
+            "label": "greatgrandchild",
+            "unit": "gap_multiplier",
+            "available": false,
+            "point": null,
+            "low": null,
+            "high": null,
+            "steps": [],
+            "blocked": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified.",
+            "source_status": "withdrawn",
+            "withdrawn_input": "grandchild_earnings->greatgrandchild_earnings"
           }
         },
         "projection_eligibility": {
@@ -908,9 +917,9 @@
             "reason": "combines a direct child estimate with an intergenerational persistence assumption; not an identified displacement intervention effect"
           },
           "greatgrandchild": {
-            "status": "structural_projection",
+            "status": "source_withdrawn",
             "eligible_for_validated_direct_contrast": false,
-            "reason": "repeats an intergenerational persistence assumption beyond the identification core"
+            "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
           }
         },
         "target_population": null,
@@ -937,7 +946,7 @@
             "A subgroup's nonsignificant coefficient is retained with its uncertainty, not replaced with zero."
           ]
         },
-        "input_content_sha256": "164977ef8d790ef069c477777cd945e23c88615e0195460b61880f88c2de13cd",
+        "input_content_sha256": "6a1f7a50165d0f01071f1087f5fd34f79a1dab8bdf2556fd8b025c3d8024bb60",
         "parameter_uncertainty": {
           "interval": "central 90% Monte Carlo interval (p05\u2013p95)",
           "scope": "parameter uncertainty only",
@@ -957,7 +966,7 @@
           "seed": 1901,
           "sampler": "lhs+iman-conover",
           "correlations_applied": 2,
-          "parameter_set_version": "v1.52-sampled",
+          "parameter_set_version": "v1.53-sampled",
           "outcomes": {
             "excess_deaths": {
               "p05": 22.5111,
@@ -1033,7 +1042,7 @@
       "precision": "Raw engine totals with public applicability, provenance and sensitivity.",
       "result": {
         "label": "scenario",
-        "parameter_set_version": "v1.52",
+        "parameter_set_version": "v1.53",
         "engine_version": "0.4.0",
         "uncertainty": {
           "band_kind": "parameter-support envelope, not a confidence interval",
@@ -1721,9 +1730,16 @@
             "high": 0.99
           },
           "greatgrandchild_earnings": {
-            "point": 0.9706,
-            "low": 0.9405,
-            "high": 0.996
+            "label": "greatgrandchild",
+            "unit": "gap_multiplier",
+            "available": false,
+            "point": null,
+            "low": null,
+            "high": null,
+            "steps": [],
+            "blocked": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified.",
+            "source_status": "withdrawn",
+            "withdrawn_input": "grandchild_earnings->greatgrandchild_earnings"
           }
         },
         "projection_eligibility": {
@@ -1738,9 +1754,9 @@
             "reason": "combines a direct child estimate with an intergenerational persistence assumption; not an identified displacement intervention effect"
           },
           "greatgrandchild": {
-            "status": "structural_projection",
+            "status": "source_withdrawn",
             "eligible_for_validated_direct_contrast": false,
-            "reason": "repeats an intergenerational persistence assumption beyond the identification core"
+            "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
           }
         },
         "target_population": null,
@@ -1767,7 +1783,7 @@
             "A subgroup's nonsignificant coefficient is retained with its uncertainty, not replaced with zero."
           ]
         },
-        "input_content_sha256": "d25f13f0f85ab391e5b8ac0ec0f5bf21e33cf7ec585b7f5d9bb2ee200d29c7e0"
+        "input_content_sha256": "7773ba861c4065990bda3f15681a9427faa9a89bf887f4441c5d8aab6417ca9a"
       }
     },
     "unsupported_county": {
@@ -1800,7 +1816,7 @@
       "precision": "Raw engine totals with public applicability, provenance and sensitivity.",
       "result": {
         "label": "scenario",
-        "parameter_set_version": "v1.52",
+        "parameter_set_version": "v1.53",
         "engine_version": "0.4.0",
         "uncertainty": {
           "band_kind": "parameter-support envelope, not a confidence interval",
@@ -2468,9 +2484,16 @@
             "high": 0.9904
           },
           "greatgrandchild_earnings": {
-            "point": 0.972,
-            "low": 0.9438,
-            "high": 0.9962
+            "label": "greatgrandchild",
+            "unit": "gap_multiplier",
+            "available": false,
+            "point": null,
+            "low": null,
+            "high": null,
+            "steps": [],
+            "blocked": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified.",
+            "source_status": "withdrawn",
+            "withdrawn_input": "grandchild_earnings->greatgrandchild_earnings"
           }
         },
         "projection_eligibility": {
@@ -2485,9 +2508,9 @@
             "reason": "combines a direct child estimate with an intergenerational persistence assumption; not an identified displacement intervention effect"
           },
           "greatgrandchild": {
-            "status": "structural_projection",
+            "status": "source_withdrawn",
             "eligible_for_validated_direct_contrast": false,
-            "reason": "repeats an intergenerational persistence assumption beyond the identification core"
+            "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
           }
         },
         "target_population": null,
@@ -2514,7 +2537,7 @@
             "A subgroup's nonsignificant coefficient is retained with its uncertainty, not replaced with zero."
           ]
         },
-        "input_content_sha256": "164977ef8d790ef069c477777cd945e23c88615e0195460b61880f88c2de13cd"
+        "input_content_sha256": "6a1f7a50165d0f01071f1087f5fd34f79a1dab8bdf2556fd8b025c3d8024bb60"
       }
     },
     "zero": {
@@ -2547,7 +2570,7 @@
       "precision": "Raw engine totals with public applicability, provenance and sensitivity.",
       "result": {
         "label": "scenario",
-        "parameter_set_version": "v1.52",
+        "parameter_set_version": "v1.53",
         "engine_version": "0.4.0",
         "uncertainty": {
           "band_kind": "parameter-support envelope, not a confidence interval",
@@ -3215,9 +3238,16 @@
             "high": 0.9904
           },
           "greatgrandchild_earnings": {
-            "point": 0.972,
-            "low": 0.9438,
-            "high": 0.9962
+            "label": "greatgrandchild",
+            "unit": "gap_multiplier",
+            "available": false,
+            "point": null,
+            "low": null,
+            "high": null,
+            "steps": [],
+            "blocked": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified.",
+            "source_status": "withdrawn",
+            "withdrawn_input": "grandchild_earnings->greatgrandchild_earnings"
           }
         },
         "projection_eligibility": {
@@ -3232,9 +3262,9 @@
             "reason": "combines a direct child estimate with an intergenerational persistence assumption; not an identified displacement intervention effect"
           },
           "greatgrandchild": {
-            "status": "structural_projection",
+            "status": "source_withdrawn",
             "eligible_for_validated_direct_contrast": false,
-            "reason": "repeats an intergenerational persistence assumption beyond the identification core"
+            "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
           }
         },
         "target_population": null,
@@ -3261,7 +3291,7 @@
             "A subgroup's nonsignificant coefficient is retained with its uncertainty, not replaced with zero."
           ]
         },
-        "input_content_sha256": "9ef341192dee969cf83f80a49185c25b541ab93a68d5ddeacaca073493c58b89"
+        "input_content_sha256": "e0bcf617fecdcc968ef51a637f0e018274b0541a43c16edbe4db77c89fe0f00f"
       }
     },
     "fractional": {
@@ -3294,7 +3324,7 @@
       "precision": "Raw engine totals with public applicability, provenance and sensitivity.",
       "result": {
         "label": "scenario",
-        "parameter_set_version": "v1.52",
+        "parameter_set_version": "v1.53",
         "engine_version": "0.4.0",
         "uncertainty": {
           "band_kind": "parameter-support envelope, not a confidence interval",
@@ -3962,9 +3992,16 @@
             "high": 0.9904
           },
           "greatgrandchild_earnings": {
-            "point": 0.972,
-            "low": 0.9438,
-            "high": 0.9962
+            "label": "greatgrandchild",
+            "unit": "gap_multiplier",
+            "available": false,
+            "point": null,
+            "low": null,
+            "high": null,
+            "steps": [],
+            "blocked": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified.",
+            "source_status": "withdrawn",
+            "withdrawn_input": "grandchild_earnings->greatgrandchild_earnings"
           }
         },
         "projection_eligibility": {
@@ -3979,9 +4016,9 @@
             "reason": "combines a direct child estimate with an intergenerational persistence assumption; not an identified displacement intervention effect"
           },
           "greatgrandchild": {
-            "status": "structural_projection",
+            "status": "source_withdrawn",
             "eligible_for_validated_direct_contrast": false,
-            "reason": "repeats an intergenerational persistence assumption beyond the identification core"
+            "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
           }
         },
         "target_population": null,
@@ -4008,7 +4045,7 @@
             "A subgroup's nonsignificant coefficient is retained with its uncertainty, not replaced with zero."
           ]
         },
-        "input_content_sha256": "d7237d8106e17cc998b81125a9c1f2bc1fbcc613378c47f39fc29f775688b16e"
+        "input_content_sha256": "1dcbb290805b5c4d3849b88675226fb3846dc4b41a45b013ba33ad4d24a99234"
       }
     },
     "beneficial_child": {
@@ -4041,7 +4078,7 @@
       "precision": "Raw engine totals with public applicability, provenance and sensitivity.",
       "result": {
         "label": "scenario",
-        "parameter_set_version": "v1.52",
+        "parameter_set_version": "v1.53",
         "engine_version": "0.4.0",
         "uncertainty": {
           "band_kind": "parameter-support envelope, not a confidence interval",
@@ -4709,9 +4746,16 @@
             "high": 1.0863
           },
           "greatgrandchild_earnings": {
-            "point": 1.0021,
-            "low": 0.9592,
-            "high": 1.0518
+            "label": "greatgrandchild",
+            "unit": "gap_multiplier",
+            "available": false,
+            "point": null,
+            "low": null,
+            "high": null,
+            "steps": [],
+            "blocked": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified.",
+            "source_status": "withdrawn",
+            "withdrawn_input": "grandchild_earnings->greatgrandchild_earnings"
           }
         },
         "projection_eligibility": {
@@ -4726,9 +4770,9 @@
             "reason": "combines a direct child estimate with an intergenerational persistence assumption; not an identified displacement intervention effect"
           },
           "greatgrandchild": {
-            "status": "structural_projection",
+            "status": "source_withdrawn",
             "eligible_for_validated_direct_contrast": false,
-            "reason": "repeats an intergenerational persistence assumption beyond the identification core"
+            "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
           }
         },
         "target_population": null,
@@ -4755,7 +4799,7 @@
             "A subgroup's nonsignificant coefficient is retained with its uncertainty, not replaced with zero."
           ]
         },
-        "input_content_sha256": "f3bb5f3804dad96adb964acf7d9f720e964a7b3f06b7cfe277ddc2ac9d19189d"
+        "input_content_sha256": "c7d112163a27a7007d88feaeec720e2cecc391d73de3fc9142c637455722c438"
       }
     },
     "valuation": {
@@ -4797,7 +4841,7 @@
       "precision": "Raw engine totals with public applicability, provenance and sensitivity.",
       "result": {
         "label": "scenario",
-        "parameter_set_version": "v1.52",
+        "parameter_set_version": "v1.53",
         "engine_version": "0.4.0",
         "uncertainty": {
           "band_kind": "parameter-support envelope, not a confidence interval",
@@ -5474,9 +5518,16 @@
             "high": 0.9904
           },
           "greatgrandchild_earnings": {
-            "point": 0.972,
-            "low": 0.9438,
-            "high": 0.9962
+            "label": "greatgrandchild",
+            "unit": "gap_multiplier",
+            "available": false,
+            "point": null,
+            "low": null,
+            "high": null,
+            "steps": [],
+            "blocked": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified.",
+            "source_status": "withdrawn",
+            "withdrawn_input": "grandchild_earnings->greatgrandchild_earnings"
           }
         },
         "projection_eligibility": {
@@ -5491,9 +5542,9 @@
             "reason": "combines a direct child estimate with an intergenerational persistence assumption; not an identified displacement intervention effect"
           },
           "greatgrandchild": {
-            "status": "structural_projection",
+            "status": "source_withdrawn",
             "eligible_for_validated_direct_contrast": false,
-            "reason": "repeats an intergenerational persistence assumption beyond the identification core"
+            "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
           }
         },
         "target_population": null,
@@ -6510,7 +6561,7 @@
           },
           "interpretation": "Real purchasing-power dollars discounted to the event date; the career projection extrapolates beyond observed adult ages. Negative losses represent modeled gains."
         },
-        "input_content_sha256": "fe949d2da13d410e5f4ef0c29d2301eed08d5f8d24887a53d4887fce964ffbb0"
+        "input_content_sha256": "8ec7f2ced0ab5cf4e79b596f39a8487ba2ebee4285cbda5ddf57c7e8fb0cf259"
       }
     },
     "synthetic_reviewed": {
@@ -6573,7 +6624,7 @@
       "precision": "Raw engine totals with public applicability, provenance and sensitivity.",
       "result": {
         "label": "scenario",
-        "parameter_set_version": "v1.52",
+        "parameter_set_version": "v1.53",
         "engine_version": "0.4.0",
         "uncertainty": {
           "band_kind": "parameter-support envelope, not a confidence interval",
@@ -7284,9 +7335,16 @@
             "high": 0.9904
           },
           "greatgrandchild_earnings": {
-            "point": 0.972,
-            "low": 0.9438,
-            "high": 0.9962
+            "label": "greatgrandchild",
+            "unit": "gap_multiplier",
+            "available": false,
+            "point": null,
+            "low": null,
+            "high": null,
+            "steps": [],
+            "blocked": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified.",
+            "source_status": "withdrawn",
+            "withdrawn_input": "grandchild_earnings->greatgrandchild_earnings"
           }
         },
         "projection_eligibility": {
@@ -7301,9 +7359,9 @@
             "reason": "combines a direct child estimate with an intergenerational persistence assumption; not an identified displacement intervention effect"
           },
           "greatgrandchild": {
-            "status": "structural_projection",
+            "status": "source_withdrawn",
             "eligible_for_validated_direct_contrast": false,
-            "reason": "repeats an intergenerational persistence assumption beyond the identification core"
+            "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
           }
         },
         "target_population": {
@@ -7347,7 +7405,7 @@
             "A subgroup's nonsignificant coefficient is retained with its uncertainty, not replaced with zero."
           ]
         },
-        "input_content_sha256": "9578f89f46a1489ac51ca3366bcc992c31d8c19a71d67e14edb0a9e369a7abfb"
+        "input_content_sha256": "d25af19be680592bf924657a9e9c3c9b4ffb34d8aa642ecdf5945bed70393e5f"
       }
     },
     "blocked_demographics": {
@@ -7388,7 +7446,7 @@
       "precision": "Raw engine totals with public applicability, provenance and sensitivity.",
       "result": {
         "label": "scenario",
-        "parameter_set_version": "v1.52",
+        "parameter_set_version": "v1.53",
         "engine_version": "0.4.0",
         "uncertainty": {
           "band_kind": "parameter-support envelope, not a confidence interval",
@@ -7517,9 +7575,16 @@
             "high": 0.9904
           },
           "greatgrandchild_earnings": {
-            "point": 0.972,
-            "low": 0.9438,
-            "high": 0.9962
+            "label": "greatgrandchild",
+            "unit": "gap_multiplier",
+            "available": false,
+            "point": null,
+            "low": null,
+            "high": null,
+            "steps": [],
+            "blocked": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified.",
+            "source_status": "withdrawn",
+            "withdrawn_input": "grandchild_earnings->greatgrandchild_earnings"
           }
         },
         "projection_eligibility": {
@@ -7534,9 +7599,9 @@
             "reason": "combines a direct child estimate with an intergenerational persistence assumption; not an identified displacement intervention effect"
           },
           "greatgrandchild": {
-            "status": "structural_projection",
+            "status": "source_withdrawn",
             "eligible_for_validated_direct_contrast": false,
-            "reason": "repeats an intergenerational persistence assumption beyond the identification core"
+            "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
           }
         },
         "target_population": {
@@ -7571,7 +7636,7 @@
             "A subgroup's nonsignificant coefficient is retained with its uncertainty, not replaced with zero."
           ]
         },
-        "input_content_sha256": "65ac0ec53d73e390aef8ff966a2cc56012e4ca7a3608538205d763d725e77e5c"
+        "input_content_sha256": "132b83c1c19b5e520a0bcea8df3a6c10672e39503a33c82fbc26a72aaf9ad5f0"
       }
     }
   },
@@ -10828,8 +10893,8 @@
               "weight": 0.6,
               "source_identity": {
                 "engine_version": "0.4.0",
-                "parameter_set_version": "v1.52",
-                "input_content_sha256": "d25f13f0f85ab391e5b8ac0ec0f5bf21e33cf7ec585b7f5d9bb2ee200d29c7e0",
+                "parameter_set_version": "v1.53",
+                "input_content_sha256": "7773ba861c4065990bda3f15681a9427faa9a89bf887f4441c5d8aab6417ca9a",
                 "exposure_input_sha256": null
               },
               "source_context": {
@@ -10908,9 +10973,9 @@
                     "reason": "combines a direct child estimate with an intergenerational persistence assumption; not an identified displacement intervention effect"
                   },
                   "greatgrandchild": {
-                    "status": "structural_projection",
+                    "status": "source_withdrawn",
                     "eligible_for_validated_direct_contrast": false,
-                    "reason": "repeats an intergenerational persistence assumption beyond the identification core"
+                    "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
                   }
                 },
                 "assumptions": {
@@ -11062,8 +11127,8 @@
               "weight": 0.4,
               "source_identity": {
                 "engine_version": "0.4.0",
-                "parameter_set_version": "v1.52",
-                "input_content_sha256": "164977ef8d790ef069c477777cd945e23c88615e0195460b61880f88c2de13cd",
+                "parameter_set_version": "v1.53",
+                "input_content_sha256": "6a1f7a50165d0f01071f1087f5fd34f79a1dab8bdf2556fd8b025c3d8024bb60",
                 "exposure_input_sha256": null
               },
               "source_context": {
@@ -11132,9 +11197,9 @@
                     "reason": "combines a direct child estimate with an intergenerational persistence assumption; not an identified displacement intervention effect"
                   },
                   "greatgrandchild": {
-                    "status": "structural_projection",
+                    "status": "source_withdrawn",
                     "eligible_for_validated_direct_contrast": false,
-                    "reason": "repeats an intergenerational persistence assumption beyond the identification core"
+                    "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
                   }
                 },
                 "assumptions": {
@@ -11360,8 +11425,8 @@
               "weight": 0.6,
               "source_identity": {
                 "engine_version": "0.4.0",
-                "parameter_set_version": "v1.52",
-                "input_content_sha256": "d25f13f0f85ab391e5b8ac0ec0f5bf21e33cf7ec585b7f5d9bb2ee200d29c7e0",
+                "parameter_set_version": "v1.53",
+                "input_content_sha256": "7773ba861c4065990bda3f15681a9427faa9a89bf887f4441c5d8aab6417ca9a",
                 "exposure_input_sha256": null
               },
               "source_context": {
@@ -11440,9 +11505,9 @@
                     "reason": "combines a direct child estimate with an intergenerational persistence assumption; not an identified displacement intervention effect"
                   },
                   "greatgrandchild": {
-                    "status": "structural_projection",
+                    "status": "source_withdrawn",
                     "eligible_for_validated_direct_contrast": false,
-                    "reason": "repeats an intergenerational persistence assumption beyond the identification core"
+                    "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
                   }
                 },
                 "assumptions": {
@@ -11563,8 +11628,8 @@
               "weight": 0.4,
               "source_identity": {
                 "engine_version": "0.4.0",
-                "parameter_set_version": "v1.52",
-                "input_content_sha256": "164977ef8d790ef069c477777cd945e23c88615e0195460b61880f88c2de13cd",
+                "parameter_set_version": "v1.53",
+                "input_content_sha256": "6a1f7a50165d0f01071f1087f5fd34f79a1dab8bdf2556fd8b025c3d8024bb60",
                 "exposure_input_sha256": null
               },
               "source_context": {
@@ -11633,9 +11698,9 @@
                     "reason": "combines a direct child estimate with an intergenerational persistence assumption; not an identified displacement intervention effect"
                   },
                   "greatgrandchild": {
-                    "status": "structural_projection",
+                    "status": "source_withdrawn",
                     "eligible_for_validated_direct_contrast": false,
-                    "reason": "repeats an intergenerational persistence assumption beyond the identification core"
+                    "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
                   }
                 },
                 "assumptions": {
@@ -11808,8 +11873,8 @@
               "weight": 0.5,
               "source_identity": {
                 "engine_version": "0.4.0",
-                "parameter_set_version": "v1.52",
-                "input_content_sha256": "9578f89f46a1489ac51ca3366bcc992c31d8c19a71d67e14edb0a9e369a7abfb",
+                "parameter_set_version": "v1.53",
+                "input_content_sha256": "d25af19be680592bf924657a9e9c3c9b4ffb34d8aa642ecdf5945bed70393e5f",
                 "exposure_input_sha256": null
               },
               "source_context": {
@@ -11895,9 +11960,9 @@
                     "reason": "combines a direct child estimate with an intergenerational persistence assumption; not an identified displacement intervention effect"
                   },
                   "greatgrandchild": {
-                    "status": "structural_projection",
+                    "status": "source_withdrawn",
                     "eligible_for_validated_direct_contrast": false,
-                    "reason": "repeats an intergenerational persistence assumption beyond the identification core"
+                    "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
                   }
                 },
                 "assumptions": {
@@ -12062,8 +12127,8 @@
               "weight": 0.5,
               "source_identity": {
                 "engine_version": "0.4.0",
-                "parameter_set_version": "v1.52",
-                "input_content_sha256": "164977ef8d790ef069c477777cd945e23c88615e0195460b61880f88c2de13cd",
+                "parameter_set_version": "v1.53",
+                "input_content_sha256": "6a1f7a50165d0f01071f1087f5fd34f79a1dab8bdf2556fd8b025c3d8024bb60",
                 "exposure_input_sha256": null
               },
               "source_context": {
@@ -12132,9 +12197,9 @@
                     "reason": "combines a direct child estimate with an intergenerational persistence assumption; not an identified displacement intervention effect"
                   },
                   "greatgrandchild": {
-                    "status": "structural_projection",
+                    "status": "source_withdrawn",
                     "eligible_for_validated_direct_contrast": false,
-                    "reason": "repeats an intergenerational persistence assumption beyond the identification core"
+                    "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
                   }
                 },
                 "assumptions": {
@@ -12360,8 +12425,8 @@
               "weight": 0.5,
               "source_identity": {
                 "engine_version": "0.4.0",
-                "parameter_set_version": "v1.52",
-                "input_content_sha256": "9578f89f46a1489ac51ca3366bcc992c31d8c19a71d67e14edb0a9e369a7abfb",
+                "parameter_set_version": "v1.53",
+                "input_content_sha256": "d25af19be680592bf924657a9e9c3c9b4ffb34d8aa642ecdf5945bed70393e5f",
                 "exposure_input_sha256": null
               },
               "source_context": {
@@ -12447,9 +12512,9 @@
                     "reason": "combines a direct child estimate with an intergenerational persistence assumption; not an identified displacement intervention effect"
                   },
                   "greatgrandchild": {
-                    "status": "structural_projection",
+                    "status": "source_withdrawn",
                     "eligible_for_validated_direct_contrast": false,
-                    "reason": "repeats an intergenerational persistence assumption beyond the identification core"
+                    "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
                   }
                 },
                 "assumptions": {
@@ -12583,8 +12648,8 @@
               "weight": 0.5,
               "source_identity": {
                 "engine_version": "0.4.0",
-                "parameter_set_version": "v1.52",
-                "input_content_sha256": "164977ef8d790ef069c477777cd945e23c88615e0195460b61880f88c2de13cd",
+                "parameter_set_version": "v1.53",
+                "input_content_sha256": "6a1f7a50165d0f01071f1087f5fd34f79a1dab8bdf2556fd8b025c3d8024bb60",
                 "exposure_input_sha256": null
               },
               "source_context": {
@@ -12653,9 +12718,9 @@
                     "reason": "combines a direct child estimate with an intergenerational persistence assumption; not an identified displacement intervention effect"
                   },
                   "greatgrandchild": {
-                    "status": "structural_projection",
+                    "status": "source_withdrawn",
                     "eligible_for_validated_direct_contrast": false,
-                    "reason": "repeats an intergenerational persistence assumption beyond the identification core"
+                    "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
                   }
                 },
                 "assumptions": {

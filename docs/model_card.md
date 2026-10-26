@@ -9,7 +9,7 @@ tools. The code and admitted data define its behavior. The
 [methods paper](../paper/downstream.tex) explains the math and scientific
 limitations; [integration](integration.md) describes the calling contracts.
 
-Engine **0.4.0**, parameters **v1.52**. These labels identify the development
+Engine **0.4.0**, parameters **v1.53**. These labels identify the development
 candidate, not a deployed companion release or scientific acceptance. Output
 content hashes and source receipts are required in addition to version labels.
 
@@ -59,9 +59,9 @@ and structural alternatives have different meanings; preserve those labels.
 Removal experiments do not add to causal shares. Unknown dependence or
 structural probabilities are not filled in by convenience.
 
-Repeated intergenerational relationships share one exact draw. Descendant
-results remain structural projections, with the great-grandchild layer the
-weakest identified. Same-place child modifiers are exploratory interactions;
+Repeated relationship records share one exact draw. The available grandchild
+result is a structural projection; the later great-grandchild earnings branch
+is unavailable following source withdrawal. Same-place child modifiers are exploratory interactions;
 null-safe arithmetic does not establish a causal displacement-by-place effect.
 Mortality persistence alternatives retain early risk and vary later risk;
 their spread is not a confidence interval or a replication of another study.
@@ -105,3 +105,14 @@ model averaging, a full uncertainty interval or new population admission.
 Calibrated target transport error and actual cross-component dependence remain
 unknown. The published source profile and its persistence alternative remain
 separate in every case.
+
+
+## Withdrawn historical inputs
+
+The [source-withdrawal contract](evidence.md#source-withdrawals-and-retained-records)
+records 16 retained inputs that are unavailable for calculation. Their original
+values are preserved for inspection, with reasons and public review provenance.
+51 parameter records remain available under their existing applicability limits;
+this count does not claim fresh verification of every source. Great-grandchild
+earnings and the additive divorce/family-size variant are unavailable. Supported
+mortality and direct-child computations remain conditional reference calculations.

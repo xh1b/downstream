@@ -78,11 +78,14 @@ checks to run. Track work and review receipts on the [task board](tasks/README.m
 
 ## Companion and release status
 
-The current 0.4 development candidate is prepared for
+Version 0.4.0 is a conditional scenario-model release prepared for
 [XH1B integration](https://xh1b.org/downstream). Local qualification is distinct
 from companion deployment and scientific validation. Consult the
 [model card](docs/model_card.md#evaluation-status),
-[candidate review](docs/audits/release_0_4.md) and task board for scope and status.
+[release review](docs/audits/release_0_4.md) and task board for scope and status.
+Parameters v1.53 withdraw 16 unsupported historical inputs from calculation;
+[the source policy](docs/evidence.md#source-withdrawals-and-retained-records)
+keeps their original records separate from available estimates.
 The database runner, production cache and website surfaces belong to the
 companion project. Research/design proposals and dated audits are separate
 from the maintained [software guides](docs/readme.md).
@@ -90,9 +93,9 @@ from the maintained [software guides](docs/readme.md).
 ## Attribution and license
 
 <!-- BEGIN GENERATED ATTRIBUTION -->
-The bibliography contains 110 sources and 216 named author records (people and organizations), 1979-2026.
+The identified bibliography contains 108 sources and 214 named author records (people and organizations), 1979-2026.
 
-The parameters cite 53 sources with 121 named author records; these are not counts of independent research teams.
+The parameters cite 40 sources with 97 named author records; these are not counts of independent research teams.
 
 The bibliography includes research, methods and context sources; inclusion does not establish peer review or independent validation. Modeled numbers carry their cited inputs and declared structural assumptions.
 

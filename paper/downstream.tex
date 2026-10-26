@@ -123,8 +123,9 @@ behavioral rules and a network; neither is present here.
 
 Regional multipliers enter as a separate count boundary, following the
 local-employment literature \cite{moretti2010}. They are not passed through
-an earnings chain. Evidence synthesis enters through published individual
-studies and meta-analyses \cite{paul2009,evans2008}. We compose selected
+an earnings chain. Evidence synthesis considers published individual
+studies and meta-analyses, but numerical rows with unresolved source support
+are withdrawn from calculation. We compose selected
 links under declared assumptions rather than pool unlike estimands into a
 single effect. The model is therefore an auditable synthesis of conditional
 responses, not a newly identified causal estimate of the entire system.
@@ -221,11 +222,12 @@ change. These distinctions prevent a transmission coefficient from being
 mistaken for a relative earnings level.
 
 For the current parameter points, the direct child level is
-\ChildPoint{}, the grandchild level is \GrandchildPoint{}, and the
- great-grandchild level is \GreatgrandchildPoint{}.
+\ChildPoint{} and the grandchild level is \GrandchildPoint{}.
+Great-grandchild earnings are unavailable: the prior repeated-transmission
+row has unresolved numerical/source support and is withdrawn.
 These values come from the same code used by the CLI; the first is the
-direct child estimate and the later values propagate its gap
-\cite{oreopoulos2008,solon1992,corak2013,chetty2014,lindahl2015,adermon2018}.
+direct child estimate and the grandchild value propagates its gap
+\cite{oreopoulos2008,solon1992,corak2013,chetty2014}.
 The father's earnings shock is not multiplied into the directly estimated
 child effect. Repeated transmission beyond the identified generations
 remains a modeling assumption.
@@ -254,9 +256,13 @@ making it the default.
 % Verification: @link:test-params.
 % @tag:evidence
 \subsection{Parameter custody}
-This build contains \ParameterCount{} parameter rows in set
-\ParameterVersion{}. Appendix~\ref{app:parameters} is generated directly
-from the parameter file. Precision tiers describe how the number was
+This build contains \ParameterCount{} available parameter rows in set
+\ParameterVersion{}. Sixteen historical records are withdrawn from
+calculation: seven source/estimand/unit mismatches and nine unverified
+numerical extractions. Their original values remain in an explicitly
+separate export archive with the source-review reasons; overrides and
+sampling cannot restore them. Appendix~\ref{app:parameters} includes
+only available rows generated directly from the parameter file. Precision tiers describe how the number was
 extracted: \texttt{EXACT} denotes a pinned table or full-text estimate;
 abstract/results variants identify the narrower source read;
 \texttt{canonical} marks an established value with remaining extraction

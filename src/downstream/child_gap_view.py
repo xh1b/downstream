@@ -71,13 +71,15 @@ def child_gap_view(
         ledger = line[generation]
         source_status = deepcopy(line["evidence_status"][generation])
         status = source_status["status"]
-        if modifier is not None:
+        from .source_support import UnavailableLedger
+        source_blocked = isinstance(ledger, UnavailableLedger)
+        if modifier is not None and not source_blocked:
             status = "exploratory_place_projection" if generation == "child" else "structural_projection_with_exploratory_place"
-        available = not incompatible
+        available = not incompatible and not source_blocked
         rows.append({
             "generation": generation,
             "available": available,
-            "reason": "Child or target demographics are incompatible with the source path." if incompatible else None,
+            "reason": "Child or target demographics are incompatible with the source path." if incompatible else str(ledger.source_error) if source_blocked else None,
             "evidence_status": status,
             "entry_evidence": source_status,
             "unit": "percent_earnings_gap_vs_no_displacement",

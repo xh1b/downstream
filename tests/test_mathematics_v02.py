@@ -115,7 +115,8 @@ def test_place_adjustment_flows_once_through_generations():
     line = child_line(parts['params'], modifier)
     t = parts['params'].by_link('child_earnings->grandchild_earnings').point
     assert line['grandchild'].point == pytest.approx(1-t*(1-line['child'].point))
-    assert sum(s.link.startswith('place:') for s in line['greatgrandchild'].steps) == 1
+    assert sum(s.link.startswith('place:') for s in line['grandchild'].steps) == 1
+    assert line['greatgrandchild'].as_dict()['point'] is None
 
 
 def test_count_envelopes_and_missing_place_provenance():

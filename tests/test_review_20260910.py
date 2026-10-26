@@ -59,7 +59,7 @@ def test_correlated_block_sobol_matches_additive_variance_oracle():
 ])
 def test_public_chains_reject_disconnected_transitions(links, kinds):
     parts = load_all()
-    with pytest.raises(ValueError, match="disconnected chain"):
+    with pytest.raises(ValueError, match="disconnected chain|source withdrawn"):
         validate_chain(parts["params"], links, kinds, parts["nodes"])
 
 

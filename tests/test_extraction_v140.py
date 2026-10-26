@@ -1,3 +1,4 @@
+# Historical transcription regressions inspect retained records, not current source admission.
 # @ref:test-extraction-v140
 # Method: @link:doc-citing.
 # Implementation: @link:code-params; @link:code-audit.
@@ -26,7 +27,7 @@ NODES = load_nodes(PARAMS_DIR / "nodes.csv")
 
 
 def test_child_achievement_row_pinned():
-    row = PARAMS.by_link("displacement_event->child_achievement_sd")
+    row = PARAMS.retained_by_link("displacement_event->child_achievement_sd")
     assert (row.point, row.low, row.high) == (-0.0206, -0.0402, -0.001)
     assert row.tier == "EXACT" and row.evidence_role == "conditional"
     assert row.citation == "bingley2026"
@@ -36,7 +37,7 @@ def test_child_achievement_row_pinned():
 
 
 def test_exam_noncompletion_row_pinned():
-    row = PARAMS.by_link("displacement_event->exam_noncompletion_hazard")
+    row = PARAMS.retained_by_link("displacement_event->exam_noncompletion_hazard")
     assert (row.point, row.low, row.high) == (1.0688, 1.0014, 1.1362)
     assert row.tier == "EXACT" and row.evidence_role == "conditional"
     assert "stevens2011 derivation precedent" in row.notes
@@ -46,7 +47,7 @@ def test_exam_noncompletion_row_pinned():
 
 
 def test_income_channel_is_crosscheck_never_a_row():
-    dahl = PARAMS.by_link("family_income_shock->child_achievement_sd")
+    dahl = PARAMS.retained_by_link("family_income_shock->child_achievement_sd")
     assert "bingley2026 CROSS-CHECK" in dahl.notes
     assert "+0.0008" in dahl.notes  # mediation slope, recorded not composed
     assert dahl.point == 0.0610  # the dahl2012 anchor is untouched
@@ -55,7 +56,7 @@ def test_income_channel_is_crosscheck_never_a_row():
 
 
 def test_schaller_stevens_crosscheck_probability_units():
-    paul = PARAMS.by_link("unemployment_status->mental_health_sd")
+    paul = PARAMS.retained_by_link("unemployment_status->mental_health_sd")
     assert "schallerstevens2015 CROSS-CHECK" in paul.notes
     assert "+1.39pp" in paul.notes and "not SD-convertible" in paul.notes
     assert paul.point == 0.51  # the paul2009 meta anchor is untouched
@@ -74,4 +75,4 @@ def test_bib_entries_with_evidence_fields():
 def test_audit_clean_and_version_current():
     s = summary(audit(PARAMS_DIR))
     assert s["pass"], [f.as_dict() for f in audit(PARAMS_DIR) if f.severity.value == "error"]
-    assert PARAMS.version == "v1.52"
+    assert PARAMS.version == "v1.53"

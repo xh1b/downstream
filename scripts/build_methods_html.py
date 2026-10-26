@@ -64,8 +64,11 @@ def build(params_dir=None):
         f'<td>{row["measured_differential_per100k"]["point"]:g}</td>'
         f'<td>{"yes" if row["measured_inside_modeled_band"] else "no"}</td></tr>'
         for row in mortality)
+    from downstream.source_support import is_withdrawn, policy
     rows = []
     for p in params.parameters:
+        if is_withdrawn(p.link):
+            continue
         unit = parts['nodes'][p.to_node].unit
         rows.append(f'<tr><th scope="row">{h(p.link.replace("_", " ").replace("->", " → "))}<details><summary>Full identifier</summary><code>{h(p.link)}</code></details></th>'
                     f'<td>{p.point:g} [{p.low:g}, {p.high:g}]</td><td>{h(unit)}</td><td>{h(p.evidence_role)}</td>'
@@ -75,7 +78,8 @@ def build(params_dir=None):
                         for b in parts['baselines'].values())
     references = ''.join(f'<li id="source-{h(key)}"><strong>{h(key)}</strong>: {h("; ".join(parse_authors(e.fields.get("author", ""))))}. '
                          f'{h(_clean_latex(e.title))} ({h(e.year)}). {h(_clean_latex(e.fields.get("journal", e.fields.get("publisher", ""))))}.</li>'
-                         for key, e in sorted(parts['bib'].items()))
+                         for key, e in sorted(parts['bib'].items()) if key not in policy()["unidentified_references"])
+    policy_uri = 'data:application/json;charset=utf-8,' + quote((ROOT / 'params/source_support.json').read_text(encoding='utf-8'))
     csv_uri = 'data:text/csv;charset=utf-8,' + quote((directory / 'parameters.csv').read_text())
     digest = reference_result_digest(result)
     return f'''<!doctype html>
@@ -91,7 +95,7 @@ caption{{text-align:left;font-weight:600}}summary{{cursor:pointer;font-size:.9em
 <p>Engine {h(__version__)} · parameter set {h(params.version)}. Reproducible reference calculations for displacement consequences.</p>
 <nav aria-label="Methods sections"><a href="#scope">Scope</a><a href="#counts">Count calculations</a><a href="#uncertainty">Uncertainty</a>
 <a href="#persistence">Mortality persistence</a><a href="#cohorts">Cohorts and households</a><a href="#validation">Validation</a><a href="#parameters">Parameters</a><a href="#baselines">Baselines</a><a href="#references">Sources</a></nav></header>
-<main id="main" tabindex="-1"><section id="scope"><h2>Scope and interpretation</h2><p class="notice">Default results are illustrative reference calculations.
+<main id="main" tabindex="-1"><section id="scope"><p class="notice">Source policy: 51 parameter records remain available; 16 historical inputs are withdrawn from calculation. <a download="source_support.json" href="{policy_uri}">Download the withdrawal policy and reasons</a>. Archived records do not become admitted estimates.</p><h2>Scope and interpretation</h2><p class="notice">Default results are illustrative reference calculations.
 They are conditional modeled expected differences, not forecasts about identified people, observed attributable counts, or identified policy effects.
 Target-cohort applicability requires structured demographics and a reviewed transport decision. Grandchild and later earnings outcomes are structural projections.</p>
 <p>Worker displacement, net tradable-job loss, and changes in immigration exposure are distinct inputs. A displacement count does not establish either of the other exposures.
@@ -213,7 +217,7 @@ Compatible mixtures use sum(wₖ E[Xₖ]) while retaining every baseline and app
 but does not identify a joint distribution. Quantiles and variance indices cannot generally be averaged. A positive-weight unavailable component withholds the total.
 Joint mixture intervals remain unavailable until a joint draw/dependence calculation exists.</p>
 <p>The code and admitted data define behavior. The paper explains the mathematics; <a href="readme.md">software guides</a> describe calling contracts and integration.</p></section>
-<section id="parameters"><h2>Parameter inventory</h2><p><a download="downstream-parameters.csv" href="{csv_uri}">Download the complete parameter CSV with full identifiers, precision and notes</a>.</p>
+<section id="parameters"><h2>Available parameter inventory</h2><p>51 inputs remain available; 16 historical inputs are withdrawn from calculation. Original records are preserved in the archive and must not be treated as available estimates.</p><p><a download="downstream-parameters.csv" href="{csv_uri}">Download the original-record CSV, including withdrawn records; consult source_support.json before use</a>.</p>
 <div class="scroll" role="region" aria-label="Parameter inventory" tabindex="0"><table><caption>Parameter support bands, destination units and evidence roles</caption>
 <thead><tr><th scope="col">Relationship and identifier</th><th scope="col">Point [low, high]</th><th scope="col">Unit</th><th scope="col">Evidence role</th><th scope="col">Sources, population and qualifications</th></tr></thead><tbody>{''.join(rows)}</tbody></table></div></section>
 <section id="baselines"><h2>Baseline inventory</h2><div class="scroll" role="region" aria-label="Baseline inventory" tabindex="0"><table><caption>Cited absolute-rate and dollar inputs</caption>

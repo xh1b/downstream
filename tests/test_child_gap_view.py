@@ -33,6 +33,9 @@ def test_default_retains_existing_engine_values_and_source_steps(bundle):
     assert report["combined_total"] is None
     assert report["uncertainty"]["band_kind"] == "parameter-support envelope, not a confidence interval"
     for row in report["rows"]:
+        if not row["available"]:
+            assert row["value"] is None and "source withdrawn" in row["reason"]
+            continue
         ledger = line[row["generation"]]
         assert row["value"]["point"] == pytest.approx(100 * (1 - ledger.point))
         assert row["value"]["low"] == pytest.approx(100 * (1 - ledger.high))
@@ -41,7 +44,7 @@ def test_default_retains_existing_engine_values_and_source_steps(bundle):
         assert all(step["citation"] and step["population_scope"] for step in row["steps"])
         assert not row["eligible_for_public_headline"]
     assert [row["evidence_status"] for row in report["rows"]] == [
-        "direct_estimate", "structural_projection", "structural_projection",
+        "direct_estimate", "structural_projection", "source_withdrawn",
     ]
     counts = compute_counts(bundle["params"], bundle["baselines"], ScenarioInput(10))
     assert report["rows"][0]["dollar_conversion"] == counts["modeled"][CHILD_DOLLARS]
@@ -53,7 +56,7 @@ def test_default_retains_existing_engine_values_and_source_steps(bundle):
 def test_missing_dollar_baseline_keeps_relative_gaps_and_reports_refusal(bundle):
     baselines = {key: value for key, value in bundle["baselines"].items() if key != "median_male_lifetime_earnings"}
     report = child_gap_view(bundle["params"], baselines, ScenarioInput(10))
-    assert all(row["available"] for row in report["rows"])
+    assert [row["available"] for row in report["rows"]] == [True, True, False]
     assert report["rows"][0]["dollar_conversion"] is None
     assert "baseline" in report["rows"][0]["dollar_conversion_reason"]
 
@@ -78,13 +81,13 @@ def test_unknown_child_keeps_illustrative_reference(bundle):
         {"age_at_displacement": None, "sex": "Unknown"},
     ]))
     assert report["child_applicability"]["status"] == "unknown"
-    assert all(row["available"] and not row["eligible_for_public_headline"] for row in report["rows"])
+    assert all(row["available"] and not row["eligible_for_public_headline"] for row in report["rows"][:2])
 
 
 def test_income_quartile_preserves_benefit_point_and_null_crossing(bundle):
     report = view(bundle, ScenarioInput(10, child_income_quartile=3,
         income_rank_definition="source distribution; illustrative transport"))
-    for row in report["rows"]:
+    for row in report["rows"][:2]:
         assert row["value"]["point"] < 0
         assert row["value"]["low"] < 0 < row["value"]["high"]
         assert "oreopoulos2008" in row["steps"][0]["citation"]
@@ -98,7 +101,8 @@ def test_null_is_preserved_at_every_generation(bundle):
         for p in bundle["params"].parameters
     ))
     report = child_gap_view(params, bundle["baselines"], ScenarioInput(10))
-    assert all(row["value"] == {"point": 0., "low": 0., "high": 0.} for row in report["rows"])
+    assert all(row["value"] == {"point": 0., "low": 0., "high": 0.} for row in report["rows"][:2])
+    assert report["rows"][2]["value"] is None  # null exposure never restores unsupported transmission
 
 
 @pytest.mark.parametrize("application", ["initial_only", "legacy_repeated"])
@@ -109,7 +113,7 @@ def test_place_context_matches_existing_ledger_and_is_exploratory(bundle, applic
     report = view(bundle, ScenarioInput(10, place_application=application), places=places, place_key="42101")
     assert report["place"]["modifier_applied"]
     assert report["place_application"] == application
-    for row in report["rows"]:
+    for row in report["rows"][:2]:
         assert row["earnings_multiplier"]["point"] == line[row["generation"]].point
         assert "exploratory_place" in row["evidence_status"]
         assert not row["eligible_for_public_headline"]

@@ -338,7 +338,7 @@ Context: @link:doc-calculator; @link:calculator-template; @link:doc-rendering; @
       "net_tradable_jobs_lost": null,
       "tradable_share": 1.0
     },
-    "input_content_sha256": "41da25b145e2649d8878999bdaab11496909db0c4a9a436e914cbafe1fa88893",
+    "input_content_sha256": "0d24d01a63c88a17e2c796a16e306acf71fa7eaeaf9578c591a67540ef16771b",
     "label": "National source reference",
     "modeled": {
       "child_lifetime_earnings_lost_usd": {
@@ -832,9 +832,16 @@ Context: @link:doc-calculator; @link:calculator-template; @link:doc-rendering; @
         "point": 0.9492
       },
       "greatgrandchild_earnings": {
-        "high": 0.9962,
-        "low": 0.9438,
-        "point": 0.972
+        "available": false,
+        "blocked": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified.",
+        "high": null,
+        "label": "greatgrandchild",
+        "low": null,
+        "point": null,
+        "source_status": "withdrawn",
+        "steps": [],
+        "unit": "gap_multiplier",
+        "withdrawn_input": "grandchild_earnings->greatgrandchild_earnings"
       },
       "mortality_peak": {
         "high": 3.3711,
@@ -852,7 +859,7 @@ Context: @link:doc-calculator; @link:calculator-template; @link:doc-rendering; @
         "point": 0.8
       }
     },
-    "parameter_set_version": "v1.52",
+    "parameter_set_version": "v1.53",
     "place": null,
     "projection_eligibility": {
       "child": {
@@ -867,8 +874,8 @@ Context: @link:doc-calculator; @link:calculator-template; @link:doc-rendering; @
       },
       "greatgrandchild": {
         "eligible_for_validated_direct_contrast": false,
-        "reason": "repeats an intergenerational persistence assumption beyond the identification core",
-        "status": "structural_projection"
+        "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified.",
+        "status": "source_withdrawn"
       }
     },
     "target_population": null,

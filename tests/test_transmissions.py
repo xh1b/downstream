@@ -22,6 +22,7 @@ from downstream.audit import ERROR, audit
 from downstream.children import CHILD_DIRECT, GREATGRANDCHILD, GRANDCHILD, child_line
 from downstream.ledger import DIRECT, GAP, GAP_SCALE, start
 from downstream.params import Parameter, ParameterSet, load_all
+from downstream.source_support import SourceUnavailable, UnavailableLedger
 from downstream import transmissions as mod
 from downstream.transmissions import (
     ACHIEVEMENT,
@@ -63,13 +64,10 @@ def _explicit(place_modifier=None, legacy_repeated=False) -> dict:
                             causal_role="exploratory_place_effect_modifier")
     grandchild = child.apply(GAP, PARAMS.by_link(GRANDCHILD),
                              causal_role="structural_transmission_assumption")
-    greatgrandchild = grandchild.apply(GAP, PARAMS.by_link(GREATGRANDCHILD),
-                                       causal_role="structural_transmission_assumption")
+    greatgrandchild = UnavailableLedger('greatgrandchild', 'gap_multiplier', SourceUnavailable(GREATGRANDCHILD))
     if place_modifier is not None and legacy_repeated:
         grandchild = grandchild.apply(GAP_SCALE, place_modifier,
                                       causal_role="exploratory_place_effect_modifier")
-        greatgrandchild = greatgrandchild.apply(GAP_SCALE, place_modifier,
-                                                causal_role="exploratory_place_effect_modifier")
     return {"child": child, "grandchild": grandchild, "greatgrandchild": greatgrandchild}
 
 
@@ -80,21 +78,20 @@ def test_child_line_is_the_recursive_walk_of_one_relationship():
         explicit = _explicit(
             place_modifier=kwargs.get("place_modifier"),
             legacy_repeated=kwargs.get("place_application") == "legacy_repeated")
-        for k in KEYS:
+        assert walked["greatgrandchild"].as_dict() == explicit["greatgrandchild"].as_dict()
+        for k in KEYS[:2]:
             assert walked[k] == explicit[k], f"walker diverged at {k}"
 
 
 def test_walk_names_generations_and_carries_per_step_support():
     out = walk(PARAMS, EARNINGS)
     assert list(out) == ["child", "grandchild", "greatgrandchild"]
-    assert [s.link for s in out["greatgrandchild"].steps] == \
-        [EARNINGS.entry] + [s.link for s in EARNINGS.steps]
-    # the repetition is ONE relationship: same band at every step
-    assert PARAMS.by_link(GRANDCHILD).point == PARAMS.by_link(GREATGRANDCHILD).point
-    # per-step provenance: US IGE literature for step 2, Swedish
-    # multi-generation registers for step 3
-    assert "solon1992" in EARNINGS.steps[0].support
-    assert "lindahl2015" in EARNINGS.steps[1].support
+    assert isinstance(out['greatgrandchild'], UnavailableLedger)
+    assert [s.link for s in out['grandchild'].steps] == [EARNINGS.entry, GRANDCHILD]
+    assert PARAMS.retained_by_link(GRANDCHILD).point == PARAMS.retained_by_link(GREATGRANDCHILD).point
+    with pytest.raises(SourceUnavailable):
+        PARAMS.by_link(GREATGRANDCHILD)
+    assert 'solon1992' in EARNINGS.steps[0].support
 
 
 def test_generation_labels():
@@ -362,7 +359,7 @@ def test_registry_units_are_pinned_to_the_node_table():
         assert t.entry_label == entry.to_node
         assert t.unit == nodes[entry.to_node].unit
         for s in t.steps:
-            row = PARAMS.by_link(s.link)
+            row = PARAMS.retained_by_link(s.link)
             assert nodes[row.from_node].unit == nodes[row.to_node].unit
 
 
@@ -376,12 +373,12 @@ def test_walk_recurses_to_arbitrary_depth_on_admitted_edges():
     assert list(out) == [
         "child", "grandchild", "greatgrandchild", "greatgreatgrandchild",
         "greatgreatgreatgrandchild", "greatgreatgreatgreatgrandchild"]
-    exp = out["greatgrandchild"].apply(
-        GAP, PARAMS.by_link(GREATGRANDCHILD),
-        causal_role="structural_transmission_assumption")
-    assert out["greatgreatgrandchild"] == exp
+    assert all(isinstance(out[key], UnavailableLedger) for key in list(out)[2:])
     assert all(led.unit == "gap_multiplier" for led in out.values())
-    assert drift_relationships(PARAMS) == []  # same band everywhere: no drift
+    assert drift_relationships(PARAMS) == []
+    # Repeating the surviving first-generation link cannot bypass the withdrawal.
+    repeated = dataclasses.replace(EARNINGS, steps=(EARNINGS.steps[0],)*3)
+    assert isinstance(walk(PARAMS, repeated)['greatgrandchild'], UnavailableLedger)
 
 
 def test_linear_shift_survives_degenerate_bands():

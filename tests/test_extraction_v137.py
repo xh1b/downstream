@@ -1,3 +1,4 @@
+# Historical transcription regressions inspect retained records, not current source admission.
 # @ref:test-extraction-v137
 # Method: @link:doc-citing.
 # Implementation: @link:code-params; @link:code-audit.
@@ -25,7 +26,7 @@ PARAMS_DIR = default_dir()
 
 def test_huttunen_cross_check_recorded_not_composed():
     params = load(PARAMS_DIR / "parameters.csv")
-    row = params.by_link("displacement->child_earnings")
+    row = params.retained_by_link("displacement->child_earnings")
     assert "huttunen2019" in row.notes
     assert "-575.476" in row.notes and "-2.2%" in row.notes
     # the composed point/band stay the oreopoulos anchor
@@ -55,4 +56,4 @@ def test_audit_still_clean():
 
 
 def test_version_stamp():
-    assert load(PARAMS_DIR / "parameters.csv").version == "v1.52"
+    assert load(PARAMS_DIR / "parameters.csv").version == "v1.53"

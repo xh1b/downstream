@@ -44,7 +44,7 @@ def test_v1_mortality_score_uses_the_shipped_survival_kernel():
 def test_inference_draws_use_the_same_asymmetric_normal_center_as_mc():
     params, nodes = PARTS["params"], PARTS["nodes"]
     link = "unemployment_status->mental_health_sd"  # point .510, midpoint .505
-    compute = lambda ps: ps.by_link(link).point
+    compute = lambda ps: ps.retained_by_link(link).point  # numeric sampler fixture, not an admitted outcome
     mc = simulate(params, compute, draws=1200, seed=17, nodes=nodes,
                   use_declared_correlations=False)
     raw = _draw_samples(params, compute, nodes, 1200, seed=17)

@@ -219,8 +219,9 @@ retains the detailed review; the paper explains the survival calculation.
 <!-- @ref:doc-child-gap-view; @tag:children -->
 <!-- @link:code-child-gap-view; @link:code-children; @link:code-transmissions; @link:code-valuation; @link:paper-children. -->
 
-`child_gap_view(params, baselines, scenario, ...)` returns child, grandchild
-and great-grandchild relative earnings gaps with source steps and eligibility.
+`child_gap_view(params, baselines, scenario, ...)` returns child and grandchild
+relative earnings gaps with source steps and eligibility. The great-grandchild
+row is explicitly unavailable following source withdrawal.
 Positive means earnings below reference; negative means above. Preserve benefits
 and intervals crossing zero. Descendant paths are structural projections;
 repeated relationships share an exact uncertainty draw.
@@ -479,6 +480,13 @@ mixed fields; check JSON, HTML, Markdown and receipts for identical unavailable
 states, signs and interval meanings. Inspect cache coverage, fallback disclosure,
 runner selection and queue/lease behavior in the companion. Record deployment
 receipts there. Local fixtures do not establish that an integration is deployed.
+
+Snapshots use schema 3 and separate available parameters from retained
+withdrawal records. Load the matching engine and parameter bundle together;
+updating the raw CSV alone does not apply the source policy. Grouped reports
+can include explicitly unavailable branches with null numeric fields. See
+[the source-withdrawal contract](evidence.md#source-withdrawals-and-retained-records)
+for archive fields, override refusals and consumer migration requirements.
 
 ## Warehouse inputs
 

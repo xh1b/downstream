@@ -1,7 +1,20 @@
-## v1.52 — 2026-10-15 — correct receiving-community exposure units
+## v1.53 — 2026-10-27 — withdraw unsupported source inputs
 
 <!-- @ref:parameter-changelog; @tag:evidence -->
 <!-- Context: @link:doc-citing; @link:doc-evidence-classification-0-4; @link:code-params. -->
+
+- Retain the original 67 parameter records while withdrawing seven source
+  mismatches and nine unverified numerical extractions from calculation.
+  `source_support.json` records each disposition, reason and public review provenance.
+- Block withdrawn lookup, ledger composition and dependent outputs, including
+  great-grandchild earnings, while preserving supported mortality and direct-child
+  calculations. Overrides, sampling and structural variants cannot reinstate them.
+- Export active parameters separately from the explicit original-record archive;
+  unidentified `adermon2018` and `lindo2018` references remain archived.
+- No replacement coefficients, baselines, uncertainty bands or source-verification
+  claims are invented. Engine stays 0.4.0.
+
+## v1.52 — 2026-10-15 — correct receiving-community exposure units
 
 - Retire generic immigrant-stock receiving links. Light–Miller Table 2 is a
   semi-log coefficient per percentage-point undocumented population share,

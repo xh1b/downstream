@@ -1,3 +1,4 @@
+# Historical transcription regressions inspect retained records, not current source admission.
 # @ref:test-extraction-v123
 # Method: @link:doc-citing.
 # Implementation: @link:code-params; @link:code-audit; @link:code-citations.
@@ -38,18 +39,18 @@ EXT = "household_ipv->child_externalizing_sd"
 
 
 def test_version_is_v123():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.52"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.53"
 
 
 def test_internalizing_row_exact():
-    p = PARAMS.by_link(INT)
+    p = PARAMS.retained_by_link(INT)
     assert p.point == pytest.approx(0.48, abs=1e-6)
     assert p.low == pytest.approx(0.39) and p.high == pytest.approx(0.57)
     assert p.tier == "EXACT" and p.citation == "evans2008"
 
 
 def test_externalizing_row_exact():
-    p = PARAMS.by_link(EXT)
+    p = PARAMS.retained_by_link(EXT)
     assert p.point == pytest.approx(0.47, abs=1e-6)
     assert p.low == pytest.approx(0.38) and p.high == pytest.approx(0.56)
     assert p.tier == "EXACT" and p.citation == "evans2008"
@@ -58,8 +59,8 @@ def test_externalizing_row_exact():
 def test_bands_are_reported_cis():
     # random-effects CIs verbatim from the results text - not derived,
     # not rounded, not stretched
-    pi = PARAMS.by_link(INT)
-    pe = PARAMS.by_link(EXT)
+    pi = PARAMS.retained_by_link(INT)
+    pe = PARAMS.retained_by_link(EXT)
     assert "CI .39-.57" in pi.notes
     assert "z = 11.25" in pi.notes
     assert "CI .38-.56" in pe.notes
@@ -72,21 +73,21 @@ def test_trauma_refused():
     links = {q.link for q in PARAMS.parameters}
     assert "household_ipv->child_trauma_sd" not in links
     assert "child_trauma" not in " ".join(links)
-    assert "1.54" in PARAMS.by_link(INT).notes
-    assert "NOT landed" in PARAMS.by_link(INT).notes
+    assert "1.54" in PARAMS.retained_by_link(INT).notes
+    assert "NOT landed" in PARAMS.retained_by_link(INT).notes
 
 
 def test_cross_checks_not_averaged():
     # kitzmann2003 (-.50/-.43) and wolfe2003 (.38/.42) stay recorded
     # beside, never folded into the point
-    p = PARAMS.by_link(INT)
+    p = PARAMS.retained_by_link(INT)
     assert "Kitzmann" in p.notes and "Wolfe" in p.notes
     assert "never averaged" in p.notes
     assert p.point == pytest.approx(0.48, abs=1e-6)
 
 
 def test_gender_moderator_declared():
-    p = PARAMS.by_link(EXT)
+    p = PARAMS.retained_by_link(EXT)
     assert ".46" in p.notes and ".23" in p.notes
     assert "QB = 4.11" in p.notes
     assert "boys .46 / girls .23" in p.population_scope
@@ -96,15 +97,15 @@ def test_homogeneity_declared():
     # internalizing homogeneous (no split landed), externalizing
     # heterogeneous (moderators examined) - the design asymmetry is
     # load-bearing for how the rows may be quoted
-    assert "Q(56) = 70.61" in PARAMS.by_link(INT).notes
-    assert "Q(52) = 80.35" in PARAMS.by_link(EXT).notes
+    assert "Q(56) = 70.61" in PARAMS.retained_by_link(INT).notes
+    assert "Q(52) = 80.35" in PARAMS.retained_by_link(EXT).notes
 
 
 def test_boundary_discipline():
     # exposure-contrast d's: PARALLEL stream, no downstream edges, and
     # the composition rule is the boundary "rate" like dahl2012
     for link in (INT, EXT):
-        p = PARAMS.by_link(link)
+        p = PARAMS.retained_by_link(link)
         assert "NEVER" in p.notes and "PARALLEL" in p.notes
     outs = {q.link for q in PARAMS.parameters
             if q.from_node in ("child_internalizing_sd", "child_externalizing_sd")}

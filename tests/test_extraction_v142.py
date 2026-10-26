@@ -1,3 +1,4 @@
+# Historical transcription regressions inspect retained records, not current source admission.
 # @ref:test-extraction-v142
 # Method: @link:doc-citing.
 # Implementation: @link:code-params; @link:code-audit.
@@ -24,7 +25,7 @@ NODES = load_nodes(PARAMS_DIR / "nodes.csv")
 
 
 def test_hs_completion_row_pinned():
-    row = PARAMS.by_link("displacement_event->hs_completion")
+    row = PARAMS.retained_by_link("displacement_event->hs_completion")
     assert (row.point, row.low, row.high) == (-0.037, -0.0801, 0.0061)
     assert row.tier == "EXACT" and row.evidence_role == "conditional"
     assert row.citation == "brand2014"
@@ -33,9 +34,9 @@ def test_hs_completion_row_pinned():
 
 
 def test_college_rows_pinned_and_stock_flow_distinct():
-    att = PARAMS.by_link("displacement_event->college_attendance")
+    att = PARAMS.retained_by_link("displacement_event->college_attendance")
     assert (att.point, att.low, att.high) == (-0.063, -0.1081, -0.0179)
-    comp = PARAMS.by_link("displacement_event->college_completion")
+    comp = PARAMS.retained_by_link("displacement_event->college_completion")
     assert (comp.point, comp.low, comp.high) == (-0.036, -0.0674, -0.0046)
     assert "never be merged" in att.notes  # stock vs the hilger2016 flow
     assert "adolescence" in att.notes or "12-17" in att.notes
@@ -43,7 +44,7 @@ def test_college_rows_pinned_and_stock_flow_distinct():
 
 
 def test_cesd_row_on_scale01_unit():
-    row = PARAMS.by_link("displacement_event->adult_depression_cesd")
+    row = PARAMS.retained_by_link("displacement_event->adult_depression_cesd")
     assert (row.point, row.low, row.high) == (0.025, 0.0034, 0.0466)
     assert NODES["adult_depression_cesd"].unit == "scale01"
     assert NODES["adult_depression_cesd"].unit != "probability"
@@ -56,12 +57,12 @@ def test_maternal_scope_and_bib_venue():
     entry = bib.split("@article{brand2014")[1][:700]
     assert "American Journal of Sociology" in entry
     assert "fulltext-table" in entry
-    head = PARAMS.by_link("displacement_event->hs_completion")
+    head = PARAMS.retained_by_link("displacement_event->hs_completion")
     assert "single mothers" in head.population_scope
     assert "MATERNAL job displacement" in head.population_scope
     for link in ("college_attendance", "college_completion",
                  "adult_depression_cesd"):
-        row = PARAMS.by_link(f"displacement_event->{link}")
+        row = PARAMS.retained_by_link(f"displacement_event->{link}")
         assert "same scope as the hs_completion row" in row.population_scope
         assert "hs_completion row" in row.notes or "same read" in row.notes
         assert row.dist == "normal"
@@ -78,4 +79,4 @@ def test_declared_prior_k_untouched_by_eb_yardstick():
 def test_audit_clean_and_version_current():
     s = summary(audit(PARAMS_DIR))
     assert s["pass"], [f.as_dict() for f in audit(PARAMS_DIR) if f.severity.value == "error"]
-    assert PARAMS.version == "v1.52"
+    assert PARAMS.version == "v1.53"

@@ -1,3 +1,4 @@
+# Historical transcription regressions inspect retained records, not current source admission.
 # @ref:test-extraction-v133
 # Method: @link:doc-citing.
 # Implementation: @link:code-params; @link:code-units; @link:code-audit.
@@ -28,7 +29,7 @@ PARAMS = load(PARAMS_DIR / "parameters.csv")
 
 
 def test_version_is_v133():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.52"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.53"
 
 
 OVERALL = "youth_crime_conviction_share->youth_crime_convicted"
@@ -36,7 +37,7 @@ VIOLENT = "youth_violent_crime_conviction_share->youth_crime_convicted"
 
 
 def _row(link: str):
-    return PARAMS.by_link(link)
+    return PARAMS.retained_by_link(link)
 
 
 # --- the overall-share row --------------------------------------------

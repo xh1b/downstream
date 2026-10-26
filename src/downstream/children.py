@@ -3,7 +3,7 @@
 # Software contract: @link:doc-child-gap-view.
 # Verification: @link:test-modules; @link:test-child-gap-view; @link:test-transmissions.
 # @tag:children
-"""Child and grandchild lines.
+"""Supported child/grandchild lines and an explicitly unavailable later branch.
 
 Primary path: the DIRECT Oreopoulos estimate on children of displaced
 fathers. The IGE links then propagate the child gap into the
@@ -50,12 +50,16 @@ def child_line(params: ParameterSet, place_modifier: Parameter | None = None,
                                 causal_role="exploratory_place_effect_modifier")
         return ledger
 
+    from .source_support import UnavailableLedger
     walked = walk(params, EARNINGS, hook=hook)
     if place_modifier is not None and place_application == "legacy_repeated":
         for gen in ("grandchild", "greatgrandchild"):
+            if isinstance(walked[gen], UnavailableLedger):
+                continue
             walked[gen] = walked[gen].apply(
                 GAP_SCALE, place_modifier,
                 causal_role="exploratory_place_effect_modifier")
+    unavailable = isinstance(walked['greatgrandchild'], UnavailableLedger)
     return {
         **walked,
         "evidence_status": {
@@ -70,18 +74,18 @@ def child_line(params: ParameterSet, place_modifier: Parameter | None = None,
                 "reason": "combines a direct child estimate with an intergenerational persistence assumption; not an identified displacement intervention effect",
             },
             "greatgrandchild": {
-                "status": "structural_projection",
+                "status": "source_withdrawn" if unavailable else "structural_projection",
                 "eligible_for_validated_direct_contrast": False,
-                "reason": "repeats an intergenerational persistence assumption beyond the identification core",
+                "reason": str(walked["greatgrandchild"].source_error) if unavailable else "repeats an intergenerational persistence assumption beyond the identification core",
             },
         },
         "weakest_identified": "greatgrandchild",
-        "honesty": (
+        "honesty": ("Great-grandchild earnings are unavailable because their source support was withdrawn." if unavailable else (
             "The great-grandchild layer is the weakest-identified layer "
             "in this model: it repeats the IGE band beyond the "
             "literature's identification core. Lindahl et al. 2015 shows "
             "persistence survives conditioning on the middle generation, "
             "so the effect is non-zero — but its size is the least "
             "certain number here."
-        ),
+        )),
     }

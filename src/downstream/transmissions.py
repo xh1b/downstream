@@ -221,15 +221,15 @@ def validate_transmission(params: ParameterSet, t: Transmission) -> None:
             "one parent->child edge walked recursively, so with no edge there "
             "is nothing to walk"
         )
-    params.by_link(t.entry)  # KeyError names the missing link
+    params.retained_by_link(t.entry)  # KeyError names the missing link
     if t.entry not in CHAIN_KINDS or CHAIN_KINDS[t.entry] != "direct":
         raise ValueError(
             f"transmission entry {t.entry!r} must be a chain-kind 'direct' link"
         )
     for step in t.steps:
-        params.by_link(step.link)
+        params.retained_by_link(step.link)
         if step.share:
-            params.by_link(step.share)
+            params.retained_by_link(step.share)
         expected = CHAIN_KINDS.get(step.link)
         if expected is None:
             raise ValueError(
@@ -255,7 +255,7 @@ def drift_relationships(params: ParameterSet) -> list[str]:
     bands: dict[str, tuple] = {}
     for t in TRANSMISSIONS:
         for step in t.steps:
-            p = params.by_link(step.link)
+            p = params.retained_by_link(step.link)
             band = (p.point, p.low, p.high, p.dist)
             if (step.relationship in bands and bands[step.relationship] != band
                     and step.relationship not in drifted):
@@ -332,9 +332,21 @@ def walk(
     if hook is not None:
         prev = guarded(hook(prev, 1), 1)
     ledgers[t.label(1)] = prev
+    from .source_support import SourceUnavailable, UnavailableLedger
     for i, step in enumerate(t.steps, start=2):
+        try:
+            if i >= 3 and step.link == "child_earnings->grandchild_earnings":
+                from .source_support import require_supported
+                require_supported("grandchild_earnings->greatgrandchild_earnings")
+            parameter = params.by_link(step.link)
+            if isinstance(prev, UnavailableLedger):
+                raise prev.source_error
+        except SourceUnavailable as exc:
+            prev = UnavailableLedger(t.label(i), unit, exc)
+            ledgers[t.label(i)] = prev
+            continue
         prev = prev.apply(
-            step.kind, params.by_link(step.link),
+            step.kind, parameter,
             causal_role=CHAIN_CAUSAL_ROLES[step.link],
             aux=params.by_link(step.share) if step.share else None,
         )
@@ -355,14 +367,14 @@ def load_transmissions(params: ParameterSet) -> tuple[Transmission, ...]:
             )
         seen.add(t.outcome)
         validate_transmission(params, t)
-        entry = params.by_link(t.entry)
+        entry = params.retained_by_link(t.entry)
         if entry.evidence_role == "boundary":
             raise ValueError(
                 f"transmission entry {t.entry!r} is evidence_role=boundary: "
                 "a boundary coefficient cannot start an intergenerational walk"
             )
         for step in t.steps:
-            p = params.by_link(step.link)
+            p = params.retained_by_link(step.link)
             if p.evidence_role == "boundary":
                 raise ValueError(
                     f"transmission step {step.link!r} is evidence_role=boundary: "
@@ -385,6 +397,7 @@ def find_transmission(outcome: str) -> Transmission:
 def describe(params: ParameterSet) -> dict:
     """The generational map: what walks, how far, on whose evidence —
     and what is one extraction away."""
+    from .source_support import is_withdrawn, policy
     walks = []
     for t in load_transmissions(params):
         walks.append({
@@ -398,7 +411,9 @@ def describe(params: ParameterSet) -> dict:
                     "link": s.link,
                     "kind": s.kind,
                     "relationship": s.relationship,
-                    "support": list(s.support),
+                    "support": [] if is_withdrawn(s.link) else list(s.support),
+                    "available": not is_withdrawn(s.link),
+                    "source_support": policy()["withdrawn_parameters"].get(s.link),
                     **({"share": s.share} if s.share else {}),
                 }
                 for s in t.steps

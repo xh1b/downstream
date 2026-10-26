@@ -1,3 +1,4 @@
+# Historical transcription regressions inspect retained records, not current source admission.
 # @ref:test-extraction-v18
 # Method: @link:doc-citing.
 # Implementation: @link:code-params; @link:code-distributions; @link:code-validate.
@@ -50,7 +51,7 @@ def test_key_adh_transcription_values():
 
 
 def test_aizer_row_pinned_with_sign_and_ci():
-    p = PARAMS.by_link("wage_ratio->household_ipv")
+    p = PARAMS.retained_by_link("wage_ratio->household_ipv")
     assert p.point == -0.813
     assert (p.low, p.high) == (-1.45, -0.18)
     assert p.tier == "EXACT-results"
@@ -59,7 +60,7 @@ def test_aizer_row_pinned_with_sign_and_ci():
 
 def test_log_elasticity_samples_linear_not_log():
     node = NODES["household_ipv_elasticity"]
-    p = PARAMS.by_link("wage_ratio->household_ipv")
+    p = PARAMS.retained_by_link("wage_ratio->household_ipv")
     # v1.27: the aizer band IS the reported 95% CI (clustered SE 0.317),
     # so the row declares `normal` — a LINEAR-space truncated normal
     # centered on the point. The v1.8 property stands: never log space
@@ -75,7 +76,7 @@ def test_wage_ratio_node_exists_and_is_gap():
 # --- v1.10 round: Lindo infant health + CSV integrity ------------------------
 
 def test_lindo_row_pinned_and_paper_corrected():
-    p = PARAMS.by_link("displacement->infant_birth_weight")
+    p = PARAMS.retained_by_link("displacement->infant_birth_weight")
     assert p.point == 0.9541
     assert (p.low, p.high) == (0.912, 0.9981)
     assert p.tier == "EXACT"

@@ -94,6 +94,10 @@ class Ledger:
 
     def _step(self, kind: str, p: Parameter, causal_role: str = "unspecified",
               aux: Parameter | None = None) -> Step:
+        from .source_support import require_supported
+        require_supported(p.link)
+        if aux is not None:
+            require_supported(aux.link)
         if kind == LEVEL:
             corners = [x * y for x in (self.low, self.high) for y in (p.low, p.high)]
             v = (self.point * p.point, min(corners), max(corners))

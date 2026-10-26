@@ -1,3 +1,4 @@
+# Distribution-shape regressions may inspect archived numeric fixtures; source admission is checked separately.
 # @ref:test-dist-v127
 # Method: @link:doc-citing.
 # Implementation: @link:code-audit; @link:code-distributions; @link:code-params; @link:code-mc.
@@ -54,7 +55,7 @@ NODES = load_nodes(PARAMS_DIR / "nodes.csv")
 
 
 def test_version_is_v127():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.52"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.53"
 
 
 # --- declared per-parameter distributions -------------------------------
@@ -87,10 +88,10 @@ SE_CI_LOGNORMAL = [
 
 def test_ci_rows_declare_their_shape():
     for link in SE_CI_NORMAL:
-        p = PARAMS.by_link(link)
+        p = PARAMS.retained_by_link(link)
         assert p.dist == "normal", link
     for link in SE_CI_LOGNORMAL:
-        p = PARAMS.by_link(link)
+        p = PARAMS.retained_by_link(link)
         assert p.dist == "lognormal", link
 
 
@@ -107,25 +108,25 @@ def test_declared_band_rows_do_not_claim_a_shape():
         "displacement->child_earnings",  # evidence-WIDENED CI band
         "youth_wages->youth_crime",  # rounding band
     ]:
-        assert PARAMS.by_link(link).dist == "", link
+        assert PARAMS.retained_by_link(link).dist == "", link
 
 
 def test_declared_dist_overrides_the_unit_default():
-    p = PARAMS.by_link("import_shock->gop_win_probability")
+    p = PARAMS.retained_by_link("import_shock->gop_win_probability")
     assert dist_for(p, "percent_delta") == NORMAL
-    p2 = PARAMS.by_link("earnings_shock->mortality_peak")
+    p2 = PARAMS.retained_by_link("earnings_shock->mortality_peak")
     assert dist_for(p2, "rate_ratio") == LOGNORMAL
 
 
 def test_unknown_dist_token_is_rejected():
-    p = PARAMS.by_link("import_shock->gop_win_probability")
+    p = PARAMS.retained_by_link("import_shock->gop_win_probability")
     with pytest.raises(ValueError):
         sample_unit_interval("cauchy", 0.5, p.low, p.high, point=p.point)
     assert "cauchy" not in KNOWN_DISTS
 
 
 def test_lognormal_stays_in_band_and_centers_on_the_point():
-    p = PARAMS.by_link("earnings_shock->mortality_peak")
+    p = PARAMS.retained_by_link("earnings_shock->mortality_peak")
     rng = random.Random(5)
     vals = []
     for _ in range(2000):
@@ -139,7 +140,7 @@ def test_lognormal_stays_in_band_and_centers_on_the_point():
 def test_normal_centers_on_the_point_not_the_midpoint():
     # mental_health_sd's band is a ROUNDED reported CI: midpoint 0.505,
     # point 0.51 — the sampled center must be the reported point.
-    p = PARAMS.by_link("unemployment_status->mental_health_sd")
+    p = PARAMS.retained_by_link("unemployment_status->mental_health_sd")
     rng = random.Random(6)
     vals = [sample_unit_interval(NORMAL, rng.random(), p.low, p.high, point=p.point) for _ in range(2000)]
     vals.sort()
@@ -222,7 +223,7 @@ def test_simulate_stamps_iman_conover_and_is_reproducible():
     assert a == b
     assert a["sampler"] == "lhs+iman-conover"
     assert a["correlations_applied"] == 2
-    assert a["parameter_set_version"] == "v1.52-sampled"
+    assert a["parameter_set_version"] == "v1.53-sampled"
 
 
 def test_simulate_can_opt_out_of_declared_correlations():

@@ -1,3 +1,4 @@
+# Historical transcription regressions inspect retained records, not current source admission.
 # @ref:test-extraction-v112
 # Method: @link:doc-citing.
 # Implementation: @link:code-params; @link:code-audit; @link:code-ledger.
@@ -24,7 +25,7 @@ NODES = load_nodes(PARAMS_DIR / "nodes.csv")
 
 
 def test_spillover_row_matches_adh_table7pb_col6():
-    p = PARAMS.by_link("import_shock->non_displaced_wage_spillover")
+    p = PARAMS.retained_by_link("import_shock->non_displaced_wage_spillover")
     assert (p.point, p.low, p.high) == (-0.822, pytest.approx(-1.3042, abs=1e-9),
                                         pytest.approx(-0.3398, abs=1e-9))
     assert p.tier == "EXACT"
@@ -35,14 +36,14 @@ def test_spillover_row_matches_adh_table7pb_col6():
 
 
 def test_spillover_is_negative_and_names_non_displaced_population():
-    p = PARAMS.by_link("import_shock->non_displaced_wage_spillover")
+    p = PARAMS.retained_by_link("import_shock->non_displaced_wage_spillover")
     # a wage LOSS per positive exposure shock: sign trap
     assert p.point < 0 and p.high < 0
     assert "OUTSIDE manufacturing" in p.population_scope  # non-displaced workers
 
 
 def test_achievement_row_matches_dahl_table3_col_i():
-    p = PARAMS.by_link("family_income_shock->child_achievement_sd")
+    p = PARAMS.retained_by_link("family_income_shock->child_achievement_sd")
     assert (p.point, p.low, p.high) == (0.0610, pytest.approx(0.0157, abs=1e-9),
                                         pytest.approx(0.1063, abs=1e-9))
     assert p.tier == "EXACT"
@@ -51,7 +52,7 @@ def test_achievement_row_matches_dahl_table3_col_i():
 
 
 def test_longevity_row_band_is_the_papers_own_range_divided():
-    p = PARAMS.by_link("family_income_shock->life_expectancy_years")
+    p = PARAMS.retained_by_link("family_income_shock->life_expectancy_years")
     assert p.point == pytest.approx(0.8 / 6, abs=5e-4)
     assert p.low == pytest.approx(0.7 / 6, abs=5e-4)
     assert p.high == pytest.approx(0.9 / 6, abs=5e-4)
@@ -73,7 +74,7 @@ def test_boundary_coefficient_is_recorded_never_chained():
     # silently scale the response by chain position; the ledger must
     # record it (RATE semantics) and not compound it.
     base = start("wage", "percent_delta", value=1.0)
-    p = PARAMS.by_link("import_shock->non_displaced_wage_spillover")
+    p = PARAMS.retained_by_link("import_shock->non_displaced_wage_spillover")
     led = base.apply(RATE, p)
     assert led.point == p.point
     # applying it twice records the same boundary value, it does NOT
@@ -92,7 +93,7 @@ def test_new_nodes_exist_with_declared_units():
 
 def test_version_bumped_and_audit_clean():
     version = (PARAMS_DIR / "VERSION").read_text().strip()
-    assert version == "v1.52"
+    assert version == "v1.53"
     out = audit(PARAMS_DIR)
     errors = [f for f in out if f.severity == ERROR]
     assert errors == []

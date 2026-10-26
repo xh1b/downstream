@@ -1,3 +1,4 @@
+# Historical transcription regressions inspect retained records, not current source admission.
 # @ref:test-extraction-v132
 # Method: @link:doc-citing.
 # Implementation: @link:code-params; @link:code-units; @link:code-audit.
@@ -31,7 +32,7 @@ PARAMS = load(PARAMS_DIR / "parameters.csv")
 
 
 def test_version_is_v132():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.52"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.53"
 
 
 EDUCATION = "unconditional_income->child_education_years"
@@ -40,7 +41,7 @@ MINOR_CRIME = "unconditional_income->youth_minor_crime_ever"
 
 
 def _row(link: str):
-    return PARAMS.by_link(link)
+    return PARAMS.retained_by_link(link)
 
 
 # --- the education row ------------------------------------------------
@@ -113,9 +114,9 @@ def test_crime_band_directions_survive_band_math():
 def test_duncan_refused_not_a_parameter():
 
     with pytest.raises(KeyError):
-        PARAMS.by_link("early_poverty_income->adult_earnings")
+        PARAMS.retained_by_link("early_poverty_income->adult_earnings")
     with pytest.raises(KeyError):
-        PARAMS.by_link("unconditional_income->adult_earnings")
+        PARAMS.retained_by_link("unconditional_income->adult_earnings")
 
 
 def test_duncan_bib_entry_marks_refusal():

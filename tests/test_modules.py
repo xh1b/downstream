@@ -13,6 +13,7 @@ from downstream.children import child_line
 from downstream.community import SchoolExposure, service_jobs_lost, school_spending_child_earnings, youth_crime_delta
 from downstream.family import daughter_violence_odds, divorce_hazard, family_size_penalty
 from downstream.params import load
+from downstream.source_support import SourceUnavailable
 from downstream.worker import worker_outcomes
 
 PARAMS = Path(__file__).resolve().parent.parent / "params" / "parameters.csv"
@@ -38,9 +39,10 @@ def test_child_line_gap_space_and_weakest_layer_flagged():
     line = child_line(load(PARAMS))
     assert line["child"].point == 0.9076
     assert line["grandchild"].point == pytest.approx(0.94918, abs=1e-6)
-    assert line["greatgrandchild"].point == pytest.approx(0.972049, abs=1e-6)
+    with pytest.raises(SourceUnavailable):
+        _ = line["greatgrandchild"].point
     assert line["weakest_identified"] == "greatgrandchild"
-    assert "weakest" in line["honesty"]
+    assert "unavailable" in line["honesty"]
     assert line["evidence_status"]["child"]["eligible_for_validated_direct_contrast"]
     assert not line["evidence_status"]["grandchild"]["eligible_for_validated_direct_contrast"]
 
@@ -51,18 +53,16 @@ def test_divorce_parameter_is_the_corrected_dp514_value():
     assert 1.05 <= led.point <= 1.25
 
 
-def test_family_size_penalty_compounds_per_additional_child():
-    led = family_size_penalty(load(PARAMS), n_children=3)
-    assert led.point == pytest.approx(0.98**2, abs=1e-9)
-    assert led.low == pytest.approx(0.95**2, abs=1e-9)
+def test_family_size_penalty_is_withdrawn():
+    with pytest.raises(SourceUnavailable):
+        family_size_penalty(load(PARAMS), n_children=3)
     with pytest.raises(ValueError):
         family_size_penalty(load(PARAMS), n_children=0)
 
 
-def test_daughter_odds_reports_structurally_blocked_upstream():
-    led = daughter_violence_odds(load(PARAMS))
-    assert led.point == 2.5
-    # upstream household_ipv has NO producer — scenario treats it blocked
+def test_daughter_odds_is_withdrawn():
+    with pytest.raises(SourceUnavailable):
+        daughter_violence_odds(load(PARAMS))
 
 
 def test_moretti_jobs_are_a_level_ratio_not_a_multiplier():

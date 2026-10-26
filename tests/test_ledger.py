@@ -17,7 +17,7 @@ PARAMS = Path(__file__).resolve().parent.parent / "params" / "parameters.csv"
 def test_loads_versioned_and_acyclic():
     params = load(PARAMS)
     assert params.parameters
-    assert params.version == "v1.52"
+    assert params.version == "v1.53"
     assert any(p.tier == "EXACT" for p in params.parameters)
 
 
@@ -47,11 +47,10 @@ def test_band_always_brackets_point_and_never_inverts():
         links=[
             "displacement->child_earnings",
             "child_earnings->grandchild_earnings",
-            "grandchild_earnings->greatgrandchild_earnings",
         ],
         label="line",
         unit="gap_multiplier",
-        kinds=[DIRECT, GAP, GAP],
+        kinds=[DIRECT, GAP],
     )
     assert led.low <= led.point <= led.high
     for s in led.steps:
@@ -98,7 +97,10 @@ def test_combine_parallel_adds_gaps_with_floor():
     """Two independent causes: gap 0.9076 and gap 0.95 -> 1 - (0.0924+0.05) = 0.8576."""
     params = load(PARAMS)
     a = start("a", "gap_multiplier").apply(DIRECT, params.by_link("displacement->child_earnings"))
-    b = start("b", "gap_multiplier").apply(DIRECT, params.by_link("divorce->child_earnings"))
+    from dataclasses import replace
+    toy = replace(params.retained_by_link("divorce->child_earnings"),
+                  link="synthetic->child_earnings", citation="synthetic", population_scope="arithmetic fixture")
+    b = start("b", "gap_multiplier").apply(DIRECT, toy)
     combined = combine_parallel([a, b], "combined")
     assert combined.point == pytest.approx(1 - (0.0924 + 0.05), abs=1e-6)
     assert combined.low <= combined.point <= combined.high

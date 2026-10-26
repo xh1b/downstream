@@ -1,3 +1,4 @@
+# Historical transcription regressions inspect retained records, not current source admission.
 # @ref:test-extraction-v130
 # Method: @link:doc-citing.
 # Implementation: @link:code-params; @link:code-build-places; @link:code-place.
@@ -29,11 +30,11 @@ LINK = "neighborhood_exposure->child_outcomes_modifier"
 
 
 def test_version_is_v130():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.52"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.53"
 
 
 def _row():
-    return PARAMS.by_link(LINK)
+    return PARAMS.retained_by_link(LINK)
 
 
 # --- the gamma row ---------------------------------------------------

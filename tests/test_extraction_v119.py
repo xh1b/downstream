@@ -30,7 +30,7 @@ BASE = BY["baseline"]
 
 def test_variant_registered_and_baseline_unchanged():
     assert "closure_selection_contrast" in VARIANT_IDS
-    assert tuple(r["variant"] for r in P["variants"]) == VARIANT_IDS
+    assert {r["variant"] for r in P["variants"] + P["unavailable_variants"]} == set(VARIANT_IDS)
     # baseline still the shipped model (direct anchor 0.9076)
     assert BASE["child_gap"]["point"] == pytest.approx(0.9076, abs=1e-4)
 

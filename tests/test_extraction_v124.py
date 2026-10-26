@@ -1,3 +1,4 @@
+# Historical transcription regressions inspect retained records, not current source admission.
 # @ref:test-extraction-v124
 # Method: @link:doc-citing.
 # Implementation: @link:code-params; @link:code-audit; @link:code-citations.
@@ -37,18 +38,18 @@ COUP = "couple_unemployment->household_ipv"
 
 
 def test_version_is_v124():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.52"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.53"
 
 
 def test_shock_row():
-    p = PARAMS.by_link(SHOCK)
+    p = PARAMS.retained_by_link(SHOCK)
     assert p.point == pytest.approx(1.58, abs=1e-6)
     assert p.low == pytest.approx(1.49) and p.high == pytest.approx(1.58)
     assert p.tier == "EXACT-results" and p.citation == "schneider2016"
 
 
 def test_shock_row_carries_the_spec_triple():
-    p = PARAMS.by_link(SHOCK)
+    p = PARAMS.retained_by_link(SHOCK)
     assert ".454*" in p.notes and ".401*" in p.notes and ".406*" in p.notes
     # the authors' own prevalence predictions stay on record beside the OR
     assert "10%->12%" in p.notes and "14%" in p.notes
@@ -57,13 +58,13 @@ def test_shock_row_carries_the_spec_triple():
 def test_level_null_on_record():
     # Table 8: the UR level is null on all three outcomes - the row must
     # carry the discipline so no surface wires the level as a producer
-    p = PARAMS.by_link(SHOCK)
+    p = PARAMS.retained_by_link(SHOCK)
     assert "LEVEL-NULL" in p.notes and "null" in p.notes
     assert "12-month CHANGE" in p.notes
 
 
 def test_hardship_row_uses_prose_point_and_rounding_band():
-    p = PARAMS.by_link(HARD)
+    p = PARAMS.retained_by_link(HARD)
     assert p.point == pytest.approx(2.14, abs=1e-6)
     assert p.low == pytest.approx(1.61) and p.high == pytest.approx(2.68)
     # the scrambled table coefficients are recorded beside, NOT band edges
@@ -77,11 +78,11 @@ def test_violent_only_not_a_row():
     # violent carries the authors' own reverse-causality flag
     links = {q.link for q in PARAMS.parameters}
     assert "household_hardship->ipv_violent_only" not in links
-    assert "reverse-causality" in PARAMS.by_link(HARD).notes
+    assert "reverse-causality" in PARAMS.retained_by_link(HARD).notes
 
 
 def test_couple_unemployment_row():
-    p = PARAMS.by_link(COUP)
+    p = PARAMS.retained_by_link(COUP)
     assert p.point == pytest.approx(1.30, abs=1e-6)
     assert p.low == pytest.approx(1.04) and p.high == pytest.approx(1.63)
     assert ".404**" in p.notes
@@ -90,7 +91,7 @@ def test_couple_unemployment_row():
 
 def test_boundary_discipline():
     for link in (SHOCK, HARD, COUP):
-        p = PARAMS.by_link(link)
+        p = PARAMS.retained_by_link(link)
         assert "NEVER" in p.notes and "PARALLEL" in p.notes
     outs = {q.link for q in PARAMS.parameters
             if q.from_node in ("local_unemp_shock", "household_hardship",

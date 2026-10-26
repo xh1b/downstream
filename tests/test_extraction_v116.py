@@ -1,3 +1,4 @@
+# Historical transcription regressions inspect retained records, not current source admission.
 # @ref:test-extraction-v116
 # Method: @link:doc-citing.
 # Implementation: @link:code-params; @link:code-audit.
@@ -21,7 +22,7 @@ PARAMS = load(PARAMS_DIR / "parameters.csv")
 
 
 def test_maltreatment_row_matches_lsh_table3_panelA_col3():
-    p = PARAMS.by_link("male_job_loss_rate->child_maltreatment")
+    p = PARAMS.retained_by_link("male_job_loss_rate->child_maltreatment")
     assert p.point == pytest.approx(6.0, abs=1e-6)
     assert p.low == pytest.approx(6.0 - 1.96 * 1.2, abs=5e-3)
     assert p.high == pytest.approx(6.0 + 1.96 * 1.2, abs=5e-3)
@@ -29,20 +30,20 @@ def test_maltreatment_row_matches_lsh_table3_panelA_col3():
 
 
 def test_male_scope_declared_female_opposite_sign_recorded():
-    p = PARAMS.by_link("male_job_loss_rate->child_maltreatment")
+    p = PARAMS.retained_by_link("male_job_loss_rate->child_maltreatment")
     assert "FEMALE" in p.notes and "opposite-signed" in p.notes
     assert "-6.5%" in p.notes
     assert "male-shock channel" in p.notes
 
 
 def test_unemployment_endogeneity_warning_declared():
-    p = PARAMS.by_link("male_job_loss_rate->child_maltreatment")
+    p = PARAMS.retained_by_link("male_job_loss_rate->child_maltreatment")
     assert "NEGATIVELY" in p.notes and "endogeneity" in p.notes
     # the identification statement must name the quasi-experiment
     assert "mass-layoff" in p.notes
 
 
 def test_version_bumped_and_audit_clean():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.52"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.53"
     errors = [f for f in audit(PARAMS_DIR) if f.severity == ERROR]
     assert errors == []

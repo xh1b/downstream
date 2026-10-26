@@ -161,7 +161,7 @@ def explain_child_line(params: ParameterSet, draws: int = 4000, seed: int = 1901
         steps=steps,
         drivers=_driver_sentences(sob)[:3],
         assumptions=[
-            "transmission repeats the same IGE band across generations",
+            "grandchild transmission uses an explicit IGE assumption; the later source-unsupported earnings step is withdrawn",
             "independent causes of one outcome are reported side by side, not composed",
             "target population applicability has not been reviewed; the reference result is illustrative",
             "grandchild persistence is a structural projection, not an identified displacement effect",

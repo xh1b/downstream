@@ -650,4 +650,7 @@ def _predictive_mortality(expected_excess: list[float], baselines: dict[str, Bas
 
 
 def _pt(ledger) -> dict:
+    from .source_support import UnavailableLedger
+    if isinstance(ledger, UnavailableLedger):
+        return ledger.as_dict()
     return {"point": round(ledger.point, 4), "low": round(ledger.low, 4), "high": round(ledger.high, 4)}

@@ -1,3 +1,4 @@
+# Historical transcription regressions inspect retained records, not current source admission.
 # @ref:test-extraction-v114b
 # Method: @link:doc-citing.
 # Implementation: @link:code-params; @link:code-audit; @link:code-citations.
@@ -23,7 +24,7 @@ BIB = parse_bib(PARAMS_DIR / "references.bib")
 
 
 def test_fertility_row_matches_kearney_table8_panelB_col2():
-    p = PARAMS.by_link("male_earnings->marital_fertility")
+    p = PARAMS.retained_by_link("male_earnings->marital_fertility")
     assert p.point == pytest.approx(1.24, abs=1e-6)
     assert p.low == pytest.approx(1.24 - 1.96 * 0.43, abs=5e-4)
     assert p.high == pytest.approx(1.24 + 1.96 * 0.43, abs=5e-4)
@@ -31,7 +32,7 @@ def test_fertility_row_matches_kearney_table8_panelB_col2():
 
 
 def test_weak_instrument_and_marriage_null_declared():
-    p = PARAMS.by_link("male_earnings->marital_fertility")
+    p = PARAMS.retained_by_link("male_earnings->marital_fertility")
     assert "F=11.8" in p.notes
     assert "NOT marriage" in p.notes
     assert "0.75" in p.notes  # coal-boom cross-context anchor
@@ -40,7 +41,7 @@ def test_weak_instrument_and_marriage_null_declared():
 def test_fertility_row_is_positive_elasticity():
     # positive income shock raises births; a displacement loss applies
     # it negatively. Sign trap.
-    p = PARAMS.by_link("male_earnings->marital_fertility")
+    p = PARAMS.retained_by_link("male_earnings->marital_fertility")
     assert p.point > 0 and p.low > 0
 
 
@@ -54,6 +55,6 @@ def test_bib_duplicate_resolved_both_real_papers_kept():
 
 
 def test_version_bumped_and_audit_clean():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.52"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.53"
     errors = [f for f in audit(PARAMS_DIR) if f.severity == ERROR]
     assert errors == []

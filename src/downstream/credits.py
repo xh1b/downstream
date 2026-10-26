@@ -84,11 +84,15 @@ def _surname(name: str) -> str:
 def collect(bib: dict[str, BibEntry], params_dir: Path | None = None) -> dict:
     d = Path(params_dir) if params_dir else default_dir()
 
+    from .source_support import is_withdrawn, policy
+    bib = {key: entry for key, entry in bib.items() if key not in policy()["unidentified_references"]}
     parameter_keys: set[str] = set()
     import csv as _csv
 
     with open(d / "parameters.csv", newline="", encoding="utf-8") as f:
         for row in _csv.DictReader(f):
+            if is_withdrawn(row["link"]):
+                continue
             for k in row["citation"].split(";"):
                 if k.strip():
                     parameter_keys.add(k.strip())
@@ -172,7 +176,7 @@ def attribution_sentences(data: dict) -> list[str]:
     years = f'{data["year_min"]}-{data["year_max"]}'
     return [
         (
-            f"The bibliography contains {n_studies} sources and {n_researchers} named "
+            f"The identified bibliography contains {n_studies} sources and {n_researchers} named "
             f"author records (people and organizations), {years}."
         ),
         (

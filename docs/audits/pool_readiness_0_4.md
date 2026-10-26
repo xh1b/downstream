@@ -182,12 +182,12 @@ overlap refusal, scale/window/subgroup mismatches and preservation of null/prote
 
 ## Input identity
 
-Parameter set: `v1.52`.
+Parameter set: `v1.53`.
 
 | File | SHA-256 |
 | --- | --- |
 | params/study_estimates.csv | 12ea8fee6af9b0d3200989186714b7e02b77e8931f40ea1b36c84bfd6e3fdc74 |
-| params/VERSION | 8625eb078bed9a91a410f0a64c716bf4ed5c05dabff1489072087da67d5317b4 |
+| params/VERSION | a15152d7a0dc289263a08221e2891447cc88e4c5317342ef5a26d6a5090f998c |
 | docs/research/scenario_evidence_protocol.md | 9f43b3c58a72738093d6106787f18fbaebbaa9b26b42e4c8e4428685390fc3bc |
 | src/downstream/study_library.py | a9f03def1f8190e3efd74dad11ec3db733a002fd62993e95eb16075c9940d945 |
 | scripts/build_pool_readiness.py | 85aa86e48819599ec59fc32dff80288698f4d765ea7653953db6dfe9c0380c57 |

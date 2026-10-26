@@ -45,8 +45,8 @@ def test_every_row_round_trips():
 
     csv_params = load(PARAMS_DIR / "parameters.csv")
     doc = build(PARAMS_DIR)
-    assert len(doc["parameters"]) == len(csv_params.parameters)
-    by_link = {p["link"]: p for p in doc["parameters"]}
+    assert len(doc["parameters"]) + len(doc["withdrawn_parameters"]) == len(csv_params.parameters)
+    by_link = {p["link"]: p for p in doc["parameters"] + doc["withdrawn_parameters"]}
     for p in csv_params.parameters:
         row = by_link[p.link]
         assert row["point"] == p.point and row["low"] == p.low and row["high"] == p.high

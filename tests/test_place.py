@@ -106,7 +106,7 @@ def _places(philly: Place | None = None) -> dict[str, Place]:
 
 
 def test_version_is_v129():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.52"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.53"
 
 
 # --- loader -------------------------------------------------------
@@ -404,7 +404,7 @@ def test_legacy_child_line_repeats_multiplier():
     expected_gc = 1 - m["point"] * ige * m["point"] * (1 - direct)
     assert line["grandchild"].point == pytest.approx(expected_gc, rel=1e-9)
     # every generation carries the step with its citation trail
-    for gen in ("child", "grandchild", "greatgrandchild"):
+    for gen in ("child", "grandchild"):
         assert any(s.link == mp["parameter"].link for s in line[gen].steps)
         assert base[gen].point != line[gen].point
 
