@@ -76,3 +76,12 @@ Final 0.4 software checks pass; publication and live acceptance remain gated
 All five uploaded artifact digests match the draft manifest and its exact source target. The sealed local evidence archive verifies all 15 evidence files; SHA 7ed6015b70fb1cee65f13ba3ee97ede0aa2f59e8f636353abb53b603673f6c0e. Previous archives are preserved. The companion's final prepared native payload selects this source, keeps current estimate-availability gates and excludes private docs/tasks. It has not been deployed or used to rewrite live caches.
 
 The stable GitHub release remains a draft pending source-support and publication acceptance. Human/browser and independent validation claims remain unverified. Existing companion source and stale-data prerequisites block the guarded rollout/cache refresh; their cards retain those requirements. This task is not self-accepted and its final acceptance criterion remains open. No health/source gate was bypassed and no production promotion occurred.
+
+## c-c1afdb7d0faf
+
+- At: 2026-10-27 06:49 HKT
+- By: codex-release
+
+Owner requested 0.4 publication and uncertainty follow-through
+
+The current user instruction authorizes finishing the 0.4 release. I am checking the existing draft, source-support gates and current candidate identity before publishing, and handling @task:2026-10-14-transport-uncertainty. This records continuation without overwriting the existing assignee's active card or claiming live companion acceptance.
