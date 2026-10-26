@@ -2,7 +2,7 @@
 title: Apply Dependabot PRs 11 and 12 locally
 area: tooling
 priority: P2
-assignee:
+assignee: codex-dependabot
 tags: [@tag:tooling]
 blocked-by: []
 ---
