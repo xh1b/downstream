@@ -38,3 +38,14 @@ Verification: 57 task/documentation regression tests and 9 subtests passed; make
 - By: John Larue
 
 done: active -> review.
+
+## c-bf2408920216
+
+- At: 2026-10-27 06:42 HKT
+- By: codex-review
+
+accept: review -> done.
+
+Reviewed removal of migration/exemption scaffolding, 45 added direct criterion links and preservation of prior card/comment history. Current uniform-evidence/dirty-card/workflow tests pass (38 plus 9 subtests); documentation gate passes.
+
+Verification receipt: @task:2026-10-27-review-acceptance#c-845b5298b984. Accepted under the owner's request to verify and complete review tasks.
