@@ -1,0 +1,17 @@
+---
+title: Withdraw unsupported source inputs before the stable 0.4 release
+area: evidence
+priority: P1
+assignee:
+tags: [@tag:evidence]
+blocked-by: []
+---
+
+The owner selected engine repair/withdrawal before a stable release. Follow the already-public companion source dispositions (seven source mismatches and nine unverified numerical extractions). Preserve original records for inspection; block their use and dependent compositions in the engine, including sampling and custom overrides. Retain independently supported mortality and direct-child calculations.
+
+Related: @task:2026-10-27-publish-04 and @task:2026-10-14-release-04-readiness.
+
+- [ ] Record all 16 withdrawals with public provenance and preserve original records.
+- [ ] Refuse withdrawn inputs and dependent calculations across API, CLI, sampling and exported views.
+- [ ] Preserve supported mortality/direct-child results and make partially unavailable grouped outputs explicit.
+- [ ] Update parameter version, tests, paper and artifacts; verify the refreshed release candidate.
