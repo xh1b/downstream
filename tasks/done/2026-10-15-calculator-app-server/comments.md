@@ -42,3 +42,14 @@ Actual browser checks at 320, 390, 600 and 1440 px found no page-wide overflow a
 done: active -> review.
 
 The top-level app, local server and verification receipts are ready for review.
+
+## c-935cef1ffbe1
+
+- At: 2026-10-27 06:42 HKT
+- By: codex-review
+
+accept: review -> done.
+
+Verified permanent calculator paths, narrow loopback HTTP server, GET/HEAD/path/CWD regressions, build/serve commands, retained browser receipt and mobile capture.
+
+Verification receipt: @task:2026-10-27-review-acceptance#c-845b5298b984. Accepted under the owner's request to verify and complete review tasks.
