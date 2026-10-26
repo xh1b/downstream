@@ -2,7 +2,7 @@
 title: Verify and accept completed review tasks
 area: review
 priority: P2
-assignee:
+assignee: codex-review
 blocked-by: []
 ---
 
