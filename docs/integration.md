@@ -265,6 +265,41 @@ conditions. Beta/SE transforms give marginal approximate 95% Wald intervals,
 not joint group bands or lifetime uncertainty. All quartile intervals cross
 zero; Q3 retains its beneficial point. No income-group pooling occurs.
 
+### Published child-source selection
+
+<!-- @ref:child-source-selection; @tag:children -->
+<!-- @link:code-child-support; @link:test-child-support; @link:paper-children. -->
+
+`source_selection_assessment` records additional restrictions from Oreopoulos,
+Page and Stevens (2008), pp. 459, 462–463 (PDF pp. 6, 9–10), with the pinned
+source hash. These are sample-selection conditions, not newly admitted effects:
+
+| Dimension | Published restriction |
+| --- | --- |
+| Father age | 30–50 in 1978; a target's current or event-age band does not establish this. |
+| Tax records | Fathers with missing tax records are excluded. |
+| Initial firm | 2–500 fathers represented in the IID sample; total employer headcount is a different quantity. |
+| Earnings outliers | Fathers earning over CAD 1,000,000 in 1999 purchasing power in a single year are excluded. |
+| Preclosure history | Same firm in 1978 and 1979; no unemployment-insurance receipt in those years. |
+| Closure definition | No IID fathers remain at the firm in later years through 1999; apparent closures with at least 35% moving to one new firm are excluded. |
+
+The report leaves this assessment `unassessed`: `ScenarioInput` and numeric
+tenure do not supply all these conditions. `support_state_scope` identifies the
+dimensions actually checked by `support_state`. Even `reviewed_conditional_transport`
+does not establish that the additional selection conditions match a target.
+Custom contrast libraries must retain the cited publication and pinned hash
+before this source-specific description can be attached.
+
+The source's main text specifies sons aged 10–14 **in 1980**, while footnote 9
+also describes a restriction to children at most 14 **in 1982**. These calendar
+references do not establish a response curve indexed by age at each closure.
+The report records this unresolved detail in `child_age_reference`; existing
+age gates and numerical estimates remain as documented above. Wider child ages,
+other countries, and exact event-age transport still need source reconciliation.
+The [acquisition manifest](../validation/followthrough_sources.json) identifies
+the inspected PDF; extraction decisions and receipts are on
+@task:2026-10-14-child-heterogeneity.
+
 ## Annual household comparisons
 
 <!-- @ref:doc-household-comparison-0-4; @tag:household -->

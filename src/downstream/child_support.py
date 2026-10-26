@@ -2,6 +2,7 @@
 # Rationale: @link:paper-children.
 # Software contract: @link:doc-child-support-0-4.
 # Verification: @link:test-child-support.
+# Source extraction: @link:child-source-selection.
 # @tag:children
 """Inspect existing child earnings source support without inventing new effects."""
 
@@ -29,6 +30,8 @@ def child_support_report(
     Optional numeric parent tenure makes the extracted two-year restriction
     inspectable. It does not modify the scenario engine or substitute for a
     reviewed transport decision. Unknown conditions remain unknown.
+    Additional published sample restrictions are reported as unassessed, not
+    inferred from target age bands, employer headcounts or a review decision.
     """
     scenario = scenario or ScenarioInput(0)
     if parent_tenure_years is not None and (
@@ -44,7 +47,9 @@ def child_support_report(
         study_id = "oreopoulos2008_overall" if quartile is None else f"oreopoulos2008_q{quartile}"
         source = library[study_id]
         require_contrast(
-            source, link="displacement->child_earnings", scale="log_earnings_ratio",
+            source, citation="oreopoulos2008",
+            source_sha256="ff990236c8e3aa19faff574f9f21af47665b2726f31f1d47fbc6ee9f89b7439c",
+            link="displacement->child_earnings", scale="log_earnings_ratio",
             sex="Male", age_min="10", age_max="14", tenure_min_years="2",
             income_quartile="" if quartile is None else str(quartile),
             time_horizon="son earnings averaged 1995-1999 at ages 25-33",
@@ -115,6 +120,24 @@ def child_support_report(
         "schema": "downstream-child-support/1",
         "source_library_sha256": hashlib.sha256((directory / "study_estimates.csv").read_bytes()).hexdigest(),
         "support_state": state,
+        "support_state_scope": "Supplied child profiles, parent/child sex, event, geography, period, tenure and income-rank mapping only.",
+        "source_selection_assessment": {
+            "status": "unassessed",
+            "reason": "Scenario metadata does not establish the additional published sample restrictions.",
+            "citation": "oreopoulos2008",
+            "source_sha256": contrasts[0]["source"]["source_sha256"],
+            "source_locator": "JOLE 26(3), pp. 459, 462-463 (PDF pp. 6, 9-10)",
+            "conditions": [
+                {"id": "father_age", "age_range": [30, 50], "reference_year": 1978},
+                {"id": "father_tax_records", "requirement": "Fathers with missing tax data are excluded."},
+                {"id": "initial_firm_size", "range": [2, 500], "unit": "IID fathers at the initial firm; not total employees"},
+                {"id": "father_earnings_outliers", "excluded_above": 1000000,
+                 "currency": "CAD", "price_year": 1999, "window": "any single year in the source sample"},
+                {"id": "preclosure_unemployment_insurance", "years": [1978, 1979], "requirement": "No unemployment insurance receipt."},
+                {"id": "preclosure_employer", "years": [1978, 1979], "requirement": "Father worked at the same firm in both years (p. 459)."},
+                {"id": "closure_definition", "requirement": "No IID fathers at the firm in later years through 1999; exclude apparent closures if at least 35% move to the same new firm."},
+            ],
+        },
         "eligible_for_public_headline": False,
         "interpretation": "Source-support inspection only; no scenario total or new effect admission.",
         "source_scope": {
@@ -123,7 +146,8 @@ def child_support_report(
             "event": "father firm closure", "event_window": "1980-1982",
             "country": "Canada", "income_rank": "father average pre-displacement income 1978-1979",
             "outcome": "log son earnings averaged 1995-1999", "adult_outcome_ages": [25, 33],
-            "other_parent_restrictions": "No additional parent restrictions are inferred from unstructured notes; wider source review remains open.",
+            "other_parent_restrictions": "Additional published restrictions appear in source_selection_assessment; their target match is unassessed.",
+            "child_age_reference": "The main text specifies ages 10-14 in 1980 (p. 462); footnote 9 also states age <=14 in 1982. Exact event-age transport is unresolved.",
         },
         "target": {"population": deepcopy(target), "child_profiles": deepcopy(scenario.child_profiles),
                    "parent_tenure_years": parent_tenure_years,
@@ -146,5 +170,5 @@ def child_support_report(
             ],
         },
         "unavailable_extensions": ["age-response curves", "other child sexes",
-                                   "additional countries", "additional parent restrictions"],
+                                   "additional countries", "target assessment of additional source selection conditions"],
     }

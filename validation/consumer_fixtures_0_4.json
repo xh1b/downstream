@@ -11,7 +11,7 @@
     "src/downstream/bundle.py": "eea004ca6c70132365b38e05394ced53ac01d99f38bbbe0dd181f84ab6e0b878",
     "src/downstream/child_applicability.py": "05ed27794e6ff8e13d658909bec7ae34b9573ff7b133cf710b6696b6e853c183",
     "src/downstream/child_gap_view.py": "d9bd3ea3dcf9047dfdd88ee522d168811179d360ebac69e441d1039e26205402",
-    "src/downstream/child_support.py": "e6bce62094b7619bf1e3c31f5b555c10fb9fc372e894deaa08e66963fb810595",
+    "src/downstream/child_support.py": "3be23b991b7ee2ac67bd7f8094dd86d774ec310adce147e3e9d98e68aec82ea9",
     "src/downstream/children.py": "9ad563c2e9a68435ed2fe74803976c2a37b4891a86b064946b4330596783135b",
     "src/downstream/citations.py": "eca0f242fca52d2bfb0863f62f6675dd212613d0be46fae9d9c8192f9ec3d10c",
     "src/downstream/cli.py": "31efb755a0aa2bf8a3d264d7ea408d17c5005b38587966b44de21415680f6a7b",
@@ -79,7 +79,7 @@
     "scripts/build_consumer_fixtures.py": "4964e76a53088d8fdc1fc348b052a83f1514f901effb2648998a903ab515adfd",
     "scripts/artifact_checks.py": "15342ed61b943d73774a1aa346137e715cb4256e28ca9e49cf2a7af0904cf62e"
   },
-  "source_content_sha256": "9f4a45eb6d12fbe6b21939b0571168c5c6e77cc99e517d69f1d7ae3184c7b7d7",
+  "source_content_sha256": "6d8845437c5543e62acda8e46de42db276c862e43c1b5e379553d4a58acec4ae",
   "fixture_sampling": "128 draws/base, seed 1901; contract fixtures, not precision-qualified research intervals.",
   "fixtures": {
     "national": {

@@ -145,6 +145,7 @@ def test_invalid_parent_tenure_fails(tenure):
 
 @pytest.mark.parametrize('field,value', [
     ('sex', 'Female'), ('age_min', '0'), ('tenure_min_years', '0'),
+    ('citation', 'other_source'), ('source_sha256', '0' * 64),
     ('treatment', 'maternal job loss'), ('comparison', 'other displaced fathers'),
     ('outcome_definition', 'school test scores'), ('scale', 'log_hazard_ratio'),
     ('income_quartile', '4'), ('projection_status', 'lifetime_path'),
@@ -182,3 +183,35 @@ def test_standalone_report_accepts_scenario_and_rejects_invalid_tenure(tmp_path)
                              text=True, capture_output=True)
     assert invalid.returncode == 2
     assert 'parent_tenure_years' in invalid.stderr
+
+
+def test_parent_selection_keeps_source_units_dates_and_unassessed_target_separate():
+    report = child_support_report(scenario(), parent_tenure_years=2)
+    selection = report['source_selection_assessment']
+    assert selection['status'] == 'unassessed'
+    assert selection['source_locator'] == 'JOLE 26(3), pp. 459, 462-463 (PDF pp. 6, 9-10)'
+    assert selection['source_sha256'] == report['contrasts'][0]['source']['source_sha256']
+    assert selection['citation'] == 'oreopoulos2008'
+    conditions = {row['id']: row for row in selection['conditions']}
+    assert conditions['father_age']['reference_year'] == 1978
+    assert conditions['father_age']['age_range'] == [30, 50]
+    assert conditions['initial_firm_size']['range'] == [2, 500]
+    assert conditions['initial_firm_size']['unit'] == 'IID fathers at the initial firm; not total employees'
+    assert conditions['father_earnings_outliers']['currency'] == 'CAD'
+    assert conditions['father_earnings_outliers']['price_year'] == 1999
+    assert conditions['father_earnings_outliers']['excluded_above'] == 1000000
+    assert conditions['preclosure_unemployment_insurance']['years'] == [1978, 1979]
+    assert '1980' in report['source_scope']['child_age_reference']
+    assert 'footnote 9' in report['source_scope']['child_age_reference']
+    assert not report['eligible_for_public_headline']
+
+
+def test_reviewed_transport_does_not_claim_unobserved_parent_selection_matches():
+    decision = {'status': 'reviewed', 'reviewer': 'test reviewer',
+                'rationale': 'test transport decision', 'citations': 'oreopoulos2008'}
+    report = child_support_report(scenario(applicability_decisions={
+        'child_lifetime_earnings_lost_usd': decision}), parent_tenure_years=6)
+    assert report['support_state'] == 'reviewed_conditional_transport'
+    assert report['source_selection_assessment']['status'] == 'unassessed'
+    assert 'only' in report['support_state_scope'].lower()
+    assert not report['eligible_for_public_headline']
