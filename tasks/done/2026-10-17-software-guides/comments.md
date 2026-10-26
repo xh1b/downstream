@@ -42,3 +42,14 @@ A relative-link pass checked 489 file/heading links across docs and entry points
 done: active -> review.
 
 Software guide consolidation is ready for review; generator and source navigation work continues in sibling tasks.
+
+## c-d75ace9a3c0a
+
+- At: 2026-10-27 06:42 HKT
+- By: codex-review
+
+accept: review -> done.
+
+Confirmed exactly five focused top-level software guides plus readme.md, authoritative transferred contract sections and separate discoverable audit/research indexes. Docs/reference checks pass.
+
+Verification receipt: @task:2026-10-27-review-acceptance#c-845b5298b984. Accepted under the owner's request to verify and complete review tasks.
