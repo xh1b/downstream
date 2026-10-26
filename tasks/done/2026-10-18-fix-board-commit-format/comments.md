@@ -44,3 +44,14 @@ Validation: .venv/bin/python -m pytest -q tests/test_tasks_board.py tests/test_t
 done: active -> review.
 
 Submit the prefixed board subject and redundant-line removal for review. Implementation and passing checks are linked on both criteria.
+
+## c-f4fca1f6ee60
+
+- At: 2026-10-27 06:42 HKT
+- By: codex-review
+
+accept: review -> done.
+
+Verified shared board formatter, tests and actual new board(action): title commits, with supplied Markdown bodies and no repeated action/task-ID paragraph.
+
+Verification receipt: @task:2026-10-27-review-acceptance#c-845b5298b984. Accepted under the owner's request to verify and complete review tasks.
