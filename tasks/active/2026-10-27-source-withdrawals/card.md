@@ -2,7 +2,7 @@
 title: Withdraw unsupported source inputs before the stable 0.4 release
 area: evidence
 priority: P1
-assignee:
+assignee: codex-source-repair
 tags: [@tag:evidence]
 blocked-by: []
 ---
