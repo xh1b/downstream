@@ -54,3 +54,14 @@ The preceding receipt's placeholder commit sentence was unintended. b49c335 is t
 done: active -> review.
 
 Builders, links, freshness checks and focused regressions pass.
+
+## c-0adbdcaeccfa
+
+- At: 2026-10-27 06:42 HKT
+- By: codex-review
+
+accept: review -> done.
+
+Verified lowercase audit/research generator destinations, corrected live links and frozen historical provenance. Report/fixture/calculator/HTML freshness and maintained-file navigation checks pass.
+
+Verification receipt: @task:2026-10-27-review-acceptance#c-845b5298b984. Accepted under the owner's request to verify and complete review tasks.
