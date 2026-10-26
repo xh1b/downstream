@@ -56,3 +56,14 @@ Local consumer preparation completed; live acceptance remains separate
 The owner's continued 0.4 implementation request was applied locally to the companion. Its corrected pin now preserves nested expected-value mixtures, full source and child/valuation metadata, structural alternatives and signed sensitivity. Python/TypeScript fixture parity led to the upstream interval fix and superseding qualification: @task:2026-10-17-consumer-interval-alias#c-5935f5c415ec. The companion links a hash-bound readable methods artifact and exact source revision. [Handoff follow-up](../../../docs/audits/xh1b_handoff_2026-10-17.md#local-integration-follow-up--2026-10-17).
 
 No remote operation, live cache drain/restamp or deployment occurred. The served companion browser attempt was blocked by the browser client, so local unit/SSR checks do not close that acceptance. Companion operational cards retain cache freshness, browser/rendering, staging and owner promotion requirements.
+
+## c-4649bc5973a8
+
+- At: 2026-10-27 06:42 HKT
+- By: codex-review
+
+accept: review -> done.
+
+Verified model-side handoff report, corrected bundle identity and links to the three companion operational tasks. Fresh local Python/TypeScript parity checks pass. Live cache, browser/deployment and owner publication acceptance remain separate.
+
+Verification receipt: @task:2026-10-27-review-acceptance#c-845b5298b984. Accepted under the owner's request to verify and complete review tasks.
