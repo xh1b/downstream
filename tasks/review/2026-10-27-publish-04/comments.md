@@ -35,3 +35,12 @@ Exact-source CI: https://github.com/xh1b/downstream/actions/runs/40420976421 —
 Source withdrawals are in review under @task:2026-10-27-source-withdrawals. Declared uncertainty cases are in review under @task:2026-10-14-transport-uncertainty; empirical calibration remains explicitly open under @task:2026-10-27-calibrate-transport-dependence.
 
 Companion status is separate: its existing integration card remains blocked by unresolved NYC contract/Massachusetts WARN source publication holds. No live ingest health recheck, v1.53 companion repin, cache refresh, staging/production deployment, independent causal validation or human evaluation is claimed. The publication receipt records this separation and the existing companion task identities.
+
+## c-a1c53b519ffe
+
+- At: 2026-10-27 07:44 HKT
+- By: codex-release
+
+done: active -> review.
+
+Stable release published; source, CI and all asset identities verified.
