@@ -2,7 +2,7 @@
 title: Publish the refreshed Downstream 0.4 release
 area: release
 priority: P1
-assignee:
+assignee: codex-release
 tags: [@tag:release]
 blocked-by: []
 ---
