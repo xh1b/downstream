@@ -3,7 +3,8 @@ title: Calibrate target transport and dependence from matched evidence
 area: uncertainty
 priority: P2
 assignee:
-blocked-by: []
+blocked-by: [2026-10-14-matched-event-evaluation]
+related-to: [2026-10-14-transport-uncertainty]
 ---
 
 Estimate target uncertainty only when matched evidence identifies it

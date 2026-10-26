@@ -11,7 +11,7 @@ The owner selected engine repair/withdrawal before a stable release. Follow the 
 
 Related: @task:2026-10-27-publish-04 and @task:2026-10-14-release-04-readiness.
 
-- [ ] Record all 16 withdrawals with public provenance and preserve original records.
-- [ ] Refuse withdrawn inputs and dependent calculations across API, CLI, sampling and exported views.
-- [ ] Preserve supported mortality/direct-child results and make partially unavailable grouped outputs explicit.
-- [ ] Update parameter version, tests, paper and artifacts; verify the refreshed release candidate.
+- [x] Record all 16 withdrawals with public provenance and preserve original records. [receipt](@task:2026-10-27-source-withdrawals#c-f5e22e126ff7)
+- [x] Refuse withdrawn inputs and dependent calculations across API, CLI, sampling and exported views. [receipt](@task:2026-10-27-source-withdrawals#c-f5e22e126ff7)
+- [x] Preserve supported mortality/direct-child results and make partially unavailable grouped outputs explicit. [receipt](@task:2026-10-27-source-withdrawals#c-f5e22e126ff7)
+- [x] Update parameter version, tests, paper and artifacts; verify the refreshed release candidate. [receipt](@task:2026-10-27-source-withdrawals#c-f5e22e126ff7)

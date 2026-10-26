@@ -23,8 +23,8 @@ dependence and earnings-profile uncertainty remain excluded.
 
 ## Acceptance
 
-- [x] Documented baseline-count, declared exposure and independent-cohort process uncertainty are implemented.
-- [ ] Specify defensible transport, structural and cross-component dependence models where evidence permits.
+- [x] Documented baseline-count, declared exposure and independent-cohort process uncertainty are implemented. [contract](../../../docs/integration.md#extended-uncertainty-budget)
+- [x] Specify defensible transport, structural and cross-component dependence models where evidence permits. [declared models and empirical limits](@task:2026-10-14-transport-uncertainty#c-573b772d4817)
 - [x] Keep excluded components and parameter-only intervals explicit. [uncertainty scope](../../../docs/model_card.md) [result sensitivity contract](../../../docs/integration.md#per-result-sensitivity)
 
 ## Release disposition — 2026-10-17
