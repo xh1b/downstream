@@ -24,6 +24,7 @@ admission.
 
 ## Acceptance
 
-- [x] Source age/sex eligibility and signed Table 8 income contrasts are implemented.
-- [ ] Extract supported child ages, parent restrictions and country-specific contrasts from primary sources.
+- [x] Source age/sex eligibility and signed Table 8 income contrasts are implemented. [source-support tests](../../../tests/test_child_support.py)
+- [x] Extract the pinned Canadian parent-selection restrictions and distinguish unassessed target conditions. [selection contract](../../../docs/integration.md#published-child-source-selection) [regressions](../../../tests/test_child_support.py)
+- [ ] Reconcile exact source event-age eligibility and extract additional supported child-age and country-specific contrasts from primary sources.
 - [ ] Test admission and transport conditions without inventing an age response curve.
