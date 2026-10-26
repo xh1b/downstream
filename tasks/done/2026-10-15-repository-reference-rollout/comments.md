@@ -65,3 +65,14 @@ Follow-up coverage review and generated-navigation repair
 The owner requested a review of all remaining tasks and whether navigation is complete. @task:2026-10-17-release-task-review records the full disposition. Confirmed file-level coverage: all 54 engine modules, 25 Python scripts, 42 Markdown guides, seven authored LaTeX sources and four authored calculator assets. Of 110 test files, test_refcheck.py is the documented deliberate-fixture exception; generated calculator/index.html links to unique authored anchors. Initial 898 and final 904 maintained Markdown file targets resolve.
 
 Two reproducibility gaps remained: evidence-classification and pool-readiness guides contained manually added navigation that their source generators did not retain, and their source hashes were stale. b4a9480 moves those headers into generator output, refreshes the reports and adds committed-report freshness/navigation regressions. Consumer fixture source identities and the saved five-year household report were also refreshed with regressions. Current refcheck: 314 anchors, 1357 links, zero failures. Historical receipts/comments and the frozen legacy evidence ledger are preserved; this follow-up does not claim every raw data/archive file needs navigation metadata or confer scientific validation.
+
+## c-6f84a5eb646c
+
+- At: 2026-10-27 06:42 HKT
+- By: codex-review
+
+accept: review -> done.
+
+Verified maintained-source navigation, documented fixture/generated-copy exceptions, generator-owned headers and later repair receipts. Current refs, file links and generated freshness checks pass.
+
+Verification receipt: @task:2026-10-27-review-acceptance#c-845b5298b984. Accepted under the owner's request to verify and complete review tasks.
