@@ -97,12 +97,12 @@ caption{{text-align:left;font-weight:600}}summary{{cursor:pointer;font-size:.9em
 <a href="#persistence">Mortality persistence</a><a href="#cohorts">Cohorts and households</a><a href="#validation">Validation</a><a href="#parameters">Parameters</a><a href="#baselines">Baselines</a><a href="#references">Sources</a></nav></header>
 <main id="main" tabindex="-1"><section id="scope"><p class="notice">Source policy: 51 parameter records remain available; 16 historical inputs are withdrawn from calculation. <a download="source_support.json" href="{policy_uri}">Download the withdrawal policy and reasons</a>. Archived records do not become admitted estimates.</p><h2>Scope and interpretation</h2><p class="notice">Default results are illustrative reference calculations.
 They are conditional modeled expected differences, not forecasts about identified people, observed attributable counts, or identified policy effects.
-Target-cohort applicability requires structured demographics and a reviewed transport decision. Grandchild and later earnings outcomes are structural projections.</p>
+Target-cohort applicability requires structured demographics and a reviewed transport decision. Grandchild earnings are structural projections; the later earnings branch is unavailable following source withdrawal.</p>
 <p>Worker displacement, net tradable-job loss, and changes in immigration exposure are distinct inputs. A displacement count does not establish either of the other exposures.
 The mortality response comes from high-tenure male workers exposed to Pennsylvania mass layoffs in the early 1980s. The selected baseline is US men aged 45–54 in 2015–2019.
 The child earnings estimate concerns Canadian father-son pairs after firm closure. Moving those estimates to another population, place or period requires an explicit transport rationale.</p>
 <p>Each causal chain preserves citations, evidence roles and composition kinds. Relative earnings gaps transmit in gap space rather than by multiplying income levels.
-The same intergenerational earnings relationship is reused at each generation; it has one shared uncertainty draw.
+The grandchild earnings projection uses a declared intergenerational relationship. Further earnings transmission is unavailable following source withdrawal. Retained relationship aliases share one uncertainty draw.
 The implemented log_elasticity_transmission ensemble variant compares the finite-change v**t mapping with the default linear gap rule,
 using the same coefficient. Both are structural transmission assumptions, not independently identified intervention responses.</p></section>
 <section id="counts"><h2>Count calculations</h2><h3>Mortality</h3><p>{h(source_profile_contract()['description'])}</p>

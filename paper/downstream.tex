@@ -149,7 +149,7 @@ that a causal pathway is identified.
 A scenario supplies displaced-worker exposure $N$, children per exposed
 worker $C$, independently documented net tradable-job loss $T$, a job class, and a mortality window $Y$. The tradable-share field is metadata only; it does not infer $T$ from $N$.
 The worker module reports earnings and mortality responses. The child
-module reports earnings across three descendant generations. Family and
+module reports child and grandchild earnings; the later earnings branch is unavailable following source withdrawal. Family and
 community modules expose additional pathways, but their availability in
 a module does not imply that the scenario count interface reports them.
 The current count interface returns local service jobs, excess deaths,
@@ -229,8 +229,7 @@ These values come from the same code used by the CLI; the first is the
 direct child estimate and the grandchild value propagates its gap
 \cite{oreopoulos2008,solon1992,corak2013,chetty2014}.
 The father's earnings shock is not multiplied into the directly estimated
-child effect. Repeated transmission beyond the identified generations
-remains a modeling assumption.
+child effect. Further earnings transmission remains unavailable until its source support is resolved.
 
 Even the first transmission requires an extra causal assumption: a
 between-family income association need not equal the response to a
@@ -246,9 +245,8 @@ independently identified transmission of a displacement effect.
 
 Parallel divorce and family-size pathways are not silently added to the
 displacement pathway. The same affected children may appear in several
-studies, and summation can double-count their losses. A named structural
-variant exposes gap-additive composition as an experiment rather than
-making it the default.
+studies, and summation can double-count their losses. The former gap-additive structural variant is unavailable because its
+divorce and family-size inputs were withdrawn following source review.
 
 % @ref:paper-parameters
 % Method: @link:doc-citing.
@@ -683,7 +681,8 @@ around its point and compares output-band widths on a common seed.
 This is a precision-priority heuristic, not an expected utility
 calculation or a prediction of what a new study will find. Experiments
 carry a version marker and do not overwrite the published parameter set.
-Structural ensembles report named alternatives for gap additivity,
+The former gap-additive variant is unavailable following source withdrawal.
+Supported structural ensembles report named alternatives for
 transmission decay, finite-change log elasticity, and closure selection.
 Scenario mortality additionally reports the persistence comparison above.
 Their spread represents
