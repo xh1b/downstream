@@ -46,3 +46,14 @@ Correction to the preceding receipt: the implementation commit is `66658d1`. The
 - By: kanban-port
 
 done: active -> review.
+
+## c-1311bde10e06
+
+- At: 2026-10-27 06:42 HKT
+- By: codex-review
+
+accept: review -> done.
+
+Verified references, relationships, append-only comments, workflow transitions, dirty-card refusal, explicit-path commits and commit-first moves against current task tests and CLI.
+
+Verification receipt: @task:2026-10-27-review-acceptance#c-845b5298b984. Accepted under the owner's request to verify and complete review tasks.
