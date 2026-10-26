@@ -46,3 +46,14 @@ The local companion selects the corrected bundle and fixtures. Its Python and Ty
 done: active -> review.
 
 Submit corrected interval scaling, superseding qualification and local consumer parity for independent review.
+
+## c-cb6ef0df268a
+
+- At: 2026-10-27 06:42 HKT
+- By: codex-review
+
+accept: review -> done.
+
+Verified real shared-dictionary regression and detach-before-scaling implementation; sealed corrected qualification hashes verify. Fresh Python companion and TypeScript consumer/display tests pass with the corrected bundle identity.
+
+Verification receipt: @task:2026-10-27-review-acceptance#c-845b5298b984. Accepted under the owner's request to verify and complete review tasks.
