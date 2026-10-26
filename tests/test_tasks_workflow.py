@@ -8,7 +8,6 @@
 import contextlib
 import importlib.util
 import io
-import json
 import os
 from pathlib import Path
 import subprocess
@@ -260,27 +259,20 @@ class TaskTests(unittest.TestCase):
         self.assertEqual(self.git("diff", "--cached", "--name-only"), "unrelated.py")
         self.assertNotIn("unrelated.py", self.git("show", "--format=", "--name-only", "HEAD"))
 
-    def test_frozen_historical_gaps_are_summarized_without_broadening_exemptions(self):
-        criterion = "- [x] Historical result."
-        directory = self.seed(A, "done", body=criterion + "\n")
-        path = directory / "card.md"
-        manifest = self.board.BOARD / "LEGACY_CHECKLISTS.json"
-        manifest.write_text(json.dumps({A: [criterion]}))
-        previous, frozen = path.read_bytes(), manifest.read_bytes()
-        output = self.run_cli("validate")
-        self.assertIn("historical accepted evidence gaps: 1", output)
-        self.assertIn("--historical-details", output)
-        self.assertNotIn("Historical result.", output)
-        self.assertIn("0 error(s), 0 warning(s)", output)
-        output = self.run_cli("validate", "--historical-details")
-        self.assertIn("HISTORY: done/", output)
-        self.assertIn("criterion needs a Markdown evidence link: Historical result.", output)
-        self.assertEqual((previous, frozen), (path.read_bytes(), manifest.read_bytes()))
-        path.write_text(path.read_text().replace("Historical result.", "Changed result."))
-        output = self.run_cli("validate", code=1)
-        self.assertIn("ERROR: done/", output)
-        self.assertNotIn("historical accepted evidence gaps:", output)
-        self.assertEqual(manifest.read_bytes(), frozen)
+    def test_completed_criteria_need_evidence_without_mutating_history(self):
+        for column in ("review", "done"):
+            with self.subTest(column=column):
+                card_id = A if column == "review" else B
+                directory = self.seed(card_id, column, body="- [x] Historical result.\n")
+                path = directory / "card.md"
+                previous = path.read_bytes()
+                output = self.run_cli("validate", code=1)
+                self.assertIn(f"ERROR: {column}/", output)
+                self.assertIn("criterion needs a Markdown evidence link: Historical result.", output)
+                self.assertEqual(previous, path.read_bytes())
+                path.write_text(path.read_text().replace(
+                    "Historical result.", "Historical result. [receipt](https://example.invalid/report)"))
+                self.assertIn("0 error(s), 0 warning(s)", self.run_cli("validate"))
 
     def test_bad_ids_foreign_branch_and_missing_files_do_not_mutate(self):
         directory = self.seed(A)
@@ -359,13 +351,11 @@ class TaskTests(unittest.TestCase):
         directory = self.seed(B, fields=f"blocked-by: [{A}]\n")
         path = directory / "card.md"
         path.write_text(path.read_text().replace("priority: P2", "priority: invalid"))
-        for extra in ((), ("--historical-details",)):
-            output = self.run_cli("validate", *extra, code=1)
-            self.assertIn("ERROR: review/", output)
-            self.assertIn("criterion needs a Markdown evidence link: Evidence missing.", output)
-            self.assertIn("blocked-by cycle:", output)
-            self.assertIn("`priority:` must be one of", output)
-            self.assertNotIn("historical accepted evidence gaps:", output)
+        output = self.run_cli("validate", code=1)
+        self.assertIn("ERROR: review/", output)
+        self.assertIn("criterion needs a Markdown evidence link: Evidence missing.", output)
+        self.assertIn("blocked-by cycle:", output)
+        self.assertIn("`priority:` must be one of", output)
 
     def test_validation_separates_blocked_status_and_keeps_current_problems_visible(self):
         self.seed(A, fields=f"blocked-by: [{B}]\n")
@@ -384,11 +374,10 @@ class TaskTests(unittest.TestCase):
         self.assertIn("0 error(s), 1 warning(s)", output)
         path = self.board.BOARD / "done" / C / "card.md"
         path.write_text(path.read_text() + f"\n- [ ] Still incomplete.\nSee @task:{A}#c-ffffffffffff.\n")
-        for extra in ((), ("--historical-details",)):
-            output = self.run_cli("validate", *extra, code=1)
-            self.assertIn("unchecked criterion: Still incomplete.", output)
-            self.assertIn("comment `c-ffffffffffff` not found", output)
-            self.assertIn("2 error(s), 1 warning(s)", output)
+        output = self.run_cli("validate", code=1)
+        self.assertIn("unchecked criterion: Still incomplete.", output)
+        self.assertIn("comment `c-ffffffffffff` not found", output)
+        self.assertIn("2 error(s), 1 warning(s)", output)
 
     def test_create_with_tags_normalizes_and_validation_rejects_bad_tag_fields(self):
         self.run_cli("create", A, "--title", "Tagged", "--area", "scripts",

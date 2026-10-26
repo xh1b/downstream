@@ -244,14 +244,8 @@ For direct card edits, inspect and validate the diff, then commit explicit paths
 git add -- tasks/active/<id>/card.md && git commit --only -m "<task title>" -- tasks/active/<id>/card.md
 ```
 
-Historical evidence gaps covered by `LEGACY_CHECKLISTS.json` appear in a separate
-summary. `validate --historical-details` shows each gap. These gaps do not count
-as current warnings or errors. The exact frozen exemptions stay unchanged.
-New or edited criteria, and every `done` or `accept` action, still require evidence.
-
 ```sh
 python3 scripts/tasks.py validate
-python3 scripts/tasks.py validate --historical-details
 python3 scripts/tasks.py list
 python3 scripts/tasks.py next
 python3 scripts/tasks.py show <id>
@@ -264,30 +258,10 @@ links. Markdown lint checks structure. Neither imposes a comment length limit.
 `list` flags uncommitted board changes. A stale claim deserves a comment, not a
 second claim. No database, generated index, or search service is needed.
 
-## Downstream migration
+## Scope and source status
 
-`tasks/MIGRATION.md` maps all 48 legacy entries to cards. The original TODO
-was removed; Git history retains it. Legacy DONE entries preserve historical status;
-this import does not assert fresh owner acceptance. Recent completed 0.4
-implementation entries start in review/. Mixed completed/pending entries
-retain checked achievements and unchecked remaining work in ready/.
-Blocked external-data and owner-decision items start in inbox/.
-
-`tasks/LEGACY_CHECKLISTS.json` freezes only the checked criteria that lacked inline
-links when the Markdown workflow was imported. Validation preserves those exact
-historical entries; new or edited criteria need evidence links. `done` and `accept`
-always enforce the complete evidence checklist, including on legacy tasks.
-Existing comments remain byte-for-byte intact; only new entries get permanent ids.
-
-`docs/research/queued_extractions.md` remains authoritative for extraction-row status;
-coordinate extraction work through cards without duplicating its table.
-XH1B integration tasks belong to the companion repository. Local cards track
-handoff and references; they do not authorize applying the pending update.
-The CLI is adapted from XH1B commit `e1b851ec28c75bc14f368f8655911e6d51f991e5`,
-retaining Downstream's commit-first moves, chained path-scoped commits and HKT timestamps.
-
-Tags and canonical task tokens are ported from XH1B `e66c9db27` (tags landed
-in `03e0fcd03`); repository
-anchor/link checks are ported from `adc41dcfc`. Downstream retains legacy task
-reference compatibility, its frozen evidence exemptions, HKT timestamps and
-commit-first directory moves. XH1B product/release updates remain separate.
+[The extraction register](../docs/research/queued_extractions.md) remains
+authoritative for extraction-row status; coordinate extraction work through cards
+without duplicating its table. XH1B integration tasks belong to the companion
+repository. Local cards track handoff and references; they do not authorize
+applying the pending update.

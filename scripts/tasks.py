@@ -10,7 +10,6 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
-import json
 import re
 import shlex
 import subprocess
@@ -299,15 +298,7 @@ def checklist_errors(text: str) -> list[str]:
 def check_checklist(card_dir: Path, column: str, problems: list[Problem]) -> None:
     if column not in ("review", "done"):
         return
-    # Preserve imported completion history without granting new criteria an exemption.
-    legacy_path = BOARD / "LEGACY_CHECKLISTS.json"
-    legacy = json.loads(legacy_path.read_text()).get(card_dir.name, []) if legacy_path.is_file() else []
     for error in checklist_errors((card_dir / "card.md").read_text()):
-        if error.startswith("criterion needs a Markdown evidence link: "):
-            criterion = error.removeprefix("criterion needs a Markdown evidence link: ")
-            if "- [x] " + criterion in legacy:
-                problems.append(Problem("HISTORY", f"{column}/{card_dir.name}", error))
-                continue
         problems.append(Problem("ERROR", f"{column}/{card_dir.name}", error))
 
 
@@ -542,17 +533,10 @@ def cmd_validate(args: argparse.Namespace) -> int:
     problems = validate_board()
     errors = [p for p in problems if p.level == "ERROR"]
     warnings = [p for p in problems if p.level == "WARN"]
-    historical = [p for p in problems if p.level == "HISTORY"]
     blocked = [p for p in problems if p.level == "BLOCKED"]
     for level in ("ERROR", "WARN"):
         for problem in [p for p in problems if p.level == level]:
             print(problem)
-    if args.historical_details:
-        for problem in historical:
-            print(problem)
-    if historical:
-        print(f"historical accepted evidence gaps: {len(historical)} missing link(s) across "
-              f"{len({p.where for p in historical})} task(s); use --historical-details for individual gaps")
     print(f"blocked: {len({p.where.split(':')[0] for p in blocked})} task(s), "
           f"{len(blocked)} unsatisfied dependency reference(s)")
     counts = {column: 0 for column in COLUMNS}
@@ -880,9 +864,7 @@ def add_message_args(parser, *, required=False, author_required=False):
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="tasks", description="Markdown task board (tasks/AGENTS.md)")
     sub = parser.add_subparsers(dest="command", required=True)
-    validate = sub.add_parser("validate", help="check task format, evidence, references, and cycles")
-    validate.add_argument("--historical-details", action="store_true",
-                          help="show individual historical evidence gaps under existing compatibility rules")
+    sub.add_parser("validate", help="check task format, evidence, references, and cycles")
     sub.add_parser("list", help="print the board")
     show = sub.add_parser("show", help="print a task card and its current comments path")
     show.add_argument("id", help="stable task id")

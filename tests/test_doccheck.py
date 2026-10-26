@@ -99,9 +99,9 @@ def test_lowercase_policy_is_limited_to_docs(tmp_path):
     assert errors == ["docs/Guide.md: documentation filename must be lowercase"]
 
 
-def test_historical_task_threads_and_migration_are_not_live_docs():
+def test_task_history_is_not_live_documentation():
     files = {"README.md", "docs/audits/review.md", "tasks/README.md", "tasks/AGENTS.md",
-             "tasks/MIGRATION.md", "tasks/review/2026-10-17-scope/comments.md",
+             "tasks/review/2026-10-17-scope/comments.md",
              "tasks/review/2026-10-17-scope/card.md", "validation/sipp/MANIFEST.md"}
     assert CHECK.documents(files) == ["README.md", "docs/audits/review.md", "tasks/AGENTS.md",
                                      "tasks/README.md", "validation/sipp/MANIFEST.md"]

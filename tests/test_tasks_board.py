@@ -5,7 +5,6 @@
 # @tag:tooling @tag:testing
 """Task-board dependency and shared-checkout commit protections."""
 import importlib.util
-import json
 from pathlib import Path
 import shlex
 import subprocess
@@ -108,18 +107,17 @@ def test_claim_does_not_move_or_commit_a_dirty_card(board, monkeypatch):
     assert source.is_dir() and not any(args[0] == 'mv' for args in calls)
 
 
-def test_legacy_checklist_exemption_is_exact_and_does_not_allow_acceptance(board):
-    card = add_card(board, 'review', 'legacy')
-    original = '- [x] Historical result.'
+@pytest.mark.parametrize("column", ["review", "done"])
+def test_completed_checklists_require_evidence(board, column):
+    card = add_card(board, column, 'completed')
     path = card / 'card.md'
     path.write_text(path.read_text().replace(
-        '- [x] Receipt recorded. [receipt](https://example.invalid/report)', original))
-    (board.BOARD / 'LEGACY_CHECKLISTS.json').write_text(json.dumps({card.name: [original]}))
-    assert not [p for p in board.validate_board() if p.level == 'ERROR']
-    assert any(p.level == 'HISTORY' for p in board.validate_board())
-    assert any('evidence link' in error for error in board.checklist_errors(path.read_text()))
-    path.write_text(path.read_text().replace('Historical result.', 'Changed result.'))
-    assert any('evidence link' in p.message for p in board.validate_board())
+        '- [x] Receipt recorded. [receipt](https://example.invalid/report)',
+        '- [x] Historical result.'))
+    assert any(p.level == 'ERROR' and 'evidence link' in p.message for p in board.validate_board())
+    path.write_text(path.read_text().replace(
+        'Historical result.', 'Historical result. [tests](../../../tests/test_tasks_board.py)'))
+    assert not board.validate_board()
 
 
 def test_comment_refuses_dirty_card_without_appending(board, monkeypatch):

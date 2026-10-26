@@ -34,7 +34,7 @@ All work tracking lives in `tasks/`. Start with the
 [board overview](../tasks/README.md); the authoritative format, ownership,
 reference and transition rules are in [tasks/AGENTS.md](../tasks/AGENTS.md)
 (@link:task-workflow). [scripts/tasks.py](../scripts/tasks.py) is the executable
-implementation. There is no separate task database or root TODO backlog.
+implementation. Cards and their threads are the authoritative work records.
 
 Read-only discovery and validation:
 
@@ -81,8 +81,8 @@ concurrent edits and remote authorization.
 see the [command reference](../tasks/AGENTS.md#process-and-commands) and
 `python3 scripts/tasks.py <command> --help` for arguments. Task validation
 checks structure, references, relationships and evidence-link presence; it
-does not execute tests or independently verify a receipt's claims. Historical
-frozen evidence gaps are reported separately by `validate --historical-details`.
+does not execute tests or independently verify a receipt's claims. All tasks
+in review or done use the same completion-evidence rules.
 
 ## Development tools and their checks
 
@@ -279,7 +279,7 @@ types, structure, source hashes and metadata remain exact. Calculator HTML
 outside its embedded result JSON remains byte-exact. This allowance neither
 rounds results nor changes the engine or source inputs; its [regressions](../tests/test_artifact_checks.py)
 reject larger numeric drift and changed metadata or authored markup.
-Task threads and the historical migration map are outside live-link checking.
+Task cards and comment threads are outside live-link checking.
 Missing semantic bridges and incorrect equations still need code/paper review.
 Historical task comments stay intact;
 use a new receipt to document moved paths rather than rewriting discussion.
