@@ -19,4 +19,4 @@ references; `make -C paper` builds the PDF. V2/V3 are explicitly incomplete.
 
 ## Acceptance
 
-- [x] Record the paper, parameter inventory and V1 scorecards while preserving V2/V3 limitations.
+- [x] Record the paper, parameter inventory and V1 scorecards while preserving V2/V3 limitations. [methods paper](../../../paper/downstream.tex) [generated table tests](../../../tests/test_paper_tables.py)

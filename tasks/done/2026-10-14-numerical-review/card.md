@@ -19,4 +19,4 @@ values, county predictive baselines, and refusal of legacy additive predictive p
 
 ## Acceptance
 
-- [x] Preserve independent copula, custom-chain, starting-value, predictive-baseline and legacy refusal repairs.
+- [x] Preserve independent copula, custom-chain, starting-value, predictive-baseline and legacy refusal repairs. [numerical review regressions](../../../tests/test_review_20260910.py)

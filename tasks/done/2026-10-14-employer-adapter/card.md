@@ -21,4 +21,4 @@ and invalid inputs. Production runner/cache wiring remains in XH1B.
 
 ## Acceptance
 
-- [x] Preserve documented warehouse exposure validation and synthetic engine integration fixtures.
+- [x] Preserve documented warehouse exposure validation and synthetic engine integration fixtures. [warehouse integration tests](../../../tests/test_employer_warehouse.py)

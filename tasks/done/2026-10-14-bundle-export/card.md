@@ -19,4 +19,4 @@ hashes. Standalone execution and tampering checks pass.
 
 ## Acceptance
 
-- [x] Preserve standalone execution and content/tampering checks for exported bundles.
+- [x] Preserve standalone execution and content/tampering checks for exported bundles. [standalone export tests](../../../tests/test_export.py) [bundle integrity](../../../tests/test_bundle.py)

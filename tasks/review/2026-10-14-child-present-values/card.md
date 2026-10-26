@@ -23,4 +23,4 @@ subgroup gains pass.
 
 ## Acceptance
 
-- [x] Retain undiscounted totals and separate observed-age-window and career projections with explicit discounting.
+- [x] Retain undiscounted totals and separate observed-age-window and career projections with explicit discounting. [valuation tests](../../../tests/test_valuation.py)

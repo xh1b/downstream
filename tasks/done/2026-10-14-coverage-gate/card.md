@@ -20,4 +20,4 @@ Full-suite baseline: 89.5% / 79.4%. See `docs/audits/testing_quality.md`.
 
 ## Acceptance
 
-- [x] Preserve property-test and coverage-gate receipts; historical baseline figures remain dated.
+- [x] Preserve property-test and coverage-gate receipts; historical baseline figures remain dated. [quality audit](../../../docs/audits/testing_quality.md) [property tests](../../../tests/test_properties_hypothesis.py)

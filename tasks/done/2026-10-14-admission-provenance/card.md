@@ -25,4 +25,4 @@ published-QJE mortality profile and V2/prospective validation remain unresolved.
 
 ## Acceptance
 
-- [x] Preserve parameter/baseline admission safeguards and published population/tier provenance.
+- [x] Preserve parameter/baseline admission safeguards and published population/tier provenance. [admission tests](../../../tests/test_admission_provenance.py) [synthesis admission](../../../tests/test_synthesis.py)

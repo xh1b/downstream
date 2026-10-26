@@ -21,4 +21,4 @@ build-places pass.
 
 ## Acceptance
 
-- [x] Record the county export, strict posteriors and generated place-layer integration.
+- [x] Record the county export, strict posteriors and generated place-layer integration. [county integration tests](../../../tests/test_county_rates.py) [county likelihood tests](../../../tests/test_county_mortality.py)

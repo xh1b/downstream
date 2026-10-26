@@ -23,4 +23,4 @@ remain explicit assumptions.
 
 ## Acceptance
 
-- [x] Preserve role-tagged evidence, screening vocabularies, job-class restrictions and boundary refusals.
+- [x] Preserve role-tagged evidence, screening vocabularies, job-class restrictions and boundary refusals. [role and boundary tests](../../../tests/test_evidence.py)

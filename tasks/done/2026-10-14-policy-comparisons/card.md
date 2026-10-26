@@ -19,4 +19,4 @@ bounds, parameter envelopes, and conservative differences. This does not estimat
 
 ## Acceptance
 
-- [x] Preserve provenance, exposure bounds, parameter envelopes and conservative policy contrasts.
+- [x] Preserve provenance, exposure bounds, parameter envelopes and conservative policy contrasts. [policy comparison tests](../../../tests/test_policy.py)

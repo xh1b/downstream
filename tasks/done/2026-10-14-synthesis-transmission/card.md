@@ -23,4 +23,4 @@ sensitivity outputs — none of this admits a synthesis result into parameters.c
 
 ## Acceptance
 
-- [x] Preserve estimand/window/overlap, REML/Hartung-Knapp, transmission and Sobol contract receipts.
+- [x] Preserve estimand/window/overlap, REML/Hartung-Knapp, transmission and Sobol contract receipts. [synthesis tests](../../../tests/test_synthesis.py) [transmission alternatives](../../../tests/test_variants.py) [Sobol centering](../../../tests/test_sensitivity_centering.py)

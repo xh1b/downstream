@@ -19,4 +19,4 @@ accept `--place`; gamma is recomputed per draw. Place measurements and pooling w
 
 ## Acceptance
 
-- [x] Preserve place recomputation per draw/pin and labels for fixed place measurements.
+- [x] Preserve place recomputation per draw/pin and labels for fixed place measurements. [place sampling tests](../../../tests/test_place_sampling.py)

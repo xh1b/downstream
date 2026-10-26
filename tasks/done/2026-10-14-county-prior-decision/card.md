@@ -24,4 +24,4 @@ that key off k = 2000, so it needs an explicit fresh decision. (`docs/audits/dat
 
 ## Acceptance
 
-- [x] Record the k=2000 decision and the conditions for reconsidering the empirical-Bayes yardstick.
+- [x] Record the k=2000 decision and the conditions for reconsidering the empirical-Bayes yardstick. [decision and limitations](../../../docs/audits/data_sources.md) [prior diagnostic](../../../tests/test_county_eb_prior.py)

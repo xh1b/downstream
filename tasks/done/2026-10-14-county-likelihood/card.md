@@ -22,4 +22,4 @@ fallback.
 
 ## Acceptance
 
-- [x] Preserve verified county likelihood metadata, pooled place integration and fallback provenance.
+- [x] Preserve verified county likelihood metadata, pooled place integration and fallback provenance. [county likelihood tests](../../../tests/test_county_mortality.py) [place integration](../../../tests/test_county_rates.py)

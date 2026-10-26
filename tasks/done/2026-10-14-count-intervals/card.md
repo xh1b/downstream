@@ -21,4 +21,4 @@ than merged into a false total interval.
 
 ## Acceptance
 
-- [x] Preserve joint LHS/correlation draws, central parameter-only intervals and separate support envelopes.
+- [x] Preserve joint LHS/correlation draws, central parameter-only intervals and separate support envelopes. [joint scenario sampling](../../../tests/test_vignette_scenario_mc.py)

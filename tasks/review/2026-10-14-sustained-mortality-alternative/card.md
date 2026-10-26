@@ -23,4 +23,4 @@ scenario Monte Carlo uses shared draws for the contrast. Source parameters remai
 
 ## Acceptance
 
-- [x] Expose the named null-persistence alternative without changing the source anchor or conflating estimands.
+- [x] Expose the named null-persistence alternative without changing the source anchor or conflating estimands. [structural comparison tests](../../../tests/test_mortality_robustness.py)

@@ -20,4 +20,4 @@ capabilities.
 
 ## Acceptance
 
-- [x] Record the cited related work, fair prior-attempt comparison and research/product plans.
+- [x] Record the cited related work, fair prior-attempt comparison and research/product plans. [related work](../../../paper/downstream.tex) [prior attempts](../../../docs/research/prior_attempts.md) [research plan](../../../docs/research/life_course_research_plan.md) [calculator plan](../../../docs/research/website_experience_plan.md)

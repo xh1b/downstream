@@ -18,11 +18,11 @@ source versions and unresolved empirical dependencies. Keep engine 0.4.0.
 
 ## Acceptance
 
-- [x] Audit mortality timing, subgroup selection, discounting, custom parameters and shared uncertainty draws.
-- [x] Verify zero/beneficial/unsupported cases and add regression coverage for confirmed defects.
-- [x] Recheck source coefficients, SEs, effect scales, windows and sample overlap used by the new paths.
-- [x] Confirm agreement among paper, HTML, model card, saved outputs and current code after repairs.
-- [x] Record findings, exact audit scope, outstanding scientific limits and verification receipts.
+- [x] Audit mortality timing, subgroup selection, discounting, custom parameters and shared uncertainty draws. [numerical and input regressions](../../../tests/test_audit04_custom_inputs.py) [precision regressions](../../../tests/test_audit04_mortality_precision.py) [source fixtures](../../../tests/test_audit04_sources.py)
+- [x] Verify zero/beneficial/unsupported cases and add regression coverage for confirmed defects. [numerical and input regressions](../../../tests/test_audit04_custom_inputs.py) [precision regressions](../../../tests/test_audit04_mortality_precision.py) [source fixtures](../../../tests/test_audit04_sources.py)
+- [x] Recheck source coefficients, SEs, effect scales, windows and sample overlap used by the new paths. [numerical and input regressions](../../../tests/test_audit04_custom_inputs.py) [precision regressions](../../../tests/test_audit04_mortality_precision.py) [source fixtures](../../../tests/test_audit04_sources.py)
+- [x] Confirm agreement among paper, HTML, model card, saved outputs and current code after repairs. [dated audit receipts](#final-verification-receipts)
+- [x] Record findings, exact audit scope, outstanding scientific limits and verification receipts. [dated audit receipts](#final-verification-receipts)
 
 ## Audit findings and resolution
 

@@ -23,4 +23,4 @@ promote the alternative to a validated headline.
 
 ## Acceptance
 
-- [x] Publish the source profile and null-persistence sensitivity with shared-draw parameter intervals.
+- [x] Publish the source profile and null-persistence sensitivity with shared-draw parameter intervals. [paired robustness tests](../../../tests/test_mortality_robustness.py)

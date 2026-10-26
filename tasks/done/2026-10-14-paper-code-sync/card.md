@@ -14,10 +14,10 @@ Preserve experimental applicability and independent-validation limitations. Do n
 
 ## Acceptance
 
-- [x] Correct mortality coverage and generate its interpretation from current scorecards, with regression checks.
-- [x] Resolve all seven findings in prose and figures; include descriptive cohort and baseline evaluation receipts.
-- [x] Reconcile HTML, regenerate data, compile and visually inspect the updated PDF.
-- [x] Run focused verification, record receipts and commit only authored changes.
+- [x] Correct mortality coverage and generate its interpretation from current scorecards, with regression checks. [implementation and build receipts](#implementation-receipts)
+- [x] Resolve all seven findings in prose and figures; include descriptive cohort and baseline evaluation receipts. [implementation and build receipts](#implementation-receipts)
+- [x] Reconcile HTML, regenerate data, compile and visually inspect the updated PDF. [implementation and build receipts](#implementation-receipts)
+- [x] Run focused verification, record receipts and commit only authored changes. [implementation and build receipts](#implementation-receipts)
 
 ## Implementation receipts
 

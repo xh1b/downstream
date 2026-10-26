@@ -19,4 +19,4 @@ alignment and the causal measured side remain pending.
 
 ## Acceptance
 
-- [x] Record reconciliation of all 73 GAO Table 3 records and the remaining alignment gaps.
+- [x] Record reconciliation of all 73 GAO Table 3 records and the remaining alignment gaps. [inventory reconciliation](../../../tests/test_brac.py)

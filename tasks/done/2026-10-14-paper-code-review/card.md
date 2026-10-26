@@ -14,9 +14,9 @@ Review only; record concrete drift and distinguish missing coverage from incorre
 
 ## Acceptance
 
-- [x] Compare model, uncertainty, validation and reproducibility claims with current code.
-- [x] Check generated tables and PDF freshness without changing the paper.
-- [x] Record prioritized findings with source references and verification receipts.
+- [x] Compare model, uncertainty, validation and reproducibility claims with current code. [dated review receipts](#verification-receipts)
+- [x] Check generated tables and PDF freshness without changing the paper. [dated review receipts](#verification-receipts)
+- [x] Record prioritized findings with source references and verification receipts. [dated review receipts](#verification-receipts)
 
 ## Review verdict
 

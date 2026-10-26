@@ -20,4 +20,4 @@ parameters under independent-step inference. Legacy scenario methods remain sele
 
 ## Acceptance
 
-- [x] Preserve the documented odds-to-risk, survival, ledger and interval corrections.
+- [x] Preserve the documented odds-to-risk, survival, ledger and interval corrections. [mathematical regressions](../../../tests/test_mathematics_v02.py)

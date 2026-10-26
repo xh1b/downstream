@@ -19,4 +19,4 @@ county keys; fixture tests pin territory filtering, weighted national aggregatio
 
 ## Acceptance
 
-- [x] Preserve fixture coverage for territory filtering, national aggregation, malformed inputs and stable output.
+- [x] Preserve fixture coverage for territory filtering, national aggregation, malformed inputs and stable output. [place ingestion tests](../../../tests/test_build_places_adversarial.py)

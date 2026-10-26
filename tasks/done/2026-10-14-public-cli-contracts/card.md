@@ -19,4 +19,4 @@ invalid-contract behavior; subprocess tests retain installed-user smoke coverage
 
 ## Acceptance
 
-- [x] Preserve in-process CLI routing, invalid-contract and installed-user smoke checks.
+- [x] Preserve in-process CLI routing, invalid-contract and installed-user smoke checks. [CLI contract tests](../../../tests/test_cli_direct_contracts.py) [installed-user smoke tests](../../../tests/test_cli_smoke.py)

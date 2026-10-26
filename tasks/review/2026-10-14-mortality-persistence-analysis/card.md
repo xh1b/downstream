@@ -16,7 +16,7 @@ structural assumptions and assess the evidence before changing defaults.
 
 ## Acceptance
 
-- [x] Reproduce both counts, annual risks, cumulative paths and paired differences.
-- [x] Revisit primary evidence for persistence, including the meaning of null-compatible estimates.
-- [x] Explain baseline, timing, transport and survival interpretation limits.
-- [x] Record conclusions and concrete research steps without changing model defaults.
+- [x] Reproduce both counts, annual risks, cumulative paths and paired differences. [analysis and source review](../../../docs/audits/mortality_persistence_analysis_2026-10-14.md)
+- [x] Revisit primary evidence for persistence, including the meaning of null-compatible estimates. [analysis and source review](../../../docs/audits/mortality_persistence_analysis_2026-10-14.md)
+- [x] Explain baseline, timing, transport and survival interpretation limits. [analysis and source review](../../../docs/audits/mortality_persistence_analysis_2026-10-14.md)
+- [x] Record conclusions and concrete research steps without changing model defaults. [analysis and source review](../../../docs/audits/mortality_persistence_analysis_2026-10-14.md)

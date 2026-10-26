@@ -20,4 +20,4 @@ creation and malformed bridge/outcome refusals; count endpoints accept both sign
 
 ## Acceptance
 
-- [x] Preserve forecast-registry, bundle-lifecycle and V2 fixture receipts.
+- [x] Preserve forecast-registry, bundle-lifecycle and V2 fixture receipts. [forecast state machine](../../../tests/test_forecast_fsm.py) [bundle state machine](../../../tests/test_bundle_fsm.py) [V2 fixtures](../../../tests/test_v2_backtest.py)

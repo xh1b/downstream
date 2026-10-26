@@ -20,4 +20,4 @@ scored outcome; V2 remains honestly blocked.
 
 ## Acceptance
 
-- [x] Record the independent-source review and the reasons no candidate qualified.
+- [x] Record the independent-source review and the reasons no candidate qualified. [source blockers and refusals](../../../tests/test_v2_backtest.py) [source screening record](../../../docs/audits/data_sources.md)

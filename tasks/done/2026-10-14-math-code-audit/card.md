@@ -21,4 +21,4 @@ reject duplicate/non-finite rows.
 
 ## Acceptance
 
-- [x] Preserve the documented composition, scoring, sampling, count-quantile and loader repairs.
+- [x] Preserve the documented composition, scoring, sampling, count-quantile and loader repairs. [audit regressions](../../../tests/test_audit_repairs.py) [ingestion regressions](../../../tests/test_build_places_adversarial.py)
