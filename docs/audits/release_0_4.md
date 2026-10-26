@@ -13,10 +13,11 @@ review's scenario improvements and records unresolved empirical requirements
 in the `tasks/` board. Software correctness and source reproduction do not establish
 that the effects transport to a particular policy or population.
 
-This work remains in the 0.4 development cycle and has not been applied to
-XH1B. The initial 0.5 label was premature and has been corrected; implementation
-and numerical results are retained. Future release numbering follows the
-owner's release decision, rather than each batch of model changes.
+Stable [Downstream 0.4.0](https://github.com/xh1b/downstream/releases/tag/v0.4.0)
+was published on October 27 HKT. The source, verification and asset identities
+are recorded below. XH1B repinning and deployment remain separate work.
+The initial 0.5 label was premature and corrected during development;
+implementation and numerical results were retained.
 
 ## Candidate scope and remaining acceptance
 
@@ -279,3 +280,44 @@ causal validation remain separate evidence requirements.
 Publication and companion operational receipts are recorded on
 @task:2026-10-27-publish-04. Historical candidate/source identities above are
 retained as dated receipts and do not identify this refreshed candidate.
+
+
+## Stable publication — October 27
+
+[Downstream 0.4.0](https://github.com/xh1b/downstream/releases/tag/v0.4.0)
+is published as a stable software release (draft false, prerelease false),
+with tag `v0.4.0` resolving to `a1f54ad9390812a03436e4cd68bca81e5506dc75`.
+The [machine-readable receipt](release_publication_2026-10-27.json) records the
+source identity, checks, asset hashes, archived-record preservation and limits.
+This supersedes the earlier draft/candidate identities in the dated receipts above.
+
+The [exact-source CI](https://github.com/xh1b/downstream/actions/runs/40420976421)
+passed **1,526 tests** and all push gates, with **96.8% line / 94.0% branch**
+coverage against unchanged 95%/90% gates. Both Python 3.12/3.14 fast jobs,
+all four Linux/Windows distribution jobs and lint passed. The workflow's
+scheduled/manual mutation-and-benchmark job was skipped by policy.
+The local full suite on runtime/data-identical commit `6575700` passed
+1,526 tests plus nine subtests; the final follow-ups corrected a shallow-checkout
+test dependency and methods prose without changing runtime or parameter data.
+The final source-built wheel passed all eleven isolated CLI checks.
+The evidence audit has zero errors/warnings, generators and documentation
+checks pass, and the 21-page paper was rebuilt and visually reviewed.
+
+All **nine** uploaded assets match the frozen local SHA-256 digests and sizes:
+wheel, source archive, methods PDF/HTML, consumer fixtures, source-support
+policy, uncertainty input/result and release manifest. The manifest pins
+engine 0.4.0, parameters v1.53, snapshot schema 3 and bundle
+`d4e7a217741a237ed61c77e6c3700427201ac428b2c890212fe951305ef20227`.
+The original parameter CSV and bibliography remain byte-identical to the
+pre-withdrawal `d7691da` candidate. Forty-eight supported mortality/direct-child
+fixture endpoints remain numerically unchanged; withdrawal reasons accompany
+the unavailable paths. Upgrade engine, parameter data and consumer fixtures
+together so an older engine cannot calculate the archived inputs.
+
+Publication does not establish calibrated target transport/dependence,
+independent causal validation or an evaluated public experience. Declared
+uncertainty cases are implemented; empirical calibration remains under
+@task:2026-10-27-calibrate-transport-dependence.
+The companion board still records unresolved NYC contract and Massachusetts
+WARN publication holds blocking its integration/deployment task. This release
+does not recheck live ingest health, repin XH1B, refresh caches or deploy it.

@@ -1,0 +1,242 @@
+{
+  "schema": "downstream-publication-receipt/1",
+  "date": "2026-10-27",
+  "source_commit": "a1f54ad9390812a03436e4cd68bca81e5506dc75",
+  "versions": {
+    "engine": "0.4.0",
+    "parameters": "v1.53"
+  },
+  "source_support": {
+    "available_parameters": 51,
+    "withdrawn_parameters": 16,
+    "source_mismatch": 7,
+    "not_verified": 9,
+    "policy_sha256": "f3fd03d09581a5715b7aceb13364074197c5c0233c1c63e3a6fa6b6a7b60b49d",
+    "original_records_sha256": {
+      "params/parameters.csv": "f6ce70a100042189691eb10291c9ead48655cbf37dc49d49c4ac2ce4a3a468d6",
+      "params/references.bib": "2b022848da937459f0ff8e9488b013c2a03ba3554c272ff567de426d36f93c12"
+    }
+  },
+  "local_qualification": {
+    "full_suite": {
+      "source_commit": "65757008cb86182fe4a8c9150adbd8c9c5364a5f",
+      "passed": 1526,
+      "subtests_passed": 9,
+      "seconds": 453.44,
+      "coverage_lines_percent": 96.8,
+      "coverage_branches_percent": 94.0
+    },
+    "final_source_followup": {
+      "archive_tests_passed": 22,
+      "paper_artifact_release_tests_passed": 32,
+      "docs_tests_passed": 19,
+      "runtime_data_tree_identity": {
+        "src": {
+          "65757008cb86182fe4a8c9150adbd8c9c5364a5f": "0f7920166715809b2b200c3cefd1351914b91432",
+          "a1f54ad9390812a03436e4cd68bca81e5506dc75": "0f7920166715809b2b200c3cefd1351914b91432"
+        },
+        "params": {
+          "65757008cb86182fe4a8c9150adbd8c9c5364a5f": "e22f9256aa75a728d23d7592b2c13ae01973147f",
+          "a1f54ad9390812a03436e4cd68bca81e5506dc75": "e22f9256aa75a728d23d7592b2c13ae01973147f"
+        },
+        "validation": {
+          "65757008cb86182fe4a8c9150adbd8c9c5364a5f": "722cd016400996f816c93d46d77dc27d4d35d4a6",
+          "a1f54ad9390812a03436e4cd68bca81e5506dc75": "722cd016400996f816c93d46d77dc27d4d35d4a6"
+        }
+      }
+    },
+    "isolated_installed_wheel_checks": 11,
+    "ruff": "pass",
+    "vulture": "pass",
+    "evidence_audit": {
+      "errors": 0,
+      "warnings": 0
+    },
+    "core_fixture_endpoints_unchanged": 48,
+    "paper": {
+      "pages": 21,
+      "latex_warnings": 0,
+      "overfull_boxes": 0,
+      "visual_review": "Full-page overview and changed pages inspected; corrected stale generation/additive-variant narrative."
+    }
+  },
+  "bundle_sha256": "d4e7a217741a237ed61c77e6c3700427201ac428b2c890212fe951305ef20227",
+  "asset_manifest": {
+    "schema": "downstream-release-manifest/1",
+    "source_commit": "a1f54ad9390812a03436e4cd68bca81e5506dc75",
+    "engine_version": "0.4.0",
+    "parameter_set_version": "v1.53",
+    "bundle_sha256": "d4e7a217741a237ed61c77e6c3700427201ac428b2c890212fe951305ef20227",
+    "snapshot_schema": "downstream-parameter-set/3",
+    "available_parameter_records": 51,
+    "withdrawn_parameter_records": 16,
+    "source_support_policy_sha256": "f3fd03d09581a5715b7aceb13364074197c5c0233c1c63e3a6fa6b6a7b60b49d",
+    "assets_sha256": {
+      "consumer_fixtures_0_4.json": "42d72e85f8c1c3d1586e048e465f98dffb3741b379e009757dc83d0e30424a94",
+      "downstream-0.4.0-py3-none-any.whl": "534d368f00a9fbfbc0413e453d0d02d2a4147629d90033351e6044ae921ed550",
+      "downstream-0.4.0.tar.gz": "6a465b5cfcdd02f0c61f65307274bee312ce7f2b10aef65965b8ad25efaef81f",
+      "downstream.pdf": "2eba0e38d4143f6e796127d7a2806fdd28693958af9de01eed34cc5167d77520",
+      "methods.html": "499e33f8c64689f36d9e6c5c12b176e840e9227a85fd2adf142b377d62a05b91",
+      "source_support.json": "f3fd03d09581a5715b7aceb13364074197c5c0233c1c63e3a6fa6b6a7b60b49d",
+      "uncertainty_assumptions_input.json": "35108d7bf7a03d18d31205d2f55dc41855158093f988061990b407e60ca2bdbb",
+      "uncertainty_assumptions_result.json": "ad3fb1c65f1c6a18c7aec5b492842e838a6f3bc94762b7c1e5408f95dcbbee80"
+    },
+    "interpretation": "Conditional research scenario software; publication does not establish target transport, independent causal validation, an evaluated public experience or companion deployment."
+  },
+  "local_log_sha256": {
+    "full-tests-final.log": "01e12885e1ce6e38edbc2dcf8e5cd70c033d49bc923c18072c7660cced814edc",
+    "coverage-gate.log": "fa9caac21afa71d30b7438260a81fc4de0e75dfd78b3bae11b2595f2a3537087",
+    "coverage.json": "a70dd09769adf8973e40488ec0dcdc9c06f447c76743c20b40ce54a710ecd64e",
+    "history-independent-test.log": "3ba21bca49ef5f8e107713122ff9151d0e57e0cb613ec6b31698aa5539fbc626",
+    "paper-narrative-tests-final.log": "c4e9b49854341a6f3d5d59df71bde3d1cde3b9568fa4b94ff244c8168e681fa1",
+    "docs-final.log": "66661f37a515f0bfdf9c66a2d5aa9c97e3257962390ddbdbffbbe83a17433f58",
+    "distribution-build-final.log": "705efc9371d9d0a655796a3eb1f6ceeddd4b14202d04e1df13f7f40794f9721f",
+    "installed-wheel-final.log": "ec9fce7de32a107bcc9b0cc0a3b64a2ab636e2f67c87215001a5bcbae89c2c2b",
+    "evidence-audit.json": "a9125e103e053c717c560f121dd9ce42297dbdb40ea48adcb74dc7fb97a50761",
+    "paper-final.log": "3ff88919be600cd66e497ba4492fb4993b2b6bbc936c02033e72171348b13676",
+    "ci-coverage.log": "97ec2040cbb99bfcad2c38f0a3c1271f61d56de920db1d33d03eec30ccec3045"
+  },
+  "companion": {
+    "deployed": false,
+    "repinned_to_v1_53": false,
+    "integration_task": "2026-10-15-verify-downstream-0-3-0-integration-before-deployment",
+    "blocking_task": "2026-10-16-review-release-blocking-source-publication-holds",
+    "observed_state": "The companion board retains unresolved NYC contracts SOFT and Massachusetts WARN HARD holds. This release did not recheck live ingest health, waive gates, repin the companion or deploy it."
+  },
+  "uncertainty": {
+    "implemented": "Caller-declared mortality log-odds transport scale and auxiliary-rank dependence sensitivity cases, with separate persistence alternatives.",
+    "not_identified": [
+      "Calibrated target transport distribution",
+      "Actual cross-component dependence",
+      "Structural model probabilities"
+    ],
+    "followup_task": "2026-10-27-calibrate-transport-dependence"
+  },
+  "limitations": [
+    "Conditional scenario software; no new target-population admission.",
+    "No independent causal validation or evaluated public experience claimed.",
+    "Software source withdrawals preserve archived values; they do not supply replacement evidence."
+  ],
+  "ci": {
+    "url": "https://github.com/xh1b/downstream/actions/runs/40420976421",
+    "run_id": 40420976421,
+    "head_sha": "a1f54ad9390812a03436e4cd68bca81e5506dc75",
+    "status": "completed",
+    "conclusion": "success",
+    "passed_tests": 1526,
+    "seconds": 288.17,
+    "coverage_lines_percent": 96.8,
+    "coverage_branches_percent": 94.0,
+    "jobs": [
+      {
+        "name": "coverage",
+        "conclusion": "success"
+      },
+      {
+        "name": "distribution (windows-latest, 3.12)",
+        "conclusion": "success"
+      },
+      {
+        "name": "fast (3.14)",
+        "conclusion": "success"
+      },
+      {
+        "name": "fast (3.12)",
+        "conclusion": "success"
+      },
+      {
+        "name": "lint",
+        "conclusion": "success"
+      },
+      {
+        "name": "distribution (ubuntu-latest, 3.12)",
+        "conclusion": "success"
+      },
+      {
+        "name": "distribution (ubuntu-latest, 3.14)",
+        "conclusion": "success"
+      },
+      {
+        "name": "distribution (windows-latest, 3.14)",
+        "conclusion": "success"
+      },
+      {
+        "name": "mutation-and-benchmark",
+        "conclusion": "skipped"
+      }
+    ],
+    "scope": "All push gates passed. Scheduled/manual mutation-and-benchmark job is skipped by workflow policy."
+  },
+  "publication": {
+    "id": 416261824,
+    "tag_name": "v0.4.0",
+    "name": "Downstream 0.4.0",
+    "draft": false,
+    "prerelease": false,
+    "target_commitish": "a1f54ad9390812a03436e4cd68bca81e5506dc75",
+    "html_url": "https://github.com/xh1b/downstream/releases/tag/v0.4.0",
+    "published_at": "2026-10-26T23:43:18Z",
+    "tag_object": {
+      "sha": "a1f54ad9390812a03436e4cd68bca81e5506dc75",
+      "type": "commit",
+      "url": "https://api.github.com/repos/xh1b/downstream/git/commits/a1f54ad9390812a03436e4cd68bca81e5506dc75"
+    },
+    "assets": [
+      {
+        "name": "consumer_fixtures_0_4.json",
+        "digest": "sha256:42d72e85f8c1c3d1586e048e465f98dffb3741b379e009757dc83d0e30424a94",
+        "size": 620013,
+        "browser_download_url": "https://github.com/xh1b/downstream/releases/download/v0.4.0/consumer_fixtures_0_4.json"
+      },
+      {
+        "name": "downstream-0.4.0-py3-none-any.whl",
+        "digest": "sha256:534d368f00a9fbfbc0413e453d0d02d2a4147629d90033351e6044ae921ed550",
+        "size": 1877603,
+        "browser_download_url": "https://github.com/xh1b/downstream/releases/download/v0.4.0/downstream-0.4.0-py3-none-any.whl"
+      },
+      {
+        "name": "downstream-0.4.0.tar.gz",
+        "digest": "sha256:6a465b5cfcdd02f0c61f65307274bee312ce7f2b10aef65965b8ad25efaef81f",
+        "size": 2807030,
+        "browser_download_url": "https://github.com/xh1b/downstream/releases/download/v0.4.0/downstream-0.4.0.tar.gz"
+      },
+      {
+        "name": "downstream.pdf",
+        "digest": "sha256:2eba0e38d4143f6e796127d7a2806fdd28693958af9de01eed34cc5167d77520",
+        "size": 574044,
+        "browser_download_url": "https://github.com/xh1b/downstream/releases/download/v0.4.0/downstream.pdf"
+      },
+      {
+        "name": "methods.html",
+        "digest": "sha256:499e33f8c64689f36d9e6c5c12b176e840e9227a85fd2adf142b377d62a05b91",
+        "size": 244192,
+        "browser_download_url": "https://github.com/xh1b/downstream/releases/download/v0.4.0/methods.html"
+      },
+      {
+        "name": "release-manifest.json",
+        "digest": "sha256:ccd15db93c69bb8c7f15d77630b29d2736725b153f774d17463ac4dbdca7d6e7",
+        "size": 1518,
+        "browser_download_url": "https://github.com/xh1b/downstream/releases/download/v0.4.0/release-manifest.json"
+      },
+      {
+        "name": "source_support.json",
+        "digest": "sha256:f3fd03d09581a5715b7aceb13364074197c5c0233c1c63e3a6fa6b6a7b60b49d",
+        "size": 7474,
+        "browser_download_url": "https://github.com/xh1b/downstream/releases/download/v0.4.0/source_support.json"
+      },
+      {
+        "name": "uncertainty_assumptions_input.json",
+        "digest": "sha256:35108d7bf7a03d18d31205d2f55dc41855158093f988061990b407e60ca2bdbb",
+        "size": 2412,
+        "browser_download_url": "https://github.com/xh1b/downstream/releases/download/v0.4.0/uncertainty_assumptions_input.json"
+      },
+      {
+        "name": "uncertainty_assumptions_result.json",
+        "digest": "sha256:ad3fb1c65f1c6a18c7aec5b492842e838a6f3bc94762b7c1e5408f95dcbbee80",
+        "size": 46606,
+        "browser_download_url": "https://github.com/xh1b/downstream/releases/download/v0.4.0/uncertainty_assumptions_result.json"
+      }
+    ],
+    "asset_verification": "All nine GitHub SHA-256 digests and sizes equal the frozen local artifacts; tag resolves to the qualified CI source."
+  }
+}
