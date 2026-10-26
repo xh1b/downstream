@@ -110,9 +110,11 @@ def test_grouped_cli_outputs_are_partial_and_never_emit_withdrawn_numbers():
 def test_original_parameter_csv_records_are_byte_preserved():
     import hashlib
     root = Path(__file__).resolve().parents[1]
-    # Snapshot at the last source-reviewed candidate, before adding withdrawal policy.
-    previous = subprocess.check_output(['git', 'show', 'd7691dac652a81bddb16c9f91a9cf8ecd88b70db:params/parameters.csv'], cwd=root)
-    assert hashlib.sha256((root/'params/parameters.csv').read_bytes()).digest() == hashlib.sha256(previous).digest()
+    # SHA-256 at d7691dac652a81bddb16c9f91a9cf8ecd88b70db, before withdrawal policy.
+    # A fixed receipt also works in shallow CI checkouts and source distributions.
+    assert hashlib.sha256((root/'params/parameters.csv').read_bytes()).hexdigest() == (
+        'f6ce70a100042189691eb10291c9ead48655cbf37dc49d49c4ac2ce4a3a468d6'
+    )
 
 
 def test_policy_matches_the_public_withdrawal_inventory():
