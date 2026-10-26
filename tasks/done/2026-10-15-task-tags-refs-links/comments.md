@@ -56,3 +56,14 @@ Usage: [token guide](../../README.md), [task CLI](../../../scripts/tasks.py), [r
 - By: codex-task-tokens
 
 done: active -> review.
+
+## c-8bdf3d8da48e
+
+- At: 2026-10-27 06:42 HKT
+- By: codex-review
+
+accept: review -> done.
+
+Verified canonical/legacy references, normalized tag operations, backlinks, uniqueness/resolution checks and isolated mutation regressions. Historical exemption machinery was intentionally superseded by the newly reviewed cleanup task.
+
+Verification receipt: @task:2026-10-27-review-acceptance#c-845b5298b984. Accepted under the owner's request to verify and complete review tasks.
