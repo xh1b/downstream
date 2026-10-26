@@ -537,6 +537,51 @@ Current dependence declarations live in [correlations.csv](../params/correlation
 Their magnitude is declared judgment; a sampler feature is not evidence of
 causal transport or an extracted study covariance.
 
+### Declared uncertainty assumption cases
+
+<!-- @ref:uncertainty-assumption-cases; @tag:uncertainty -->
+<!-- @link:code-uncertainty-cases; @link:code-uncertainty-budget; @link:test-uncertainty-cases; @link:paper-uncertainty-budget. -->
+
+The national `uncertainty` payload optionally accepts `assumption_cases`.
+Each of up to 16 cases requires exactly `name`, `source`, `method`,
+`mortality_log_odds_scale`, `exposure_rank` and `baseline_rank`. Names must be
+unique and provenance strings nonempty. There are no default cases or weights.
+Run the explicitly hypothetical [example input](../validation/uncertainty_assumptions_input.json):
+
+```sh
+downstream uncertainty --input validation/uncertainty_assumptions_input.json
+```
+
+The fixed finite scale changes each sampled mortality phase through
+`OR_target = exp(scale * log(OR_source))`. One retains the source effect,
+zero sets every phase to the null, and a negative scale reverses its direction.
+These are caller declarations about transport, not extracted target effects or
+estimated transport-error distributions. They do not change child effects.
+
+Each rank setting is `independent`, `aligned` or `opposed`. Independent retains
+the existing draw pairing. The alternatives reorder only the sampled exposure
+or baseline marginal against the **signed source-profile excess-death probability
+per worker at the pinned baseline and horizon**. Both input marginals and every
+study parameter draw remain intact. Ties use the original draw index; a constant
+anchor refuses aligned/opposed settings. These selected arrangements are
+sensitivity experiments, not bounds over every possible dependence structure.
+
+`assumption_sensitivity` returns each case's conditional 90% expected-effect
+intervals, its separate persistence alternative and within-draw structural
+difference, sampled-input summaries, and paired differences against the
+original independent source reference. It supplies no case-specific process
+interval or combined confidence envelope. The ordinary budget, its independent
+process contrasts, and fixed-input parameter-only reference retain their scope.
+Known demographic refusals still apply; every case stays headline-ineligible.
+The [saved result](../validation/uncertainty_assumptions_result.json) uses 256
+draws for illustration, not precision-qualified research intervals.
+
+Calibrated transport error, empirically estimated cross-component dependence,
+probabilities over structures, child/lifetime-profile uncertainty and unmodeled
+pathways remain unavailable. For general guidance on transparent uncertainty and sensitivity analysis, see
+the [JRC introductory guide](https://publications.jrc.ec.europa.eu/repository/handle/JRC122132).
+That guidance supplies no empirical support for the illustrative case values.
+
 ## Result fields and units
 
 <!-- @ref:integration-results; @link:code-scenario; @link:code-consumer. -->

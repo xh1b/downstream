@@ -91,3 +91,17 @@ open; browser viewport checks are recorded separately in audits.
 
 Model-card practice follows Mitchell et al., “Model Cards for Model Reporting”
 (2019). Source contributions are credited in [CREDITS.md](../CREDITS.md).
+
+
+## Declared transport and dependence experiments
+
+The national uncertainty command can additionally report
+[explicit mortality assumption cases](integration.md#declared-uncertainty-assumption-cases).
+Each caller-supplied case fixes a log-odds transport scale and retains independent
+input ranks or aligns/opposes baseline/exposure ranks with the signed source
+mortality response. These cases preserve marginal draws and study correlations.
+They are separate conditional sensitivity results, without inferred probabilities,
+model averaging, a full uncertainty interval or new population admission.
+Calibrated target transport error and actual cross-component dependence remain
+unknown. The published source profile and its persistence alternative remain
+separate in every case.

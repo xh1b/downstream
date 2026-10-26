@@ -1,0 +1,67 @@
+{
+  "scenario": {
+    "displaced_workers": 1000
+  },
+  "draws": 256,
+  "seed": 1901,
+  "exposure_model": {
+    "distribution": "integer_uniform_declared",
+    "low": 800,
+    "high": 1200,
+    "source": "illustrative sensitivity, not observed exposure uncertainty",
+    "method": "declared symmetric count support"
+  },
+  "baseline_counts": {
+    "events": 514314,
+    "person_years": 104024440,
+    "source": "validation/cdc_wonder_d76_national_year_age_sex_1999_2020.xml",
+    "method": "pooled CDC WONDER male 45-54 national counts 2015-2019",
+    "sex": "Male",
+    "age": "45-54 years",
+    "years": "2015-2019",
+    "cause": "All causes",
+    "geography": "US"
+  },
+  "assumption_cases": [
+    {
+      "name": "source_independent",
+      "mortality_log_odds_scale": 1,
+      "exposure_rank": "independent",
+      "baseline_rank": "independent",
+      "source": "Hypothetical software demonstration; not empirical target evidence.",
+      "method": "Caller-declared fixed log-odds scale and rank arrangement; no case probabilities."
+    },
+    {
+      "name": "half_log_odds",
+      "mortality_log_odds_scale": 0.5,
+      "exposure_rank": "independent",
+      "baseline_rank": "independent",
+      "source": "Hypothetical software demonstration; not empirical target evidence.",
+      "method": "Caller-declared fixed log-odds scale and rank arrangement; no case probabilities."
+    },
+    {
+      "name": "null_effect",
+      "mortality_log_odds_scale": 0,
+      "exposure_rank": "independent",
+      "baseline_rank": "independent",
+      "source": "Hypothetical software demonstration; not empirical target evidence.",
+      "method": "Caller-declared fixed log-odds scale and rank arrangement; no case probabilities."
+    },
+    {
+      "name": "aligned_inputs",
+      "mortality_log_odds_scale": 1,
+      "exposure_rank": "aligned",
+      "baseline_rank": "aligned",
+      "source": "Hypothetical software demonstration; not empirical target evidence.",
+      "method": "Caller-declared fixed log-odds scale and rank arrangement; no case probabilities."
+    },
+    {
+      "name": "opposed_inputs",
+      "mortality_log_odds_scale": 1,
+      "exposure_rank": "opposed",
+      "baseline_rank": "opposed",
+      "source": "Hypothetical software demonstration; not empirical target evidence.",
+      "method": "Caller-declared fixed log-odds scale and rank arrangement; no case probabilities."
+    }
+  ]
+}

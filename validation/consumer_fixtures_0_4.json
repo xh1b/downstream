@@ -50,7 +50,8 @@
     "src/downstream/study_library.py": "a9f03def1f8190e3efd74dad11ec3db733a002fd62993e95eb16075c9940d945",
     "src/downstream/synthesis.py": "c3e54bed03e82fc0db4be61353f51b1f2cc4b1b0fe6059b7b6d206ff6c001c46",
     "src/downstream/transmissions.py": "f2439a0dc6eae413989616041326d9838e4fcb4278dd8d189a11b483129fa67a",
-    "src/downstream/uncertainty_budget.py": "a4a397b4c45dbce60a074d1e9e68978d7c16d9cbcdb16a734f91606fb23c2477",
+    "src/downstream/uncertainty_budget.py": "fd855321177e6273ff50e0c561b85f4051257a1fe8d269fb7884452b21abe52b",
+    "src/downstream/uncertainty_cases.py": "23d89f8d50344e74042e089a33acec0a95a43e1ea8048b038c1beb637047d811",
     "src/downstream/units.py": "f2d745a07d00643f09eb2168e4433f7fa0cc200e5488cff72775fe9e0f9f1903",
     "src/downstream/validate.py": "f16a7d0f48fb1cac33b43aad5a807a1e541deed37625a69eadf66ba21e91eb91",
     "src/downstream/valuation.py": "489b392082e94e54564383436537002e59af50483ab4a78accb69119059e420f",
@@ -79,7 +80,7 @@
     "scripts/build_consumer_fixtures.py": "4964e76a53088d8fdc1fc348b052a83f1514f901effb2648998a903ab515adfd",
     "scripts/artifact_checks.py": "15342ed61b943d73774a1aa346137e715cb4256e28ca9e49cf2a7af0904cf62e"
   },
-  "source_content_sha256": "6d8845437c5543e62acda8e46de42db276c862e43c1b5e379553d4a58acec4ae",
+  "source_content_sha256": "1b27fbf555cc614b32a09cc374756931ade9d45b8ecad13e182d2256b72e2cc4",
   "fixture_sampling": "128 draws/base, seed 1901; contract fixtures, not precision-qualified research intervals.",
   "fixtures": {
     "national": {

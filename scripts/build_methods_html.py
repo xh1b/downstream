@@ -153,7 +153,12 @@ sex, age, cause, calendar window and geography. Exposure is a caller-declared di
 it is a sensitivity assumption, not an inferred confidence distribution. Baseline, exposure and study parameters are assumed independent.
 Expected-effect intervals, independent-cohort process contrasts and the original fixed-input reference remain separate.
 The budget requires national source-profile mortality, excludes demographic-profile overrides, and does not sample county posteriors,
-transport error, age/time trends or probabilities over structural models.</p></section>
+transport error, age/time trends or probabilities over structural models.</p>
+<p>Optional declared mortality assumption cases apply a fixed scale to each sampled source log odds ratio and independently retain,
+align or oppose exposure/baseline ranks against the signed source mortality response at the pinned baseline and horizon.
+Study vectors and both auxiliary marginals are preserved. Each case retains the source/persistence alternatives and reports paired differences
+from the independent source reference. These arrangements are sensitivity experiments, not bounds over every dependence structure.
+No case probabilities, pooled intervals, calibrated transport errors or new population admissions are implied.</p></section>
 <section id="persistence"><h2>Mortality persistence sensitivity</h2>
 <p>The default source-profile calculation also reports a declared alternative that retains the early odds ratios and sets source offset +6 onward to OR=1,
 first changing follow-up year seven. Both structures use the same resolved baseline, exposure and horizon.

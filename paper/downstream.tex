@@ -597,6 +597,16 @@ Baseline, exposure, and study parameters are assumed mutually independent,
 while the two mortality persistence structures share each draw. Transport
 error, probabilities over structures, missing mechanisms, age/time trends,
 and uncertainty in child structure and earnings profiles remain excluded.
+An optional, explicitly declared sensitivity layer multiplies each sampled
+phase's log odds ratio by a fixed transport scale. Separate cases retain the
+independent input pairing or align/oppose sampled exposure and baseline ranks
+with the signed source excess-death probability at the pinned baseline.
+Study vectors and auxiliary marginal samples are preserved; these selected
+rank arrangements are not bounds over all dependence structures. Cases retain
+both persistence structures and report paired differences from the independent
+source reference, without assigning case probabilities, pooling intervals,
+or claiming empirically calibrated transport error. Known population refusals
+remain in force. % @link:code-uncertainty-cases; @link:uncertainty-assumption-cases.
 This national budget does not sample county posterior uncertainty or
 support demographic-profile overrides. It is not a complete uncertainty
 interval for an employer or individual and remains experimental.

@@ -2,7 +2,7 @@
 # Rationale: @link:paper-uncertainty-budget.
 # Software contract: @link:doc-integration.
 # Verification: @link:test-uncertainty-budget; @link:test-audit04-custom-inputs.
-# Related: @link:paper-uncertainty.
+# Related: @link:paper-uncertainty; @link:code-uncertainty-cases.
 # @tag:uncertainty
 """Propagate documented exposure and mortality-baseline uncertainty separately.
 
@@ -20,6 +20,7 @@ from .child_applicability import select_child_contrast
 from .mc import simulate_many
 from .mortality import rate_to_risk
 from .scenario import ScenarioInput, compute_counts, sample_counts
+from .worker import mortality_profile
 
 
 def propagate_uncertainty(params, baselines, payload, *, nodes=None, params_dir=None):
@@ -55,6 +56,11 @@ def propagate_uncertainty(params, baselines, payload, *, nodes=None, params_dir=
         raise ValueError('draws must be an integer 2-100000')
     if isinstance(seed,bool) or not isinstance(seed,int):
         raise ValueError('seed must be an integer')
+    cases = payload.get('assumption_cases')
+    if 'assumption_cases' in payload:
+        from .uncertainty_cases import validate_cases
+        validate_cases(cases)
+    case_records = []
     params=select_child_contrast(params,scenario.child_income_quartile,params_dir)
     rng=random.Random(seed+32452843)
     process_rng=random.Random(seed+49979687)
@@ -67,6 +73,11 @@ def propagate_uncertainty(params, baselines, payload, *, nodes=None, params_dir=
         values={name:row['point'] for name,row in result['modeled'].items()}
         values.update(sampled_workers=n,sampled_baseline_rate_per_100k=rate*100000)
         mortality=result['modeled'].get('excess_deaths')
+        if cases:
+            if mortality is None:
+                raise ValueError('assumption cases require an admitted mortality outcome')
+            case_records.append(({phase: p.point for phase, p in mortality_profile(sampled).items()},
+                                 n, rate, mortality['point']))
         if mortality is not None:
             sensitivity=mortality['persistence_sensitivity']
             values['mortality_no_sustained_excess']=sensitivity['variants']['no_sustained_excess']['point']
@@ -83,7 +94,7 @@ def propagate_uncertainty(params, baselines, payload, *, nodes=None, params_dir=
     intervals=sampled.pop('outcomes')
     inputs={key:intervals.pop(key) for key in ('sampled_workers','sampled_baseline_rate_per_100k')}
     realized={key:intervals.pop(key) for key in tuple(intervals) if key.startswith('realized_')}
-    return {'schema':'downstream-uncertainty-budget/1','eligible_for_public_headline':False,
+    report = {'schema':'downstream-uncertainty-budget/1','eligible_for_public_headline':False,
             'input':payload,'sampling':sampled,'sampled_inputs':inputs,
             'sampled_input_units':{'sampled_workers':'workers','sampled_baseline_rate_per_100k':'events per 100000 person-years'},
             'expected_effect_intervals_90':intervals,'process_intervals_90':realized,
@@ -96,3 +107,8 @@ def propagate_uncertainty(params, baselines, payload, *, nodes=None, params_dir=
             'excluded':['target-population transport error','structural model probabilities','unmodeled pathways',
                         'baseline age/time trends','uncertainty in child structure and lifetime earnings profile'],
             'interpretation':'Central 90% simulation intervals under the stated inputs and independence assumptions; process contrasts compare independent cohorts, not paired individual causal effects.'}
+
+    if cases:
+        from .uncertainty_cases import evaluate_cases
+        report['assumption_sensitivity'] = evaluate_cases(cases, case_records, scenario, baseline)
+    return report
