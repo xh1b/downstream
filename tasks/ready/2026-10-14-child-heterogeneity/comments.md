@@ -30,3 +30,12 @@ Commit 801d9ba adds structured source_selection_assessment, explicit support_sta
 Primary evidence: the cached published JOLE PDF matches acquisition SHA256 ff990236c8e3aa19faff574f9f21af47665b2726f31f1d47fbc6ee9f89b7439c in validation/followthrough_sources.json. Printed pp. 459, 462–463 (PDF pp. 6, 9–10), including footnotes, were rendered and visually inspected in build/child-source-review-20261027/. Firm size counts IID fathers, not all employees. The main text's child ages refer to 1980; footnote 9 also refers to age at most 14 in 1982. Exact event-age transport needs reconciliation; neither statement establishes an age-response curve.
 
 Verification: 117 child/applicability/source/gap/custom-input tests passed; 59 consumer-fixture/child-support tests passed; make check-docs passed, including 19 checker tests, 346 anchors and 1,480 links; Ruff and git diff --check pass. Consumer fixture refresh changed only the child_support.py hash and collection digest; all numerical fixture contents were preserved. No remote acquisition or new effect admission. Wider countries, ages, target parent assessment and event-age reconciliation remain open.
+
+## c-e7949ebcc3c3
+
+- At: 2026-10-27 06:42 HKT
+- By: codex-child-source
+
+drop: active -> ready.
+
+Canadian parent-selection extraction is committed and verified. Wider source admission, exact event-age reconciliation and target-condition assessment remain open; release this claim for the next evidence-backed unit.

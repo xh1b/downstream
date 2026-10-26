@@ -2,7 +2,7 @@
 title: Expand child eligibility and heterogeneity evidence
 area: children
 priority: P1
-assignee: codex-child-source
+assignee:
 due:
 blocked-by: []
 expected-paths: []
