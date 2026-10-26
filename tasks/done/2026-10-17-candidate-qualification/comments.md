@@ -73,3 +73,14 @@ Full local qualification and archive are ready for review; owner release accepta
 Earlier candidate superseded by the corrected interval qualification
 
 Cross-language parity exposed a recursive shared-interval scaling defect after this receipt. @task:2026-10-17-consumer-interval-alias#c-5935f5c415ec records the fix, refreshed fixture/paper identities, complete repeated qualification and sealed evidence archive. Use source b41ca50731eeca6ce0336a8a66d1a0fbdcd79d72 and bundle 99173fbf23e75037da3fb9b4a9017a1e56909260ccb112f9902bc5ac86242153 for review. Preserve this earlier receipt and archive as historical evidence. Owner release/publication acceptance remains open.
+
+## c-6132001268bc
+
+- At: 2026-10-27 06:42 HKT
+- By: codex-review
+
+accept: review -> done.
+
+Verified superseding corrected candidate b41ca50, sealed archive SHA and all 146 evidence-file hashes, source/build/test manifests, comparison scope and unavailable old validation disclosure. Fresh current tests/build checks supplement this dated fixed-candidate qualification; release/publication stays separate.
+
+Verification receipt: @task:2026-10-27-review-acceptance#c-845b5298b984. Accepted under the owner's request to verify and complete review tasks.
