@@ -2,7 +2,7 @@
 title: Remove obsolete task-board migration scaffolding
 area: scripts
 priority: P2
-assignee:
+assignee: codex-board-cleanup
 tags: [@tag:tooling]
 blocked-by: []
 ---
