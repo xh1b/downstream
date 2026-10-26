@@ -2,7 +2,7 @@
 title: Extend uncertainty to transport and unknown dependence
 area: uncertainty
 priority: P2
-assignee:
+assignee: codex-uncertainty
 due:
 blocked-by: []
 expected-paths: []
