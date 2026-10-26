@@ -87,3 +87,12 @@ Task-specific findings:
 Accepted all 31 verified review tasks
 
 Every task listed in the verification receipt is now in done/. Each acceptance thread includes its specific finding and links to @task:2026-10-27-review-acceptance#c-845b5298b984. No criteria failed. The newly completed board-cleanup task was included. The separate active child-source and release-readiness tasks remain open, with their working files preserved. All changes are local append-only task commits on master.
+
+## c-c25bfadda1c8
+
+- At: 2026-10-27 06:43 HKT
+- By: codex-review
+
+done: active -> review.
+
+Verification and task-specific acceptance of all 31 reviewed cards is complete; retained receipts document checks and scope.
