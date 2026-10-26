@@ -85,3 +85,16 @@ The stable GitHub release remains a draft pending source-support and publication
 Owner requested 0.4 publication and uncertainty follow-through
 
 The current user instruction authorizes finishing the 0.4 release. I am checking the existing draft, source-support gates and current candidate identity before publishing, and handling @task:2026-10-14-transport-uncertainty. This records continuation without overwriting the existing assignee's active card or claiming live companion acceptance.
+
+## c-119d2d4121e3
+
+- At: 2026-10-27 07:44 HKT
+- By: codex-release
+
+Stable 0.4.0 published after source withdrawals and final qualification
+
+The owner required input repair before a stable release. Parameter set v1.53 withdraws the 16 unsupported inputs while preserving their original records and supported core values. Declared mortality transport/dependence sensitivity cases are implemented; calibrated target error remains an evidence task.
+
+Published release: https://github.com/xh1b/downstream/releases/tag/v0.4.0 — source/tag a1f54ad9390812a03436e4cd68bca81e5506dc75. Exact-source CI passes all 1,526 tests and push gates; nine asset SHA-256 digests/sizes verified. Full qualification, source identities and limits: [publication receipt](../../../docs/audits/release_publication_2026-10-27.json), [release record](../../../docs/audits/release_0_4.md#stable-publication--october-27), @task:2026-10-27-publish-04.
+
+This does not close companion deployment or human/independent validation. The companion integration remains blocked by its retained NYC contract/Massachusetts WARN publication holds; v1.53 repin/cache/render/deployment receipts are still required there. This parent's body/checklist remains with its existing owner.
