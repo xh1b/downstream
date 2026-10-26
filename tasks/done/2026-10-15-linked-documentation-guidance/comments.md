@@ -40,3 +40,14 @@ Checks: `python3 scripts/refcheck.py check` reports 5 anchors, 8 links and 0 fai
 - By: codex-doc-links
 
 done: active -> review.
+
+## c-e5c90a08918b
+
+- At: 2026-10-27 06:42 HKT
+- By: codex-review
+
+accept: review -> done.
+
+Verified root documentation policy, discoverable placement, reciprocal anchors/tags, hidden paper metadata examples and current navigation checks.
+
+Verification receipt: @task:2026-10-27-review-acceptance#c-845b5298b984. Accepted under the owner's request to verify and complete review tasks.
