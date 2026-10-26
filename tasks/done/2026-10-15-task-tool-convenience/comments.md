@@ -57,3 +57,14 @@ Implementation and instructions: `bf38e75`.
 Verification receipt: task:2026-10-15-task-tool-convenience#c-adcf752daa00.
 
 All 29 affected tests pass. Board validation, migration preservation, Ruff and documentation checks pass. Review the historical summary, full messages, stable-ID view and explicit-path commit guidance. This handoff does not accept the task.
+
+## c-1ca5e45848b0
+
+- At: 2026-10-27 06:42 HKT
+- By: codex-review
+
+accept: review -> done.
+
+Verified stable-ID show, multiline messages, title-based commit messages, blocked reporting, dirty-card/staging isolation and commit-first moves. The delivered historical-exemption feature was intentionally superseded by the owner-requested cleanup.
+
+Verification receipt: @task:2026-10-27-review-acceptance#c-845b5298b984. Accepted under the owner's request to verify and complete review tasks.
