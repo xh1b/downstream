@@ -17,6 +17,8 @@ a correction. Generated reports are updated through their builders.
 
 ## Sources and evidence
 
+- [Individual October 27 source repairs](source_repairs_2026-10-27.md) — all sixteen dispositions, corrected exposures and qualification.
+
 - [Evidence classification](evidence_classification_0_4.md) — generated inventory of applicability and runtime roles.
 - [Independent pool readiness](pool_readiness_0_4.md) — generated compatibility and sample-overlap screen.
 - [Source acquisition inventory](data_sources.md) — historical datasets, access paths and baseline decisions.

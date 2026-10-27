@@ -1,0 +1,563 @@
+{
+  "schema": "downstream-source-repair-receipt/1",
+  "date": "2026-10-27",
+  "runtime_data_commit": "6d8d92f79fe8e8c04935b605276dbccf03fc1666",
+  "engine_version": "0.4.0",
+  "parameter_set_version": "v1.54",
+  "scope": "Local correction of the sixteen v1.53 source dispositions; published v0.4.0 and companion deployments unchanged.",
+  "source_tree_identity": {
+    "src": "58eba6c897213562f6e95b42433ca5f60f016f01",
+    "params": "58926d5a18d4d9577531eafff29275cd7bc14e0f",
+    "validation": "5848a6898a5d5991a31abdb95095cde524be2779"
+  },
+  "dispositions": {
+    "verified_original": 6,
+    "corrected_replacement": 7,
+    "unsupported_relationship": 3,
+    "available_records": 64,
+    "retired_legacy_links": 10
+  },
+  "individual_review": {
+    "displacement->college_enrollment": {
+      "disposition": "verified_original",
+      "available_link": "displacement->college_enrollment",
+      "source_key": "hilger2016",
+      "extraction": {
+        "effect_pp": -0.432,
+        "se_pp": 0.094,
+        "base_percent": 40.66
+      },
+      "method": "1 - 0.432/40.66, with coefficient +/-1.96 SE and the pre-event mean held fixed."
+    },
+    "displacement->parental_income_shortrun": {
+      "disposition": "verified_original",
+      "available_link": "displacement->parental_income_shortrun",
+      "source_key": "hilger2016",
+      "extraction": {
+        "effect_usd": -8138.09,
+        "se_usd": 219.53,
+        "base_usd": 59832
+      },
+      "method": "1 - 8138.09/59832; coefficient +/-1.96 SE; pre-event mean held fixed."
+    },
+    "eitc_exposure->adult_earnings_early": {
+      "disposition": "verified_original",
+      "available_link": "eitc_exposure->adult_earnings_early",
+      "source_key": "bastian2018",
+      "extraction": {
+        "effect_usd": 564,
+        "se_usd": 244.9
+      },
+      "method": "Coefficient +/-1.96 SE; exposure is maximum potential EITC eligibility, not observed income or actual payments."
+    },
+    "household_ipv->child_internalizing_sd": {
+      "disposition": "verified_original",
+      "available_link": "household_ipv->child_internalizing_sd",
+      "source_key": "evans2008",
+      "extraction": {
+        "point_d": 0.48,
+        "reported_ci": [
+          0.39,
+          0.57
+        ],
+        "k": 58,
+        "n": 7602
+      },
+      "method": "Reported CI, not recomputed from rounded SE. Cross-study exposure association, not a causal intervention response."
+    },
+    "household_ipv->child_externalizing_sd": {
+      "disposition": "verified_original",
+      "available_link": "household_ipv->child_externalizing_sd",
+      "source_key": "evans2008",
+      "extraction": {
+        "point_d": 0.47,
+        "reported_ci": [
+          0.38,
+          0.56
+        ],
+        "k": 53,
+        "n": 7200
+      },
+      "method": "Reported CI; exposure association with significant heterogeneity. Not a causal intervention response."
+    },
+    "unemployment_status->mental_health_sd": {
+      "disposition": "verified_original",
+      "available_link": "unemployment_status->mental_health_sd",
+      "source_key": "paul2009",
+      "extraction": {
+        "point_d": 0.51,
+        "reported_ci": [
+          0.47,
+          0.54
+        ],
+        "k": 315,
+        "n": 209379
+      },
+      "method": "Overall outlier-excluded cross-sectional association, not the factory-closure subset or a causal job-loss effect."
+    },
+    "unemployment_rate->property_crime": {
+      "disposition": "corrected_replacement",
+      "available_link": "unemployment_rate_change_pp->property_crime_log_change",
+      "source_key": "raphael2001",
+      "application": "linear",
+      "method": "Table 5 col.6: b=5.018 (SE 1.134) per unit unemployment fraction. Per 1pp change, log crime changes by .05018; percent response is 100*expm1(.05018*dose). The old 5.018 percent reading was a first-order approximation, not an exact percent effect.",
+      "original_record": {
+        "link": "unemployment_rate->property_crime",
+        "from_node": "unemployment_rate",
+        "to_node": "property_crime_response",
+        "point": "5.018",
+        "low": "2.795",
+        "high": "7.241",
+        "tier": "EXACT",
+        "citation": "raphael2001",
+        "population_scope": "US states 1971-97, N=1,293 state-years, 2SLS defense-contracts + oil-cost instruments",
+        "notes": "queue-10 LANDED v1.13: +1pp state unemployment -> +5.018% property crime (SE 1.134), Table 5 \"All property crime\" linear+quadratic-trends 2SLS (95% CI = 1.96SE); overidentification PASSES for property crime in all 2SLS specs. OLS full-spec 1.635 (0.182); the paper summary quotes OLS 1.6-2.4% per pp. Violent crime: null/mixed (2SLS insig 2 of 3 specs, overID rejected in the third) - deliberately NOT landed. Lin 2008 second anchor still queued for the band. Boundary-applied: NEVER chained",
+        "dist": "normal",
+        "evidence_role": "boundary"
+      },
+      "verified_parameter": {
+        "point": 0.05018,
+        "low": 0.0279536,
+        "high": 0.0724064
+      },
+      "input_node": "unemployment_rate_change_pp",
+      "input_unit": "percentage_point_delta",
+      "output_node": "property_crime_log_change",
+      "output_unit": "log_delta"
+    },
+    "wage_ratio->household_ipv": {
+      "disposition": "corrected_replacement",
+      "available_link": "female_male_wage_ratio_change->female_assault_log_change",
+      "source_key": "aizer2010",
+      "application": "linear",
+      "method": "Table 2 Panel A col.3: -.813 (SE .317). Change in log female assault hospitalizations per absolute unit change in potential female/male wage ratio. Input .01 means one ratio percentage point; not a relative wage multiplier or log-log elasticity. Hospitalization outcome is not all household IPV incidence.",
+      "original_record": {
+        "link": "wage_ratio->household_ipv",
+        "from_node": "wage_ratio",
+        "to_node": "household_ipv_elasticity",
+        "point": "-0.813",
+        "low": "-1.45",
+        "high": "-0.18",
+        "tier": "EXACT-results",
+        "citation": "aizer2010",
+        "population_scope": "US counties 1990-2003, women's assault hospitalizations",
+        "notes": "elasticity of ln(IPV) w.r.t. female/male wage ratio; AER Table 2 col 3 (lagged-DV spec), 95% CI from clustered SE 0.317. SIGN: male displacement RAISES the ratio and so LOWERS IPV against women (Aizer bargaining); wiring this into the daughter chain needs incidence weights for who is displaced - deliberately not composed here",
+        "dist": "normal",
+        "evidence_role": "boundary"
+      },
+      "verified_parameter": {
+        "point": -0.813,
+        "low": -1.43432,
+        "high": -0.19168
+      },
+      "input_node": "female_male_wage_ratio_change",
+      "input_unit": "ratio_delta",
+      "output_node": "female_assault_log_change",
+      "output_unit": "log_delta"
+    },
+    "import_shock->gop_win_probability": {
+      "disposition": "corrected_replacement",
+      "available_link": "import_penetration_change_pp->gop_win_probability_change_pp",
+      "source_key": "autor2020polarization",
+      "application": "linear",
+      "method": "Table 4 col.6: 24.08 (SE 12.07) Republican win-probability percentage points per 1pp employment-weighted CZ Chinese import penetration change. Not per USD1000/worker and not a national election probability. Other vote-share columns and pre-2010 effects are not replaced by this result.",
+      "original_record": {
+        "link": "import_shock->gop_win_probability",
+        "from_node": "import_shock_per_worker",
+        "to_node": "gop_win_probability",
+        "point": "24.08",
+        "low": "0.423",
+        "high": "47.737",
+        "tier": "EXACT",
+        "citation": "autor2020polarization",
+        "population_scope": "US county-congressional-district cells 2002-2010, N=3,772, 2SLS full controls",
+        "notes": "queue-16 LANDED v1.15: change in the probability of electing a Republican to the House, in percentage points, per $1k/worker decadal import exposure = 24.08 (SE 12.07; t=2.00), Table 4 col 6, 2002-2010, N=3,772 county-district cells, 2SLS full controls (spec = Table 3 col 5), 95% CI = 1.96SE. Authors' own scaling: x 0.49 (p75-p25 exposure gap) = 11.8pp. HONEST SCOPE: the two-party VOTE-SHARE columns are NULL (all districts -1.08, SE 5.98; competitive +6.10, SE 4.93; solid-GOP -6.24, SE 3.93 - re-sorting, not uniform right shift); the win-probability effect emerges only from the 2010 mid-term (null 2002-2008, Feigenbaum-Hall consistency). Boundary-applied: NEVER chained",
+        "dist": "normal",
+        "evidence_role": "boundary"
+      },
+      "verified_parameter": {
+        "point": 24.08,
+        "low": 0.4228,
+        "high": 47.7372
+      },
+      "input_node": "import_penetration_change_pp",
+      "input_unit": "percentage_point_delta",
+      "output_node": "gop_win_probability_change_pp",
+      "output_unit": "percentage_point_delta"
+    },
+    "import_shock->radical_right_vote_share": {
+      "disposition": "corrected_replacement",
+      "available_link": "import_exposure_eur1000_per_worker_2y->radical_right_vote_share_change_pp",
+      "source_key": "colantone2018",
+      "application": "linear",
+      "method": "Accepted manuscript Table 1 col.10: .132 (SE .051) vote-share fraction per EUR1000/worker import increase over the two years before an election. Multiply output by 100 to obtain percentage points. No USD conversion, decadal-dose substitution or persistence assumption.",
+      "original_record": {
+        "link": "import_shock->radical_right_vote_share",
+        "from_node": "import_shock_per_worker",
+        "to_node": "radical_right_vote_share",
+        "point": "13.2",
+        "low": "3.2",
+        "high": "23.2",
+        "tier": "EXACT",
+        "citation": "colantone2018",
+        "population_scope": "15 Western European countries, 76 legislative elections 1988-2007, 198 NUTS-2 regions; district-election panel N=7,782 (IV), country-year FE, SE clustered NUTS-2 x year",
+        "notes": "queue-15 LANDED v1.26: IV Table 1 col 10, radical-right vote share. Coefficient .132*** (SE .051) in vote-share FRACTIONS per 1.0 ($1k/worker change in Chinese import exposure over the past 2 years) = 13.2 pp per $1k/worker of exposure (SE 5.1), CI = 1.96 SE. AUTHORS' OWN SCALING: one SD of the 2-year shock (.133 = $133/worker) -> +1.7pp radical-right vote share, on an average RR share of 5% (SD 7%). IV (.132) > OLS (.041, SE .023): positive domestic demand shocks attenuate the OLS association (authors' interpretation). First stage: Chinese imports to the US as instrument, Kleibergen-Paap F = 19.2. Robustness (Table 3-4): historical-trajectory trend interactions (coefficients equal or larger), year-specific regional controls (larger), alternative exchange-rate IV, exports and FDI nulls, EU-import controls (EU15 negative on Nationalist Autarchy, EU12 positive on the radical right). NO-LEFT-WING discipline: protectionist left NULL (IV -.052, SE .047), protectionist left proper NULL (-.081, SE .042), liberal right NULL (-.017, SE .075) - NO polarization, which CONTRASTS with the Autor et al. 2020 US finding (declared on that row); pro-trade left NEGATIVE significant (-.134**, SE .054) - the electorate abandons mainstream social-democratic parties; protectionist right POSITIVE .278*** (SE .094). INDIVIDUAL-LEVEL (ESS waves 1-4, Table 5-6): confirms the district evidence; NO significant group heterogeneity - interactions all n.s., the response is SOCIOTROPIC (service and public-sector workers respond too; only students sheltered, n.s. overall) - declared so no surface reads this row as a displaced-manufacturers-only effect, and so no surface quotes paul2009's person-level unemployment distress as the transmission mechanism here. WINDOW DISCIPLINE: the regression's shock is the 2-year window change; the row stores the same coefficient expressed per $1k/worker of cumulative exposure (13.2pp), which assumes each window's shock persists to the next election - the authors' 1-SD scaling reads directly off this coefficient. Boundary-applied: NEVER chained into the earnings/IGE chains. Read via the owner-downloaded PDF (the published AJPS doi, not the SSRN preprint doi the staging bib carried)",
+        "dist": "normal",
+        "evidence_role": "boundary"
+      },
+      "verified_parameter": {
+        "point": 13.2,
+        "low": 3.204,
+        "high": 23.196
+      },
+      "input_node": "import_exposure_eur1000_per_worker_2y",
+      "input_unit": "eur1000_2006_per_worker",
+      "output_node": "radical_right_vote_share_change_pp",
+      "output_unit": "percentage_point_delta"
+    },
+    "eviction_order->eviction_earnings_response": {
+      "disposition": "corrected_replacement",
+      "available_link": "eviction_order->quarterly_earnings_gap_q5_8",
+      "source_key": "collinson2024",
+      "application": "fixed_contrast",
+      "method": "Table VI col.6 IV earnings difference -613 (SE 248), divided by matching col.4 non-evicted sample mean 4254, not year-1 mean 4300. This scaled index holds the descriptive comparison mean fixed; it is not a separately identified complier-counterfactual earnings ratio. Never composed into displacement earnings.",
+      "original_record": {
+        "link": "eviction_order->eviction_earnings_response",
+        "from_node": "eviction_order",
+        "to_node": "eviction_earnings_response",
+        "point": "0.8574",
+        "low": "0.7444",
+        "high": "0.9705",
+        "tier": "EXACT",
+        "citation": "collinson2024",
+        "population_scope": "same design as the shelter row",
+        "notes": "queue-17 LANDED v1.21: evicted tenants' average QUARTERLY earnings, quarters 5-8 post-filing: IV -$613 (SE 248) on the $4,300 non-evicted mean = -14.3%; 95% CI = 1.96SE; stored as a gap multiplier: 1 - 613/4300 = 0.8574 (band 1 - CI/4300), 2016 USD in the derivation above. Year-1 window (quarters 1-4) is -$323 (SE 175), NOT significant - recorded, not landed (the stevens2011 timing pattern: the sustained window carries the identified effect). OLS -$269*** is SMALLER than IV - the authors read complier effects as larger than the average evicted tenant's. SUBGROUPS (Table VI): concentration among female (-$767, SE 295) and Black (-$931, SE 307) tenants in year 2; formal equality tests do not reject, so the full-sample point stands with the concentration noted. REFUSAL WIRING: the desmond2016 matched +11-22pp JOB-LOSS estimate is NOT encoded (CITING §1 class + collinson2024 refutes the size: employment IV -1.5pp (SE 2.1) year 1 / -1.8pp (SE 2.7) year 2, both null); see SPEC §10. PARALLEL STREAM: quarterly-earnings LEVEL response for the eviction-court population - NEVER composed into the worker_earnings displacement multiplier. Boundary-applied: NEVER chained",
+        "dist": "normal",
+        "evidence_role": "boundary"
+      },
+      "verified_parameter": {
+        "point": 0.8559003291020216,
+        "low": 0.7416361071932299,
+        "high": 0.9701645510108133
+      },
+      "input_node": "eviction_order",
+      "input_unit": "persons",
+      "output_node": "quarterly_earnings_gap_q5_8",
+      "output_unit": "gap_multiplier"
+    },
+    "displacement_event->exam_noncompletion_hazard": {
+      "disposition": "corrected_replacement",
+      "available_link": "displacement_event->exam_noncompletion_change_pp",
+      "source_key": "bingley2026",
+      "application": "fixed_contrast",
+      "method": "IZA DP 16367 Table 2 Panel A col.2: probability difference .0054 (SE .0027), expressed as .54 percentage points. Regression constant .0785 is not an admitted control mean; no hazard ratio, relative-risk conversion or displaced-worker total. Published-version reconciliation remains open.",
+      "original_record": {
+        "link": "displacement_event->exam_noncompletion_hazard",
+        "from_node": "displacement_event",
+        "to_node": "exam_noncompletion_hazard",
+        "point": "1.0688",
+        "low": "1.0014",
+        "high": "1.1362",
+        "tier": "EXACT",
+        "citation": "bingley2026",
+        "population_scope": "same children/scope as the child_achievement_sd row; outcome = obtains NO grade-9 exam scores or teacher assessments (control mean 7.85%)",
+        "notes": "queue-sweep LANDED v1.40, same read as the child_achievement_sd row. DERIVED RELATIVE (pp effect / control mean; stevens2011 derivation precedent): Table 2 col 2 (preferred) 'Treated X Exposure (age 0-16)' +0.0054 (SE 0.0027) on control mean 0.0785 -> 1 + 0.0054/0.0785 = 1.0688; band = 1.96 x SE/0.0785. AUTHORS' FRAME: explains 6-9% of observed non-completion (base ~7%; test-taking near-universal at 16). TIMING STRUCTURE, monotone by age at exposure: infancy (0-1) +0.99pp (SE 0.41) -> 1.126 [1.96SE 1.024..1.228]; early childhood (2-5) +0.76pp -> ~1.097; mid (6-11) +0.45pp n.s.; late (12-16) +0.30pp n.s.; exposure at age >=18 jointly zero (p=0.986 - identifying-assumption placebo). Completing exams BY AGE 16: infancy -1.44pp (SE 0.65). Concentrated in below-median-income families (no detectable effect above median); displaced father > mother, sons > daughters (qualitative). Conditional: Danish compulsory-school institution; left-tail outcome capturing the most vulnerable children",
+        "dist": "normal",
+        "evidence_role": "conditional"
+      },
+      "verified_parameter": {
+        "point": 0.54,
+        "low": 0.0108,
+        "high": 1.0692
+      },
+      "input_node": "displacement_event",
+      "input_unit": "persons",
+      "output_node": "exam_noncompletion_change_pp",
+      "output_unit": "percentage_point_delta"
+    },
+    "ipv_exposure->daughter_violence_odds": {
+      "disposition": "corrected_replacement",
+      "available_link": "childhood_parental_violence_exposure->adult_partner_victimization_odds",
+      "source_key": "ehrensaft2003",
+      "application": "fixed_contrast",
+      "method": "Published Table 3, violence between parents, net of other risks: OR 2.68, reported 95% CI 1.49-4.82. Sex-adjusted pooled association, not a daughters-only causal estimate, not adult perpetration or injury, and not a household-incidence multiplier. No count conversion or daughter-chain composition.",
+      "original_record": {
+        "link": "ipv_exposure->daughter_violence_odds",
+        "from_node": "household_ipv",
+        "to_node": "daughter_violence_odds",
+        "point": "2.5",
+        "low": "2.0",
+        "high": "3.0",
+        "tier": "canonical",
+        "citation": "widom1989;ehrensaft2003",
+        "population_scope": "US prospective cohorts",
+        "notes": "cycle-of-violence transmission; upstream household_ipv incidence link queued (aizer2010)",
+        "dist": "",
+        "evidence_role": "boundary"
+      },
+      "verified_parameter": {
+        "point": 2.68,
+        "low": 1.49,
+        "high": 4.82
+      },
+      "input_node": "childhood_parental_violence_exposure",
+      "input_unit": "persons",
+      "output_node": "adult_partner_victimization_odds",
+      "output_unit": "odds_ratio"
+    },
+    "divorce->child_earnings": {
+      "disposition": "unsupported_relationship",
+      "source_key": "gruber2004",
+      "reason": "Unilateral-divorce-law ITT does not identify the earnings effect of an individual parental divorce. Its sex/cohort estimates cannot justify a common .95 multiplier."
+    },
+    "family_size->child_earnings": {
+      "disposition": "unsupported_relationship",
+      "source_key": "black2005",
+      "reason": "Outcome is education, with family-size effects becoming negligible after birth-order controls and twins IV. No .98 child-earnings multiplier follows; a null schooling finding cannot be converted to zero earnings harm."
+    },
+    "grandchild_earnings->greatgrandchild_earnings": {
+      "disposition": "unsupported_relationship",
+      "source_key": "lindahl2015",
+      "reason": "The source measures earnings for three generations and education for four. It does not estimate .55 causal gap transmission to a fourth earnings generation. Retaining a projection would require an explicit uncalibrated assumption, not a source-identified default."
+    }
+  },
+  "sources": {
+    "hilger2016": {
+      "source_url": "https://doi.org/10.1257/app.20150295",
+      "locator": "Published AEJ: Applied Economics 8(3), 2016, Table 3, printed p.265 / PDF p.19",
+      "artifact_sha256": "5f8f90917584d1b6d211dd46fb003de99c65fd79d51bb2d5b07ffc9a9b7105f8",
+      "artifact_kind": "primary PDF",
+      "review_date": "2026-10-27"
+    },
+    "raphael2001": {
+      "source_url": "https://doi.org/10.1086/320275",
+      "locator": "Published JLE 44(1), 2001, Table 5 col.6, printed p.275 / PDF p.18; unemployment is a fraction",
+      "artifact_sha256": "a594607279054a5e18fd651a7e1ccc5a6d9353e886b6397a37711767d23b0f1d",
+      "artifact_kind": "primary PDF",
+      "review_date": "2026-10-27"
+    },
+    "bastian2018": {
+      "source_url": "https://doi.org/10.1086/697477",
+      "locator": "Publisher 2018 accepted preprint, Table 2 col.6, PDF p.32; 2013 dollars; ages 13-18 exposure, ages 22-27 earnings",
+      "artifact_sha256": "e62e763adbaff2dbb1da66dc6431f3ce7d0faa156a613e3b68ee709cada62fbb",
+      "artifact_kind": "primary PDF",
+      "review_date": "2026-10-27"
+    },
+    "evans2008": {
+      "source_url": "https://doi.org/10.1016/j.avb.2008.02.005",
+      "locator": "Published Aggression and Violent Behavior 13, 2008, printed p.135 / PDF p.5, Table 1 and sections 3.2.1-3.2.2",
+      "artifact_sha256": "a876bf1205d8b7a3a80cb493e42c810f0c5b98783bd44626565d5236f7a46f3f",
+      "artifact_kind": "primary PDF",
+      "review_date": "2026-10-27"
+    },
+    "paul2009": {
+      "source_url": "https://doi.org/10.1016/j.jvb.2009.01.001",
+      "locator": "Published JVB 74, 2009, Table 1 Overall (out. ex), printed p.271 / PDF p.8",
+      "artifact_sha256": "96897f014c89125dc65236d22b0f2a9e69849b7fb7e49ae7cf61a27d855a9e11",
+      "artifact_kind": "primary PDF",
+      "review_date": "2026-10-27"
+    },
+    "colantone2018": {
+      "source_url": "https://doi.org/10.1111/ajps.12358",
+      "locator": "Accepted AJPS manuscript, Table 1 col.10 / PDF p.9; exposure definition PDF pp.5-6; footnote 5: all monetary figures deflated to 2006 euros",
+      "artifact_sha256": "93398be18ac49dc887fdefb900668e3edc627d39ca2407f7bb968df7230d96b3",
+      "artifact_kind": "primary PDF",
+      "review_date": "2026-10-27"
+    },
+    "autor2020polarization": {
+      "source_url": "https://economics.mit.edu/sites/default/files/publications/Autor%20et%20al.%20-%202020%20-%20Importing%20Political%20Polariza.pdf",
+      "locator": "Published AER 110(10), 2020, Table 4 col.6, printed p.3167 / PDF p.29; employment-weighted import penetration pp",
+      "artifact_sha256": "e85aaaad15cc2f6220fb45e17803d2f5f30b24eb271dda3c211b418012756e6c",
+      "artifact_kind": "primary PDF",
+      "review_date": "2026-10-27"
+    },
+    "collinson2024": {
+      "source_url": "https://economics.yale.edu/sites/default/files/2023-09/qjad042.pdf",
+      "locator": "Accepted QJE manuscript September 2023, Table VI cols.4,6, printed p.45 / PDF p.46; quarters 5-8",
+      "artifact_sha256": "80c99a680a0096b16f05d04adbec0dac518dfc157acc8bebf4b7e112e393c180",
+      "artifact_kind": "primary PDF",
+      "review_date": "2026-10-27"
+    },
+    "bingley2026": {
+      "source_url": "https://docs.iza.org/dp16367.pdf",
+      "locator": "IZA DP 16367 August 2023, Table 2 Panel A col.2, printed p.45 / PDF p.48; working-paper contrast, published-version reconciliation remains open",
+      "artifact_sha256": "f8acbb13956b08b654876e9ee7b0958e74c91ee9c6d5e804a6eb5ff40e731c0d",
+      "artifact_kind": "primary PDF",
+      "review_date": "2026-10-27"
+    },
+    "aizer2010": {
+      "source_url": "https://www.ncbi.nlm.nih.gov/research/bionlp/RESTful/pmcoa.cgi/BioC_xml/PMC4123456/unicode",
+      "locator": "Author manuscript in PMC4123456, Table 2 Panel A col.3; machine-readable primary full-text XML",
+      "artifact_sha256": "c9498f4af8b33f072127eb3de99f9afefd13af120941c361eac8dd12428b3410",
+      "artifact_kind": "primary full text XML",
+      "review_date": "2026-10-27"
+    },
+    "lindahl2015": {
+      "source_url": "https://docs.iza.org/dp6463.pdf",
+      "locator": "IZA DP 6463 April 2012, abstract and earnings-generation scope; earnings for three generations, education for four",
+      "artifact_sha256": "9c3610b1a6e4a0640ff2710dee4a5c503a23d4a27bf2d1c723f3c51568d8135b",
+      "artifact_kind": "primary PDF",
+      "review_date": "2026-10-27"
+    },
+    "gruber2004": {
+      "source_url": "https://www.nber.org/papers/w7968",
+      "locator": "NBER WP 7968, November 2000; unilateral-divorce-law exposure ITT, not individual parental divorce",
+      "artifact_sha256": "c60742be3ee2802c5cb547475795f043e7b042258df664e792399005f35a6c80",
+      "artifact_kind": "primary PDF",
+      "review_date": "2026-10-27"
+    },
+    "ehrensaft2003": {
+      "source_url": "https://www.apa.org/pubs/journals/releases/ccp-714741.pdf",
+      "locator": "Published JCCP 71(4), 2003, Table 3, printed p.747 / PDF p.7",
+      "artifact_sha256": "3901f2e76a1eee05a952909bf2dfe3bbecefad87b1e06b8afd5b1042e358500f",
+      "artifact_kind": "numeric table extraction from publisher PDF viewed through browser; not original PDF byte hash",
+      "access_limit": "Local publisher download returned HTML; original PDF read through browsing. No original PDF byte hash is claimed.",
+      "review_date": "2026-10-27"
+    },
+    "black2005": {
+      "source_url": "https://www.nber.org/system/files/working_papers/w10720/w10720.pdf",
+      "locator": "NBER WP 10720 September 2004, abstract and study outcome definition; published QJE 120(2), 2005",
+      "artifact_sha256": "d1914a1e21db77046631d3153ab46a9b72856325e34eceee06124b39fcaefc30",
+      "artifact_kind": "primary working-paper PDF",
+      "review_date": "2026-10-27"
+    }
+  },
+  "verification": {
+    "full_suite_passed": 1550,
+    "subtests_passed": 9,
+    "full_suite_seconds": 638.64,
+    "coverage_lines_percent": 96.7,
+    "coverage_branches_percent": 93.8,
+    "line_gate_percent": 95,
+    "branch_gate_percent": 90,
+    "focused_checks_passed": [
+      90,
+      124
+    ],
+    "isolated_wheel_cli_checks": 12,
+    "audit_errors": 0,
+    "audit_warnings": 0,
+    "ruff": "pass",
+    "vulture": "pass",
+    "documentation_checks": "pass",
+    "paper_pages": 21,
+    "latex_warnings": 0,
+    "overfull_boxes": 0,
+    "visual_review": "Full-page overview and changed methods/inventory pages inspected."
+  },
+  "custody": {
+    "original_csv_prefix_bytes": 82447,
+    "original_csv_prefix_sha256": "f6ce70a100042189691eb10291c9ead48655cbf37dc49d49c4ac2ce4a3a468d6",
+    "policy_sha256": "c117d9f0c9ecbbd9465a910fbff2e0d8742e2680795b9c0eb54f02ca918017d6"
+  },
+  "bundle": {
+    "schema": "downstream-engine-bundle/1",
+    "engine_version": "0.4.0",
+    "parameter_set_version": "v1.54",
+    "sha256": "8e829234ebd5249ac8e994681d55e2a048039edb29c823ae0a3e321b6d0b0b10",
+    "algo_version": "v1.54+engine0.4.0+8e829234ebd5249ac8e994681d55e2a048039edb29c823ae0a3e321b6d0b0b10",
+    "files": {
+      "src/downstream/__init__.py": "a3964f1df2d223167207f6beaaa5014856a6962363e96ca86fa896c1620a4c82",
+      "src/downstream/admission.py": "fbd5c4e063fc0beaec640047bbf36d84baeddaa48e3ac837cd92c190ad05d5e0",
+      "src/downstream/audit.py": "198a41c62534d1ac225558187402422b69ee45976d65857b233c5e5357c98195",
+      "src/downstream/brac.py": "d7e3611883673d26580e67c5c751c77a8972f90275bc464d7834b5314a73028c",
+      "src/downstream/build_places.py": "5e0633b4a06b1d179b9db705c5e341f0a6143fa36a26561b50c01985eb88a036",
+      "src/downstream/bundle.py": "eea004ca6c70132365b38e05394ced53ac01d99f38bbbe0dd181f84ab6e0b878",
+      "src/downstream/child_applicability.py": "05ed27794e6ff8e13d658909bec7ae34b9573ff7b133cf710b6696b6e853c183",
+      "src/downstream/child_gap_view.py": "46e1b464fcb63e02cb10c5bc59afb488ed9d62dce1ee216db8a77514d7692db0",
+      "src/downstream/child_support.py": "3be23b991b7ee2ac67bd7f8094dd86d774ec310adce147e3e9d98e68aec82ea9",
+      "src/downstream/children.py": "ba7ba27d3b557f9097f24bc49cb69940a6f0af7750e0c8f48fb6aaf4985a19ca",
+      "src/downstream/citations.py": "eca0f242fca52d2bfb0863f62f6675dd212613d0be46fae9d9c8192f9ec3d10c",
+      "src/downstream/cli.py": "5c5f87cea4c9550a119bc5b0f5c68fe5189499c37c724f99dde5659d312ab83e",
+      "src/downstream/community.py": "1d7a1b0d28883992570cc7c81b88eed0258259a11c78f0f32dbc64587a1dbddf",
+      "src/downstream/compare.py": "b46fe94e2241f0d80749603a3ce0797199a01a154f8a5d744d3264837f80d73b",
+      "src/downstream/consumer.py": "973a645976970bc080db040325cd56c54395fbd78b92ad943f0abf9abf131eec",
+      "src/downstream/county_mortality.py": "6dd990f4881b389f396e5456da7a225fa755a96f309680ad2309e41a95234467",
+      "src/downstream/county_rates.py": "b86dc0f291ff997a035cc82735b1ac500b6e029a900c6ae61201072aa177bed4",
+      "src/downstream/credits.py": "ecdb41db35a72e3b0807e8c6374358a7c60126f85398042dac95516bafbde9ca",
+      "src/downstream/distributions.py": "666a3a5996af172c79acd3a79b7ba0928a36262230364de7c16eec2e450db8e1",
+      "src/downstream/employer.py": "14a5d17d87763896fc0798dc2d23d6fee53a7337278f9cdac7d3ac67f8b85c67",
+      "src/downstream/evidence.py": "7da6d8876758ec19524a61c3c7d6f438b34844727f277aef50112ce84d5445e6",
+      "src/downstream/explanation.py": "e20c3761d2faefe8683c5c250b996883127593ebb1cebb7d5468ee94bfcfdeab",
+      "src/downstream/family.py": "79b4d710db6e2b5c64216b3e8e1582c121d4709b2ea2f2e7fdaf35a3cd42bf05",
+      "src/downstream/forecast_registry.py": "83a2aab9aa48c7f0b870adc2d05202f0fd283da34d203d068471345b84bd6d66",
+      "src/downstream/household.py": "e6b1516930e6baa0a24f3207b1b9aead6c359482039ad2aa7c3e465c11a59070",
+      "src/downstream/inference.py": "a110ac56a61d08f7b9868e0316e7aa2fcaf6f286410384616b06ad848d9daa88",
+      "src/downstream/knobs.py": "5dbd6a7edce3650b1b2c4d7abf14bc166acc20acdc1b54f03480e188a1fa1f6b",
+      "src/downstream/ledger.py": "cbf02f278a799037a3ed19274503ca957e391b74abca38cbb9d1ac96039d64d0",
+      "src/downstream/mc.py": "9c266fb07c9611624fdfd72e8d9944d4955fea66fe77d0d2feb7a1e3d95aa89d",
+      "src/downstream/mortality.py": "b05934506faee9d6721e2808ba6d70eb246beaa06f52a1d31264271180322aec",
+      "src/downstream/mortality_covariance.py": "88facacdcb17497413b667953b9ce636ab3792380bd75c9df2f0dcc44432c1b6",
+      "src/downstream/mortality_profiles.py": "5e595b60c417fce141a273a2d7fc83c485bb0b19e54eb01005d1094c4bf1badf",
+      "src/downstream/mortality_robustness.py": "3b8e4721b79fac2de641f0a3c52460a7262b565b4b63ca71dfce7165f57b5a22",
+      "src/downstream/mortality_strata.py": "2ecd152cf279f61013ca8836f6c201a17c0f549cce1f9f63eaa130ea540af713",
+      "src/downstream/params.py": "11c2279a31d8f4a0b838301787c66fb34e434a81349dc101753bfc5319bf104e",
+      "src/downstream/place.py": "d2cbe5118837a76b7b58d8f372b52aefb6e58e9ad687dd10be91be7764b5fadf",
+      "src/downstream/policy.py": "531c72a58ce9220fd45c1b1154998654fb5f3db39cf9789d80bef3cf7bdb45e4",
+      "src/downstream/receiving_community.py": "ebd6ff3d6561327df4111261f37f379c1b79b9f4f3b69fb49f65f5981562ab86",
+      "src/downstream/render.py": "e3aff0535c050bbdb831b821cb98def0d9eaccbb4c6bd709f428f7dd7fa8667c",
+      "src/downstream/result_sensitivity.py": "50e2c0dba0172982c4a9ad1481b210005916e914764d482bb0e7f38a1be5ea18",
+      "src/downstream/scenario.py": "d1eb4794ebc88a18d66d1b48ba63bf5f3ce141b343fb9f74270c3c41505ef578",
+      "src/downstream/scoring.py": "160d6a3d2a9ef9a94b5e35994454c7462906d9ec19d3bf33b2c642ef4601c5e3",
+      "src/downstream/sensitivity.py": "dc884479b17dcae9c3ad0ee9b898932812e21a350df2c0b289b25536d30c575b",
+      "src/downstream/snapshot.py": "fc61ab151680c082b13763b38270adede522f25dfdcf39f25dd2016faef499cf",
+      "src/downstream/source_contrasts.py": "b3614727745955f71b1c58ec10e2aaa6d33e10e5177696195397c8e73cb4a8c9",
+      "src/downstream/source_support.py": "57ef10a4992fc705d63f2f00bfb1521ddbf0306a48d22775059ed1ad3b18167e",
+      "src/downstream/study_library.py": "a9f03def1f8190e3efd74dad11ec3db733a002fd62993e95eb16075c9940d945",
+      "src/downstream/synthesis.py": "c3e54bed03e82fc0db4be61353f51b1f2cc4b1b0fe6059b7b6d206ff6c001c46",
+      "src/downstream/transmissions.py": "c96c8b07095415c3c1f15124858739265b19892ca35878e709cf4d4300f7decb",
+      "src/downstream/uncertainty_budget.py": "fd855321177e6273ff50e0c561b85f4051257a1fe8d269fb7884452b21abe52b",
+      "src/downstream/uncertainty_cases.py": "23d89f8d50344e74042e089a33acec0a95a43e1ea8048b038c1beb637047d811",
+      "src/downstream/units.py": "e56f50918dff74bfa129e2fca7c2c77c1033e9f8613c9b27cf51e898fe72cc75",
+      "src/downstream/validate.py": "f16a7d0f48fb1cac33b43aad5a807a1e541deed37625a69eadf66ba21e91eb91",
+      "src/downstream/valuation.py": "489b392082e94e54564383436537002e59af50483ab4a78accb69119059e420f",
+      "src/downstream/variants.py": "6c6b0942c550bd5e2d6555dd0282fb974f06944279ffd72c843312f9fc720ad2",
+      "src/downstream/vignette.py": "39a3cf98ca95df3132fa0e26edabb6aa682ac6403b7bfc92524ca18e7d8036a5",
+      "src/downstream/worker.py": "01b56ba3587b1c3d8d984b57995ec7266ced52b4454d7b29435b873c630ba4e8",
+      "params/CHANGELOG.md": "2add38e35eff9e0de41fbe0cf4f7f16cfdf356401a093b101d5c0861e40f794c",
+      "params/VERSION": "5668431714c71763f18e14a9e87bfd81e3bb4cfd7874fa1e2b1aee740c64e02e",
+      "params/age_mortality.csv": "9db45c7d220ff080913c65de747f0fc749c523bed3c584bc7bc7b0d1a1356f12",
+      "params/baseline_employment_transitions.csv": "113561409acc078bf660154a73efadad092b35836cb11cd0c77594aa5885c0e3",
+      "params/baselines.csv": "f67538abe22be16a159c5e95b8c69fb5c803d39b2faaf7580db703f6c3a72246",
+      "params/correlations.csv": "c170d46fe53cb90a4acf706390f5ea1b9e2be9dd21a3a030aa4c0b2820ca0c24",
+      "params/county_mortality.csv": "affc50ac3c42cf75848a7cec51bf3174381b49f1975fb532a695c908fd87cf12",
+      "params/county_mortality.provenance.json": "1acc88ec4219810e01716147ddecd0d65cd5629b7d5534289d236a69302c0cf6",
+      "params/county_rates.template.csv": "b757a665a96b973681dda4a69e9349eb2bb4c66f2751a42adc1032947765ef38",
+      "params/doi_review.json": "5987bac45b0bd9bef44b9ba1fefdbf2d2fea371cba7735d474497f72237404d7",
+      "params/evidence_corpus.csv": "ff38bba276919cb4e9e5cbfedfa867a4c6d2b7ca486522aebfd01765eb814af1",
+      "params/evidence_findings.csv": "097526c70f5829b310fa29415f1a45aaf1328220f0af845369f6a48b38fcdf14",
+      "params/mortality_profiles.csv": "9543f12e058708c19f0b5e6c55e3d5d832f208d3cb0fcf66ba41e9d8416b1bb4",
+      "params/nodes.csv": "c0223f46040f66ef0b38a2afd22c42bc2960b007444c0c0aafa6f3c7bc563e4e",
+      "params/parameters.csv": "5bd638fee5caaf7a9b5951823c4f429af3dddf182c5ef0c12393063011b59613",
+      "params/places.csv": "2bc1faa2955354c57ae467473aaea9bd58cdf044304d363b2f8b06869d6f45d4",
+      "params/references.bib": "ab69bb5c6f53aa32e4d68aaeeb4eef2172f7bc7800f5f76880bd42a9aac93e0a",
+      "params/source_support.json": "c117d9f0c9ecbbd9465a910fbff2e0d8742e2680795b9c0eb54f02ca918017d6",
+      "params/study_estimates.csv": "12ea8fee6af9b0d3200989186714b7e02b77e8931f40ea1b36c84bfd6e3fdc74",
+      "params/study_estimates.template.csv": "3f71fb5102d87827c926ac9c9ad09ce834798bb19c461cfca3f6854665cc66bf",
+      "parameter_set.json": "469aca21ddd6daa2fb2eb7eda267856133029aaa9b262710a5ac548e950d5871"
+    }
+  },
+  "artifacts_sha256": {
+    "paper/downstream.pdf": "68a3fc0f9ad43b22947a64f52a8d0f5e7756c43b5ce89ce21997800082b01113",
+    "docs/methods.html": "ec7f15cb187ced98240865ae346cd9e27cc9134ad8c6106445dc8c31782757df",
+    "build/source-repairs-20261027/dist/downstream-0.4.0-py3-none-any.whl": "de6d374e3eaaf07ee173c7cf30be5afffdc1d317817accf01c57bd41ed08eddb",
+    "build/source-repairs-20261027/dist/downstream-0.4.0.tar.gz": "bc3d3ea8906f3e8ebac0cfd0d69d1cd57437a7c0b52b444c6ac7275eeb8dcd5b"
+  },
+  "log_sha256": {
+    "full-suite.log": "2087db31892310ac6a40b3502e2f38776307060cc8ae4fd556c070cdbc725118",
+    "coverage.json": "1f90aa89bfa0789c23dff45a782704dfdf33ed34cb1e7c89bd93706592f8b6b2",
+    "focused.log": "ede907c7ef1c3fc4d18d60a5c0b73f003751de211f54a00de16747a29ea849b3",
+    "targeted-final.log": "55e4bf1280f47343ac574984565149f578f916f73d1dc0d2de6bfe3a98af3fbc",
+    "installed-wheel.log": "c4d49312a1c720a792aa878934a6450b84b03e625bb58f9b7fe08941d8ce8a70",
+    "distribution-build.log": "849e7fdb7834db2d8fa810bd8a3a309836aa5a1d6e990633d85a140601af9802",
+    "docs-final.log": "3d165429dc6e8cec4eb1df9ff9385aacc8cf80093ed6f788f812e762deeb04b5",
+    "audit.json": "99f7a91994e896b693b5580bfa24129bd8b8acabe70db2250f63d541c2d4958b"
+  },
+  "limits": [
+    "No new causal target transport, population admission, aggregate attribution or empirical uncertainty calibration.",
+    "Six original values are restored at their existing precision; corrected typed links do not resurrect retired wrong-unit identifiers.",
+    "Three original earnings relationships remain unsupported; their absence is not a zero effect.",
+    "No original PDF byte hash is claimed for Ehrensaft: the publisher table was read in browsing, and its numeric extraction is hashed separately.",
+    "No remote publication, companion repin, cache refresh or deployment performed for this correction."
+  ]
+}
