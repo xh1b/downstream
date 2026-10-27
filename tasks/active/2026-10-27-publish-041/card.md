@@ -2,7 +2,7 @@
 title: Publish the approved 0.4.1 candidate and prepare XH1B handoff
 area: release
 priority: P1
-assignee:
+assignee: codex-release041
 tags: [@tag:release]
 blocked-by: []
 ---
