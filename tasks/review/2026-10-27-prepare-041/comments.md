@@ -55,3 +55,10 @@ Source 1691850d70a27be5cfadf775c7a3edc9ce17b465; engine 0.4.1 / parameters v1.54
 All eight release qualification jobs pass in exact-source CI run 40478624183; scheduled mutation/benchmark work is separate and its recorded status is preserved. The original push run was superseded by this scheduled run at the same SHA.
 
 Receipt: docs/audits/release_0_4_1.md and release_0_4_1.json, committed in ab92663. Eleven local assets are sealed under build/release041-20261027/assets; manifest hashes and unchanged src/params/validation trees were rechecked. Publication is pending explicit confirmation of a stable/latest v0.4.1 release with these assets. Existing v0.4.0 and companion deployment remain unchanged.
+
+## c-1e1cebf7237c
+
+- At: 2026-10-27 17:19 HKT
+- By: codex-release041
+
+done: active -> review.
