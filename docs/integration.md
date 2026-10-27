@@ -712,6 +712,7 @@ scenario result shape below.
 | `build-places` | regenerate params/places.csv from the committed Atlas + WONDER county inputs |
 | `audit` | parameter/citation/DAG checks |
 | `export` | version-stamped parameter_set.json snapshot (consumed by production; refuses while audit has ERRORs) |
+| `source-contrast` | evaluate a corrected source estimate in its explicit units |
 | `validate` | V0 internal consistency + V1 target |
 | `citations` | citation coverage report |
 | `transmissions` | which outcomes walk to grandchildren, on whose evidence — and what is one extraction away |
@@ -732,6 +733,7 @@ def child_support_report(scenario: 'ScenarioInput | None' = None, *, params_dir:
 def household_comparison(payload, params_dir=None): ...
 def project_mortality_cohort(payload: 'dict', params_dir: 'Path | None' = None) -> 'dict': ...
 def receiving_comparison(params: 'ParameterSet', payload: 'dict') -> 'dict': ...
+def source_contrast(params, nodes, payload): ...
 def scale_outcome(row, factor): ...
 def mix_expected(results, weights, outcome): ...
 ```
@@ -789,3 +791,37 @@ semantics and [warehouse inputs](#warehouse-inputs) for that separate adapter.
 
 For stale generated references, environment or task-command problems, see
 [development troubleshooting](development.md#troubleshooting).
+
+
+## Corrected source contrasts
+
+<!-- @ref:source-repair-contract; @tag:evidence -->
+<!-- @link:code-source-contrasts; @link:test-source-repairs; @link:source-withdrawal-contract. -->
+
+`source-contrast --input validation/source_contrast_input.json` evaluates one
+corrected source estimate. The Python equivalent is
+`downstream.source_contrasts.source_contrast(params, nodes, payload)`.
+Supply exactly `link`, `input_node`, `input_unit` and finite numeric `dose`.
+The node and unit must match the source-specific parameter; a dollar shock
+cannot substitute for penetration points, real euros or an absolute wage-ratio
+change. Old superseded identifiers still refuse calculation.
+
+For Raphael and Aizer, output is a log change; `rate_ratio` and `percent_change`
+use `exp`/`expm1`, preserving signed effects and avoiding the first-order percent
+approximation. Autor uses penetration percentage points; Colantone uses real
+2006-EUR1000/worker increases over the two years before an election. Neither supplies
+a USD conversion, persistence assumption or policy-to-trade causal bridge.
+Probability/vote-share changes are percentage points, not relative percent
+changes; physically impossible changes are refused.
+
+Collinson, Bingley and Ehrensaft accept only `dose: 1`, the fixed study contrast,
+not a number of people. Collinson scales the IV earnings difference by the
+matching quarters-5–8 non-evicted sample mean 4254, held fixed; that index is not
+an independently identified complier-counterfactual earnings ratio. Bingley
+returns a probability difference without dividing by a regression constant.
+Ehrensaft returns the pooled sex-adjusted adult victimization association,
+not a daughters-only intervention effect. No adapter result is admitted for
+public headlines, aggregate attribution or intergenerational composition.
+The [individual source review](../params/source_support.json) records source
+versions, uncertainty bases and limitations; [data custody](evidence.md#source-withdrawals-and-retained-records)
+preserves the original rows and the three unsupported relationships.

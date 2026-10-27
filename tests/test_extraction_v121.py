@@ -39,7 +39,7 @@ EARNINGS = "eviction_order->eviction_earnings_response"
 
 
 def test_version_is_v121():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.53"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.54"
 
 
 def test_shelter_row_matches_table_v_col3():

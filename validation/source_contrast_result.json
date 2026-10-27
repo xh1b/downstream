@@ -1,0 +1,42 @@
+{
+  "schema": "downstream-source-contrast/1",
+  "parameter_set_version": "v1.54",
+  "input": {
+    "link": "female_male_wage_ratio_change->female_assault_log_change",
+    "input_node": "female_male_wage_ratio_change",
+    "input_unit": "ratio_delta",
+    "dose": 0.01
+  },
+  "output_node": "female_assault_log_change",
+  "effect": {
+    "point": -0.00813,
+    "low": -0.0143432,
+    "high": -0.0019168,
+    "unit": "log_delta"
+  },
+  "population_scope": "California county/race/year cells 1990-2003; female assault hospital admissions",
+  "method": "Table 2 Panel A col.3: -.813 (SE .317). Change in log female assault hospitalizations per absolute unit change in potential female/male wage ratio. Input .01 means one ratio percentage point; not a relative wage multiplier or log-log elasticity. Hospitalization outcome is not all household IPV incidence.",
+  "source": {
+    "source_url": "https://www.ncbi.nlm.nih.gov/research/bionlp/RESTful/pmcoa.cgi/BioC_xml/PMC4123456/unicode",
+    "locator": "Author manuscript in PMC4123456, Table 2 Panel A col.3; machine-readable primary full-text XML",
+    "artifact_sha256": "c9498f4af8b33f072127eb3de99f9afefd13af120941c361eac8dd12428b3410",
+    "artifact_kind": "primary full text XML",
+    "review_date": "2026-10-27"
+  },
+  "eligible_for_public_headline": false,
+  "limitations": [
+    "Source-population contrast; target transport and policy-to-exposure mapping are not identified.",
+    "Coefficient support only; no exposure, baseline or transport error distribution is included.",
+    "No aggregate attributable count, cross-stream sum or intergenerational composition."
+  ],
+  "rate_ratio": {
+    "point": 0.9919029590704382,
+    "low": 0.9857591736533887,
+    "high": 0.9980850358879226
+  },
+  "percent_change": {
+    "point": -0.8097040929561745,
+    "low": -1.4240826346611242,
+    "high": -0.1914964112077335
+  }
+}

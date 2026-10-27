@@ -73,7 +73,7 @@
     "seed": 1901,
     "sampler": "lhs+iman-conover",
     "correlations_applied": 2,
-    "parameter_set_version": "v1.53-sampled"
+    "parameter_set_version": "v1.54-sampled"
   },
   "sampled_inputs": {
     "sampled_workers": {
@@ -95,10 +95,10 @@
   },
   "expected_effect_intervals_90": {
     "excess_deaths": {
-      "p05": 20.9584,
-      "p50": 28.6057,
-      "p95": 38.1056,
-      "mean": 29.2623
+      "p05": 20.6814,
+      "p50": 28.7538,
+      "p95": 39.2208,
+      "mean": 29.2812
     },
     "child_lifetime_earnings_lost_usd": {
       "p05": 155330958.989,
@@ -107,41 +107,41 @@
       "mean": 467214315.2882
     },
     "mortality_no_sustained_excess": {
-      "p05": 15.0042,
-      "p50": 20.8323,
-      "p95": 27.8395,
-      "mean": 20.9824
+      "p05": 14.7958,
+      "p50": 20.5439,
+      "p95": 27.5553,
+      "mean": 20.9706
     },
     "mortality_persistence_difference": {
-      "p05": 2.9679,
-      "p50": 8.1501,
-      "p95": 13.6635,
-      "mean": 8.2799
+      "p05": 2.9469,
+      "p50": 8.1287,
+      "p95": 13.6208,
+      "mean": 8.3105
     }
   },
   "process_intervals_90": {
     "realized_exposed_deaths": {
-      "p05": 98.0,
-      "p50": 124.0,
-      "p95": 151.0,
-      "mean": 124.1211
+      "p05": 94.0,
+      "p50": 121.0,
+      "p95": 154.0,
+      "mean": 123.0781
     },
     "realized_reference_deaths": {
-      "p05": 72.0,
-      "p50": 92.0,
-      "p95": 119.0,
-      "mean": 94.0742
+      "p05": 74.0,
+      "p50": 95.0,
+      "p95": 118.0,
+      "mean": 95.0625
     },
     "realized_independent_cohort_difference": {
-      "p05": 3.0,
-      "p50": 31.0,
-      "p95": 53.0,
-      "mean": 30.0469
+      "p05": 4.0,
+      "p50": 27.0,
+      "p95": 56.0,
+      "mean": 28.0156
     }
   },
   "fixed_input_reference": {
     "label": "scenario",
-    "parameter_set_version": "v1.53",
+    "parameter_set_version": "v1.54",
     "engine_version": "0.4.0",
     "uncertainty": {
       "band_kind": "parameter-support envelope, not a confidence interval",
@@ -318,10 +318,10 @@
                 "sullivan2009"
               ],
               "parameter_interval_90": {
-                "p05": 22.6085,
-                "p50": 29.0417,
-                "p95": 36.9744,
-                "mean": 29.2525
+                "p05": 22.413,
+                "p50": 29.3455,
+                "p95": 36.9588,
+                "mean": 29.2516
               }
             },
             "no_sustained_excess": {
@@ -336,9 +336,9 @@
               "first_changed_follow_up_year": 7,
               "fixed_late_odds_ratio": 1.0,
               "parameter_interval_90": {
-                "p05": 15.4187,
-                "p50": 20.7547,
-                "p95": 26.8295,
+                "p05": 15.4331,
+                "p50": 20.9178,
+                "p95": 26.554,
                 "mean": 20.9542
               }
             }
@@ -363,10 +363,10 @@
             "Baseline aging and target-population transport remain unresolved in both structures."
           ],
           "source_minus_no_sustained_parameter_interval_90": {
-            "p05": 2.9368,
-            "p50": 8.1962,
-            "p95": 13.7548,
-            "mean": 8.2982
+            "p05": 2.9448,
+            "p50": 8.2313,
+            "p95": 13.8262,
+            "mean": 8.2975
           },
           "sampling": {
             "draws": 256,
@@ -595,10 +595,10 @@
           ]
         },
         "parameter_interval_90": {
-          "p05": 22.6085,
-          "p50": 29.0417,
-          "p95": 36.9744,
-          "mean": 29.2525
+          "p05": 22.413,
+          "p50": 29.3455,
+          "p95": 36.9588,
+          "mean": 29.2516
         }
       },
       "child_lifetime_earnings_lost_usd": {
@@ -766,7 +766,7 @@
         "low": null,
         "high": null,
         "steps": [],
-        "blocked": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified.",
+        "blocked": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The source measures earnings for three generations and education for four. It does not estimate .55 causal gap transmission to a fourth earnings generation. Retaining a projection would require an explicit uncalibrated assumption, not a source-identified default.",
         "source_status": "withdrawn",
         "withdrawn_input": "grandchild_earnings->greatgrandchild_earnings"
       }
@@ -785,7 +785,7 @@
       "greatgrandchild": {
         "status": "source_withdrawn",
         "eligible_for_validated_direct_contrast": false,
-        "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
+        "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The source measures earnings for three generations and education for four. It does not estimate .55 causal gap transmission to a fourth earnings generation. Retaining a projection would require an explicit uncalibrated assumption, not a source-identified default."
       }
     },
     "target_population": null,
@@ -812,7 +812,7 @@
         "A subgroup's nonsignificant coefficient is retained with its uncertainty, not replaced with zero."
       ]
     },
-    "input_content_sha256": "98604c841d7d8978310410a11112bd9e06df56d30a1ff110c5eae3d69fefb5f1",
+    "input_content_sha256": "528d432abda815ad5c6dcf498e8205ce0fc42b0ca083a9bb77fcf5d92f4c86f8",
     "parameter_uncertainty": {
       "interval": "central 90% Monte Carlo interval (p05\u2013p95)",
       "scope": "parameter uncertainty only",
@@ -832,13 +832,13 @@
       "seed": 1901,
       "sampler": "lhs+iman-conover",
       "correlations_applied": 2,
-      "parameter_set_version": "v1.53-sampled",
+      "parameter_set_version": "v1.54-sampled",
       "outcomes": {
         "excess_deaths": {
-          "p05": 22.6085,
-          "p50": 29.0417,
-          "p95": 36.9744,
-          "mean": 29.2525
+          "p05": 22.413,
+          "p50": 29.3455,
+          "p95": 36.9588,
+          "mean": 29.2516
         },
         "child_lifetime_earnings_lost_usd": {
           "p05": 157010870.2215,
@@ -858,22 +858,22 @@
       "baseline_annual_rate": 0.004944,
       "counterfactual_death_probability": 0.09414859632988004,
       "exposed_deaths": {
-        "p05": 104,
+        "p05": 106,
         "p50": 123,
-        "p95": 141,
-        "mean": 123.6562
+        "p95": 142,
+        "mean": 123.543
       },
       "counterfactual_deaths": {
-        "p05": 80,
-        "p50": 95,
-        "p95": 108,
-        "mean": 94.1445
+        "p05": 79,
+        "p50": 94,
+        "p95": 109,
+        "mean": 94.1523
       },
       "reference_cohort_difference": {
-        "p05": 7,
-        "p50": 29,
-        "p95": 54,
-        "mean": 29.5117
+        "p05": 8,
+        "p50": 30,
+        "p95": 51,
+        "mean": 29.3906
       }
     }
   },
@@ -913,22 +913,22 @@
         "status": "declared_sensitivity_not_calibrated_target_uncertainty",
         "expected_effect_intervals_90": {
           "excess_deaths": {
-            "p05": 20.9584,
-            "p50": 28.6057,
-            "p95": 38.1056,
-            "mean": 29.2623
+            "p05": 20.6814,
+            "p50": 28.7538,
+            "p95": 39.2208,
+            "mean": 29.2812
           },
           "mortality_no_sustained_excess": {
-            "p05": 15.0042,
-            "p50": 20.8323,
-            "p95": 27.8395,
-            "mean": 20.9824
+            "p05": 14.7958,
+            "p50": 20.5439,
+            "p95": 27.5553,
+            "mean": 20.9706
           },
           "mortality_persistence_difference": {
-            "p05": 2.9679,
-            "p50": 8.1501,
-            "p95": 13.6635,
-            "mean": 8.2799
+            "p05": 2.9469,
+            "p50": 8.1287,
+            "p95": 13.6208,
+            "mean": 8.3105
           }
         },
         "case_minus_independent_source_reference_90": {
@@ -965,29 +965,29 @@
         "status": "declared_sensitivity_not_calibrated_target_uncertainty",
         "expected_effect_intervals_90": {
           "excess_deaths": {
-            "p05": 9.1392,
-            "p50": 12.4554,
-            "p95": 16.5999,
-            "mean": 12.7192
+            "p05": 9.0323,
+            "p50": 12.4322,
+            "p95": 17.0011,
+            "mean": 12.7305
           },
           "mortality_no_sustained_excess": {
-            "p05": 6.3117,
-            "p50": 8.5602,
-            "p95": 11.297,
-            "mean": 8.6609
+            "p05": 6.3032,
+            "p50": 8.5329,
+            "p95": 11.2293,
+            "mean": 8.6573
           },
           "mortality_persistence_difference": {
-            "p05": 1.4861,
-            "p50": 4.0244,
-            "p95": 6.6184,
-            "mean": 4.0584
+            "p05": 1.4744,
+            "p50": 3.9989,
+            "p95": 6.6517,
+            "mean": 4.0732
           }
         },
         "case_minus_independent_source_reference_90": {
-          "p05": -21.6391,
-          "p50": -16.2214,
-          "p95": -11.7574,
-          "mean": -16.543
+          "p05": -22.3565,
+          "p50": -16.2058,
+          "p95": -11.7107,
+          "mean": -16.5507
         },
         "sampled_inputs": {
           "sampled_workers": {
@@ -1036,10 +1036,10 @@
           }
         },
         "case_minus_independent_source_reference_90": {
-          "p05": -38.3481,
-          "p50": -28.7441,
-          "p95": -21.0495,
-          "mean": -29.2623
+          "p05": -39.2951,
+          "p50": -28.7951,
+          "p95": -20.7788,
+          "mean": -29.2812
         },
         "sampled_inputs": {
           "sampled_workers": {
@@ -1069,29 +1069,29 @@
         "status": "declared_sensitivity_not_calibrated_target_uncertainty",
         "expected_effect_intervals_90": {
           "excess_deaths": {
-            "p05": 18.6095,
-            "p50": 29.1857,
-            "p95": 43.6448,
-            "mean": 29.7945
+            "p05": 18.4485,
+            "p50": 29.4909,
+            "p95": 43.6264,
+            "mean": 29.8091
           },
           "mortality_no_sustained_excess": {
-            "p05": 13.1721,
-            "p50": 20.5748,
-            "p95": 31.1384,
-            "mean": 21.2469
+            "p05": 13.4869,
+            "p50": 21.0445,
+            "p95": 30.8876,
+            "mean": 21.2489
           },
           "mortality_persistence_difference": {
-            "p05": 2.6793,
-            "p50": 8.2687,
-            "p95": 15.5394,
-            "mean": 8.5476
+            "p05": 2.5201,
+            "p50": 8.1751,
+            "p95": 15.6014,
+            "mean": 8.5602
           }
         },
         "case_minus_independent_source_reference_90": {
-          "p05": -6.8932,
-          "p50": -0.2599,
-          "p95": 9.7574,
-          "mean": 0.5322
+          "p05": -6.5424,
+          "p50": 0.0223,
+          "p95": 9.2485,
+          "mean": 0.5279
         },
         "sampled_inputs": {
           "sampled_workers": {
@@ -1121,29 +1121,29 @@
         "status": "declared_sensitivity_not_calibrated_target_uncertainty",
         "expected_effect_intervals_90": {
           "excess_deaths": {
-            "p05": 26.7118,
-            "p50": 28.9224,
-            "p95": 30.4658,
-            "mean": 28.7936
+            "p05": 26.4988,
+            "p50": 28.8494,
+            "p95": 30.6178,
+            "mean": 28.7775
           },
           "mortality_no_sustained_excess": {
-            "p05": 16.8404,
-            "p50": 20.6483,
-            "p95": 24.8097,
-            "mean": 20.7215
+            "p05": 16.8001,
+            "p50": 20.707,
+            "p95": 24.957,
+            "mean": 20.7197
           },
           "mortality_persistence_difference": {
-            "p05": 3.3519,
-            "p50": 8.218,
-            "p95": 12.1994,
-            "mean": 8.0721
+            "p05": 3.3872,
+            "p50": 8.1059,
+            "p95": 12.0957,
+            "mean": 8.0578
           }
         },
         "case_minus_independent_source_reference_90": {
-          "p05": -8.7756,
-          "p50": 0.275,
-          "p95": 6.4401,
-          "mean": -0.4687
+          "p05": -9.5169,
+          "p50": -0.034,
+          "p95": 6.6722,
+          "mean": -0.5037
         },
         "sampled_inputs": {
           "sampled_workers": {

@@ -83,7 +83,7 @@ Version 0.4.0 is a conditional scenario-model release prepared for
 from companion deployment and scientific validation. Consult the
 [model card](docs/model_card.md#evaluation-status),
 [release review](docs/audits/release_0_4.md) and task board for scope and status.
-Parameters v1.53 withdraw 16 unsupported historical inputs from calculation;
+Parameters v1.54 withdraw 16 unsupported historical inputs from calculation;
 [the source policy](docs/evidence.md#source-withdrawals-and-retained-records)
 keeps their original records separate from available estimates.
 The database runner, production cache and website surfaces belong to the
@@ -95,7 +95,7 @@ from the maintained [software guides](docs/readme.md).
 <!-- BEGIN GENERATED ATTRIBUTION -->
 The identified bibliography contains 108 sources and 214 named author records (people and organizations), 1979-2026.
 
-The parameters cite 40 sources with 97 named author records; these are not counts of independent research teams.
+The parameters cite 49 sources with 117 named author records; these are not counts of independent research teams.
 
 The bibliography includes research, methods and context sources; inclusion does not establish peer review or independent validation. Modeled numbers carry their cited inputs and declared structural assumptions.
 

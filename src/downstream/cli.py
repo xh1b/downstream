@@ -306,6 +306,10 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
     p.add_argument("--out", default=None, help="write to a file instead of stdout")
 
+    p = sub.add_parser("source-contrast", help="evaluate a corrected source estimate in its explicit units")
+    p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
+    p.add_argument("--input", required=True)
+
     p = sub.add_parser("validate", help="V0 internal consistency + V1 target")
     p.add_argument("--params", default=DEFAULT_PARAMS_DIR)
 
@@ -345,6 +349,11 @@ def _run_main(argv: list[str] | None = None) -> int:
             parser.error(str(exc))
         return 0
     parts = load_all(args.params)
+    if args.cmd == "source-contrast":
+        from .source_contrasts import source_contrast
+        _dump(source_contrast(parts["params"], parts["nodes"],
+                              json.loads(Path(args.input).read_text())))
+        return 0
     if args.cmd == "uncertainty":
         from .uncertainty_budget import propagate_uncertainty
         _dump(propagate_uncertainty(parts['params'],parts['baselines'],json.loads(Path(args.input).read_text()),

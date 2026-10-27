@@ -15,7 +15,7 @@ from downstream.ledger import DIRECT, start
 from downstream.params import load_all
 from downstream.source_support import SourceUnavailable, UnavailableLedger, policy
 
-WITHDRAWN = (
+ORIGINAL_WITHDRAWALS = (
     'divorce->child_earnings',
     'family_size->child_earnings',
     'grandchild_earnings->greatgrandchild_earnings',
@@ -33,6 +33,14 @@ WITHDRAWN = (
     'import_shock->radical_right_vote_share',
     'displacement_event->exam_noncompletion_hazard',
 )
+
+RESTORED = {
+    'displacement->college_enrollment', 'displacement->parental_income_shortrun',
+    'eitc_exposure->adult_earnings_early', 'household_ipv->child_internalizing_sd',
+    'household_ipv->child_externalizing_sd', 'unemployment_status->mental_health_sd',
+}
+WITHDRAWN = tuple(link for link in ORIGINAL_WITHDRAWALS if link not in RESTORED)
+
 
 
 @pytest.mark.parametrize('link', WITHDRAWN)
@@ -70,7 +78,7 @@ def test_snapshot_partitions_active_and_archived_parameters_and_references():
     from downstream.snapshot import build
     result = build()
     assert result['schema'] == 'downstream-parameter-set/3'
-    assert len(result['parameters']) == 51
+    assert len(result['parameters']) == 64
     assert {row['link'] for row in result['withdrawn_parameters']} == set(WITHDRAWN)
     assert not (set(WITHDRAWN) & {row['link'] for row in result['parameters']})
     assert not (set(result['unidentified_reference_archive']) & set(result['citations']))
@@ -112,14 +120,15 @@ def test_original_parameter_csv_records_are_byte_preserved():
     root = Path(__file__).resolve().parents[1]
     # SHA-256 at d7691dac652a81bddb16c9f91a9cf8ecd88b70db, before withdrawal policy.
     # A fixed receipt also works in shallow CI checkouts and source distributions.
-    assert hashlib.sha256((root/'params/parameters.csv').read_bytes()).hexdigest() == (
+    assert hashlib.sha256((root/'params/parameters.csv').read_bytes()[:82447]).hexdigest() == (
         'f6ce70a100042189691eb10291c9ead48655cbf37dc49d49c4ac2ce4a3a468d6'
     )
 
 
 def test_policy_matches_the_public_withdrawal_inventory():
     from collections import Counter
-    rows = policy()['withdrawn_parameters']
-    assert set(rows) == set(WITHDRAWN)
+    rows = policy()['historical_withdrawn_parameters_v1_53']
+    assert set(rows) == set(ORIGINAL_WITHDRAWALS)
+    assert set(policy()['withdrawn_parameters']) == set(WITHDRAWN)
     assert Counter(row['finding'] for row in rows.values()) == {'sourceMismatch': 7, 'notVerified': 9}
     assert set(policy()['unidentified_references']) == {'adermon2018', 'lindo2018'}

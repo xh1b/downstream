@@ -44,6 +44,6 @@ def test_unemployment_endogeneity_warning_declared():
 
 
 def test_version_bumped_and_audit_clean():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.53"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.54"
     errors = [f for f in audit(PARAMS_DIR) if f.severity == ERROR]
     assert errors == []

@@ -247,7 +247,9 @@ def audit(params_dir: str | Path | None = None) -> list[Finding]:
         "unemployment_rate", "eitc_exposure", "male_earnings_pc",
         "male_mass_layoff_rate", "eviction_order", "foreclosure_order",
         "local_unemp_shock", "household_hardship", "couple_unemployment",
-        "unemployment_status",
+        "unemployment_status", "unemployment_rate_change_pp",
+        "female_male_wage_ratio_change", "import_penetration_change_pp",
+        "import_exposure_eur1000_per_worker_2y", "childhood_parental_violence_exposure",
     }
     produced = {p.to_node for p in params.parameters}
     for p in params.parameters:

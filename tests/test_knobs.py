@@ -201,7 +201,7 @@ def test_sobol_ci_output_is_labeled_as_design_noise():
     groups = [set(row["links"]) for row in out["indices"]]
     from downstream.source_support import is_withdrawn
     assert set.union(*groups) == {p.link for p in PARAMS.parameters if not is_withdrawn(p.link)}
-    assert sum(map(len, groups)) == 51
+    assert sum(map(len, groups)) == 64
     assert {"child_earnings->grandchild_earnings"} in groups
     assert out["model_evals"] == calls
     assert "independent inputs" in out["correlation_note"]

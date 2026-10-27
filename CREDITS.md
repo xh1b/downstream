@@ -8,21 +8,21 @@
 ## The claim, computed
 
 - The identified bibliography contains 108 sources and 214 named author records (people and organizations), 1979-2026.
-- The parameters cite 40 sources with 97 named author records; these are not counts of independent research teams.
+- The parameters cite 49 sources with 117 named author records; these are not counts of independent research teams.
 - The bibliography includes research, methods and context sources; inclusion does not establish peer review or independent validation. Modeled numbers carry their cited inputs and declared structural assumptions.
 
 ## The researchers
 
 - **Abraham, Sarah** — chetty2016*, chetty2016jama
-- **Aizer, Anna** — aizer2010
+- **Aizer, Anna** — aizer2010*
 - **Akee, Randall K. Q.** — akee2010*
 - **Alesina, Alberto** — alesina1999
 - **Ananat, Elizabeth O.** — ananat2017
 - **Angold, Adrian** — akee2010*, costello2003
-- **Autor, David H.** — adh2013*, autor2019, autor2020, autor2003, autor2020polarization
+- **Autor, David H.** — adh2013*, autor2020polarization*, autor2019, autor2020, autor2003
 - **World Bank** — worldbank2023
 - **Baqir, Reza** — alesina1999
-- **Bastian, Jacob** — bastian2018
+- **Bastian, Jacob** — bastian2018*
 - **Beckman, Richard J.** — mckay1979
 - **Bell, Brian** — bellfasanimachin2013
 - **Bergeron, Augustin** — chetty2016*
@@ -34,7 +34,7 @@
 - **Borjas, George J.** — borjas2003
 - **Boyce, W. Thomas** — zg2012
 - **Brand, Jennie E.** — brand2014*
-- **Brown, Jocelyn** — ehrensaft2003
+- **Brown, Jocelyn** — ehrensaft2003*
 - **Browning, Martin** — browningheinesen2012*, browning2006
 - **Bumpass, Larry** — mclanahanbumpass1988*
 - **Buonanno, Paolo** — bianchibuonannopinotti2012*
@@ -44,11 +44,11 @@
 - **Card, David** — card1990
 - **Case, Anne** — case2015
 - **Charles, Kerwin Kofi** — charles2004*
-- **Chen, Henian** — ehrensaft2003
+- **Chen, Henian** — ehrensaft2003*
 - **Chetty, Raj** — chetty2014*, chetty2016*, chettyhendren2018*, chetty2016jama
-- **Cohen, Patricia** — ehrensaft2003
+- **Cohen, Patricia** — ehrensaft2003*
 - **Coid, Jeremy W.** — farrington2006
-- **Colantone, Italo** — colantone2018
+- **Colantone, Italo** — colantone2018*
 - **Collinson, Robert** — collinson2024*
 - **Compton, Stephen N.** — costello2003
 - **Conover, William J.** — mckay1979, iman1982
@@ -62,22 +62,22 @@
 - **Dahl, Gordon B.** — dahl2012*
 - **Damm, Anna Piil** — damm2014*
 - **Dano, Anne Møller** — browning2006
-- **Davies, Corrie** — evans2008
+- **Davies, Corrie** — evans2008*
 - **Davis, Steven J.** — davis2011*
 - **Deaton, Angus** — case2015
 - **Desmond, Matthew** — desmond2016
 - **Devereux, Paul J.** — blackdevereuxsalvanes2009*, black2007*, black2005
-- **DiLillo, David** — evans2008
+- **DiLillo, David** — evans2008*
 - **Ding, Rui** — knop2018*
 - **Doran, Kirk** — doran2022
-- **Dorn, David** — adh2013*, autor2019, autor2020, autor2020polarization
+- **Dorn, David** — adh2013*, autor2020polarization*, autor2019, autor2020
 - **Duggan, Mark G.** — autor2003
 - **Duncan, Greg J.** — duncan2010, zg2012
 - **Dustmann, Christian** — damm2014*
 - **Easterly, William** — alesina1999
-- **Ehrensaft, Miriam K.** — ehrensaft2003
+- **Ehrensaft, Miriam K.** — ehrensaft2003*
 - **Eliason, Marcus** — eliason2009, eliasonstorrie2009
-- **Evans, Sarah E.** — evans2008
+- **Evans, Sarah E.** — evans2008*
 - **Farrington, David P.** — farrington2006
 - **Fasani, Francesco** — bellfasanimachin2013
 - **Fetzer, Thiemo** — fetzer2019
@@ -98,7 +98,7 @@
 - **Hadley, Thomas** — culhane2007
 - **Halla, Martin** — halla2020*
 - **Hansen, Benjamin** — lindo2018maltreatment*
-- **Hanson, Gordon H.** — adh2013*, autor2019, autor2020, autor2020polarization
+- **Hanson, Gordon H.** — adh2013*, autor2020polarization*, autor2019, autor2020
 - **Harknett, Kristen** — schneider2016*
 - **Harnett, Lucy M.** — farrington2006
 - **He, Jingying** — lightheobey2020
@@ -106,7 +106,7 @@
 - **Heisz, Andrew** — oreopoulos2012
 - **Hendren, Nathaniel** — chetty2014*, chettyhendren2018*
 - **Hersbach, Hans** — hersbach2000
-- **Hilger, Nathaniel G.** — hilger2016
+- **Hilger, Nathaniel G.** — hilger2016*
 - **Hollingsworth, Alex** — holliingsworth2017
 - **Huang, Tao** — knop2018*
 - **Humphries, John Eric** — collinson2024*
@@ -116,7 +116,7 @@
 - **Isen, Adam** — doran2022
 - **Jackson, C. Kirabo** — jackson2016*
 - **Jacobson, Louis S.** — jacobson1993*
-- **Johnson, Jeffrey G.** — ehrensaft2003
+- **Johnson, Jeffrey G.** — ehrensaft2003*
 - **Johnson, Rucker C.** — jackson2016*
 - **Jolliffe, Darrick** — farrington2006
 - **Kalil, Ariel** — duncan2010, zg2012
@@ -138,7 +138,7 @@
 - **Luttmer, Erzo F. P.** — luttmer2001
 - **Machin, Stephen** — bellfasanimachin2013
 - **Mader, Nicholas S.** — collinson2024*
-- **Majlesi, Kaveh** — autor2020, autor2020polarization
+- **Majlesi, Kaveh** — autor2020polarization*, autor2020
 - **Manchester, Joyce** — vonwachter2009
 - **Marcus, Jan** — marcus2013*
 - **Massih, Sofía Sandgren** — lindahl2015*
@@ -148,10 +148,10 @@
 - **McLanahan, Sara** — schneider2016*, mclanahanbumpass1988*, mclanahan1994
 - **Meissner, Christopher M.** — galofrevila2021
 - **Metraux, Stephen** — culhane2007
-- **Michelmore, Katherine** — bastian2018
+- **Michelmore, Katherine** — bastian2018*
 - **Miller, Ty** — lightmiller2018*
 - **Moretti, Enrico** — moretti2010*, currie2003
-- **Moser, Klaus** — paul2009
+- **Moser, Klaus** — paul2009*
 - **Mustard, David B.** — gould2002*
 - **Mörk, Eva** — mork2019
 - **National Academies of Sciences, Engineering, and Medicine** — naidich2020
@@ -163,14 +163,14 @@
 - **Page, Marianne E.** — oreopoulos2008*
 - **Palme, Mårten** — lindahl2015*
 - **Pathak, Parag** — campbell2011*
-- **Paul, Karsten I.** — paul2009
+- **Paul, Karsten I.** — paul2009*
 - **Peri, Giovanni** — ottaviano2012
 - **Persico, Claudia** — jackson2016*
 - **Pettigrew, Thomas F.** — pettigrew2006
 - **Piehl, Anne Morrison** — butcher1998
 - **Pinotti, Paolo** — bianchibuonannopinotti2012*
 - **Putnam, Robert D.** — putnam2007
-- **Raphael, Steven** — raphael2001
+- **Raphael, Steven** — raphael2001*
 - **Reed, Davin K.** — collinson2024*
 - **Rege, Mari** — rege2007*
 - **Riukula, Krista** — huttunen2019
@@ -190,14 +190,14 @@
 - **Simon, Kosali** — holliingsworth2017
 - **Simon Thomas, Juli** — brand2014*
 - **Sjögren, Anna** — lindahl2015*, mork2019
-- **Smailes, Elizabeth** — ehrensaft2003
+- **Smailes, Elizabeth** — ehrensaft2003*
 - **Smith, Geoff** — immergluck2006
 - **Sobol', Ilya M.** — sobol2001
 - **Solon, Gary** — solon1992*
 - **Song, Jae** — vonwachter2009
 - **Soteriou, Nicola** — farrington2006
 - **Stancanelli, Elena** — bloemen2018
-- **Stanig, Piero** — colantone2018
+- **Stanig, Piero** — colantone2018*
 - **Stephens, Melvin, Jr.** — charles2004*
 - **Stepner, Michael** — chetty2016*, chetty2016jama
 - **Stevens, Ann Huff** — oreopoulos2008*, stevens2011*, schallerstevens2015
@@ -222,7 +222,7 @@
 - **Westbrook, Jay Lawrence** — sullivan2000
 - **Widom, Cathy Spatz** — widom1989
 - **Wilson, Riley** — kearney2018fracking*, kearney2020
-- **Winter-Ebmer, Rudolf** — raphael2001
+- **Winter-Ebmer, Rudolf** — raphael2001*
 - **Yagan, Danny** — yagan2019
 - **Yang, Dean** — yang2008
 - **Zerpa, Mariana** — schallerzerpa2019*
@@ -235,15 +235,15 @@
 | key | authors | year | venue | role | evidence | doi |
 |:---|:---|:---|:---|:---|:---|:---|
 | adh2013 | Autor, David H.; Dorn, David; Hanson, Gordon H. | 2013 | American Economic Review | parameter | fulltext-table | 10.1257/aer.103.6.2121 |
-| aizer2010 | Aizer, Anna | 2010 | American Economic Review | context | fulltext | 10.1257/aer.100.4.1847 |
+| aizer2010 | Aizer, Anna | 2010 | American Economic Review | parameter | fulltext | 10.1257/aer.100.4.1847 |
 | akee2010 | Akee, Randall K. Q.; Copeland, William E.; Keeler, Gordon et al. | 2010 | American Economic Journal: Applied Economics | parameter | fulltext-table | 10.1257/app.2.1.86 |
 | alesina1999 | Alesina, Alberto; Baqir, Reza; Easterly, William | 1999 | Quarterly Journal of Economics | context | canonical | 10.3386/w6009 |
 | ananat2017 | Ananat, Elizabeth O.; Gassman-Pines, Anna; Francis, David V. et al. | 2017 | Science | context | abstract | 10.1126/science.aam5347 |
 | autor2003 | Autor, David H.; Duggan, Mark G. | 2003 | Quarterly Journal of Economics | context | canonical | - |
 | autor2019 | Autor, David; Dorn, David; Hanson, Gordon | 2019 | American Economic Review: Insights | context | fulltext | 10.1257/aeri.20180010 |
 | autor2020 | Autor, David; Dorn, David; Hanson, Gordon et al. | 2020 | American Economic Review | context | abstract | 10.3386/w22637 |
-| autor2020polarization | Autor, David; Dorn, David; Hanson, Gordon et al. | 2020 | American Economic Review | context | fulltext-table | 10.1257/aer.20170011 |
-| bastian2018 | Bastian, Jacob; Michelmore, Katherine | 2018 | Journal of Labor Economics | context | fulltext-table | 10.1086/697477 |
+| autor2020polarization | Autor, David; Dorn, David; Hanson, Gordon et al. | 2020 | American Economic Review | parameter | fulltext-table | 10.1257/aer.20170011 |
+| bastian2018 | Bastian, Jacob; Michelmore, Katherine | 2018 | Journal of Labor Economics | parameter | fulltext-table | 10.1086/697477 |
 | bellfasanimachin2013 | Bell, Brian; Fasani, Francesco; Machin, Stephen | 2013 | Review of Economics and Statistics | context | fulltext-table | 10.1162/REST_a_00337 |
 | bianchibuonannopinotti2012 | Bianchi, Milo; Buonanno, Paolo; Pinotti, Paolo | 2012 | Journal of the European Economic Association | parameter | fulltext-table | 10.1111/j.1542-4774.2012.01085.x |
 | bingley2026 | Bingley, Paul; Cappellari, Lorenzo; Ovidi, Marco | 2026 | Journal of the European Economic Association | parameter | fulltext-table | - |
@@ -265,7 +265,7 @@
 | chetty2016 | Chetty, Raj; Stepner, Michael; Abraham, Sarah et al. | 2016 | JAMA | parameter | fulltext | 10.1001/jama.2016.4226 |
 | chetty2016jama | Chetty, Raj; Stepner, Michael; Abraham, Sarah et al. | 2016 | JAMA | context | canonical | 10.1001/jama.2016.4226 |
 | chettyhendren2018 | Chetty, Raj; Hendren, Nathaniel | 2018 | The Quarterly Journal of Economics | parameter | fulltext-table | 10.1093/qje/qjy007 |
-| colantone2018 | Colantone, Italo; Stanig, Piero | 2018 | American Journal of Political Science | context | fulltext-table | 10.1111/ajps.12358 |
+| colantone2018 | Colantone, Italo; Stanig, Piero | 2018 | American Journal of Political Science | parameter | fulltext-table | 10.1111/ajps.12358 |
 | collinson2024 | Collinson, Robert; Humphries, John Eric; Mader, Nicholas S. et al. | 2024 | The Quarterly Journal of Economics | parameter | fulltext-table | 10.1093/qje/qjad042 |
 | corak2013 | Corak, Miles | 2013 | Journal of Economic Perspectives | parameter | canonical | 10.2139/ssrn.2314815 |
 | cortes2016 | Cortes, Guido Matias | 2016 | Journal of Labor Economics | context | canonical | 10.1086/682289 |
@@ -278,10 +278,10 @@
 | desmond2016 | Desmond, Matthew; Gershenson, Carl | 2016 | Social Problems | context | fulltext-table | 10.1093/socpro/spv025 |
 | doran2022 | Doran, Kirk; Gelber, Alexander; Isen, Adam | 2022 | Journal of Political Economy Microeconomics | context | fulltext-table | 10.3386/w20668 |
 | duncan2010 | Duncan, Greg J.; Ziol-Guest, Kathleen M.; Kalil, Ariel | 2010 | Child Development | context | fulltext-table | 10.1111/j.1467-8624.2009.01396.x |
-| ehrensaft2003 | Ehrensaft, Miriam K.; Cohen, Patricia; Brown, Jocelyn et al. | 2003 | Journal of Consulting and Clinical Psychology | context | canonical | 10.1037/0022-006x.71.4.741 |
+| ehrensaft2003 | Ehrensaft, Miriam K.; Cohen, Patricia; Brown, Jocelyn et al. | 2003 | Journal of Consulting and Clinical Psychology | parameter | fulltext-table | 10.1037/0022-006x.71.4.741 |
 | eliason2009 | Eliason, Marcus; Storrie, Donald | 2009 | Journal of Human Resources | context | canonical | 10.1353/jhr.2009.0020 |
 | eliasonstorrie2009 | Eliason, Marcus; Storrie, Donald | 2009 | Journal of Human Resources | context | fulltext-table | - |
-| evans2008 | Evans, Sarah E.; Davies, Corrie; DiLillo, David | 2008 | Aggression and Violent Behavior | context | fulltext-table | 10.1016/j.avb.2008.02.005 |
+| evans2008 | Evans, Sarah E.; Davies, Corrie; DiLillo, David | 2008 | Aggression and Violent Behavior | parameter | fulltext-table | 10.1016/j.avb.2008.02.005 |
 | farrington2006 | Farrington, David P.; Coid, Jeremy W.; Harnett, Lucy M. et al. | 2006 | Home Office Research Study 299 | context | canonical | 10.1037/e650712007-001 |
 | fetzer2019 | Fetzer, Thiemo | 2019 | American Economic Review | context | canonical | 10.2139/ssrn.3251187 |
 | galofrevila2021 | Galofré-Vilà, Gregori; Meissner, Christopher M.; McKee, Martin et al. | 2021 | Journal of Economic History | context | canonical | 10.3386/w24106 |
@@ -292,7 +292,7 @@
 | gruber2004 | Gruber, Jonathan | 2004 | Journal of Labor Economics | context | canonical | 10.1086/423155 |
 | halla2020 | Halla, Martin; Schmieder, Johannes; Weber, Andrea | 2020 | American Economic Journal: Applied Economics | parameter | fulltext-table | - |
 | hersbach2000 | Hersbach, Hans | 2000 | Weather and Forecasting | methodology | canonical | 10.1175/1520-0434(2000)015<0559:dotcrp>2.0.co;2 |
-| hilger2016 | Hilger, Nathaniel G. | 2016 | American Economic Journal: Applied Economics | context | fulltext-table | 10.1257/app.20150295 |
+| hilger2016 | Hilger, Nathaniel G. | 2016 | American Economic Journal: Applied Economics | parameter | fulltext-table | 10.1257/app.20150295 |
 | holliingsworth2017 | Hollingsworth, Alex; Ruhm, Christopher J.; Simon, Kosali | 2017 | Journal of Health Economics | context | canonical | 10.3386/w23192 |
 | huttunen2019 | Huttunen, Kristiina; Riukula, Krista | 2019 | IZA Discussion Paper 12788 | context | fulltext-table | - |
 | huttunenkellokumpi2016 | Huttunen, Kristiina; Kellokumpi, Jenni | 2016 | Journal of Labor Economics | parameter | fulltext-table | - |
@@ -321,10 +321,10 @@
 | oreopoulos2012 | Oreopoulos, Philip; von Wachter, Till; Heisz, Andrew | 2012 | American Economic Journal: Applied Economics | context | canonical | - |
 | ottaviano2012 | Ottaviano, Gianmarco I. P.; Peri, Giovanni | 2012 | Journal of the European Economic Association | context | canonical | - |
 | ousey2018 | Ousey, Graham C.; Kubrin, Charis E. | 2018 | The Annals of the American Academy of Political and Social Science | context | abstract | 10.1146/annurev-criminol-032317-092026 |
-| paul2009 | Paul, Karsten I.; Moser, Klaus | 2009 | Journal of Vocational Behavior | context | fulltext-table | 10.1016/j.jvb.2009.01.001 |
+| paul2009 | Paul, Karsten I.; Moser, Klaus | 2009 | Journal of Vocational Behavior | parameter | fulltext-table | 10.1016/j.jvb.2009.01.001 |
 | pettigrew2006 | Pettigrew, Thomas F.; Tropp, Linda R. | 2006 | Journal of Personality and Social Psychology | context | canonical | 10.1037/0022-3514.90.5.751 |
 | putnam2007 | Putnam, Robert D. | 2007 | Scandinavian Political Studies | context | canonical | - |
-| raphael2001 | Raphael, Steven; Winter-Ebmer, Rudolf | 2001 | Journal of Law and Economics | context | fulltext-table | 10.1086/320275 |
+| raphael2001 | Raphael, Steven; Winter-Ebmer, Rudolf | 2001 | Journal of Law and Economics | parameter | fulltext-table | 10.1086/320275 |
 | rege2007 | Rege, Mari; Telle, Kjetil; Votruba, Mark | 2007 | Statistics Norway Discussion Paper No. 514 | parameter | abstract | - |
 | royer2009 | Royer, Heather | 2009 | American Economic Journal: Applied Economics | context | abstract | 10.1257/app.1.1.49 |
 | saltelli2002 | Saltelli, Andrea | 2002 | Computer Physics Communications | methodology | canonical | 10.1016/s0010-4655(02)00280-1 |

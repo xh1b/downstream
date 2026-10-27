@@ -4,8 +4,81 @@
   "implemented_date": "2026-10-27",
   "review_source": "https://xh1b.org/downstream",
   "public_review_snapshot_sha256": "865610b0388ba554ea99222ef1fa8dd062f0032244d93500610d6440db8a61d3",
-  "interpretation": "Withdrawal records preserve prior values without admitting them for calculation. Absence from this list is not a fresh independent source verification.",
+  "interpretation": "Sixteen original inputs individually rechecked: six original estimates verified and restored; seven corrected typed replacements; three original relationships unsupported. Ten legacy links remain unavailable: seven superseded plus three unsupported. Source reproduction does not establish target transport.",
   "withdrawn_parameters": {
+    "divorce->child_earnings": {
+      "status": "withdrawn",
+      "finding": "sourceMismatch",
+      "reason": "Unilateral-divorce-law ITT does not identify the earnings effect of an individual parental divorce. Its sex/cohort estimates cannot justify a common .95 multiplier.",
+      "range_status": "Model band; the cited source does not establish this parameter."
+    },
+    "family_size->child_earnings": {
+      "status": "withdrawn",
+      "finding": "sourceMismatch",
+      "reason": "Outcome is education, with family-size effects becoming negligible after birth-order controls and twins IV. No .98 child-earnings multiplier follows; a null schooling finding cannot be converted to zero earnings harm.",
+      "range_status": "Model band; the cited source does not establish this parameter."
+    },
+    "grandchild_earnings->greatgrandchild_earnings": {
+      "status": "withdrawn",
+      "finding": "notVerified",
+      "reason": "The source measures earnings for three generations and education for four. It does not estimate .55 causal gap transmission to a fourth earnings generation. Retaining a projection would require an explicit uncalibrated assumption, not a source-identified default.",
+      "range_status": "Assumed persistence band; source support unresolved."
+    },
+    "ipv_exposure->daughter_violence_odds": {
+      "status": "withdrawn",
+      "finding": "notVerified",
+      "reason": "The exact 2.5 daughter partner-violence odds ratio was not verified. Widom studies later official arrests after abuse or neglect. Ehrensaft’s abstract supports a relationship with adult partner violence, but does not establish this number or range. Corrected source estimate is available separately as childhood_parental_violence_exposure->adult_partner_victimization_odds.",
+      "range_status": "Unverified model band.",
+      "superseded_by": "childhood_parental_violence_exposure->adult_partner_victimization_odds"
+    },
+    "wage_ratio->household_ipv": {
+      "status": "withdrawn",
+      "finding": "sourceMismatch",
+      "reason": "Aizer’s −0.813 coefficient relates log female assault hospitalizations to the level of the female/male wage ratio. It is a semi-elasticity per unit ratio, not the log–log elasticity used by this model link. Corrected source estimate is available separately as female_male_wage_ratio_change->female_assault_log_change.",
+      "range_status": "The coefficient’s SE is 0.317; its interval does not resolve the unit mismatch.",
+      "superseded_by": "female_male_wage_ratio_change->female_assault_log_change"
+    },
+    "unemployment_rate->property_crime": {
+      "status": "withdrawn",
+      "finding": "notVerified",
+      "reason": "The paper’s identity is established. The specified Table 5 coefficient of 5.018 and its standard error could not be read from an accessible original. A secondary transcription is not accepted as numerical verification. Corrected source estimate is available separately as unemployment_rate_change_pp->property_crime_log_change.",
+      "range_status": "Source-table extraction unverified.",
+      "superseded_by": "unemployment_rate_change_pp->property_crime_log_change"
+    },
+    "import_shock->gop_win_probability": {
+      "status": "withdrawn",
+      "finding": "sourceMismatch",
+      "reason": "The published Table 4 verifies 24.08 (SE 12.07), but the dose is a percentage-point change in employment-weighted Chinese import penetration. It is not $1,000 per worker. The model’s dollar-input interpretation is unsupported. Corrected source estimate is available separately as import_penetration_change_pp->gop_win_probability_change_pp.",
+      "range_status": "The published coefficient interval cannot repair the exposure-unit mismatch.",
+      "superseded_by": "import_penetration_change_pp->gop_win_probability_change_pp"
+    },
+    "eviction_order->eviction_earnings_response": {
+      "status": "withdrawn",
+      "finding": "sourceMismatch",
+      "reason": "Table VI reports −$613 for quarters 5–8 with a comparison mean of $4,254. The model instead divides by $4,300, the quarters 1–4 mean. The withdrawn ratio mixes follow-up periods. Corrected source estimate is available separately as eviction_order->quarterly_earnings_gap_q5_8.",
+      "range_status": "The source SE is 248; the model’s denominator is from the wrong period.",
+      "superseded_by": "eviction_order->quarterly_earnings_gap_q5_8"
+    },
+    "import_shock->radical_right_vote_share": {
+      "status": "withdrawn",
+      "finding": "sourceMismatch",
+      "reason": "The inspected manuscript reports 0.132 (SE 0.051) in vote-share fractions per €1,000 per worker, measured over the two years before an election. Converting the outcome to 13.2 percentage points does not convert euros to US dollars or establish persistence. Corrected source estimate is available separately as import_exposure_eur1000_per_worker_2y->radical_right_vote_share_change_pp.",
+      "range_status": "Rounded coefficient ± 1.96 standard errors; the exposure-unit mismatch remains.",
+      "superseded_by": "import_exposure_eur1000_per_worker_2y->radical_right_vote_share_change_pp"
+    },
+    "displacement_event->exam_noncompletion_hazard": {
+      "status": "withdrawn",
+      "finding": "sourceMismatch",
+      "reason": "The 0.0054 effect (SE 0.0027) is verified. The 0.0785 denominator is labeled “Constant” in a controlled regression, not a verified control-group mean. The withdrawn ratio relies on that unsupported baseline interpretation. Corrected source estimate is available separately as displacement_event->exam_noncompletion_change_pp.",
+      "range_status": "Coefficient uncertainty scaled by an unsupported denominator; not an estimated hazard ratio.",
+      "superseded_by": "displacement_event->exam_noncompletion_change_pp"
+    }
+  },
+  "unidentified_references": [
+    "adermon2018",
+    "lindo2018"
+  ],
+  "historical_withdrawn_parameters_v1_53": {
     "divorce->child_earnings": {
       "status": "withdrawn",
       "finding": "sourceMismatch",
@@ -103,8 +176,411 @@
       "range_status": "Coefficient uncertainty scaled by an unsupported denominator; not an estimated hazard ratio."
     }
   },
-  "unidentified_references": [
-    "adermon2018",
-    "lindo2018"
-  ]
+  "repair_review_date": "2026-10-27",
+  "repair_parameter_version": "v1.54",
+  "individual_review": {
+    "displacement->college_enrollment": {
+      "disposition": "verified_original",
+      "available_link": "displacement->college_enrollment",
+      "source_key": "hilger2016",
+      "extraction": {
+        "effect_pp": -0.432,
+        "se_pp": 0.094,
+        "base_percent": 40.66
+      },
+      "method": "1 - 0.432/40.66, with coefficient +/-1.96 SE and the pre-event mean held fixed."
+    },
+    "displacement->parental_income_shortrun": {
+      "disposition": "verified_original",
+      "available_link": "displacement->parental_income_shortrun",
+      "source_key": "hilger2016",
+      "extraction": {
+        "effect_usd": -8138.09,
+        "se_usd": 219.53,
+        "base_usd": 59832
+      },
+      "method": "1 - 8138.09/59832; coefficient +/-1.96 SE; pre-event mean held fixed."
+    },
+    "eitc_exposure->adult_earnings_early": {
+      "disposition": "verified_original",
+      "available_link": "eitc_exposure->adult_earnings_early",
+      "source_key": "bastian2018",
+      "extraction": {
+        "effect_usd": 564,
+        "se_usd": 244.9
+      },
+      "method": "Coefficient +/-1.96 SE; exposure is maximum potential EITC eligibility, not observed income or actual payments."
+    },
+    "household_ipv->child_internalizing_sd": {
+      "disposition": "verified_original",
+      "available_link": "household_ipv->child_internalizing_sd",
+      "source_key": "evans2008",
+      "extraction": {
+        "point_d": 0.48,
+        "reported_ci": [
+          0.39,
+          0.57
+        ],
+        "k": 58,
+        "n": 7602
+      },
+      "method": "Reported CI, not recomputed from rounded SE. Cross-study exposure association, not a causal intervention response."
+    },
+    "household_ipv->child_externalizing_sd": {
+      "disposition": "verified_original",
+      "available_link": "household_ipv->child_externalizing_sd",
+      "source_key": "evans2008",
+      "extraction": {
+        "point_d": 0.47,
+        "reported_ci": [
+          0.38,
+          0.56
+        ],
+        "k": 53,
+        "n": 7200
+      },
+      "method": "Reported CI; exposure association with significant heterogeneity. Not a causal intervention response."
+    },
+    "unemployment_status->mental_health_sd": {
+      "disposition": "verified_original",
+      "available_link": "unemployment_status->mental_health_sd",
+      "source_key": "paul2009",
+      "extraction": {
+        "point_d": 0.51,
+        "reported_ci": [
+          0.47,
+          0.54
+        ],
+        "k": 315,
+        "n": 209379
+      },
+      "method": "Overall outlier-excluded cross-sectional association, not the factory-closure subset or a causal job-loss effect."
+    },
+    "unemployment_rate->property_crime": {
+      "disposition": "corrected_replacement",
+      "available_link": "unemployment_rate_change_pp->property_crime_log_change",
+      "source_key": "raphael2001",
+      "application": "linear",
+      "method": "Table 5 col.6: b=5.018 (SE 1.134) per unit unemployment fraction. Per 1pp change, log crime changes by .05018; percent response is 100*expm1(.05018*dose). The old 5.018 percent reading was a first-order approximation, not an exact percent effect.",
+      "original_record": {
+        "link": "unemployment_rate->property_crime",
+        "from_node": "unemployment_rate",
+        "to_node": "property_crime_response",
+        "point": "5.018",
+        "low": "2.795",
+        "high": "7.241",
+        "tier": "EXACT",
+        "citation": "raphael2001",
+        "population_scope": "US states 1971-97, N=1,293 state-years, 2SLS defense-contracts + oil-cost instruments",
+        "notes": "queue-10 LANDED v1.13: +1pp state unemployment -> +5.018% property crime (SE 1.134), Table 5 \"All property crime\" linear+quadratic-trends 2SLS (95% CI = 1.96SE); overidentification PASSES for property crime in all 2SLS specs. OLS full-spec 1.635 (0.182); the paper summary quotes OLS 1.6-2.4% per pp. Violent crime: null/mixed (2SLS insig 2 of 3 specs, overID rejected in the third) - deliberately NOT landed. Lin 2008 second anchor still queued for the band. Boundary-applied: NEVER chained",
+        "dist": "normal",
+        "evidence_role": "boundary"
+      },
+      "verified_parameter": {
+        "point": 0.05018,
+        "low": 0.0279536,
+        "high": 0.0724064
+      },
+      "input_node": "unemployment_rate_change_pp",
+      "input_unit": "percentage_point_delta",
+      "output_node": "property_crime_log_change",
+      "output_unit": "log_delta"
+    },
+    "wage_ratio->household_ipv": {
+      "disposition": "corrected_replacement",
+      "available_link": "female_male_wage_ratio_change->female_assault_log_change",
+      "source_key": "aizer2010",
+      "application": "linear",
+      "method": "Table 2 Panel A col.3: -.813 (SE .317). Change in log female assault hospitalizations per absolute unit change in potential female/male wage ratio. Input .01 means one ratio percentage point; not a relative wage multiplier or log-log elasticity. Hospitalization outcome is not all household IPV incidence.",
+      "original_record": {
+        "link": "wage_ratio->household_ipv",
+        "from_node": "wage_ratio",
+        "to_node": "household_ipv_elasticity",
+        "point": "-0.813",
+        "low": "-1.45",
+        "high": "-0.18",
+        "tier": "EXACT-results",
+        "citation": "aizer2010",
+        "population_scope": "US counties 1990-2003, women's assault hospitalizations",
+        "notes": "elasticity of ln(IPV) w.r.t. female/male wage ratio; AER Table 2 col 3 (lagged-DV spec), 95% CI from clustered SE 0.317. SIGN: male displacement RAISES the ratio and so LOWERS IPV against women (Aizer bargaining); wiring this into the daughter chain needs incidence weights for who is displaced - deliberately not composed here",
+        "dist": "normal",
+        "evidence_role": "boundary"
+      },
+      "verified_parameter": {
+        "point": -0.813,
+        "low": -1.43432,
+        "high": -0.19168
+      },
+      "input_node": "female_male_wage_ratio_change",
+      "input_unit": "ratio_delta",
+      "output_node": "female_assault_log_change",
+      "output_unit": "log_delta"
+    },
+    "import_shock->gop_win_probability": {
+      "disposition": "corrected_replacement",
+      "available_link": "import_penetration_change_pp->gop_win_probability_change_pp",
+      "source_key": "autor2020polarization",
+      "application": "linear",
+      "method": "Table 4 col.6: 24.08 (SE 12.07) Republican win-probability percentage points per 1pp employment-weighted CZ Chinese import penetration change. Not per USD1000/worker and not a national election probability. Other vote-share columns and pre-2010 effects are not replaced by this result.",
+      "original_record": {
+        "link": "import_shock->gop_win_probability",
+        "from_node": "import_shock_per_worker",
+        "to_node": "gop_win_probability",
+        "point": "24.08",
+        "low": "0.423",
+        "high": "47.737",
+        "tier": "EXACT",
+        "citation": "autor2020polarization",
+        "population_scope": "US county-congressional-district cells 2002-2010, N=3,772, 2SLS full controls",
+        "notes": "queue-16 LANDED v1.15: change in the probability of electing a Republican to the House, in percentage points, per $1k/worker decadal import exposure = 24.08 (SE 12.07; t=2.00), Table 4 col 6, 2002-2010, N=3,772 county-district cells, 2SLS full controls (spec = Table 3 col 5), 95% CI = 1.96SE. Authors' own scaling: x 0.49 (p75-p25 exposure gap) = 11.8pp. HONEST SCOPE: the two-party VOTE-SHARE columns are NULL (all districts -1.08, SE 5.98; competitive +6.10, SE 4.93; solid-GOP -6.24, SE 3.93 - re-sorting, not uniform right shift); the win-probability effect emerges only from the 2010 mid-term (null 2002-2008, Feigenbaum-Hall consistency). Boundary-applied: NEVER chained",
+        "dist": "normal",
+        "evidence_role": "boundary"
+      },
+      "verified_parameter": {
+        "point": 24.08,
+        "low": 0.4228,
+        "high": 47.7372
+      },
+      "input_node": "import_penetration_change_pp",
+      "input_unit": "percentage_point_delta",
+      "output_node": "gop_win_probability_change_pp",
+      "output_unit": "percentage_point_delta"
+    },
+    "import_shock->radical_right_vote_share": {
+      "disposition": "corrected_replacement",
+      "available_link": "import_exposure_eur1000_per_worker_2y->radical_right_vote_share_change_pp",
+      "source_key": "colantone2018",
+      "application": "linear",
+      "method": "Accepted manuscript Table 1 col.10: .132 (SE .051) vote-share fraction per EUR1000/worker import increase over the two years before an election. Multiply output by 100 to obtain percentage points. No USD conversion, decadal-dose substitution or persistence assumption.",
+      "original_record": {
+        "link": "import_shock->radical_right_vote_share",
+        "from_node": "import_shock_per_worker",
+        "to_node": "radical_right_vote_share",
+        "point": "13.2",
+        "low": "3.2",
+        "high": "23.2",
+        "tier": "EXACT",
+        "citation": "colantone2018",
+        "population_scope": "15 Western European countries, 76 legislative elections 1988-2007, 198 NUTS-2 regions; district-election panel N=7,782 (IV), country-year FE, SE clustered NUTS-2 x year",
+        "notes": "queue-15 LANDED v1.26: IV Table 1 col 10, radical-right vote share. Coefficient .132*** (SE .051) in vote-share FRACTIONS per 1.0 ($1k/worker change in Chinese import exposure over the past 2 years) = 13.2 pp per $1k/worker of exposure (SE 5.1), CI = 1.96 SE. AUTHORS' OWN SCALING: one SD of the 2-year shock (.133 = $133/worker) -> +1.7pp radical-right vote share, on an average RR share of 5% (SD 7%). IV (.132) > OLS (.041, SE .023): positive domestic demand shocks attenuate the OLS association (authors' interpretation). First stage: Chinese imports to the US as instrument, Kleibergen-Paap F = 19.2. Robustness (Table 3-4): historical-trajectory trend interactions (coefficients equal or larger), year-specific regional controls (larger), alternative exchange-rate IV, exports and FDI nulls, EU-import controls (EU15 negative on Nationalist Autarchy, EU12 positive on the radical right). NO-LEFT-WING discipline: protectionist left NULL (IV -.052, SE .047), protectionist left proper NULL (-.081, SE .042), liberal right NULL (-.017, SE .075) - NO polarization, which CONTRASTS with the Autor et al. 2020 US finding (declared on that row); pro-trade left NEGATIVE significant (-.134**, SE .054) - the electorate abandons mainstream social-democratic parties; protectionist right POSITIVE .278*** (SE .094). INDIVIDUAL-LEVEL (ESS waves 1-4, Table 5-6): confirms the district evidence; NO significant group heterogeneity - interactions all n.s., the response is SOCIOTROPIC (service and public-sector workers respond too; only students sheltered, n.s. overall) - declared so no surface reads this row as a displaced-manufacturers-only effect, and so no surface quotes paul2009's person-level unemployment distress as the transmission mechanism here. WINDOW DISCIPLINE: the regression's shock is the 2-year window change; the row stores the same coefficient expressed per $1k/worker of cumulative exposure (13.2pp), which assumes each window's shock persists to the next election - the authors' 1-SD scaling reads directly off this coefficient. Boundary-applied: NEVER chained into the earnings/IGE chains. Read via the owner-downloaded PDF (the published AJPS doi, not the SSRN preprint doi the staging bib carried)",
+        "dist": "normal",
+        "evidence_role": "boundary"
+      },
+      "verified_parameter": {
+        "point": 13.2,
+        "low": 3.204,
+        "high": 23.196
+      },
+      "input_node": "import_exposure_eur1000_per_worker_2y",
+      "input_unit": "eur1000_2006_per_worker",
+      "output_node": "radical_right_vote_share_change_pp",
+      "output_unit": "percentage_point_delta"
+    },
+    "eviction_order->eviction_earnings_response": {
+      "disposition": "corrected_replacement",
+      "available_link": "eviction_order->quarterly_earnings_gap_q5_8",
+      "source_key": "collinson2024",
+      "application": "fixed_contrast",
+      "method": "Table VI col.6 IV earnings difference -613 (SE 248), divided by matching col.4 non-evicted sample mean 4254, not year-1 mean 4300. This scaled index holds the descriptive comparison mean fixed; it is not a separately identified complier-counterfactual earnings ratio. Never composed into displacement earnings.",
+      "original_record": {
+        "link": "eviction_order->eviction_earnings_response",
+        "from_node": "eviction_order",
+        "to_node": "eviction_earnings_response",
+        "point": "0.8574",
+        "low": "0.7444",
+        "high": "0.9705",
+        "tier": "EXACT",
+        "citation": "collinson2024",
+        "population_scope": "same design as the shelter row",
+        "notes": "queue-17 LANDED v1.21: evicted tenants' average QUARTERLY earnings, quarters 5-8 post-filing: IV -$613 (SE 248) on the $4,300 non-evicted mean = -14.3%; 95% CI = 1.96SE; stored as a gap multiplier: 1 - 613/4300 = 0.8574 (band 1 - CI/4300), 2016 USD in the derivation above. Year-1 window (quarters 1-4) is -$323 (SE 175), NOT significant - recorded, not landed (the stevens2011 timing pattern: the sustained window carries the identified effect). OLS -$269*** is SMALLER than IV - the authors read complier effects as larger than the average evicted tenant's. SUBGROUPS (Table VI): concentration among female (-$767, SE 295) and Black (-$931, SE 307) tenants in year 2; formal equality tests do not reject, so the full-sample point stands with the concentration noted. REFUSAL WIRING: the desmond2016 matched +11-22pp JOB-LOSS estimate is NOT encoded (CITING §1 class + collinson2024 refutes the size: employment IV -1.5pp (SE 2.1) year 1 / -1.8pp (SE 2.7) year 2, both null); see SPEC §10. PARALLEL STREAM: quarterly-earnings LEVEL response for the eviction-court population - NEVER composed into the worker_earnings displacement multiplier. Boundary-applied: NEVER chained",
+        "dist": "normal",
+        "evidence_role": "boundary"
+      },
+      "verified_parameter": {
+        "point": 0.8559003291020216,
+        "low": 0.7416361071932299,
+        "high": 0.9701645510108133
+      },
+      "input_node": "eviction_order",
+      "input_unit": "persons",
+      "output_node": "quarterly_earnings_gap_q5_8",
+      "output_unit": "gap_multiplier"
+    },
+    "displacement_event->exam_noncompletion_hazard": {
+      "disposition": "corrected_replacement",
+      "available_link": "displacement_event->exam_noncompletion_change_pp",
+      "source_key": "bingley2026",
+      "application": "fixed_contrast",
+      "method": "IZA DP 16367 Table 2 Panel A col.2: probability difference .0054 (SE .0027), expressed as .54 percentage points. Regression constant .0785 is not an admitted control mean; no hazard ratio, relative-risk conversion or displaced-worker total. Published-version reconciliation remains open.",
+      "original_record": {
+        "link": "displacement_event->exam_noncompletion_hazard",
+        "from_node": "displacement_event",
+        "to_node": "exam_noncompletion_hazard",
+        "point": "1.0688",
+        "low": "1.0014",
+        "high": "1.1362",
+        "tier": "EXACT",
+        "citation": "bingley2026",
+        "population_scope": "same children/scope as the child_achievement_sd row; outcome = obtains NO grade-9 exam scores or teacher assessments (control mean 7.85%)",
+        "notes": "queue-sweep LANDED v1.40, same read as the child_achievement_sd row. DERIVED RELATIVE (pp effect / control mean; stevens2011 derivation precedent): Table 2 col 2 (preferred) 'Treated X Exposure (age 0-16)' +0.0054 (SE 0.0027) on control mean 0.0785 -> 1 + 0.0054/0.0785 = 1.0688; band = 1.96 x SE/0.0785. AUTHORS' FRAME: explains 6-9% of observed non-completion (base ~7%; test-taking near-universal at 16). TIMING STRUCTURE, monotone by age at exposure: infancy (0-1) +0.99pp (SE 0.41) -> 1.126 [1.96SE 1.024..1.228]; early childhood (2-5) +0.76pp -> ~1.097; mid (6-11) +0.45pp n.s.; late (12-16) +0.30pp n.s.; exposure at age >=18 jointly zero (p=0.986 - identifying-assumption placebo). Completing exams BY AGE 16: infancy -1.44pp (SE 0.65). Concentrated in below-median-income families (no detectable effect above median); displaced father > mother, sons > daughters (qualitative). Conditional: Danish compulsory-school institution; left-tail outcome capturing the most vulnerable children",
+        "dist": "normal",
+        "evidence_role": "conditional"
+      },
+      "verified_parameter": {
+        "point": 0.54,
+        "low": 0.0108,
+        "high": 1.0692
+      },
+      "input_node": "displacement_event",
+      "input_unit": "persons",
+      "output_node": "exam_noncompletion_change_pp",
+      "output_unit": "percentage_point_delta"
+    },
+    "ipv_exposure->daughter_violence_odds": {
+      "disposition": "corrected_replacement",
+      "available_link": "childhood_parental_violence_exposure->adult_partner_victimization_odds",
+      "source_key": "ehrensaft2003",
+      "application": "fixed_contrast",
+      "method": "Published Table 3, violence between parents, net of other risks: OR 2.68, reported 95% CI 1.49-4.82. Sex-adjusted pooled association, not a daughters-only causal estimate, not adult perpetration or injury, and not a household-incidence multiplier. No count conversion or daughter-chain composition.",
+      "original_record": {
+        "link": "ipv_exposure->daughter_violence_odds",
+        "from_node": "household_ipv",
+        "to_node": "daughter_violence_odds",
+        "point": "2.5",
+        "low": "2.0",
+        "high": "3.0",
+        "tier": "canonical",
+        "citation": "widom1989;ehrensaft2003",
+        "population_scope": "US prospective cohorts",
+        "notes": "cycle-of-violence transmission; upstream household_ipv incidence link queued (aizer2010)",
+        "dist": "",
+        "evidence_role": "boundary"
+      },
+      "verified_parameter": {
+        "point": 2.68,
+        "low": 1.49,
+        "high": 4.82
+      },
+      "input_node": "childhood_parental_violence_exposure",
+      "input_unit": "persons",
+      "output_node": "adult_partner_victimization_odds",
+      "output_unit": "odds_ratio"
+    },
+    "divorce->child_earnings": {
+      "disposition": "unsupported_relationship",
+      "source_key": "gruber2004",
+      "reason": "Unilateral-divorce-law ITT does not identify the earnings effect of an individual parental divorce. Its sex/cohort estimates cannot justify a common .95 multiplier."
+    },
+    "family_size->child_earnings": {
+      "disposition": "unsupported_relationship",
+      "source_key": "black2005",
+      "reason": "Outcome is education, with family-size effects becoming negligible after birth-order controls and twins IV. No .98 child-earnings multiplier follows; a null schooling finding cannot be converted to zero earnings harm."
+    },
+    "grandchild_earnings->greatgrandchild_earnings": {
+      "disposition": "unsupported_relationship",
+      "source_key": "lindahl2015",
+      "reason": "The source measures earnings for three generations and education for four. It does not estimate .55 causal gap transmission to a fourth earnings generation. Retaining a projection would require an explicit uncalibrated assumption, not a source-identified default."
+    }
+  },
+  "reviewed_sources": {
+    "hilger2016": {
+      "source_url": "https://doi.org/10.1257/app.20150295",
+      "locator": "Published AEJ: Applied Economics 8(3), 2016, Table 3, printed p.265 / PDF p.19",
+      "artifact_sha256": "5f8f90917584d1b6d211dd46fb003de99c65fd79d51bb2d5b07ffc9a9b7105f8",
+      "artifact_kind": "primary PDF",
+      "review_date": "2026-10-27"
+    },
+    "raphael2001": {
+      "source_url": "https://doi.org/10.1086/320275",
+      "locator": "Published JLE 44(1), 2001, Table 5 col.6, printed p.275 / PDF p.18; unemployment is a fraction",
+      "artifact_sha256": "a594607279054a5e18fd651a7e1ccc5a6d9353e886b6397a37711767d23b0f1d",
+      "artifact_kind": "primary PDF",
+      "review_date": "2026-10-27"
+    },
+    "bastian2018": {
+      "source_url": "https://doi.org/10.1086/697477",
+      "locator": "Publisher 2018 accepted preprint, Table 2 col.6, PDF p.32; 2013 dollars; ages 13-18 exposure, ages 22-27 earnings",
+      "artifact_sha256": "e62e763adbaff2dbb1da66dc6431f3ce7d0faa156a613e3b68ee709cada62fbb",
+      "artifact_kind": "primary PDF",
+      "review_date": "2026-10-27"
+    },
+    "evans2008": {
+      "source_url": "https://doi.org/10.1016/j.avb.2008.02.005",
+      "locator": "Published Aggression and Violent Behavior 13, 2008, printed p.135 / PDF p.5, Table 1 and sections 3.2.1-3.2.2",
+      "artifact_sha256": "a876bf1205d8b7a3a80cb493e42c810f0c5b98783bd44626565d5236f7a46f3f",
+      "artifact_kind": "primary PDF",
+      "review_date": "2026-10-27"
+    },
+    "paul2009": {
+      "source_url": "https://doi.org/10.1016/j.jvb.2009.01.001",
+      "locator": "Published JVB 74, 2009, Table 1 Overall (out. ex), printed p.271 / PDF p.8",
+      "artifact_sha256": "96897f014c89125dc65236d22b0f2a9e69849b7fb7e49ae7cf61a27d855a9e11",
+      "artifact_kind": "primary PDF",
+      "review_date": "2026-10-27"
+    },
+    "colantone2018": {
+      "source_url": "https://doi.org/10.1111/ajps.12358",
+      "locator": "Accepted AJPS manuscript, Table 1 col.10 / PDF p.9; exposure definition PDF pp.5-6; footnote 5: all monetary figures deflated to 2006 euros",
+      "artifact_sha256": "93398be18ac49dc887fdefb900668e3edc627d39ca2407f7bb968df7230d96b3",
+      "artifact_kind": "primary PDF",
+      "review_date": "2026-10-27"
+    },
+    "autor2020polarization": {
+      "source_url": "https://economics.mit.edu/sites/default/files/publications/Autor%20et%20al.%20-%202020%20-%20Importing%20Political%20Polariza.pdf",
+      "locator": "Published AER 110(10), 2020, Table 4 col.6, printed p.3167 / PDF p.29; employment-weighted import penetration pp",
+      "artifact_sha256": "e85aaaad15cc2f6220fb45e17803d2f5f30b24eb271dda3c211b418012756e6c",
+      "artifact_kind": "primary PDF",
+      "review_date": "2026-10-27"
+    },
+    "collinson2024": {
+      "source_url": "https://economics.yale.edu/sites/default/files/2023-09/qjad042.pdf",
+      "locator": "Accepted QJE manuscript September 2023, Table VI cols.4,6, printed p.45 / PDF p.46; quarters 5-8",
+      "artifact_sha256": "80c99a680a0096b16f05d04adbec0dac518dfc157acc8bebf4b7e112e393c180",
+      "artifact_kind": "primary PDF",
+      "review_date": "2026-10-27"
+    },
+    "bingley2026": {
+      "source_url": "https://docs.iza.org/dp16367.pdf",
+      "locator": "IZA DP 16367 August 2023, Table 2 Panel A col.2, printed p.45 / PDF p.48; working-paper contrast, published-version reconciliation remains open",
+      "artifact_sha256": "f8acbb13956b08b654876e9ee7b0958e74c91ee9c6d5e804a6eb5ff40e731c0d",
+      "artifact_kind": "primary PDF",
+      "review_date": "2026-10-27"
+    },
+    "aizer2010": {
+      "source_url": "https://www.ncbi.nlm.nih.gov/research/bionlp/RESTful/pmcoa.cgi/BioC_xml/PMC4123456/unicode",
+      "locator": "Author manuscript in PMC4123456, Table 2 Panel A col.3; machine-readable primary full-text XML",
+      "artifact_sha256": "c9498f4af8b33f072127eb3de99f9afefd13af120941c361eac8dd12428b3410",
+      "artifact_kind": "primary full text XML",
+      "review_date": "2026-10-27"
+    },
+    "lindahl2015": {
+      "source_url": "https://docs.iza.org/dp6463.pdf",
+      "locator": "IZA DP 6463 April 2012, abstract and earnings-generation scope; earnings for three generations, education for four",
+      "artifact_sha256": "9c3610b1a6e4a0640ff2710dee4a5c503a23d4a27bf2d1c723f3c51568d8135b",
+      "artifact_kind": "primary PDF",
+      "review_date": "2026-10-27"
+    },
+    "gruber2004": {
+      "source_url": "https://www.nber.org/papers/w7968",
+      "locator": "NBER WP 7968, November 2000; unilateral-divorce-law exposure ITT, not individual parental divorce",
+      "artifact_sha256": "c60742be3ee2802c5cb547475795f043e7b042258df664e792399005f35a6c80",
+      "artifact_kind": "primary PDF",
+      "review_date": "2026-10-27"
+    },
+    "ehrensaft2003": {
+      "source_url": "https://www.apa.org/pubs/journals/releases/ccp-714741.pdf",
+      "locator": "Published JCCP 71(4), 2003, Table 3, printed p.747 / PDF p.7",
+      "artifact_sha256": "3901f2e76a1eee05a952909bf2dfe3bbecefad87b1e06b8afd5b1042e358500f",
+      "artifact_kind": "numeric table extraction from publisher PDF viewed through browser; not original PDF byte hash",
+      "access_limit": "Local publisher download returned HTML; original PDF read through browsing. No original PDF byte hash is claimed.",
+      "review_date": "2026-10-27"
+    },
+    "black2005": {
+      "source_url": "https://www.nber.org/system/files/working_papers/w10720/w10720.pdf",
+      "locator": "NBER WP 10720 September 2004, abstract and study outcome definition; published QJE 120(2), 2005",
+      "artifact_sha256": "d1914a1e21db77046631d3153ab46a9b72856325e34eceee06124b39fcaefc30",
+      "artifact_kind": "primary working-paper PDF",
+      "review_date": "2026-10-27"
+    }
+  }
 }

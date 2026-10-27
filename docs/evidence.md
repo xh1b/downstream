@@ -211,33 +211,38 @@ For rebuilding and comparing the resulting artifacts, see
 <!-- @ref:source-withdrawal-contract; @tag:evidence -->
 <!-- @link:code-source-support; @link:code-params; @link:code-ledger; @link:test-source-withdrawals. -->
 
-Parameters v1.53 retain all 67 original CSV records while withdrawing 16 from
-calculation: seven source/estimand/unit mismatches and nine unverified numerical
-extractions. The authoritative [source-support policy](../params/source_support.json)
-records every link, reason, finding class and public review provenance. These
-are conservative withdrawals, not replacement estimates or a fresh review of all
-remaining sources. Absence from the withdrawal list does not establish new source
-verification or target transport.
+Parameters **v1.54** individually recheck the sixteen inputs withdrawn in v1.53.
+Six original estimates are verified and restored, seven receive corrected typed
+replacements, and three original relationships remain unsupported by their cited
+sources. There are **64 available records** and **10 retired legacy links**
+(seven superseded plus three unsupported). All 67 original CSV records remain
+byte-for-byte at the start of the file, followed by seven corrected rows.
+The authoritative [source-support policy](../params/source_support.json) preserves
+all sixteen former withdrawals, individual decisions, exact source/table/version
+locators and artifact hashes. A table-extraction hash is explicitly distinguished
+from an original PDF hash where the publisher download was unavailable.
+Absence from the withdrawal list does not establish a fresh review of every
+other study, target transport or causal identification.
 
-`ParameterSet.by_link` and ledger composition refuse these inputs with
+`ParameterSet.by_link` and ledger composition refuse retired aliases with
 `SourceUnavailable`, including after overrides, sampling and variant construction.
-`retained_by_link` explicitly inspects original records; inspection does not
-admit them for calculation. Custom parameter directories cannot replace the
-engine's reviewed withdrawal policy. Reinstatement requires supported source
-corrections and a reviewed policy/version change.
+`retained_by_link` inspects historical records; inspection does not admit them
+for calculation. Custom parameter directories cannot replace the engine policy.
+Use the specific corrected identifier, never silently change an old identifier's
+input units. The [source-contrast adapter](integration.md#corrected-source-contrasts)
+enforces the new source-specific exposure contracts.
 
 Grouped reports retain supported branches and expose unavailable branches with
-null numeric fields and the named source reason. A known zero, favorable effect,
-transport decision or place modifier does not restore a withdrawn input. The
-later earnings transmission and daughter partner-violence result are unavailable;
-the additive divorce/family-size variant is excluded from ensemble spreads.
-Direct child and supported mortality paths retain their numerical results.
+null numeric fields and the source reason. The fourth-generation earnings gap,
+daughters-only violence result and additive divorce/family-size variant remain
+unavailable. The pooled adult victimization association is a separate corrected
+outcome, not permission to fill the daughters-only branch. Direct child and
+supported mortality point coefficients/baselines retain their values.
 
-Snapshot schema `downstream-parameter-set/3` separates 51 available `parameters`
-from 16 original `withdrawn_parameters`. The latter carry their original values
-and source-support disposition explicitly as an archive. `citations` covers
-available inputs; `unidentified_reference_archive` retains the original
-`adermon2018` and `lindo2018` records without citing them as identified sources.
-The effective policy SHA-256 accompanies exports. Older consumers must handle
-this schema and unavailable branches before repinning; deployment and cache
-refresh retain the companion's separate acceptance requirements.
+Snapshot schema `downstream-parameter-set/3` separates available `parameters`
+from original `withdrawn_parameters`. It also exports `source_repair_review`
+and `reviewed_sources`, preserving all sixteen dispositions and their provenance.
+`citations` covers available inputs; `unidentified_reference_archive` retains
+`adermon2018` and `lindo2018` without asserting source identity. The effective
+policy SHA-256 accompanies exports. Upgrade the engine, data and consumer
+fixtures together; companion deployment/cache requirements remain separate.

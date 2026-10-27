@@ -91,7 +91,7 @@ def test_sobol_runs_on_the_real_child_line():
     groups = [set(row["links"]) for row in out["indices"]]
     from downstream.source_support import is_withdrawn
     assert set.union(*groups) == {p.link for p in params.parameters if not is_withdrawn(p.link)}
-    assert sum(map(len, groups)) == 51
+    assert sum(map(len, groups)) == 64
     assert {"child_earnings->grandchild_earnings"} in groups
     assert out["model_evals"] == calls
     # the IGE transmission step must be among the leading drivers

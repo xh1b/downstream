@@ -30,6 +30,7 @@ def render():
     from downstream.household import household_comparison
     from downstream.mortality_strata import project_mortality_cohort
     from downstream.receiving_community import receiving_comparison
+    from downstream.source_contrasts import source_contrast
     from downstream.cli import build_parser
     from downstream.employer import DocumentedExposure, compute_entity_counts
     from downstream.params import load_all
@@ -52,7 +53,7 @@ def render():
               "```python"]
     for function in (load_all, compute_counts, sample_counts, compute_entity_counts,
                      child_gap_view, child_support_report, household_comparison,
-                     project_mortality_cohort, receiving_comparison, scale_outcome, mix_expected):
+                     project_mortality_cohort, receiving_comparison, source_contrast, scale_outcome, mix_expected):
         lines.append(f"def {function.__name__}{inspect.signature(function)}: ...")
     lines += ["```", "", "### Scenario input fields", "",
               "`ScenarioInput` accepts the fields below. Defaults describe a reference",

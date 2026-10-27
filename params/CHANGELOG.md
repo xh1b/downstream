@@ -1,3 +1,26 @@
+## v1.54 — 2026-10-27 — repair the sixteen source inputs individually
+
+- Re-extract all sixteen source dispositions rather than treating withdrawal as repair.
+  Six original Hilger/Bastian/Evans/Paul estimates are verified from original local
+  tables and restored with their original values. Source/version/table locators,
+  artifact hashes, raw estimates and interpretation are in source_support.json.
+- Add seven typed replacements: Raphael semi-log unemployment/crime; Aizer absolute
+  wage-ratio semi-elasticity and female assault hospitalizations; Autor import
+  penetration points; Colantone real-euro two-year exposure; Collinson matching
+  quarters-5–8 denominator 4254; Bingley exam probability difference without the
+  regression-constant denominator; Ehrensaft pooled adult victimization OR 2.68
+  [1.49,4.82] rather than an invented daughters-only 2.5 [2,3].
+- Preserve all 67 original CSV rows byte-for-byte as a prefix; append seven
+  corrected rows. Export 64 available rows and ten retired legacy links: seven
+  superseded, three relationships unsupported by the cited sources (divorce to
+  earnings, family size to earnings, fourth-generation causal earnings gap).
+- Retain the complete v1.53 withdrawal history and individual dispositions for
+  all sixteen. Original wrong-unit/unsupported aliases still refuse calculation.
+  Named source-contrast API/CLI enforces units, dose and fixed-contrast limits.
+- No mortality or direct-child point coefficient or baseline changed. No new
+  target transport, aggregate attribution or replacement causal evidence claimed.
+  Engine remains 0.4.0 in development; the published v0.4.0 tag/assets are unchanged.
+
 ## v1.53 — 2026-10-27 — withdraw unsupported source inputs
 
 <!-- @ref:parameter-changelog; @tag:evidence -->

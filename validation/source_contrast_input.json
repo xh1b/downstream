@@ -1,0 +1,6 @@
+{
+  "link": "female_male_wage_ratio_change->female_assault_log_change",
+  "input_node": "female_male_wage_ratio_change",
+  "input_unit": "ratio_delta",
+  "dose": 0.01
+}

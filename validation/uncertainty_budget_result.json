@@ -31,7 +31,7 @@
     "seed": 1901,
     "sampler": "lhs+iman-conover",
     "correlations_applied": 2,
-    "parameter_set_version": "v1.53-sampled"
+    "parameter_set_version": "v1.54-sampled"
   },
   "sampled_inputs": {
     "sampled_workers": {
@@ -53,10 +53,10 @@
   },
   "expected_effect_intervals_90": {
     "excess_deaths": {
-      "p05": 20.689,
-      "p50": 29.0436,
-      "p95": 39.1549,
-      "mean": 29.3293
+      "p05": 20.7279,
+      "p50": 29.0429,
+      "p95": 39.2604,
+      "mean": 29.3285
     },
     "child_lifetime_earnings_lost_usd": {
       "p05": 152719685.4892,
@@ -65,41 +65,41 @@
       "mean": 468993848.4385
     },
     "mortality_no_sustained_excess": {
-      "p05": 14.7308,
-      "p50": 20.8264,
-      "p95": 27.9539,
-      "mean": 21.0063
+      "p05": 14.7049,
+      "p50": 20.7651,
+      "p95": 28.1268,
+      "mean": 21.0056
     },
     "mortality_persistence_difference": {
-      "p05": 2.9222,
-      "p50": 8.159,
-      "p95": 14.0588,
-      "mean": 8.323
+      "p05": 2.9673,
+      "p50": 8.134,
+      "p95": 14.2971,
+      "mean": 8.3228
     }
   },
   "process_intervals_90": {
     "realized_exposed_deaths": {
       "p05": 95.0,
       "p50": 123.0,
-      "p95": 153.0,
-      "mean": 123.556
+      "p95": 154.0,
+      "mean": 123.717
     },
     "realized_reference_deaths": {
-      "p05": 72.0,
+      "p05": 71.0,
       "p50": 94.0,
-      "p95": 119.0,
-      "mean": 94.5905
+      "p95": 117.0,
+      "mean": 94.341
     },
     "realized_independent_cohort_difference": {
-      "p05": 5.0,
-      "p50": 29.0,
-      "p95": 54.0,
-      "mean": 28.9655
+      "p05": 6.0,
+      "p50": 28.0,
+      "p95": 55.0,
+      "mean": 29.376
     }
   },
   "fixed_input_reference": {
     "label": "scenario",
-    "parameter_set_version": "v1.53",
+    "parameter_set_version": "v1.54",
     "engine_version": "0.4.0",
     "uncertainty": {
       "band_kind": "parameter-support envelope, not a confidence interval",
@@ -276,10 +276,10 @@
                 "sullivan2009"
               ],
               "parameter_interval_90": {
-                "p05": 22.0449,
-                "p50": 29.1305,
-                "p95": 36.6818,
-                "mean": 29.2535
+                "p05": 21.9744,
+                "p50": 29.2191,
+                "p95": 36.5596,
+                "mean": 29.2537
               }
             },
             "no_sustained_excess": {
@@ -294,10 +294,10 @@
               "first_changed_follow_up_year": 7,
               "fixed_late_odds_ratio": 1.0,
               "parameter_interval_90": {
-                "p05": 15.728,
-                "p50": 20.8553,
-                "p95": 26.4615,
-                "mean": 20.9558
+                "p05": 15.7218,
+                "p50": 20.9051,
+                "p95": 26.2568,
+                "mean": 20.9559
               }
             }
           },
@@ -321,9 +321,9 @@
             "Baseline aging and target-population transport remain unresolved in both structures."
           ],
           "source_minus_no_sustained_parameter_interval_90": {
-            "p05": 2.9883,
-            "p50": 8.2391,
-            "p95": 13.8406,
+            "p05": 2.9904,
+            "p50": 8.224,
+            "p95": 13.8617,
             "mean": 8.2977
           },
           "sampling": {
@@ -553,10 +553,10 @@
           ]
         },
         "parameter_interval_90": {
-          "p05": 22.0449,
-          "p50": 29.1305,
-          "p95": 36.6818,
-          "mean": 29.2535
+          "p05": 21.9744,
+          "p50": 29.2191,
+          "p95": 36.5596,
+          "mean": 29.2537
         }
       },
       "child_lifetime_earnings_lost_usd": {
@@ -724,7 +724,7 @@
         "low": null,
         "high": null,
         "steps": [],
-        "blocked": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified.",
+        "blocked": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The source measures earnings for three generations and education for four. It does not estimate .55 causal gap transmission to a fourth earnings generation. Retaining a projection would require an explicit uncalibrated assumption, not a source-identified default.",
         "source_status": "withdrawn",
         "withdrawn_input": "grandchild_earnings->greatgrandchild_earnings"
       }
@@ -743,7 +743,7 @@
       "greatgrandchild": {
         "status": "source_withdrawn",
         "eligible_for_validated_direct_contrast": false,
-        "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
+        "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The source measures earnings for three generations and education for four. It does not estimate .55 causal gap transmission to a fourth earnings generation. Retaining a projection would require an explicit uncalibrated assumption, not a source-identified default."
       }
     },
     "target_population": null,
@@ -770,7 +770,7 @@
         "A subgroup's nonsignificant coefficient is retained with its uncertainty, not replaced with zero."
       ]
     },
-    "input_content_sha256": "98604c841d7d8978310410a11112bd9e06df56d30a1ff110c5eae3d69fefb5f1",
+    "input_content_sha256": "528d432abda815ad5c6dcf498e8205ce0fc42b0ca083a9bb77fcf5d92f4c86f8",
     "parameter_uncertainty": {
       "interval": "central 90% Monte Carlo interval (p05\u2013p95)",
       "scope": "parameter uncertainty only",
@@ -790,13 +790,13 @@
       "seed": 1901,
       "sampler": "lhs+iman-conover",
       "correlations_applied": 2,
-      "parameter_set_version": "v1.53-sampled",
+      "parameter_set_version": "v1.54-sampled",
       "outcomes": {
         "excess_deaths": {
-          "p05": 22.0449,
-          "p50": 29.1305,
-          "p95": 36.6818,
-          "mean": 29.2535
+          "p05": 21.9744,
+          "p50": 29.2191,
+          "p95": 36.5596,
+          "mean": 29.2537
         },
         "child_lifetime_earnings_lost_usd": {
           "p05": 158288021.0661,
@@ -817,21 +817,21 @@
       "counterfactual_death_probability": 0.09414859632988004,
       "exposed_deaths": {
         "p05": 105,
-        "p50": 124,
+        "p50": 123,
         "p95": 142,
-        "mean": 123.4015
+        "mean": 123.3345
       },
       "counterfactual_deaths": {
         "p05": 79,
         "p50": 94,
         "p95": 109,
-        "mean": 94.1225
+        "mean": 94.1545
       },
       "reference_cohort_difference": {
-        "p05": 5,
+        "p05": 6,
         "p50": 29,
-        "p95": 53,
-        "mean": 29.279
+        "p95": 54,
+        "mean": 29.18
       }
     }
   },

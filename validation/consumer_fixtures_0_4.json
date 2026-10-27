@@ -1,11 +1,11 @@
 {
   "schema": "downstream-consumer-fixtures/1",
   "engine_version": "0.4.0",
-  "parameter_set_version": "v1.53",
+  "parameter_set_version": "v1.54",
   "source_files_sha256": {
     "src/downstream/__init__.py": "a3964f1df2d223167207f6beaaa5014856a6962363e96ca86fa896c1620a4c82",
     "src/downstream/admission.py": "fbd5c4e063fc0beaec640047bbf36d84baeddaa48e3ac837cd92c190ad05d5e0",
-    "src/downstream/audit.py": "bb2654c5c325c2eea6784d2ffe867b03370294aeba3bedd490ac4417ff8a9965",
+    "src/downstream/audit.py": "198a41c62534d1ac225558187402422b69ee45976d65857b233c5e5357c98195",
     "src/downstream/brac.py": "d7e3611883673d26580e67c5c751c77a8972f90275bc464d7834b5314a73028c",
     "src/downstream/build_places.py": "5e0633b4a06b1d179b9db705c5e341f0a6143fa36a26561b50c01985eb88a036",
     "src/downstream/bundle.py": "eea004ca6c70132365b38e05394ced53ac01d99f38bbbe0dd181f84ab6e0b878",
@@ -14,7 +14,7 @@
     "src/downstream/child_support.py": "3be23b991b7ee2ac67bd7f8094dd86d774ec310adce147e3e9d98e68aec82ea9",
     "src/downstream/children.py": "ba7ba27d3b557f9097f24bc49cb69940a6f0af7750e0c8f48fb6aaf4985a19ca",
     "src/downstream/citations.py": "eca0f242fca52d2bfb0863f62f6675dd212613d0be46fae9d9c8192f9ec3d10c",
-    "src/downstream/cli.py": "838538d899f8fa6d3262fb6fdedbdd8abe945601dfbc3cd209d9b2d7aa1c149c",
+    "src/downstream/cli.py": "5c5f87cea4c9550a119bc5b0f5c68fe5189499c37c724f99dde5659d312ab83e",
     "src/downstream/community.py": "1d7a1b0d28883992570cc7c81b88eed0258259a11c78f0f32dbc64587a1dbddf",
     "src/downstream/compare.py": "b46fe94e2241f0d80749603a3ce0797199a01a154f8a5d744d3264837f80d73b",
     "src/downstream/consumer.py": "973a645976970bc080db040325cd56c54395fbd78b92ad943f0abf9abf131eec",
@@ -46,21 +46,22 @@
     "src/downstream/scenario.py": "d1eb4794ebc88a18d66d1b48ba63bf5f3ce141b343fb9f74270c3c41505ef578",
     "src/downstream/scoring.py": "160d6a3d2a9ef9a94b5e35994454c7462906d9ec19d3bf33b2c642ef4601c5e3",
     "src/downstream/sensitivity.py": "dc884479b17dcae9c3ad0ee9b898932812e21a350df2c0b289b25536d30c575b",
-    "src/downstream/snapshot.py": "fd4079f3070477c3ed2c295f8bd4991725870dc781b5ff0648186d9f152f522a",
+    "src/downstream/snapshot.py": "fc61ab151680c082b13763b38270adede522f25dfdcf39f25dd2016faef499cf",
+    "src/downstream/source_contrasts.py": "b3614727745955f71b1c58ec10e2aaa6d33e10e5177696195397c8e73cb4a8c9",
     "src/downstream/source_support.py": "57ef10a4992fc705d63f2f00bfb1521ddbf0306a48d22775059ed1ad3b18167e",
     "src/downstream/study_library.py": "a9f03def1f8190e3efd74dad11ec3db733a002fd62993e95eb16075c9940d945",
     "src/downstream/synthesis.py": "c3e54bed03e82fc0db4be61353f51b1f2cc4b1b0fe6059b7b6d206ff6c001c46",
     "src/downstream/transmissions.py": "c96c8b07095415c3c1f15124858739265b19892ca35878e709cf4d4300f7decb",
     "src/downstream/uncertainty_budget.py": "fd855321177e6273ff50e0c561b85f4051257a1fe8d269fb7884452b21abe52b",
     "src/downstream/uncertainty_cases.py": "23d89f8d50344e74042e089a33acec0a95a43e1ea8048b038c1beb637047d811",
-    "src/downstream/units.py": "f2d745a07d00643f09eb2168e4433f7fa0cc200e5488cff72775fe9e0f9f1903",
+    "src/downstream/units.py": "e56f50918dff74bfa129e2fca7c2c77c1033e9f8613c9b27cf51e898fe72cc75",
     "src/downstream/validate.py": "f16a7d0f48fb1cac33b43aad5a807a1e541deed37625a69eadf66ba21e91eb91",
     "src/downstream/valuation.py": "489b392082e94e54564383436537002e59af50483ab4a78accb69119059e420f",
     "src/downstream/variants.py": "6c6b0942c550bd5e2d6555dd0282fb974f06944279ffd72c843312f9fc720ad2",
     "src/downstream/vignette.py": "39a3cf98ca95df3132fa0e26edabb6aa682ac6403b7bfc92524ca18e7d8036a5",
     "src/downstream/worker.py": "01b56ba3587b1c3d8d984b57995ec7266ced52b4454d7b29435b873c630ba4e8",
-    "params/CHANGELOG.md": "b04f7311c4d8e734ac186ed34289057e57155dd80451ae9888376d91e4d8fb14",
-    "params/VERSION": "a15152d7a0dc289263a08221e2891447cc88e4c5317342ef5a26d6a5090f998c",
+    "params/CHANGELOG.md": "2add38e35eff9e0de41fbe0cf4f7f16cfdf356401a093b101d5c0861e40f794c",
+    "params/VERSION": "5668431714c71763f18e14a9e87bfd81e3bb4cfd7874fa1e2b1aee740c64e02e",
     "params/age_mortality.csv": "9db45c7d220ff080913c65de747f0fc749c523bed3c584bc7bc7b0d1a1356f12",
     "params/baseline_employment_transitions.csv": "113561409acc078bf660154a73efadad092b35836cb11cd0c77594aa5885c0e3",
     "params/baselines.csv": "f67538abe22be16a159c5e95b8c69fb5c803d39b2faaf7580db703f6c3a72246",
@@ -72,17 +73,17 @@
     "params/evidence_corpus.csv": "ff38bba276919cb4e9e5cbfedfa867a4c6d2b7ca486522aebfd01765eb814af1",
     "params/evidence_findings.csv": "097526c70f5829b310fa29415f1a45aaf1328220f0af845369f6a48b38fcdf14",
     "params/mortality_profiles.csv": "9543f12e058708c19f0b5e6c55e3d5d832f208d3cb0fcf66ba41e9d8416b1bb4",
-    "params/nodes.csv": "07de38c4c630cb30e44d0c6d9ecb77cf66b7042fe5109fabe5d4d9973072a6ba",
-    "params/parameters.csv": "f6ce70a100042189691eb10291c9ead48655cbf37dc49d49c4ac2ce4a3a468d6",
+    "params/nodes.csv": "c0223f46040f66ef0b38a2afd22c42bc2960b007444c0c0aafa6f3c7bc563e4e",
+    "params/parameters.csv": "5bd638fee5caaf7a9b5951823c4f429af3dddf182c5ef0c12393063011b59613",
     "params/places.csv": "2bc1faa2955354c57ae467473aaea9bd58cdf044304d363b2f8b06869d6f45d4",
-    "params/references.bib": "2b022848da937459f0ff8e9488b013c2a03ba3554c272ff567de426d36f93c12",
-    "params/source_support.json": "f3fd03d09581a5715b7aceb13364074197c5c0233c1c63e3a6fa6b6a7b60b49d",
+    "params/references.bib": "ab69bb5c6f53aa32e4d68aaeeb4eef2172f7bc7800f5f76880bd42a9aac93e0a",
+    "params/source_support.json": "c117d9f0c9ecbbd9465a910fbff2e0d8742e2680795b9c0eb54f02ca918017d6",
     "params/study_estimates.csv": "12ea8fee6af9b0d3200989186714b7e02b77e8931f40ea1b36c84bfd6e3fdc74",
     "params/study_estimates.template.csv": "3f71fb5102d87827c926ac9c9ad09ce834798bb19c461cfca3f6854665cc66bf",
     "scripts/build_consumer_fixtures.py": "4964e76a53088d8fdc1fc348b052a83f1514f901effb2648998a903ab515adfd",
     "scripts/artifact_checks.py": "15342ed61b943d73774a1aa346137e715cb4256e28ca9e49cf2a7af0904cf62e"
   },
-  "source_content_sha256": "c238a8684aab8032009d96d901feb4bc04f3125d629e5a29c6a79191b0fd3de2",
+  "source_content_sha256": "75748c520c1e57facf975ae51bbf5851a97eeb82af2ac994f7947446a0eb6620",
   "fixture_sampling": "128 draws/base, seed 1901; contract fixtures, not precision-qualified research intervals.",
   "fixtures": {
     "national": {
@@ -115,7 +116,7 @@
       "precision": "Raw engine totals with public applicability, provenance and sensitivity.",
       "result": {
         "label": "scenario",
-        "parameter_set_version": "v1.53",
+        "parameter_set_version": "v1.54",
         "engine_version": "0.4.0",
         "uncertainty": {
           "band_kind": "parameter-support envelope, not a confidence interval",
@@ -292,10 +293,10 @@
                     "sullivan2009"
                   ],
                   "parameter_interval_90": {
-                    "p05": 22.5111,
-                    "p50": 28.4903,
-                    "p95": 36.5403,
-                    "mean": 29.241
+                    "p05": 22.5183,
+                    "p50": 29.113,
+                    "p95": 35.3979,
+                    "mean": 29.2431
                   }
                 },
                 "no_sustained_excess": {
@@ -310,10 +311,10 @@
                   "first_changed_follow_up_year": 7,
                   "fixed_late_odds_ratio": 1.0,
                   "parameter_interval_90": {
-                    "p05": 15.8849,
-                    "p50": 20.6959,
-                    "p95": 26.8837,
-                    "mean": 20.9459
+                    "p05": 16.0673,
+                    "p50": 20.5519,
+                    "p95": 26.3904,
+                    "mean": 20.9458
                   }
                 }
               },
@@ -337,10 +338,10 @@
                 "Baseline aging and target-population transport remain unresolved in both structures."
               ],
               "source_minus_no_sustained_parameter_interval_90": {
-                "p05": 3.0259,
-                "p50": 8.2263,
-                "p95": 13.5167,
-                "mean": 8.2951
+                "p05": 3.0408,
+                "p50": 8.2197,
+                "p95": 13.4367,
+                "mean": 8.2973
               },
               "sampling": {
                 "draws": 128,
@@ -614,10 +615,10 @@
               ]
             },
             "parameter_interval_90": {
-              "p05": 22.5111,
-              "p50": 28.4903,
-              "p95": 36.5403,
-              "mean": 29.241
+              "p05": 22.5183,
+              "p50": 29.113,
+              "p95": 35.3979,
+              "mean": 29.2431
             }
           },
           "child_lifetime_earnings_lost_usd": {
@@ -900,7 +901,7 @@
             "low": null,
             "high": null,
             "steps": [],
-            "blocked": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified.",
+            "blocked": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The source measures earnings for three generations and education for four. It does not estimate .55 causal gap transmission to a fourth earnings generation. Retaining a projection would require an explicit uncalibrated assumption, not a source-identified default.",
             "source_status": "withdrawn",
             "withdrawn_input": "grandchild_earnings->greatgrandchild_earnings"
           }
@@ -919,7 +920,7 @@
           "greatgrandchild": {
             "status": "source_withdrawn",
             "eligible_for_validated_direct_contrast": false,
-            "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
+            "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The source measures earnings for three generations and education for four. It does not estimate .55 causal gap transmission to a fourth earnings generation. Retaining a projection would require an explicit uncalibrated assumption, not a source-identified default."
           }
         },
         "target_population": null,
@@ -946,7 +947,7 @@
             "A subgroup's nonsignificant coefficient is retained with its uncertainty, not replaced with zero."
           ]
         },
-        "input_content_sha256": "6a1f7a50165d0f01071f1087f5fd34f79a1dab8bdf2556fd8b025c3d8024bb60",
+        "input_content_sha256": "b82912bc98a605b44c594200809986900f7077f17afce875ab6dc2c9933d0bfc",
         "parameter_uncertainty": {
           "interval": "central 90% Monte Carlo interval (p05\u2013p95)",
           "scope": "parameter uncertainty only",
@@ -966,13 +967,13 @@
           "seed": 1901,
           "sampler": "lhs+iman-conover",
           "correlations_applied": 2,
-          "parameter_set_version": "v1.53-sampled",
+          "parameter_set_version": "v1.54-sampled",
           "outcomes": {
             "excess_deaths": {
-              "p05": 22.5111,
-              "p50": 28.4903,
-              "p95": 36.5403,
-              "mean": 29.241
+              "p05": 22.5183,
+              "p50": 29.113,
+              "p95": 35.3979,
+              "mean": 29.2431
             },
             "child_lifetime_earnings_lost_usd": {
               "p05": 156473744.8056,
@@ -992,22 +993,22 @@
           "baseline_annual_rate": 0.004944,
           "counterfactual_death_probability": 0.09414859632988004,
           "exposed_deaths": {
-            "p05": 105,
-            "p50": 124,
+            "p05": 104,
+            "p50": 125,
             "p95": 141,
-            "mean": 123.6016
+            "mean": 124.2891
           },
           "counterfactual_deaths": {
             "p05": 79,
-            "p50": 95,
-            "p95": 110,
-            "mean": 94.4141
+            "p50": 94,
+            "p95": 108,
+            "mean": 93.5703
           },
           "reference_cohort_difference": {
-            "p05": 8,
-            "p50": 28,
-            "p95": 51,
-            "mean": 29.1875
+            "p05": 10,
+            "p50": 30,
+            "p95": 52,
+            "mean": 30.7188
           }
         }
       }
@@ -1042,7 +1043,7 @@
       "precision": "Raw engine totals with public applicability, provenance and sensitivity.",
       "result": {
         "label": "scenario",
-        "parameter_set_version": "v1.53",
+        "parameter_set_version": "v1.54",
         "engine_version": "0.4.0",
         "uncertainty": {
           "band_kind": "parameter-support envelope, not a confidence interval",
@@ -1737,7 +1738,7 @@
             "low": null,
             "high": null,
             "steps": [],
-            "blocked": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified.",
+            "blocked": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The source measures earnings for three generations and education for four. It does not estimate .55 causal gap transmission to a fourth earnings generation. Retaining a projection would require an explicit uncalibrated assumption, not a source-identified default.",
             "source_status": "withdrawn",
             "withdrawn_input": "grandchild_earnings->greatgrandchild_earnings"
           }
@@ -1756,7 +1757,7 @@
           "greatgrandchild": {
             "status": "source_withdrawn",
             "eligible_for_validated_direct_contrast": false,
-            "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
+            "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The source measures earnings for three generations and education for four. It does not estimate .55 causal gap transmission to a fourth earnings generation. Retaining a projection would require an explicit uncalibrated assumption, not a source-identified default."
           }
         },
         "target_population": null,
@@ -1783,7 +1784,7 @@
             "A subgroup's nonsignificant coefficient is retained with its uncertainty, not replaced with zero."
           ]
         },
-        "input_content_sha256": "7773ba861c4065990bda3f15681a9427faa9a89bf887f4441c5d8aab6417ca9a"
+        "input_content_sha256": "9f4e91ba225b6b0d811e8e016fcd77d01819b4a42a68ce10ee01f7129ce5aefd"
       }
     },
     "unsupported_county": {
@@ -1816,7 +1817,7 @@
       "precision": "Raw engine totals with public applicability, provenance and sensitivity.",
       "result": {
         "label": "scenario",
-        "parameter_set_version": "v1.53",
+        "parameter_set_version": "v1.54",
         "engine_version": "0.4.0",
         "uncertainty": {
           "band_kind": "parameter-support envelope, not a confidence interval",
@@ -2491,7 +2492,7 @@
             "low": null,
             "high": null,
             "steps": [],
-            "blocked": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified.",
+            "blocked": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The source measures earnings for three generations and education for four. It does not estimate .55 causal gap transmission to a fourth earnings generation. Retaining a projection would require an explicit uncalibrated assumption, not a source-identified default.",
             "source_status": "withdrawn",
             "withdrawn_input": "grandchild_earnings->greatgrandchild_earnings"
           }
@@ -2510,7 +2511,7 @@
           "greatgrandchild": {
             "status": "source_withdrawn",
             "eligible_for_validated_direct_contrast": false,
-            "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
+            "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The source measures earnings for three generations and education for four. It does not estimate .55 causal gap transmission to a fourth earnings generation. Retaining a projection would require an explicit uncalibrated assumption, not a source-identified default."
           }
         },
         "target_population": null,
@@ -2537,7 +2538,7 @@
             "A subgroup's nonsignificant coefficient is retained with its uncertainty, not replaced with zero."
           ]
         },
-        "input_content_sha256": "6a1f7a50165d0f01071f1087f5fd34f79a1dab8bdf2556fd8b025c3d8024bb60"
+        "input_content_sha256": "b82912bc98a605b44c594200809986900f7077f17afce875ab6dc2c9933d0bfc"
       }
     },
     "zero": {
@@ -2570,7 +2571,7 @@
       "precision": "Raw engine totals with public applicability, provenance and sensitivity.",
       "result": {
         "label": "scenario",
-        "parameter_set_version": "v1.53",
+        "parameter_set_version": "v1.54",
         "engine_version": "0.4.0",
         "uncertainty": {
           "band_kind": "parameter-support envelope, not a confidence interval",
@@ -3245,7 +3246,7 @@
             "low": null,
             "high": null,
             "steps": [],
-            "blocked": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified.",
+            "blocked": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The source measures earnings for three generations and education for four. It does not estimate .55 causal gap transmission to a fourth earnings generation. Retaining a projection would require an explicit uncalibrated assumption, not a source-identified default.",
             "source_status": "withdrawn",
             "withdrawn_input": "grandchild_earnings->greatgrandchild_earnings"
           }
@@ -3264,7 +3265,7 @@
           "greatgrandchild": {
             "status": "source_withdrawn",
             "eligible_for_validated_direct_contrast": false,
-            "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
+            "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The source measures earnings for three generations and education for four. It does not estimate .55 causal gap transmission to a fourth earnings generation. Retaining a projection would require an explicit uncalibrated assumption, not a source-identified default."
           }
         },
         "target_population": null,
@@ -3291,7 +3292,7 @@
             "A subgroup's nonsignificant coefficient is retained with its uncertainty, not replaced with zero."
           ]
         },
-        "input_content_sha256": "e0bcf617fecdcc968ef51a637f0e018274b0541a43c16edbe4db77c89fe0f00f"
+        "input_content_sha256": "83d02995c426380b329109906c1656f9b574476c81db1c736ffd4ba0a564fc6d"
       }
     },
     "fractional": {
@@ -3324,7 +3325,7 @@
       "precision": "Raw engine totals with public applicability, provenance and sensitivity.",
       "result": {
         "label": "scenario",
-        "parameter_set_version": "v1.53",
+        "parameter_set_version": "v1.54",
         "engine_version": "0.4.0",
         "uncertainty": {
           "band_kind": "parameter-support envelope, not a confidence interval",
@@ -3999,7 +4000,7 @@
             "low": null,
             "high": null,
             "steps": [],
-            "blocked": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified.",
+            "blocked": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The source measures earnings for three generations and education for four. It does not estimate .55 causal gap transmission to a fourth earnings generation. Retaining a projection would require an explicit uncalibrated assumption, not a source-identified default.",
             "source_status": "withdrawn",
             "withdrawn_input": "grandchild_earnings->greatgrandchild_earnings"
           }
@@ -4018,7 +4019,7 @@
           "greatgrandchild": {
             "status": "source_withdrawn",
             "eligible_for_validated_direct_contrast": false,
-            "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
+            "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The source measures earnings for three generations and education for four. It does not estimate .55 causal gap transmission to a fourth earnings generation. Retaining a projection would require an explicit uncalibrated assumption, not a source-identified default."
           }
         },
         "target_population": null,
@@ -4045,7 +4046,7 @@
             "A subgroup's nonsignificant coefficient is retained with its uncertainty, not replaced with zero."
           ]
         },
-        "input_content_sha256": "1dcbb290805b5c4d3849b88675226fb3846dc4b41a45b013ba33ad4d24a99234"
+        "input_content_sha256": "cbc0670c84804e10084c3d53af0f7336dc20c491697d9063f935fc31a455278a"
       }
     },
     "beneficial_child": {
@@ -4078,7 +4079,7 @@
       "precision": "Raw engine totals with public applicability, provenance and sensitivity.",
       "result": {
         "label": "scenario",
-        "parameter_set_version": "v1.53",
+        "parameter_set_version": "v1.54",
         "engine_version": "0.4.0",
         "uncertainty": {
           "band_kind": "parameter-support envelope, not a confidence interval",
@@ -4753,7 +4754,7 @@
             "low": null,
             "high": null,
             "steps": [],
-            "blocked": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified.",
+            "blocked": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The source measures earnings for three generations and education for four. It does not estimate .55 causal gap transmission to a fourth earnings generation. Retaining a projection would require an explicit uncalibrated assumption, not a source-identified default.",
             "source_status": "withdrawn",
             "withdrawn_input": "grandchild_earnings->greatgrandchild_earnings"
           }
@@ -4772,7 +4773,7 @@
           "greatgrandchild": {
             "status": "source_withdrawn",
             "eligible_for_validated_direct_contrast": false,
-            "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
+            "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The source measures earnings for three generations and education for four. It does not estimate .55 causal gap transmission to a fourth earnings generation. Retaining a projection would require an explicit uncalibrated assumption, not a source-identified default."
           }
         },
         "target_population": null,
@@ -4799,7 +4800,7 @@
             "A subgroup's nonsignificant coefficient is retained with its uncertainty, not replaced with zero."
           ]
         },
-        "input_content_sha256": "c7d112163a27a7007d88feaeec720e2cecc391d73de3fc9142c637455722c438"
+        "input_content_sha256": "ba6fbd37d3ec7f2691ffc2c39b22dc2f2bdf878195a0fe9c6b316ce966d61cc6"
       }
     },
     "valuation": {
@@ -4841,7 +4842,7 @@
       "precision": "Raw engine totals with public applicability, provenance and sensitivity.",
       "result": {
         "label": "scenario",
-        "parameter_set_version": "v1.53",
+        "parameter_set_version": "v1.54",
         "engine_version": "0.4.0",
         "uncertainty": {
           "band_kind": "parameter-support envelope, not a confidence interval",
@@ -5525,7 +5526,7 @@
             "low": null,
             "high": null,
             "steps": [],
-            "blocked": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified.",
+            "blocked": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The source measures earnings for three generations and education for four. It does not estimate .55 causal gap transmission to a fourth earnings generation. Retaining a projection would require an explicit uncalibrated assumption, not a source-identified default.",
             "source_status": "withdrawn",
             "withdrawn_input": "grandchild_earnings->greatgrandchild_earnings"
           }
@@ -5544,7 +5545,7 @@
           "greatgrandchild": {
             "status": "source_withdrawn",
             "eligible_for_validated_direct_contrast": false,
-            "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
+            "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The source measures earnings for three generations and education for four. It does not estimate .55 causal gap transmission to a fourth earnings generation. Retaining a projection would require an explicit uncalibrated assumption, not a source-identified default."
           }
         },
         "target_population": null,
@@ -6561,7 +6562,7 @@
           },
           "interpretation": "Real purchasing-power dollars discounted to the event date; the career projection extrapolates beyond observed adult ages. Negative losses represent modeled gains."
         },
-        "input_content_sha256": "8ec7f2ced0ab5cf4e79b596f39a8487ba2ebee4285cbda5ddf57c7e8fb0cf259"
+        "input_content_sha256": "e8ab9a2b0bf94762876c7307a653016b08ffb860eb79d27cdcf50daa055cf29d"
       }
     },
     "synthetic_reviewed": {
@@ -6624,7 +6625,7 @@
       "precision": "Raw engine totals with public applicability, provenance and sensitivity.",
       "result": {
         "label": "scenario",
-        "parameter_set_version": "v1.53",
+        "parameter_set_version": "v1.54",
         "engine_version": "0.4.0",
         "uncertainty": {
           "band_kind": "parameter-support envelope, not a confidence interval",
@@ -7342,7 +7343,7 @@
             "low": null,
             "high": null,
             "steps": [],
-            "blocked": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified.",
+            "blocked": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The source measures earnings for three generations and education for four. It does not estimate .55 causal gap transmission to a fourth earnings generation. Retaining a projection would require an explicit uncalibrated assumption, not a source-identified default.",
             "source_status": "withdrawn",
             "withdrawn_input": "grandchild_earnings->greatgrandchild_earnings"
           }
@@ -7361,7 +7362,7 @@
           "greatgrandchild": {
             "status": "source_withdrawn",
             "eligible_for_validated_direct_contrast": false,
-            "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
+            "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The source measures earnings for three generations and education for four. It does not estimate .55 causal gap transmission to a fourth earnings generation. Retaining a projection would require an explicit uncalibrated assumption, not a source-identified default."
           }
         },
         "target_population": {
@@ -7405,7 +7406,7 @@
             "A subgroup's nonsignificant coefficient is retained with its uncertainty, not replaced with zero."
           ]
         },
-        "input_content_sha256": "d25af19be680592bf924657a9e9c3c9b4ffb34d8aa642ecdf5945bed70393e5f"
+        "input_content_sha256": "95f2a692bae648d64ba81ef3bedf18a01ab9f925fd7428717cc52ea486c7326c"
       }
     },
     "blocked_demographics": {
@@ -7446,7 +7447,7 @@
       "precision": "Raw engine totals with public applicability, provenance and sensitivity.",
       "result": {
         "label": "scenario",
-        "parameter_set_version": "v1.53",
+        "parameter_set_version": "v1.54",
         "engine_version": "0.4.0",
         "uncertainty": {
           "band_kind": "parameter-support envelope, not a confidence interval",
@@ -7582,7 +7583,7 @@
             "low": null,
             "high": null,
             "steps": [],
-            "blocked": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified.",
+            "blocked": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The source measures earnings for three generations and education for four. It does not estimate .55 causal gap transmission to a fourth earnings generation. Retaining a projection would require an explicit uncalibrated assumption, not a source-identified default.",
             "source_status": "withdrawn",
             "withdrawn_input": "grandchild_earnings->greatgrandchild_earnings"
           }
@@ -7601,7 +7602,7 @@
           "greatgrandchild": {
             "status": "source_withdrawn",
             "eligible_for_validated_direct_contrast": false,
-            "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
+            "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The source measures earnings for three generations and education for four. It does not estimate .55 causal gap transmission to a fourth earnings generation. Retaining a projection would require an explicit uncalibrated assumption, not a source-identified default."
           }
         },
         "target_population": {
@@ -7636,7 +7637,7 @@
             "A subgroup's nonsignificant coefficient is retained with its uncertainty, not replaced with zero."
           ]
         },
-        "input_content_sha256": "132b83c1c19b5e520a0bcea8df3a6c10672e39503a33c82fbc26a72aaf9ad5f0"
+        "input_content_sha256": "2483215464a65a3797e2fa5cf2cdbc5bfbdc7dbe6bfdfa07ff84e6547789034a"
       }
     }
   },
@@ -8336,10 +8337,10 @@
                 "sullivan2009"
               ],
               "parameter_interval_90": {
-                "p05": 0.0028138875,
-                "p50": 0.0035612875000000004,
-                "p95": 0.004567537500000001,
-                "mean": 0.003655125
+                "p05": 0.0028147875,
+                "p50": 0.003639125,
+                "p95": 0.0044247375,
+                "mean": 0.0036553874999999997
               }
             },
             "no_sustained_excess": {
@@ -8354,10 +8355,10 @@
               "first_changed_follow_up_year": 7,
               "fixed_late_odds_ratio": 1.0,
               "parameter_interval_90": {
-                "p05": 0.0019856125,
-                "p50": 0.0025869875000000004,
-                "p95": 0.0033604625,
-                "mean": 0.0026182375000000004
+                "p05": 0.0020084125,
+                "p50": 0.0025689875,
+                "p95": 0.0032988,
+                "mean": 0.002618225
               }
             }
           },
@@ -8381,10 +8382,10 @@
             "Baseline aging and target-population transport remain unresolved in both structures."
           ],
           "source_minus_no_sustained_parameter_interval_90": {
-            "p05": 0.0003782375,
-            "p50": 0.0010282875,
-            "p95": 0.0016895875000000002,
-            "mean": 0.0010368875
+            "p05": 0.0003801,
+            "p50": 0.0010274625,
+            "p95": 0.0016795875000000001,
+            "mean": 0.0010371625
           },
           "sampling": {
             "draws": 128,
@@ -8658,10 +8659,10 @@
           ]
         },
         "parameter_interval_90": {
-          "p05": 0.0028138875,
-          "p50": 0.0035612875000000004,
-          "p95": 0.004567537500000001,
-          "mean": 0.003655125
+          "p05": 0.0028147875,
+          "p50": 0.003639125,
+          "p95": 0.0044247375,
+          "mean": 0.0036553874999999997
         }
       },
       "child_lifetime_earnings_lost_usd": {
@@ -8994,10 +8995,10 @@
                 "sullivan2009"
               ],
               "parameter_interval_90": {
-                "p05": 5.627775,
-                "p50": 7.122575,
-                "p95": 9.135075,
-                "mean": 7.31025
+                "p05": 5.629575,
+                "p50": 7.27825,
+                "p95": 8.849475,
+                "mean": 7.310775
               }
             },
             "no_sustained_excess": {
@@ -9012,10 +9013,10 @@
               "first_changed_follow_up_year": 7,
               "fixed_late_odds_ratio": 1.0,
               "parameter_interval_90": {
-                "p05": 3.971225,
-                "p50": 5.173975,
-                "p95": 6.720925,
-                "mean": 5.236475
+                "p05": 4.016825,
+                "p50": 5.137975,
+                "p95": 6.5976,
+                "mean": 5.23645
               }
             }
           },
@@ -9039,10 +9040,10 @@
             "Baseline aging and target-population transport remain unresolved in both structures."
           ],
           "source_minus_no_sustained_parameter_interval_90": {
-            "p05": 0.756475,
-            "p50": 2.056575,
-            "p95": 3.379175,
-            "mean": 2.073775
+            "p05": 0.7602,
+            "p50": 2.054925,
+            "p95": 3.359175,
+            "mean": 2.074325
           },
           "sampling": {
             "draws": 128,
@@ -9316,10 +9317,10 @@
           ]
         },
         "parameter_interval_90": {
-          "p05": 5.627775,
-          "p50": 7.122575,
-          "p95": 9.135075,
-          "mean": 7.31025
+          "p05": 5.629575,
+          "p50": 7.27825,
+          "p95": 8.849475,
+          "mean": 7.310775
         }
       },
       "child_lifetime_earnings_lost_usd": {
@@ -9652,10 +9653,10 @@
                 "sullivan2009"
               ],
               "parameter_interval_90": {
-                "p05": 22.5111,
-                "p50": 28.4903,
-                "p95": 36.5403,
-                "mean": 29.241
+                "p05": 22.5183,
+                "p50": 29.113,
+                "p95": 35.3979,
+                "mean": 29.2431
               }
             },
             "no_sustained_excess": {
@@ -9670,10 +9671,10 @@
               "first_changed_follow_up_year": 7,
               "fixed_late_odds_ratio": 1.0,
               "parameter_interval_90": {
-                "p05": 15.8849,
-                "p50": 20.6959,
-                "p95": 26.8837,
-                "mean": 20.9459
+                "p05": 16.0673,
+                "p50": 20.5519,
+                "p95": 26.3904,
+                "mean": 20.9458
               }
             }
           },
@@ -9697,10 +9698,10 @@
             "Baseline aging and target-population transport remain unresolved in both structures."
           ],
           "source_minus_no_sustained_parameter_interval_90": {
-            "p05": 3.0259,
-            "p50": 8.2263,
-            "p95": 13.5167,
-            "mean": 8.2951
+            "p05": 3.0408,
+            "p50": 8.2197,
+            "p95": 13.4367,
+            "mean": 8.2973
           },
           "sampling": {
             "draws": 128,
@@ -9974,10 +9975,10 @@
           ]
         },
         "parameter_interval_90": {
-          "p05": 22.5111,
-          "p50": 28.4903,
-          "p95": 36.5403,
-          "mean": 29.241
+          "p05": 22.5183,
+          "p50": 29.113,
+          "p95": 35.3979,
+          "mean": 29.2431
         }
       },
       "child_lifetime_earnings_lost_usd": {
@@ -10310,10 +10311,10 @@
                 "sullivan2009"
               ],
               "parameter_interval_90": {
-                "p05": 22511.1,
-                "p50": 28490.300000000003,
-                "p95": 36540.3,
-                "mean": 29241.0
+                "p05": 22518.3,
+                "p50": 29113.0,
+                "p95": 35397.9,
+                "mean": 29243.1
               }
             },
             "no_sustained_excess": {
@@ -10328,10 +10329,10 @@
               "first_changed_follow_up_year": 7,
               "fixed_late_odds_ratio": 1.0,
               "parameter_interval_90": {
-                "p05": 15884.9,
-                "p50": 20695.9,
-                "p95": 26883.7,
-                "mean": 20945.9
+                "p05": 16067.3,
+                "p50": 20551.9,
+                "p95": 26390.4,
+                "mean": 20945.8
               }
             }
           },
@@ -10355,10 +10356,10 @@
             "Baseline aging and target-population transport remain unresolved in both structures."
           ],
           "source_minus_no_sustained_parameter_interval_90": {
-            "p05": 3025.9,
-            "p50": 8226.3,
-            "p95": 13516.7,
-            "mean": 8295.1
+            "p05": 3040.7999999999997,
+            "p50": 8219.699999999999,
+            "p95": 13436.7,
+            "mean": 8297.3
           },
           "sampling": {
             "draws": 128,
@@ -10632,10 +10633,10 @@
           ]
         },
         "parameter_interval_90": {
-          "p05": 22511.1,
-          "p50": 28490.300000000003,
-          "p95": 36540.3,
-          "mean": 29241.0
+          "p05": 22518.3,
+          "p50": 29113.0,
+          "p95": 35397.9,
+          "mean": 29243.1
         }
       },
       "child_lifetime_earnings_lost_usd": {
@@ -10893,8 +10894,8 @@
               "weight": 0.6,
               "source_identity": {
                 "engine_version": "0.4.0",
-                "parameter_set_version": "v1.53",
-                "input_content_sha256": "7773ba861c4065990bda3f15681a9427faa9a89bf887f4441c5d8aab6417ca9a",
+                "parameter_set_version": "v1.54",
+                "input_content_sha256": "9f4e91ba225b6b0d811e8e016fcd77d01819b4a42a68ce10ee01f7129ce5aefd",
                 "exposure_input_sha256": null
               },
               "source_context": {
@@ -10975,7 +10976,7 @@
                   "greatgrandchild": {
                     "status": "source_withdrawn",
                     "eligible_for_validated_direct_contrast": false,
-                    "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
+                    "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The source measures earnings for three generations and education for four. It does not estimate .55 causal gap transmission to a fourth earnings generation. Retaining a projection would require an explicit uncalibrated assumption, not a source-identified default."
                   }
                 },
                 "assumptions": {
@@ -11127,8 +11128,8 @@
               "weight": 0.4,
               "source_identity": {
                 "engine_version": "0.4.0",
-                "parameter_set_version": "v1.53",
-                "input_content_sha256": "6a1f7a50165d0f01071f1087f5fd34f79a1dab8bdf2556fd8b025c3d8024bb60",
+                "parameter_set_version": "v1.54",
+                "input_content_sha256": "b82912bc98a605b44c594200809986900f7077f17afce875ab6dc2c9933d0bfc",
                 "exposure_input_sha256": null
               },
               "source_context": {
@@ -11199,7 +11200,7 @@
                   "greatgrandchild": {
                     "status": "source_withdrawn",
                     "eligible_for_validated_direct_contrast": false,
-                    "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
+                    "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The source measures earnings for three generations and education for four. It does not estimate .55 causal gap transmission to a fourth earnings generation. Retaining a projection would require an explicit uncalibrated assumption, not a source-identified default."
                   }
                 },
                 "assumptions": {
@@ -11425,8 +11426,8 @@
               "weight": 0.6,
               "source_identity": {
                 "engine_version": "0.4.0",
-                "parameter_set_version": "v1.53",
-                "input_content_sha256": "7773ba861c4065990bda3f15681a9427faa9a89bf887f4441c5d8aab6417ca9a",
+                "parameter_set_version": "v1.54",
+                "input_content_sha256": "9f4e91ba225b6b0d811e8e016fcd77d01819b4a42a68ce10ee01f7129ce5aefd",
                 "exposure_input_sha256": null
               },
               "source_context": {
@@ -11507,7 +11508,7 @@
                   "greatgrandchild": {
                     "status": "source_withdrawn",
                     "eligible_for_validated_direct_contrast": false,
-                    "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
+                    "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The source measures earnings for three generations and education for four. It does not estimate .55 causal gap transmission to a fourth earnings generation. Retaining a projection would require an explicit uncalibrated assumption, not a source-identified default."
                   }
                 },
                 "assumptions": {
@@ -11628,8 +11629,8 @@
               "weight": 0.4,
               "source_identity": {
                 "engine_version": "0.4.0",
-                "parameter_set_version": "v1.53",
-                "input_content_sha256": "6a1f7a50165d0f01071f1087f5fd34f79a1dab8bdf2556fd8b025c3d8024bb60",
+                "parameter_set_version": "v1.54",
+                "input_content_sha256": "b82912bc98a605b44c594200809986900f7077f17afce875ab6dc2c9933d0bfc",
                 "exposure_input_sha256": null
               },
               "source_context": {
@@ -11700,7 +11701,7 @@
                   "greatgrandchild": {
                     "status": "source_withdrawn",
                     "eligible_for_validated_direct_contrast": false,
-                    "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
+                    "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The source measures earnings for three generations and education for four. It does not estimate .55 causal gap transmission to a fourth earnings generation. Retaining a projection would require an explicit uncalibrated assumption, not a source-identified default."
                   }
                 },
                 "assumptions": {
@@ -11873,8 +11874,8 @@
               "weight": 0.5,
               "source_identity": {
                 "engine_version": "0.4.0",
-                "parameter_set_version": "v1.53",
-                "input_content_sha256": "d25af19be680592bf924657a9e9c3c9b4ffb34d8aa642ecdf5945bed70393e5f",
+                "parameter_set_version": "v1.54",
+                "input_content_sha256": "95f2a692bae648d64ba81ef3bedf18a01ab9f925fd7428717cc52ea486c7326c",
                 "exposure_input_sha256": null
               },
               "source_context": {
@@ -11962,7 +11963,7 @@
                   "greatgrandchild": {
                     "status": "source_withdrawn",
                     "eligible_for_validated_direct_contrast": false,
-                    "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
+                    "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The source measures earnings for three generations and education for four. It does not estimate .55 causal gap transmission to a fourth earnings generation. Retaining a projection would require an explicit uncalibrated assumption, not a source-identified default."
                   }
                 },
                 "assumptions": {
@@ -12127,8 +12128,8 @@
               "weight": 0.5,
               "source_identity": {
                 "engine_version": "0.4.0",
-                "parameter_set_version": "v1.53",
-                "input_content_sha256": "6a1f7a50165d0f01071f1087f5fd34f79a1dab8bdf2556fd8b025c3d8024bb60",
+                "parameter_set_version": "v1.54",
+                "input_content_sha256": "b82912bc98a605b44c594200809986900f7077f17afce875ab6dc2c9933d0bfc",
                 "exposure_input_sha256": null
               },
               "source_context": {
@@ -12199,7 +12200,7 @@
                   "greatgrandchild": {
                     "status": "source_withdrawn",
                     "eligible_for_validated_direct_contrast": false,
-                    "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
+                    "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The source measures earnings for three generations and education for four. It does not estimate .55 causal gap transmission to a fourth earnings generation. Retaining a projection would require an explicit uncalibrated assumption, not a source-identified default."
                   }
                 },
                 "assumptions": {
@@ -12425,8 +12426,8 @@
               "weight": 0.5,
               "source_identity": {
                 "engine_version": "0.4.0",
-                "parameter_set_version": "v1.53",
-                "input_content_sha256": "d25af19be680592bf924657a9e9c3c9b4ffb34d8aa642ecdf5945bed70393e5f",
+                "parameter_set_version": "v1.54",
+                "input_content_sha256": "95f2a692bae648d64ba81ef3bedf18a01ab9f925fd7428717cc52ea486c7326c",
                 "exposure_input_sha256": null
               },
               "source_context": {
@@ -12514,7 +12515,7 @@
                   "greatgrandchild": {
                     "status": "source_withdrawn",
                     "eligible_for_validated_direct_contrast": false,
-                    "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
+                    "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The source measures earnings for three generations and education for four. It does not estimate .55 causal gap transmission to a fourth earnings generation. Retaining a projection would require an explicit uncalibrated assumption, not a source-identified default."
                   }
                 },
                 "assumptions": {
@@ -12648,8 +12649,8 @@
               "weight": 0.5,
               "source_identity": {
                 "engine_version": "0.4.0",
-                "parameter_set_version": "v1.53",
-                "input_content_sha256": "6a1f7a50165d0f01071f1087f5fd34f79a1dab8bdf2556fd8b025c3d8024bb60",
+                "parameter_set_version": "v1.54",
+                "input_content_sha256": "b82912bc98a605b44c594200809986900f7077f17afce875ab6dc2c9933d0bfc",
                 "exposure_input_sha256": null
               },
               "source_context": {
@@ -12720,7 +12721,7 @@
                   "greatgrandchild": {
                     "status": "source_withdrawn",
                     "eligible_for_validated_direct_contrast": false,
-                    "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified."
+                    "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The source measures earnings for three generations and education for four. It does not estimate .55 causal gap transmission to a fourth earnings generation. Retaining a projection would require an explicit uncalibrated assumption, not a source-identified default."
                   }
                 },
                 "assumptions": {

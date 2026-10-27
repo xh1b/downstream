@@ -78,3 +78,15 @@ receiving_total_crime_rate,gap_multiplier,"endpoint total-crime rate ratio from 
 undocumented_share_change_pp,percentage_point_delta,change in undocumented residents / total population in percentage points; distinct from immigrant stock growth
 receiving_violent_crime_log_rate,log_delta,log violent-crime rate response to a lagged undocumented-share percentage-point change; exponentiate at named adapter boundary
 regular_immigrant_share_ratio,gap_multiplier,post/reference ratio of valid residence-permit residents / total population; includes both population denominators
+unemployment_rate_change_pp,percentage_point_delta,Change in state unemployment rate in percentage points; .01 fraction change equals 1pp
+property_crime_log_change,log_delta,Change in log property-crime rate; percent effect = 100*expm1(log change)
+female_male_wage_ratio_change,ratio_delta,Absolute change in potential female/male wage ratio; .01 means one ratio percentage point
+female_assault_log_change,log_delta,Change in log female assault hospital admissions; not all IPV incidence
+import_penetration_change_pp,percentage_point_delta,"Employment-weighted CZ Chinese import penetration change in percentage points, 2002-2010"
+gop_win_probability_change_pp,percentage_point_delta,Republican congressional win-probability change in percentage points; source-window contrast
+import_exposure_eur1000_per_worker_2y,eur1000_2006_per_worker,Real 2006-EUR1000 per worker import increase over the two years before an election; not USD or decadal exposure
+radical_right_vote_share_change_pp,percentage_point_delta,Radical-right vote-share change in percentage points; European two-year pre-election exposure
+quarterly_earnings_gap_q5_8,gap_multiplier,"IV quarterly earnings difference in quarters 5-8 scaled by matching non-evicted mean 4254, held fixed"
+exam_noncompletion_change_pp,percentage_point_delta,Parental plant-closure exposure at ages 0-16: exam noncompletion probability difference in percentage points; not a hazard ratio
+childhood_parental_violence_exposure,persons,"Study contrast: childhood exposure to violence between parents; both sexes pooled, not a population count input"
+adult_partner_victimization_odds,odds_ratio,Sex-adjusted pooled adult odds of receiving any partner violence; not daughters-only or a causal intervention effect

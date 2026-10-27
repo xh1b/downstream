@@ -93,7 +93,7 @@ def test_new_nodes_exist_with_declared_units():
 
 def test_version_bumped_and_audit_clean():
     version = (PARAMS_DIR / "VERSION").read_text().strip()
-    assert version == "v1.53"
+    assert version == "v1.54"
     out = audit(PARAMS_DIR)
     errors = [f for f in out if f.severity == ERROR]
     assert errors == []

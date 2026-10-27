@@ -25,6 +25,8 @@ LEVEL_RATIO = "level_ratio"   # jobs per job, dollars per dollar: a LEVEL, never
 PERCENT_DELTA = "percent_delta"
 PERCENTAGE_POINT_DELTA = "percentage_point_delta"
 LOG_DELTA = "log_delta"
+RATIO_DELTA = "ratio_delta"
+EUR1000_PER_WORKER = "eur1000_2006_per_worker"
 SD_DELTA = "sd_delta"          # change in standard-deviation units (achievement scales)
 LIFE_YEARS = "life_years"      # life-expectancy change in years
 LOG_ELASTICITY = "log_elasticity"  # elasticity of ln(outcome); signed, samples linear
@@ -51,6 +53,11 @@ class Node:
 #   level_ratio : n * param                (count conversion, additive in n)
 #   elasticity  : pct_delta = param * pct_input
 COMPOSITION = {
+    (RATIO_DELTA, LOG_DELTA): "linear_shift",
+    (PERCENTAGE_POINT_DELTA, PERCENTAGE_POINT_DELTA): "linear_shift",
+    (EUR1000_PER_WORKER, PERCENTAGE_POINT_DELTA): "linear_shift",
+    (PERSONS, PERCENTAGE_POINT_DELTA): "rate",
+    (PERSONS, ODDS_RATIO): "rate",
     (PERCENTAGE_POINT_DELTA, LOG_DELTA): "linear_shift",  # named semi-log share adapter
     (PERSONS, GAP): "level",             # displacement -> worker_earnings (JLS band)
     (GAP, ODDS_RATIO): "rate",           # mortality odds, recorded before risk conversion

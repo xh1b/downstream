@@ -338,7 +338,7 @@ Context: @link:doc-calculator; @link:calculator-template; @link:doc-rendering; @
       "net_tradable_jobs_lost": null,
       "tradable_share": 1.0
     },
-    "input_content_sha256": "0d24d01a63c88a17e2c796a16e306acf71fa7eaeaf9578c591a67540ef16771b",
+    "input_content_sha256": "31071666f757494246945f99fcbd55021c913773fd91579e80221414a158b6f5",
     "label": "National source reference",
     "modeled": {
       "child_lifetime_earnings_lost_usd": {
@@ -833,7 +833,7 @@ Context: @link:doc-calculator; @link:calculator-template; @link:doc-rendering; @
       },
       "greatgrandchild_earnings": {
         "available": false,
-        "blocked": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified.",
+        "blocked": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The source measures earnings for three generations and education for four. It does not estimate .55 causal gap transmission to a fourth earnings generation. Retaining a projection would require an explicit uncalibrated assumption, not a source-identified default.",
         "high": null,
         "label": "greatgrandchild",
         "low": null,
@@ -859,7 +859,7 @@ Context: @link:doc-calculator; @link:calculator-template; @link:doc-rendering; @
         "point": 0.8
       }
     },
-    "parameter_set_version": "v1.53",
+    "parameter_set_version": "v1.54",
     "place": null,
     "projection_eligibility": {
       "child": {
@@ -874,7 +874,7 @@ Context: @link:doc-calculator; @link:calculator-template; @link:doc-rendering; @
       },
       "greatgrandchild": {
         "eligible_for_validated_direct_contrast": false,
-        "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The 0.55 factor remains a model assumption. Lindahl documents multigeneration persistence but does not establish this specific earnings-gap transmission rule. The Adermon source record has not been identified.",
+        "reason": "source withdrawn for grandchild_earnings->greatgrandchild_earnings: The source measures earnings for three generations and education for four. It does not estimate .55 causal gap transmission to a fourth earnings generation. Retaining a projection would require an explicit uncalibrated assumption, not a source-identified default.",
         "status": "source_withdrawn"
       }
     },

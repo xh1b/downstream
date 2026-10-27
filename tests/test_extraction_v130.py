@@ -30,7 +30,7 @@ LINK = "neighborhood_exposure->child_outcomes_modifier"
 
 
 def test_version_is_v130():
-    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.53"
+    assert (PARAMS_DIR / "VERSION").read_text().strip() == "v1.54"
 
 
 def _row():

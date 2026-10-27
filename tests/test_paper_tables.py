@@ -57,7 +57,7 @@ def test_paper_generation_matches_engine_and_is_deterministic(tmp_path, monkeypa
     assert output['declared_correlation_pairs'] == len(load_correlations(ROOT / 'params/correlations.csv'))
     rows = (tmp_path / 'parameters.tex').read_text()
     assert '\\nolinkurl{' not in rows
-    assert len(rows.splitlines()) == 51
+    assert len(rows.splitlines()) == 64
     assert 'greatgrandchild earnings' not in rows
     assert r'displacement $\to$ worker earnings' in rows
     assert r'child earnings $\to$ grandchild earnings' in rows

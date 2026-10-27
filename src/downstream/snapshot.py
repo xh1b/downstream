@@ -92,6 +92,8 @@ def build(params_dir: str | Path | None = None) -> dict:
             for p in params.parameters if not is_withdrawn(p.link)
         ],
         "source_support_policy_sha256": policy_sha256(),
+        "source_repair_review": policy().get("individual_review", {}),
+        "reviewed_sources": policy().get("reviewed_sources", {}),
         "withdrawn_parameters": [
             {**asdict(p), "source_support": policy()['withdrawn_parameters'][p.link]}
             for p in params.parameters if is_withdrawn(p.link)
