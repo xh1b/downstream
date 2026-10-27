@@ -70,3 +70,16 @@ Hosted uploads verify quota recovery and one-day retention
 On exact published source 8212801a04a673c7cd7454c8dd64aab987f433d3, [quality run 40471616603](https://github.com/xh1b/downstream/actions/runs/40471616603) has four successful Linux/Windows distribution jobs. Their upload-artifact steps succeed, and all four new artifact IDs are present. Each expiry is 86399 seconds after creation, which verifies the configured one-day retention. This is direct upload acceptance after cleanup, beyond the earlier storage inventory.
 
 Lint and fast tests on Python3.12 and3.14 also pass. The full coverage job is still running in this snapshot. Mutation/benchmark is skipped on push by the existing schedule/manual guard. This does not establish whole-CI success or any companion database/Patreon acceptance. Receipt: /tmp/xh1b-github-security-20261027/downstream-retention-hosted-receipt.json. The task remains in review; no self-acceptance.
+
+## c-7b17a21e7198
+
+- At: 2026-10-27 16:15 HKT
+- By: github-security-20261026
+
+Exact-revision hosted CI passes, including coverage upload
+
+[Run 40471616603](https://github.com/xh1b/downstream/actions/runs/40471616603) completed successfully on published source 8212801a04a673c7cd7454c8dd64aab987f433d3. All eight required jobs succeeded. The scheduled/manual mutation-and-benchmark job was skipped by its existing push guard.
+
+Full coverage ran 1526 tests: all passed in 237.37 seconds. Statement coverage is 96.8 percent against the 95 percent minimum; branch coverage is 94.0 percent against the 90 percent minimum. Coverage artifact 12719001414 uploaded successfully (35480 bytes). Together with the four successful distribution uploads and one-day expiry metadata, this verifies quota recovery for this run and the intended retention behavior.
+
+Raw native log: /tmp/xh1b-github-security-20261027/downstream-retention-coverage-native.log. Final hosted receipt: /tmp/xh1b-github-security-20261027/downstream-retention-hosted-receipt.json. Task remains in review for a different reviewer. Companion CI, its prior artifact failures, deployment and database acceptance are separate.
