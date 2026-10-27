@@ -59,3 +59,14 @@ Full local suite: 1,550 tests plus nine subtests pass in 638.64s. Coverage 96.7%
 [Individual sixteen-row review](../../../docs/audits/source_repairs_2026-10-27.md) and [machine receipt](../../../docs/audits/source_repairs_2026-10-27.json) record primary-document versions/tables, available hashes, numeric extractions, 6/7/3 dispositions and code/data/artifact identities. For Ehrensaft the hash covers a numeric publisher-table extraction, not unavailable original PDF bytes; that access limit is explicit. All original 67 CSV records remain byte-identical in the first 82,447 bytes. Engine/default data now expose 64 available records, and every unsafe legacy alias stays refused.
 
 Main implementation/data commit: 6d8d92f; installed-wheel check: 99bd37e. Corrected code/data, examples, exports, calculator, evidence reports, methods PDF/HTML and consumer fixtures are committed locally. No remote publication, v0.4.0 artifact replacement, companion repin/cache refresh or deployment is claimed. The three unsupported original earnings relationships require new supporting evidence; their absence is not a zero effect or a restored coefficient.
+
+## c-fdb8528480a6
+
+- At: 2026-10-27 16:37 HKT
+- By: codex-source-repair
+
+Preserve reviewed interpretation separately from original notes
+
+Commit d9bbb05 makes active by_link lookups and snapshot exports expose the reviewed interpretation of the six restored rows. retained_by_link and the raw CSV continue to preserve historical notes, including the EITC income-bridge statement that must not be presented as an admitted source result. It also rejects unrepresentably large JSON integer doses cleanly and clarifies the Collinson manuscript cover/download dates.
+
+Sixty-three focused source/export/parameter checks and documentation checks pass after this follow-up. Full coverage and isolated-wheel qualification are being rerun against the fixed final source. New-evidence follow-up for the three unsupported relationships is @task:2026-10-27-unsupported-earnings-bridges; they remain unavailable in the correction.
