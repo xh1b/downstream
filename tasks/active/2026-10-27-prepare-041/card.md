@@ -2,7 +2,7 @@
 title: Review remaining work and prepare the corrected 0.4.1 candidate
 area: release
 priority: P1
-assignee:
+assignee: codex-release041
 tags: [@tag:release]
 blocked-by: []
 ---
