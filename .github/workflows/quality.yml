@@ -86,7 +86,7 @@ jobs:
           name: distribution-${{ matrix.os }}-${{ matrix.python }}
           path: dist/
           if-no-files-found: error
-          retention-days: 14
+          retention-days: 1
 
   coverage:
     runs-on: ubuntu-latest
