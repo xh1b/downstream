@@ -226,7 +226,8 @@ other study, target transport or causal identification.
 
 `ParameterSet.by_link` and ledger composition refuse retired aliases with
 `SourceUnavailable`, including after overrides, sampling and variant construction.
-`retained_by_link` inspects historical records; inspection does not admit them
+`by_link` exposes the reviewed interpretation for the six restored rows.
+`retained_by_link` inspects historical records and original notes; inspection does not admit them
 for calculation. Custom parameter directories cannot replace the engine policy.
 Use the specific corrected identifier, never silently change an old identifier's
 input units. The [source-contrast adapter](integration.md#corrected-source-contrasts)

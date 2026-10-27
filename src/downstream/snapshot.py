@@ -85,7 +85,7 @@ def build(params_dir: str | Path | None = None) -> dict:
                 "tier": p.tier,
                 "citation": p.citation,
                 "population_scope": p.population_scope,
-                "notes": p.notes,
+                "notes": params.by_link(p.link).notes,
                 "dist": p.dist,
                 "evidence_role": p.evidence_role,
             }

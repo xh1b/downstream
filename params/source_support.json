@@ -534,7 +534,7 @@
     },
     "collinson2024": {
       "source_url": "https://economics.yale.edu/sites/default/files/2023-09/qjad042.pdf",
-      "locator": "Accepted QJE manuscript September 2023, Table VI cols.4,6, printed p.45 / PDF p.46; quarters 5-8",
+      "locator": "OUP accepted QJE manuscript, cover date September 30, 2022; download stamp September 26, 2023. Table VI cols.4,6, printed p.45 / PDF p.46; quarters 5-8",
       "artifact_sha256": "80c99a680a0096b16f05d04adbec0dac518dfc157acc8bebf4b7e112e393c180",
       "artifact_kind": "primary PDF",
       "review_date": "2026-10-27"

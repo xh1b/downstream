@@ -51,7 +51,8 @@ def test_every_row_round_trips():
         row = by_link[p.link]
         assert row["point"] == p.point and row["low"] == p.low and row["high"] == p.high
         assert row["tier"] == p.tier and row["citation"] == p.citation
-        assert row["notes"] == p.notes and row["population_scope"] == p.population_scope
+        expected_notes = csv_params.by_link(p.link).notes if p.link not in {r["link"] for r in doc["withdrawn_parameters"]} else p.notes
+        assert row["notes"] == expected_notes and row["population_scope"] == p.population_scope
 
 
 def test_deterministic_bytes():

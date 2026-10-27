@@ -39,7 +39,13 @@ def source_contrast(params, nodes, payload):
     if payload['input_node'] != param.from_node or payload['input_unit'] != nodes[param.from_node].unit:
         raise ValueError('source contrast input node/unit must match the source-specific exposure')
     dose = payload['dose']
-    if isinstance(dose, bool) or not isinstance(dose, (int, float)) or not math.isfinite(dose):
+    if isinstance(dose, bool) or not isinstance(dose, (int, float)):
+        raise ValueError('source contrast dose must be finite')
+    try:
+        finite = math.isfinite(dose)
+    except OverflowError:
+        finite = False
+    if not finite:
         raise ValueError('source contrast dose must be finite')
     if review['application'] == 'fixed_contrast' and dose != 1:
         raise ValueError('this source is a fixed exposed-versus-comparison contrast: dose must be 1, not a population count')

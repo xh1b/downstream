@@ -113,7 +113,7 @@ def test_fixed_study_contrast_is_not_a_population_count(old):
         assert 'daughters-only' in result['method']
 
 
-@pytest.mark.parametrize('value',[True,math.inf,math.nan,'1',None])
+@pytest.mark.parametrize('value',[True,math.inf,math.nan,'1',None,10**1000])
 def test_nonfinite_and_boolean_doses_are_refused(value):
     with pytest.raises(ValueError,match='finite'):
         evaluate(data(CORRECTED['wage_ratio->household_ipv'][0],value))
@@ -151,3 +151,16 @@ def test_custom_data_cannot_reinterpret_reviewed_source_units_or_coefficients():
     payload=data(link);payload['input_unit']='usd'
     with pytest.raises(ValueError,match='reviewed source'):
         source_contrast(parts['params'],nodes,payload)
+
+
+def test_active_notes_use_reviewed_interpretation_and_keep_historical_notes_explicit():
+    from downstream.snapshot import build
+    params=load_all()['params'];link='eitc_exposure->adult_earnings_early'
+    historical=params.retained_by_link(link)
+    assert 'displacement INCOME LOSS' in historical.notes
+    current=params.by_link(link)
+    assert current.point==historical.point
+    assert 'not observed income or actual payments' in current.notes
+    assert 'displacement INCOME LOSS' not in current.notes
+    exported=next(row for row in build()['parameters'] if row['link']==link)
+    assert exported['notes']==current.notes

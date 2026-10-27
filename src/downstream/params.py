@@ -62,9 +62,12 @@ class ParameterSet:
     parameters: tuple[Parameter, ...]
 
     def by_link(self, link: str) -> Parameter:
-        from .source_support import require_supported
+        from .source_support import require_supported, policy
         parameter = self.retained_by_link(link)
         require_supported(link)
+        review = policy().get("individual_review", {}).get(link)
+        if review and review["disposition"] == "verified_original":
+            return replace(parameter, notes="Source rechecked 2026-10-27: " + review["method"])
         return parameter
 
     def retained_by_link(self, link: str) -> Parameter:

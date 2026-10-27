@@ -306,12 +306,12 @@ Runtime contracts: [parameter admission](../../src/downstream/params.py),
 | evidence_corpus.csv | ff38bba276919cb4e9e5cbfedfa867a4c6d2b7ca486522aebfd01765eb814af1 |
 | evidence_findings.csv | 097526c70f5829b310fa29415f1a45aaf1328220f0af845369f6a48b38fcdf14 |
 | study_estimates.csv | 12ea8fee6af9b0d3200989186714b7e02b77e8931f40ea1b36c84bfd6e3fdc74 |
-| ../src/downstream/params.py | 11c2279a31d8f4a0b838301787c66fb34e434a81349dc101753bfc5319bf104e |
+| ../src/downstream/params.py | 60943f2f0694f095c7da9d64ec9fd5f961d24e55b52d55c1a7b8bfef7dd829f2 |
 | ../src/downstream/ledger.py | cbf02f278a799037a3ed19274503ca957e391b74abca38cbb9d1ac96039d64d0 |
 | ../src/downstream/transmissions.py | c96c8b07095415c3c1f15124858739265b19892ca35878e709cf4d4300f7decb |
 | ../src/downstream/evidence.py | 7da6d8876758ec19524a61c3c7d6f438b34844727f277aef50112ce84d5445e6 |
 | ../src/downstream/study_library.py | a9f03def1f8190e3efd74dad11ec3db733a002fd62993e95eb16075c9940d945 |
 | ../src/downstream/admission.py | fbd5c4e063fc0beaec640047bbf36d84baeddaa48e3ac837cd92c190ad05d5e0 |
 | ../src/downstream/household.py | e6b1516930e6baa0a24f3207b1b9aead6c359482039ad2aa7c3e465c11a59070 |
-| source_support.json | c117d9f0c9ecbbd9465a910fbff2e0d8742e2680795b9c0eb54f02ca918017d6 |
+| source_support.json | ba9622803d04e348fda6b64adf4793e25dd8f48f725b2077a4a314c109569ed9 |
 | ../src/downstream/source_support.py | 57ef10a4992fc705d63f2f00bfb1521ddbf0306a48d22775059ed1ad3b18167e |
