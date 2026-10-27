@@ -3,9 +3,12 @@
 <!-- @tag:release -->
 
 Qualified on October 27, 2026 HKT. Engine **0.4.1**, parameters **v1.54**,
-source commit `1691850d70a27be5cfadf775c7a3edc9ce17b465`. This is a prepared candidate awaiting explicit
-publication confirmation under the [publication rule](../../AGENTS.md#publication-requires-explicit-confirmation).
-The source was pushed for CI; no release, tag or release asset was created or changed.
+source commit `1691850d70a27be5cfadf775c7a3edc9ce17b465`. This record captures the
+candidate prepared for explicit publication confirmation under the
+[publication rule](../../AGENTS.md#publication-requires-explicit-confirmation).
+At qualification, the source had been pushed for CI and no release, tag or
+release asset had been created or changed. Subsequent approved publication is
+recorded below.
 
 The [machine receipt](release_0_4_1.json) pins source/data trees, the bundle,
 qualification logs, artifact hashes and the existing 0.4.0 release assets.
@@ -64,3 +67,16 @@ and independent-validation/public-experience requirements remain separate.
 
 Preparation task: @task:2026-10-27-prepare-041. Historical publication:
 [0.4.0 receipt](release_0_4.md).
+
+## Approved publication
+
+After reviewing this candidate, the owner explicitly confirmed publication.
+[Downstream 0.4.1](https://github.com/xh1b/downstream/releases/tag/v0.4.1)
+was published on October 27, 2026 HKT as the latest stable release, at the exact
+qualified source above. The [publication receipt](release_publication_0_4_1_2026-10-27.json)
+records the release ID, tag commit and all eleven uploaded asset identities,
+sizes and SHA-256 digests. Each matches the sealed local candidate.
+The 0.4.0 release body, metadata and nine asset identities/digests are unchanged.
+Companion repinning, production cache updates and deployment were not performed.
+
+Publication task: @task:2026-10-27-publish-041.

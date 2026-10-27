@@ -1,0 +1,108 @@
+{
+  "schema": "downstream-publication-receipt/1",
+  "date_hkt": "2026-10-27",
+  "source_commit": "1691850d70a27be5cfadf775c7a3edc9ce17b465",
+  "versions": {
+    "engine": "0.4.1",
+    "parameters": "v1.54"
+  },
+  "approval": "Owner explicitly confirmed publication after reviewing the exact qualified candidate.",
+  "release": {
+    "id": 425241293,
+    "url": "https://github.com/xh1b/downstream/releases/tag/v0.4.1",
+    "tag": "v0.4.1",
+    "published_at": "2026-10-27T09:21:48Z",
+    "draft": false,
+    "prerelease": false,
+    "verified_latest": true,
+    "tag_object": {
+      "sha": "1691850d70a27be5cfadf775c7a3edc9ce17b465",
+      "type": "commit",
+      "url": "https://api.github.com/repos/xh1b/downstream/git/commits/1691850d70a27be5cfadf775c7a3edc9ce17b465"
+    }
+  },
+  "assets": {
+    "consumer_fixtures_0_4.json": {
+      "id": 681077500,
+      "bytes": 621483,
+      "digest": "sha256:3e63b92f08112b5ad3dcfb83a753abdc9516e4857d7bcdb3d0b7571286d1e182",
+      "url": "https://github.com/xh1b/downstream/releases/download/v0.4.1/consumer_fixtures_0_4.json"
+    },
+    "downstream-0.4.1-py3-none-any.whl": {
+      "id": 681077496,
+      "bytes": 1892600,
+      "digest": "sha256:4dd8185ea0c56fdc0e04bfac60df2233e9713204f4e4854b01a25a2cb43e50ba",
+      "url": "https://github.com/xh1b/downstream/releases/download/v0.4.1/downstream-0.4.1-py3-none-any.whl"
+    },
+    "downstream-0.4.1.tar.gz": {
+      "id": 681077504,
+      "bytes": 2857016,
+      "digest": "sha256:a7541bb0070d318f350388de11255df292192da6db87756035f8343ae98fe658",
+      "url": "https://github.com/xh1b/downstream/releases/download/v0.4.1/downstream-0.4.1.tar.gz"
+    },
+    "downstream.pdf": {
+      "id": 681077508,
+      "bytes": 577068,
+      "digest": "sha256:ff7165f3eb6241d5565569663b084cebac4fe1a0b2400a35e7f88bc06e8d642a",
+      "url": "https://github.com/xh1b/downstream/releases/download/v0.4.1/downstream.pdf"
+    },
+    "methods.html": {
+      "id": 681077507,
+      "bytes": 312713,
+      "digest": "sha256:1cfbfddd0381270805a08c19c20247c9a3251a0b820141972a2f53387bedca7d",
+      "url": "https://github.com/xh1b/downstream/releases/download/v0.4.1/methods.html"
+    },
+    "release-manifest.json": {
+      "id": 681077535,
+      "bytes": 31947,
+      "digest": "sha256:751d8b5c1f30968a421560dd023a1487257e2038d2b72d35c384ee65de990491",
+      "url": "https://github.com/xh1b/downstream/releases/download/v0.4.1/release-manifest.json"
+    },
+    "source_contrast_input.json": {
+      "id": 681077538,
+      "bytes": 169,
+      "digest": "sha256:2458a0151d2d6e43aaece603e74cd5d670e611fc95cbeddb5c8d808dba8e766a",
+      "url": "https://github.com/xh1b/downstream/releases/download/v0.4.1/source_contrast_input.json"
+    },
+    "source_contrast_result.json": {
+      "id": 681077540,
+      "bytes": 1873,
+      "digest": "sha256:f6502ca0b1df90bb7dcf91209373a505427eb225dc6be4a7bdc1aa9c32672174",
+      "url": "https://github.com/xh1b/downstream/releases/download/v0.4.1/source_contrast_result.json"
+    },
+    "source_support.json": {
+      "id": 681077544,
+      "bytes": 38762,
+      "digest": "sha256:ba9622803d04e348fda6b64adf4793e25dd8f48f725b2077a4a314c109569ed9",
+      "url": "https://github.com/xh1b/downstream/releases/download/v0.4.1/source_support.json"
+    },
+    "uncertainty_assumptions_input.json": {
+      "id": 681077549,
+      "bytes": 2412,
+      "digest": "sha256:35108d7bf7a03d18d31205d2f55dc41855158093f988061990b407e60ca2bdbb",
+      "url": "https://github.com/xh1b/downstream/releases/download/v0.4.1/uncertainty_assumptions_input.json"
+    },
+    "uncertainty_assumptions_result.json": {
+      "id": 681077573,
+      "bytes": 46710,
+      "digest": "sha256:7c3e7f5282400d5616f0545381e9addf288bcdc6f5267793eeea26679c161e95",
+      "url": "https://github.com/xh1b/downstream/releases/download/v0.4.1/uncertainty_assumptions_result.json"
+    }
+  },
+  "manifest_sha256": "751d8b5c1f30968a421560dd023a1487257e2038d2b72d35c384ee65de990491",
+  "bundle_sha256": "d84162591c94d06c8148c4834ae705ff3f9a015c29955d95d26749834cd136ed",
+  "qualification_receipt": "release_0_4_1.json",
+  "ci_url": "https://github.com/xh1b/downstream/actions/runs/40478624183",
+  "preserved_previous_release": {
+    "tag": "v0.4.0",
+    "release_id": 416261824,
+    "asset_count": 9,
+    "body_and_metadata_unchanged": true,
+    "asset_identities_sizes_and_digests_unchanged": true
+  },
+  "companion": {
+    "repinned": false,
+    "cache_updated": false,
+    "deployed": false
+  }
+}
