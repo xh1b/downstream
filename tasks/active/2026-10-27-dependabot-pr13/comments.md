@@ -33,3 +33,16 @@ Reviewed PR 13 at 716a183243cd43c89d8b825ac691a8e34292339b: the only changed fil
 b52fc38 applies the exact PR manifest with Dependabot authorship and source provenance. fae0cd0 limits the lock resolution to the reviewed PR versions after the resolver initially selected newer Hypothesis/Ruff releases; no history was rewritten. Only Hypothesis and Ruff resolved versions changed from baseline; coverage was already locked at 7.17.0. uv lock --check, pip check, Ruff, Vulture, make check-docs and downstream audit all pass. Full coverage tests and a setuptools==84.2.1 constrained distribution build/install check are running.
 
 User explicitly authorized fetch, apply and push. The only publication workflow triggers on paper-v* tags; the planned master push triggers quality CI and does not publish a release.
+
+## c-e032ec72b2ad
+
+- At: 2026-10-27 22:46 HKT
+- By: codex-dependabot
+
+Constrained package build and hosted model comparison verified
+
+uv build --build-constraints with setuptools==84.2.1 built both the sdist and a wheel from that sdist. scripts/check_distribution.py passed all 12 installed-wheel commands (audit, export, family, validate, child-gaps, receiving-community, scenario, mortality-cohort, household, uncertainty, source-contrast, bundle).
+
+Downloaded the model-comparison artifact from https://github.com/xh1b/downstream/actions/runs/40478704595 and inspected summary.md: 0 changed, 0 added, 0 removed, 35659 unchanged fields.
+
+The full local Python 3.12 coverage suite remains in progress without reported failures.
