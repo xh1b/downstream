@@ -20,3 +20,16 @@ triage: inbox -> ready.
 - By: codex-dependabot
 
 claim: ready -> active.
+
+## c-44df3113a595
+
+- At: 2026-10-27 22:41 HKT
+- By: codex-dependabot
+
+PR review and local application complete; validation in progress
+
+Reviewed PR 13 at 716a183243cd43c89d8b825ac691a8e34292339b: the only changed file is pyproject.toml, with floors setuptools 84.2.1, coverage 7.17.0, Hypothesis 6.170.9 and Ruff 0.17.2. All executed hosted PR checks pass (quality run 40478704754 and model comparison run 40478704595); no inline review comments or submitted reviews. Python >=3.12 satisfies the coverage Python-support change. Development/build dependencies only; runtime dependencies remain empty.
+
+b52fc38 applies the exact PR manifest with Dependabot authorship and source provenance. fae0cd0 limits the lock resolution to the reviewed PR versions after the resolver initially selected newer Hypothesis/Ruff releases; no history was rewritten. Only Hypothesis and Ruff resolved versions changed from baseline; coverage was already locked at 7.17.0. uv lock --check, pip check, Ruff, Vulture, make check-docs and downstream audit all pass. Full coverage tests and a setuptools==84.2.1 constrained distribution build/install check are running.
+
+User explicitly authorized fetch, apply and push. The only publication workflow triggers on paper-v* tags; the planned master push triggers quality CI and does not publish a release.
