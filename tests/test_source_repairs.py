@@ -134,7 +134,8 @@ def test_saved_source_example_and_cli(tmp_path):
     payload=json.loads((directory/'source_contrast_input.json').read_text())
     before=deepcopy(payload); result=evaluate(payload)
     assert payload==before
-    assert result==json.loads((directory/'source_contrast_result.json').read_text())
+    from scripts.artifact_checks import same_json
+    assert same_json(result,json.loads((directory/'source_contrast_result.json').read_text()))
     completed=subprocess.run([sys.executable,'-m','downstream.cli','source-contrast','--input',str(directory/'source_contrast_input.json')],capture_output=True,text=True)
     assert completed.returncode==0,completed.stderr
     assert json.loads(completed.stdout)==result
