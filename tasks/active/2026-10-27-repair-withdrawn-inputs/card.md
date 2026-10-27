@@ -2,7 +2,7 @@
 title: Repair the sixteen source inputs individually
 area: evidence
 priority: P1
-assignee:
+assignee: codex-source-repair
 tags: [@tag:evidence]
 blocked-by: []
 ---
