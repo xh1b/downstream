@@ -46,3 +46,16 @@ Restored: Hilger enrollment/income, Bastian EITC earnings, Evans internalizing/e
 The three remaining original relationships are unsupported by their cited studies: Gruber estimates divorce-law exposure, not an individual parental-divorce effect; Black studies schooling, not a .98 earnings multiplier; Lindahl observes earnings for three generations, not an identified fourth-generation .55 gap rule. These remain unavailable rather than fabricating a repair.
 
 The named [source-contrast adapter](../../../src/downstream/source_contrasts.py) and CLI require source-specific nodes/units; fixed study contrasts cannot be multiplied by population counts. Retired identifiers remain refused after sampling/overrides; custom data cannot relabel reviewed units or coefficients. Main mortality and direct-child point coefficients/baselines are unchanged. The published v0.4.0 tag/assets have not been replaced. Qualification is in progress: 90 source/export/audit checks and 124 focused checks pass; full suite and installed-wheel verification are running.
+
+## c-b5bb4860a55e
+
+- At: 2026-10-27 16:29 HKT
+- By: codex-source-repair
+
+All sixteen dispositions and the corrected implementation are qualified
+
+Full local suite: 1,550 tests plus nine subtests pass in 638.64s. Coverage 96.7% lines / 93.8% branches exceeds unchanged 95%/90% gates. All twelve isolated installed-wheel CLI checks pass, including source-contrast. Audit has zero errors/warnings; Ruff/Vulture, documentation navigation/examples and generator freshness pass. Rebuilt 21-page methods paper and changed inventory/method pages visually checked; no LaTeX warnings/overfull boxes.
+
+[Individual sixteen-row review](../../../docs/audits/source_repairs_2026-10-27.md) and [machine receipt](../../../docs/audits/source_repairs_2026-10-27.json) record primary-document versions/tables, available hashes, numeric extractions, 6/7/3 dispositions and code/data/artifact identities. For Ehrensaft the hash covers a numeric publisher-table extraction, not unavailable original PDF bytes; that access limit is explicit. All original 67 CSV records remain byte-identical in the first 82,447 bytes. Engine/default data now expose 64 available records, and every unsafe legacy alias stays refused.
+
+Main implementation/data commit: 6d8d92f; installed-wheel check: 99bd37e. Corrected code/data, examples, exports, calculator, evidence reports, methods PDF/HTML and consumer fixtures are committed locally. No remote publication, v0.4.0 artifact replacement, companion repin/cache refresh or deployment is claimed. The three unsupported original earnings relationships require new supporting evidence; their absence is not a zero effect or a restored coefficient.
