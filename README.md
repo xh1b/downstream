@@ -78,11 +78,12 @@ checks to run. Track work and review receipts on the [task board](tasks/README.m
 
 ## Companion and release status
 
-Version 0.4.1 is the local conditional scenario-model candidate prepared for
+Published [version 0.4.1](https://github.com/xh1b/downstream/releases/tag/v0.4.1)
+is a conditional scenario-model release prepared for
 [XH1B integration](https://xh1b.org/downstream). Local qualification is distinct
 from companion deployment and scientific validation. Consult the
 [model card](docs/model_card.md#evaluation-status),
-[release review](docs/audits/release_0_4.md) and task board for scope and status.
+[release review](docs/audits/release_0_4_1.md) and task board for scope and status.
 Parameters v1.54 restore six verified estimates and add seven corrected source
 contrasts from the sixteen individually reviewed inputs; three original earnings
 relationships remain unsupported. [The individual source review](docs/audits/source_repairs_2026-10-27.md)
