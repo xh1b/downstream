@@ -107,3 +107,12 @@ This does not close companion deployment or human/independent validation. The co
 Corrected 0.4.1 candidate is ready for owner publication confirmation
 
 Preparation and board review are complete under @task:2026-10-27-prepare-041. Exact source 1691850d70a27be5cfadf775c7a3edc9ce17b465 has 1,552 passing tests, eight passing CI release jobs and twelve isolated-wheel checks. Receipt: docs/audits/release_0_4_1.md and release_0_4_1.json. Thirteen source estimates are verified/corrected; three original relationships remain unsupported. Eleven artifacts are prepared locally. No release or tag was created; publication acceptance and companion integration/deployment remain separate.
+
+## c-31b229be536d
+
+- At: 2026-10-27 17:24 HKT
+- By: codex-release041
+
+Owner-approved 0.4.1 is published; companion integration remains separate
+
+https://github.com/xh1b/downstream/releases/tag/v0.4.1 is stable/latest at approved source 1691850d70a27be5cfadf775c7a3edc9ce17b465. Eleven remote asset hashes/sizes match; 0.4.0 remains unchanged. Owner confirmation and verification: @task:2026-10-27-publish-041#c-7a5aadd4b827. XH1B prompt: @task:2026-10-27-publish-041#c-ff2ecc615f12. Publication receipt: docs/audits/release_publication_0_4_1_2026-10-27.json. No companion cache writes or deployment were performed.
