@@ -44,6 +44,7 @@ def main() -> None:
                         ["mortality-cohort", "--input", str(validation / "cps2024_hypothetical_mortality_input.json")],
                         ["household", "--input", str(validation / "household_five_year_input.json")],
                         ["uncertainty", "--input", str(validation / "uncertainty_budget_input.json")],
+                        ["source-contrast", "--input", str(validation / "source_contrast_input.json")],
                         ["bundle", "--out", str(root / "bundle")]):
             result = subprocess.run([str(cli), *command], cwd=root, env=env,
                                     capture_output=True, text=True)
@@ -54,6 +55,12 @@ def main() -> None:
             if command[0] == "receiving-community":
                 if payload["eligible_for_public_headline"] or payload["rate_projection"]["available"]:
                     raise RuntimeError("Installed-wheel receiving scenario invents transport or a baseline")
+            if command[0] == "source-contrast":
+                if (payload["eligible_for_public_headline"]
+                        or payload["input"]["input_unit"] != "ratio_delta"
+                        or abs(payload["effect"]["point"] + .00813) > 1e-12
+                        or not -1 < payload["percent_change"]["point"] < 0):
+                    raise RuntimeError("Installed-wheel source contrast lost its reviewed exposure or semi-log mapping")
             if command[0] == "child-gaps":
                 if len(payload["rows"]) != 3 or payload["combined_total"] is not None:
                     raise RuntimeError("Installed-wheel child-gaps lacks separate generation output")
