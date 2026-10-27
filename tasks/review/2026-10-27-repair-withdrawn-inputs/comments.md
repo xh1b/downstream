@@ -83,3 +83,12 @@ Final runtime/data commit d9bbb05 passes 1,552 tests plus nine subtests (491.39s
 [Final sixteen-row review](../../../docs/audits/source_repairs_2026-10-27.md) and [machine receipt](../../../docs/audits/source_repairs_2026-10-27.json) preserve both qualification runs and pin the final source tree, individual source decisions, dataset custody, bundle and distribution/artifact/log digests. Six original estimates restored; seven typed corrections available; three original earnings relationships remain unsupported. All 67 original records and historical notes are preserved. Current by_link and exports use reviewed interpretations.
 
 All implementation, documentation, examples and receipts are committed locally on master. The published v0.4.0 tag/assets and companion operational state are unchanged. New-evidence follow-up for the three unsupported relationships is @task:2026-10-27-unsupported-earnings-bridges. This completion does not relabel their absence as zero effects, claim empirical transport calibration or invent replacement coefficients.
+
+## c-369cb70010c1
+
+- At: 2026-10-27 16:47 HKT
+- By: codex-source-repair
+
+done: active -> review.
+
+All sixteen individually reviewed; thirteen verified/corrected, three unsupported and explicitly tracked.
