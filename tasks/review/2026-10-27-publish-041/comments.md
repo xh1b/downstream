@@ -52,3 +52,10 @@ Follow this repository's AGENTS.md and coordinate through the existing integrati
 5. Prepare and test cache invalidation/recomputation locally, with before/after receipts. Report code changes, tests, bundle/adapter identities, remaining source holds and deployment readiness.
 
 Complete local integration and verification. Ask for explicit approval before production cache writes, publication or deployment; this prompt does not waive existing source-publication holds.
+
+## c-1d105720e186
+
+- At: 2026-10-27 17:24 HKT
+- By: codex-release041
+
+done: active -> review.
