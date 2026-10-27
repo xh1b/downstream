@@ -2,7 +2,7 @@
 title: Review and apply Dependabot PR 13, validate and push master
 area: tooling
 priority: P2
-assignee:
+assignee: codex-dependabot
 tags: [@tag:tooling]
 blocked-by: []
 ---
