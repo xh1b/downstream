@@ -2,7 +2,7 @@
 title: Require explicit approval before publishing releases
 area: docs
 priority: P1
-assignee:
+assignee: codex-publication-rule
 tags: [@tag:release]
 blocked-by: []
 ---
