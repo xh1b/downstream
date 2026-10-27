@@ -42,3 +42,14 @@ Tests: [source withdrawals](../../../tests/test_source_withdrawals.py), [consume
 done: active -> review.
 
 All source withdrawals implemented and qualified; publication tracked separately.
+
+## c-2a1a8afa50d6
+
+- At: 2026-10-27 13:36 HKT
+- By: codex-source-repair
+
+Correction: withdrawal did not fulfill the owner's repair request
+
+The owner explicitly objected that the sixteen inputs were disabled rather than repaired. My earlier interpretation of “repair inputs before a stable release” as permission to withdraw every input was too broad. The completed withdrawal checklist records the safety restriction that was implemented; it is not evidence that source re-extraction, numeric correction or unit repair was attempted for each row. Stable 0.4.0 was published before that requested repair work was done.
+
+Actual repair is reopened under @task:2026-10-27-repair-withdrawn-inputs. The existing review already identifies potentially mechanical corrections (eviction follow-up denominator, wage-ratio semi-elasticity, source-specific trade exposure units and exam risk-difference scale), which should have been investigated before treating all sixteen alike. Whether a repair can be admitted still requires the original table and a compatible typed contract. Preserve the published tag and all original values/history; do not relabel disabling as repair.
