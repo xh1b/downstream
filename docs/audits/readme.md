@@ -40,6 +40,7 @@ a correction. Generated reports are updated through their builders.
 
 ## Release and integration
 
+- [0.4.1 candidate qualification](release_0_4_1.md) — individual source repairs, exact-source checks and artifacts awaiting publication confirmation.
 - [0.4 release qualification and publication](release_0_4.md) — source corrections, final checks and the stable October 27 release.
 - [October 18 publication preparation](release_publication_2026-10-18.md) — portable freshness checks, final source identity and draft artifacts.
 - [Corrected October 17 qualification](release_qualification_2026-10-17_interval_fix.md) — latest candidate after the shared consumer-interval repair.
