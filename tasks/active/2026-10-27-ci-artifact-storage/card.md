@@ -2,7 +2,7 @@
 title: Bound CI distribution retention and remove approved redundant artifacts
 area: ci
 priority: P2
-assignee:
+assignee: github-security-20261026
 blocked-by: []
 ---
 
