@@ -52,14 +52,16 @@ ten retired aliases: seven superseded and three unsupported. All sixteen old
 withdrawals remain in historical policy metadata; source repair provenance is
 included in schema-3 exports.
 
-The full suite passes **1,550 tests plus 9 subtests**. Coverage is **96.7% lines /
+The full suite passes **1,552 tests plus 9 subtests**. Coverage is **96.7% lines /
 93.8% branches**, above unchanged 95%/90% gates. The source-built wheel passes
 **twelve isolated CLI checks**, including the new adapter. Audit errors/warnings
 are zero; Ruff, Vulture, documentation links/examples and generator freshness
 checks pass. The 21-page methods paper was rebuilt and visually inspected, with
 no LaTeX warnings or overfull boxes. Commands and machine artifact/log identities
-are recorded in the receipt. The code/data unit is commit `6d8d92f`; the
-installed-wheel check was extended separately in `99bd37e`.
+are recorded in the receipt. The initial code/data unit is `6d8d92f`; `d9bbb05` adds reviewed active notes,
+keeps original notes explicit and handles oversized JSON integer doses. The
+final full-suite and distribution qualification uses that corrected source/data
+tree. The installed-wheel check was extended separately in `99bd37e`.
 
 Reproduce:
 
@@ -85,3 +87,9 @@ The three unsupported earnings relationships require new evidence or an
 explicitly separate, uncalibrated structural assumption. They cannot be restored
 as source-identified coefficients or silently replaced by zero. Work receipts:
 @task:2026-10-27-repair-withdrawn-inputs.
+
+The six restored rows expose the reviewed interpretation through `by_link` and
+active snapshot exports; `retained_by_link` preserves the original notes. For
+example, EITC eligibility is not automatically an ordinary income change. New
+evidence for the three unsupported relationships is tracked in
+@task:2026-10-27-unsupported-earnings-bridges.

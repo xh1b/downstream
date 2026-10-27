@@ -1,14 +1,14 @@
 {
   "schema": "downstream-source-repair-receipt/1",
   "date": "2026-10-27",
-  "runtime_data_commit": "6d8d92f79fe8e8c04935b605276dbccf03fc1666",
+  "runtime_data_commit": "d9bbb05d74831ec0a33bbd2b1adc899e56229488",
   "engine_version": "0.4.0",
   "parameter_set_version": "v1.54",
   "scope": "Local correction of the sixteen v1.53 source dispositions; published v0.4.0 and companion deployments unchanged.",
   "source_tree_identity": {
-    "src": "58eba6c897213562f6e95b42433ca5f60f016f01",
-    "params": "58926d5a18d4d9577531eafff29275cd7bc14e0f",
-    "validation": "5848a6898a5d5991a31abdb95095cde524be2779"
+    "src": "4b62b08a7dbf6060e30fa8e8b593f6a3bf01af1e",
+    "params": "877e3f663058ec2a616db3c9a626c447603d9d58",
+    "validation": "100ea3ff59aa2cf285145ba0a886ea2e973a2787"
   },
   "dispositions": {
     "verified_original": 6,
@@ -373,7 +373,7 @@
     },
     "collinson2024": {
       "source_url": "https://economics.yale.edu/sites/default/files/2023-09/qjad042.pdf",
-      "locator": "Accepted QJE manuscript September 2023, Table VI cols.4,6, printed p.45 / PDF p.46; quarters 5-8",
+      "locator": "OUP accepted QJE manuscript, cover date September 30, 2022; download stamp September 26, 2023. Table VI cols.4,6, printed p.45 / PDF p.46; quarters 5-8",
       "artifact_sha256": "80c99a680a0096b16f05d04adbec0dac518dfc157acc8bebf4b7e112e393c180",
       "artifact_kind": "primary PDF",
       "review_date": "2026-10-27"
@@ -423,9 +423,9 @@
     }
   },
   "verification": {
-    "full_suite_passed": 1550,
+    "full_suite_passed": 1552,
     "subtests_passed": 9,
-    "full_suite_seconds": 638.64,
+    "full_suite_seconds": 491.39,
     "coverage_lines_percent": 96.7,
     "coverage_branches_percent": 93.8,
     "line_gate_percent": 95,
@@ -443,19 +443,20 @@
     "paper_pages": 21,
     "latex_warnings": 0,
     "overfull_boxes": 0,
-    "visual_review": "Full-page overview and changed methods/inventory pages inspected."
+    "visual_review": "Full-page overview and changed methods/inventory pages inspected.",
+    "reviewed_interpretation_checks_passed": 63
   },
   "custody": {
     "original_csv_prefix_bytes": 82447,
     "original_csv_prefix_sha256": "f6ce70a100042189691eb10291c9ead48655cbf37dc49d49c4ac2ce4a3a468d6",
-    "policy_sha256": "c117d9f0c9ecbbd9465a910fbff2e0d8742e2680795b9c0eb54f02ca918017d6"
+    "policy_sha256": "ba9622803d04e348fda6b64adf4793e25dd8f48f725b2077a4a314c109569ed9"
   },
   "bundle": {
     "schema": "downstream-engine-bundle/1",
     "engine_version": "0.4.0",
     "parameter_set_version": "v1.54",
-    "sha256": "8e829234ebd5249ac8e994681d55e2a048039edb29c823ae0a3e321b6d0b0b10",
-    "algo_version": "v1.54+engine0.4.0+8e829234ebd5249ac8e994681d55e2a048039edb29c823ae0a3e321b6d0b0b10",
+    "sha256": "93a983b7c35da5fd272fc04743d8f169acf954ce1224192feaf5e6f1a16b6002",
+    "algo_version": "v1.54+engine0.4.0+93a983b7c35da5fd272fc04743d8f169acf954ce1224192feaf5e6f1a16b6002",
     "files": {
       "src/downstream/__init__.py": "a3964f1df2d223167207f6beaaa5014856a6962363e96ca86fa896c1620a4c82",
       "src/downstream/admission.py": "fbd5c4e063fc0beaec640047bbf36d84baeddaa48e3ac837cd92c190ad05d5e0",
@@ -491,7 +492,7 @@
       "src/downstream/mortality_profiles.py": "5e595b60c417fce141a273a2d7fc83c485bb0b19e54eb01005d1094c4bf1badf",
       "src/downstream/mortality_robustness.py": "3b8e4721b79fac2de641f0a3c52460a7262b565b4b63ca71dfce7165f57b5a22",
       "src/downstream/mortality_strata.py": "2ecd152cf279f61013ca8836f6c201a17c0f549cce1f9f63eaa130ea540af713",
-      "src/downstream/params.py": "11c2279a31d8f4a0b838301787c66fb34e434a81349dc101753bfc5319bf104e",
+      "src/downstream/params.py": "60943f2f0694f095c7da9d64ec9fd5f961d24e55b52d55c1a7b8bfef7dd829f2",
       "src/downstream/place.py": "d2cbe5118837a76b7b58d8f372b52aefb6e58e9ad687dd10be91be7764b5fadf",
       "src/downstream/policy.py": "531c72a58ce9220fd45c1b1154998654fb5f3db39cf9789d80bef3cf7bdb45e4",
       "src/downstream/receiving_community.py": "ebd6ff3d6561327df4111261f37f379c1b79b9f4f3b69fb49f65f5981562ab86",
@@ -500,8 +501,8 @@
       "src/downstream/scenario.py": "d1eb4794ebc88a18d66d1b48ba63bf5f3ce141b343fb9f74270c3c41505ef578",
       "src/downstream/scoring.py": "160d6a3d2a9ef9a94b5e35994454c7462906d9ec19d3bf33b2c642ef4601c5e3",
       "src/downstream/sensitivity.py": "dc884479b17dcae9c3ad0ee9b898932812e21a350df2c0b289b25536d30c575b",
-      "src/downstream/snapshot.py": "fc61ab151680c082b13763b38270adede522f25dfdcf39f25dd2016faef499cf",
-      "src/downstream/source_contrasts.py": "b3614727745955f71b1c58ec10e2aaa6d33e10e5177696195397c8e73cb4a8c9",
+      "src/downstream/snapshot.py": "33569f023e97b4040b7ec08d839ae07f678d81f6e8f608ccd7a4fc36cc20a09e",
+      "src/downstream/source_contrasts.py": "1d4a40eb26c118b5b1dddb95100a47b98fb099732adbad7e7b977e6e2003f8c4",
       "src/downstream/source_support.py": "57ef10a4992fc705d63f2f00bfb1521ddbf0306a48d22775059ed1ad3b18167e",
       "src/downstream/study_library.py": "a9f03def1f8190e3efd74dad11ec3db733a002fd62993e95eb16075c9940d945",
       "src/downstream/synthesis.py": "c3e54bed03e82fc0db4be61353f51b1f2cc4b1b0fe6059b7b6d206ff6c001c46",
@@ -531,27 +532,26 @@
       "params/parameters.csv": "5bd638fee5caaf7a9b5951823c4f429af3dddf182c5ef0c12393063011b59613",
       "params/places.csv": "2bc1faa2955354c57ae467473aaea9bd58cdf044304d363b2f8b06869d6f45d4",
       "params/references.bib": "ab69bb5c6f53aa32e4d68aaeeb4eef2172f7bc7800f5f76880bd42a9aac93e0a",
-      "params/source_support.json": "c117d9f0c9ecbbd9465a910fbff2e0d8742e2680795b9c0eb54f02ca918017d6",
+      "params/source_support.json": "ba9622803d04e348fda6b64adf4793e25dd8f48f725b2077a4a314c109569ed9",
       "params/study_estimates.csv": "12ea8fee6af9b0d3200989186714b7e02b77e8931f40ea1b36c84bfd6e3fdc74",
       "params/study_estimates.template.csv": "3f71fb5102d87827c926ac9c9ad09ce834798bb19c461cfca3f6854665cc66bf",
-      "parameter_set.json": "469aca21ddd6daa2fb2eb7eda267856133029aaa9b262710a5ac548e950d5871"
+      "parameter_set.json": "8dc3dfc32c3907278e98607e2e2edf23f39c6db1c732ba8457d068f0da3370ba"
     }
   },
   "artifacts_sha256": {
-    "paper/downstream.pdf": "68a3fc0f9ad43b22947a64f52a8d0f5e7756c43b5ce89ce21997800082b01113",
-    "docs/methods.html": "ec7f15cb187ced98240865ae346cd9e27cc9134ad8c6106445dc8c31782757df",
-    "build/source-repairs-20261027/dist/downstream-0.4.0-py3-none-any.whl": "de6d374e3eaaf07ee173c7cf30be5afffdc1d317817accf01c57bd41ed08eddb",
-    "build/source-repairs-20261027/dist/downstream-0.4.0.tar.gz": "bc3d3ea8906f3e8ebac0cfd0d69d1cd57437a7c0b52b444c6ac7275eeb8dcd5b"
+    "paper/downstream.pdf": "a5def1a0b197504752c78dc636b072f51e766c3b81c8f8f30c4a779f665084a7",
+    "docs/methods.html": "5fb40439531f477bb68aedf466b5added155c7ebf5ada600965875f2704855fc",
+    "build/source-repairs-20261027/dist-final/downstream-0.4.0-py3-none-any.whl": "514179dc186b7f86b320ed7bb02cb10524b0084d92271ea32c4c908855786fed",
+    "build/source-repairs-20261027/dist-final/downstream-0.4.0.tar.gz": "c50fc303eb1bd111b240919eb918a6292713e0c4f16d3cdcc6a19cbe5e4375ac"
   },
   "log_sha256": {
-    "full-suite.log": "2087db31892310ac6a40b3502e2f38776307060cc8ae4fd556c070cdbc725118",
-    "coverage.json": "1f90aa89bfa0789c23dff45a782704dfdf33ed34cb1e7c89bd93706592f8b6b2",
-    "focused.log": "ede907c7ef1c3fc4d18d60a5c0b73f003751de211f54a00de16747a29ea849b3",
-    "targeted-final.log": "55e4bf1280f47343ac574984565149f578f916f73d1dc0d2de6bfe3a98af3fbc",
-    "installed-wheel.log": "c4d49312a1c720a792aa878934a6450b84b03e625bb58f9b7fe08941d8ce8a70",
-    "distribution-build.log": "849e7fdb7834db2d8fa810bd8a3a309836aa5a1d6e990633d85a140601af9802",
-    "docs-final.log": "3d165429dc6e8cec4eb1df9ff9385aacc8cf80093ed6f788f812e762deeb04b5",
-    "audit.json": "99f7a91994e896b693b5580bfa24129bd8b8acabe70db2250f63d541c2d4958b"
+    "full-suite-final.log": "4d80d71400fc3113595301a013691cdac5c3317153f081ff3e57be8f0b53a49f",
+    "coverage-final.json": "269fdde23ed49589b2fcc720b074a13a3b1664680aaf0364952599f5fbf1cd7b",
+    "reviewed-notes-tests.log": "f5f6a2d4dbf3a71df84e9caee6e091b49eb11e44b030b93a5e5d973f1dfbdb47",
+    "installed-wheel-final.log": "d7e061af4eaff37fbc2105fc27e2b79e383731c02f26ea6f440b1d0137f6895e",
+    "distribution-build-final.log": "317d28a29a8562d40d0936c1cd12e244fbe504a4564e70e70f6d1f209bc9a8a0",
+    "docs-final-state.log": "b179ef9322adba836c133b2f7010ad1d1eed27750778b57c95c06b79e5d77bbd",
+    "audit-final.json": "99f7a91994e896b693b5580bfa24129bd8b8acabe70db2250f63d541c2d4958b"
   },
   "limits": [
     "No new causal target transport, population admission, aggregate attribution or empirical uncertainty calibration.",
@@ -559,5 +559,47 @@
     "Three original earnings relationships remain unsupported; their absence is not a zero effect.",
     "No original PDF byte hash is claimed for Ehrensaft: the publisher table was read in browsing, and its numeric extraction is hashed separately.",
     "No remote publication, companion repin, cache refresh or deployment performed for this correction."
-  ]
+  ],
+  "prior_qualification": {
+    "runtime_data_commit": "6d8d92f79fe8e8c04935b605276dbccf03fc1666",
+    "verification": {
+      "full_suite_passed": 1550,
+      "subtests_passed": 9,
+      "full_suite_seconds": 638.64,
+      "coverage_lines_percent": 96.7,
+      "coverage_branches_percent": 93.8,
+      "line_gate_percent": 95,
+      "branch_gate_percent": 90,
+      "focused_checks_passed": [
+        90,
+        124
+      ],
+      "isolated_wheel_cli_checks": 12,
+      "audit_errors": 0,
+      "audit_warnings": 0,
+      "ruff": "pass",
+      "vulture": "pass",
+      "documentation_checks": "pass",
+      "paper_pages": 21,
+      "latex_warnings": 0,
+      "overfull_boxes": 0,
+      "visual_review": "Full-page overview and changed methods/inventory pages inspected."
+    },
+    "artifacts_sha256": {
+      "paper/downstream.pdf": "68a3fc0f9ad43b22947a64f52a8d0f5e7756c43b5ce89ce21997800082b01113",
+      "docs/methods.html": "ec7f15cb187ced98240865ae346cd9e27cc9134ad8c6106445dc8c31782757df",
+      "build/source-repairs-20261027/dist/downstream-0.4.0-py3-none-any.whl": "de6d374e3eaaf07ee173c7cf30be5afffdc1d317817accf01c57bd41ed08eddb",
+      "build/source-repairs-20261027/dist/downstream-0.4.0.tar.gz": "bc3d3ea8906f3e8ebac0cfd0d69d1cd57437a7c0b52b444c6ac7275eeb8dcd5b"
+    },
+    "log_sha256": {
+      "full-suite.log": "2087db31892310ac6a40b3502e2f38776307060cc8ae4fd556c070cdbc725118",
+      "coverage.json": "1f90aa89bfa0789c23dff45a782704dfdf33ed34cb1e7c89bd93706592f8b6b2",
+      "focused.log": "ede907c7ef1c3fc4d18d60a5c0b73f003751de211f54a00de16747a29ea849b3",
+      "targeted-final.log": "55e4bf1280f47343ac574984565149f578f916f73d1dc0d2de6bfe3a98af3fbc",
+      "installed-wheel.log": "c4d49312a1c720a792aa878934a6450b84b03e625bb58f9b7fe08941d8ce8a70",
+      "distribution-build.log": "849e7fdb7834db2d8fa810bd8a3a309836aa5a1d6e990633d85a140601af9802",
+      "docs-final.log": "3d165429dc6e8cec4eb1df9ff9385aacc8cf80093ed6f788f812e762deeb04b5",
+      "audit.json": "99f7a91994e896b693b5580bfa24129bd8b8acabe70db2250f63d541c2d4958b"
+    }
+  }
 }
