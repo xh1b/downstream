@@ -125,6 +125,27 @@ on `master`.
   explicit decision each time. If unsure whether something counts as remote,
   treat it as remote and ask first.
 
+## Publication requires explicit confirmation
+
+@ref:publication-approval
+
+**Always ask the user for permission before publishing.** Preparing a release,
+fixing release blockers, or discussing a version number does not authorize
+publication. Complete local preparation and validation first, then present the
+exact version, source commit, artifacts, checks and remaining limitations for
+review and ask for explicit confirmation. Wait for the user's answer before
+performing the approved publication action. A changed candidate or publication
+scope requires renewed confirmation.
+
+This applies to creating, publishing, replacing, editing or deleting remote
+releases or release assets; pushing release tags; uploading packages to a
+registry; deploying public sites or services; and triggering workflows or pushes
+that publish automatically. Unpublishing an existing release also requires
+confirmation. Approval for one publication does not authorize another. Local
+builds, tests and commits may proceed under the repository rules above.
+
+Release preparation and handoff: @link:doc-open-source-release.
+
 ## Task tracking
 
 Use `tasks/` for all work tracking, following `tasks/AGENTS.md`.

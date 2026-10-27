@@ -325,6 +325,13 @@ same inputs; retain raw calculations, parameter export, tested distributions
 and review receipts. Check citations, credits, model limits, source rights,
 security contact and publication metadata before making a release public.
 
+Follow the mandatory [publication approval rule](../AGENTS.md#publication-requires-explicit-confirmation)
+(@link:publication-approval): finish local preparation, present the exact version,
+source commit, artifacts, checks and limitations, then ask the user for explicit
+permission and wait for confirmation before publishing. Preparing a release or
+discussing its version does not grant that permission. This also covers release
+edits, unpublishing, deployments and tags or workflows that publish automatically.
+
 ```sh
 python -m build
 python scripts/check_distribution.py dist/downstream-0.4.0-py3-none-any.whl
