@@ -70,3 +70,16 @@ Preserve reviewed interpretation separately from original notes
 Commit d9bbb05 makes active by_link lookups and snapshot exports expose the reviewed interpretation of the six restored rows. retained_by_link and the raw CSV continue to preserve historical notes, including the EITC income-bridge statement that must not be presented as an admitted source result. It also rejects unrepresentably large JSON integer doses cleanly and clarifies the Collinson manuscript cover/download dates.
 
 Sixty-three focused source/export/parameter checks and documentation checks pass after this follow-up. Full coverage and isolated-wheel qualification are being rerun against the fixed final source. New-evidence follow-up for the three unsupported relationships is @task:2026-10-27-unsupported-earnings-bridges; they remain unavailable in the correction.
+
+## c-d9311ba48a39
+
+- At: 2026-10-27 16:44 HKT
+- By: codex-source-repair
+
+Final corrected source passes all qualification gates
+
+Final runtime/data commit d9bbb05 passes 1,552 tests plus nine subtests (491.39s), coverage 96.7% lines / 93.8% branches, all twelve isolated installed-wheel CLI checks and a zero-error/zero-warning audit. Ruff, Vulture, documentation navigation/examples, generator freshness and artifact checks pass. The rebuilt methods PDF was reviewed after the final source/interpretation change.
+
+[Final sixteen-row review](../../../docs/audits/source_repairs_2026-10-27.md) and [machine receipt](../../../docs/audits/source_repairs_2026-10-27.json) preserve both qualification runs and pin the final source tree, individual source decisions, dataset custody, bundle and distribution/artifact/log digests. Six original estimates restored; seven typed corrections available; three original earnings relationships remain unsupported. All 67 original records and historical notes are preserved. Current by_link and exports use reviewed interpretations.
+
+All implementation, documentation, examples and receipts are committed locally on master. The published v0.4.0 tag/assets and companion operational state are unchanged. New-evidence follow-up for the three unsupported relationships is @task:2026-10-27-unsupported-earnings-bridges. This completion does not relabel their absence as zero effects, claim empirical transport calibration or invent replacement coefficients.
