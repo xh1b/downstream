@@ -334,7 +334,7 @@ edits, unpublishing, deployments and tags or workflows that publish automaticall
 
 ```sh
 python -m build
-python scripts/check_distribution.py dist/downstream-0.4.0-py3-none-any.whl
+python scripts/check_distribution.py dist/downstream-0.4.1-py3-none-any.whl
 ```
 
 Use the actual wheel filename produced. The build creates the wheel from the

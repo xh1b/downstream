@@ -42,7 +42,7 @@ def test_http_page_is_current_and_head_has_no_body():
             assert response.headers["Content-Type"] == "text/html; charset=utf-8"
             assert response.headers["Cache-Control"] == "no-store"
         data = json.loads(re.search(rb'<script id="engine-data" type="application/json">(.*?)</script>', page, re.S)[1])
-        assert data["result"]["engine_version"] == "0.4.0"
+        assert data["result"]["engine_version"] == "0.4.1"
         assert data["result"]["parameter_set_version"] == (ROOT / "params/VERSION").read_text().strip()
         assert data["result"]["modeled"]["excess_deaths"]["point"] == 28.76
         assert data["defaults"]["workers"] == 1000

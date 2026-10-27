@@ -78,14 +78,16 @@ checks to run. Track work and review receipts on the [task board](tasks/README.m
 
 ## Companion and release status
 
-Version 0.4.0 is a conditional scenario-model release prepared for
+Version 0.4.1 is the local conditional scenario-model candidate prepared for
 [XH1B integration](https://xh1b.org/downstream). Local qualification is distinct
 from companion deployment and scientific validation. Consult the
 [model card](docs/model_card.md#evaluation-status),
 [release review](docs/audits/release_0_4.md) and task board for scope and status.
-Parameters v1.54 withdraw 16 unsupported historical inputs from calculation;
-[the source policy](docs/evidence.md#source-withdrawals-and-retained-records)
-keeps their original records separate from available estimates.
+Parameters v1.54 restore six verified estimates and add seven corrected source
+contrasts from the sixteen individually reviewed inputs; three original earnings
+relationships remain unsupported. [The individual source review](docs/audits/source_repairs_2026-10-27.md)
+records those decisions. [The source policy](docs/evidence.md#source-withdrawals-and-retained-records)
+retains original records and blocks superseded or unsupported aliases.
 The database runner, production cache and website surfaces belong to the
 companion project. Research/design proposals and dated audits are separate
 from the maintained [software guides](docs/readme.md).

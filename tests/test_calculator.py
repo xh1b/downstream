@@ -45,7 +45,7 @@ def test_generated_data_freshness_source_identity_and_small_surface():
     for anchor in ("calculator-template", "calculator-math", "calculator-app", "calculator-style"):
         assert f"@link:{anchor}" in html
     data = payload(html)
-    assert data["result"]["engine_version"] == "0.4.0"
+    assert data["result"]["engine_version"] == "0.4.1"
     assert data["result"]["input_content_sha256"]
     assert len(data["phases"]) == 5
     assert data["child_presets"]["q3"]["point"] > 1

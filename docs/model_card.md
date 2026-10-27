@@ -9,7 +9,7 @@ tools. The code and admitted data define its behavior. The
 [methods paper](../paper/downstream.tex) explains the math and scientific
 limitations; [integration](integration.md) describes the calling contracts.
 
-Engine **0.4.0**, parameters **v1.54**. These labels identify the development
+Engine **0.4.1**, parameters **v1.54**. These labels identify the development
 candidate, not a deployed companion release or scientific acceptance. Output
 content hashes and source receipts are required in addition to version labels.
 

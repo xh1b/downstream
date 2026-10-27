@@ -1,9 +1,9 @@
 {
   "schema": "downstream-consumer-fixtures/1",
-  "engine_version": "0.4.0",
+  "engine_version": "0.4.1",
   "parameter_set_version": "v1.54",
   "source_files_sha256": {
-    "src/downstream/__init__.py": "a3964f1df2d223167207f6beaaa5014856a6962363e96ca86fa896c1620a4c82",
+    "src/downstream/__init__.py": "df913f2bde5f3ad3d0a1215a8c0828bffbfbfda35c569eb4ce688bd0cd04f45c",
     "src/downstream/admission.py": "fbd5c4e063fc0beaec640047bbf36d84baeddaa48e3ac837cd92c190ad05d5e0",
     "src/downstream/audit.py": "198a41c62534d1ac225558187402422b69ee45976d65857b233c5e5357c98195",
     "src/downstream/brac.py": "d7e3611883673d26580e67c5c751c77a8972f90275bc464d7834b5314a73028c",
@@ -83,7 +83,7 @@
     "scripts/build_consumer_fixtures.py": "4964e76a53088d8fdc1fc348b052a83f1514f901effb2648998a903ab515adfd",
     "scripts/artifact_checks.py": "15342ed61b943d73774a1aa346137e715cb4256e28ca9e49cf2a7af0904cf62e"
   },
-  "source_content_sha256": "b6091766f4b3ee0375011d7281b234a9b1360c23dabe0ab289df3bc6a18ebbbc",
+  "source_content_sha256": "7b5731d5ade039113ce48ff4da545fc05e37e67ab72d9d70239019375c4c729c",
   "fixture_sampling": "128 draws/base, seed 1901; contract fixtures, not precision-qualified research intervals.",
   "fixtures": {
     "national": {
@@ -117,7 +117,7 @@
       "result": {
         "label": "scenario",
         "parameter_set_version": "v1.54",
-        "engine_version": "0.4.0",
+        "engine_version": "0.4.1",
         "uncertainty": {
           "band_kind": "parameter-support envelope, not a confidence interval",
           "fixed_inputs": [
@@ -1044,7 +1044,7 @@
       "result": {
         "label": "scenario",
         "parameter_set_version": "v1.54",
-        "engine_version": "0.4.0",
+        "engine_version": "0.4.1",
         "uncertainty": {
           "band_kind": "parameter-support envelope, not a confidence interval",
           "fixed_inputs": [
@@ -1818,7 +1818,7 @@
       "result": {
         "label": "scenario",
         "parameter_set_version": "v1.54",
-        "engine_version": "0.4.0",
+        "engine_version": "0.4.1",
         "uncertainty": {
           "band_kind": "parameter-support envelope, not a confidence interval",
           "fixed_inputs": [
@@ -2572,7 +2572,7 @@
       "result": {
         "label": "scenario",
         "parameter_set_version": "v1.54",
-        "engine_version": "0.4.0",
+        "engine_version": "0.4.1",
         "uncertainty": {
           "band_kind": "parameter-support envelope, not a confidence interval",
           "fixed_inputs": [
@@ -3326,7 +3326,7 @@
       "result": {
         "label": "scenario",
         "parameter_set_version": "v1.54",
-        "engine_version": "0.4.0",
+        "engine_version": "0.4.1",
         "uncertainty": {
           "band_kind": "parameter-support envelope, not a confidence interval",
           "fixed_inputs": [
@@ -4080,7 +4080,7 @@
       "result": {
         "label": "scenario",
         "parameter_set_version": "v1.54",
-        "engine_version": "0.4.0",
+        "engine_version": "0.4.1",
         "uncertainty": {
           "band_kind": "parameter-support envelope, not a confidence interval",
           "fixed_inputs": [
@@ -4843,7 +4843,7 @@
       "result": {
         "label": "scenario",
         "parameter_set_version": "v1.54",
-        "engine_version": "0.4.0",
+        "engine_version": "0.4.1",
         "uncertainty": {
           "band_kind": "parameter-support envelope, not a confidence interval",
           "fixed_inputs": [
@@ -6626,7 +6626,7 @@
       "result": {
         "label": "scenario",
         "parameter_set_version": "v1.54",
-        "engine_version": "0.4.0",
+        "engine_version": "0.4.1",
         "uncertainty": {
           "band_kind": "parameter-support envelope, not a confidence interval",
           "fixed_inputs": [
@@ -7448,7 +7448,7 @@
       "result": {
         "label": "scenario",
         "parameter_set_version": "v1.54",
-        "engine_version": "0.4.0",
+        "engine_version": "0.4.1",
         "uncertainty": {
           "band_kind": "parameter-support envelope, not a confidence interval",
           "fixed_inputs": [
@@ -10893,7 +10893,7 @@
               "source_index": 0,
               "weight": 0.6,
               "source_identity": {
-                "engine_version": "0.4.0",
+                "engine_version": "0.4.1",
                 "parameter_set_version": "v1.54",
                 "input_content_sha256": "9f4e91ba225b6b0d811e8e016fcd77d01819b4a42a68ce10ee01f7129ce5aefd",
                 "exposure_input_sha256": null
@@ -11127,7 +11127,7 @@
               "source_index": 1,
               "weight": 0.4,
               "source_identity": {
-                "engine_version": "0.4.0",
+                "engine_version": "0.4.1",
                 "parameter_set_version": "v1.54",
                 "input_content_sha256": "b82912bc98a605b44c594200809986900f7077f17afce875ab6dc2c9933d0bfc",
                 "exposure_input_sha256": null
@@ -11425,7 +11425,7 @@
               "source_index": 0,
               "weight": 0.6,
               "source_identity": {
-                "engine_version": "0.4.0",
+                "engine_version": "0.4.1",
                 "parameter_set_version": "v1.54",
                 "input_content_sha256": "9f4e91ba225b6b0d811e8e016fcd77d01819b4a42a68ce10ee01f7129ce5aefd",
                 "exposure_input_sha256": null
@@ -11628,7 +11628,7 @@
               "source_index": 1,
               "weight": 0.4,
               "source_identity": {
-                "engine_version": "0.4.0",
+                "engine_version": "0.4.1",
                 "parameter_set_version": "v1.54",
                 "input_content_sha256": "b82912bc98a605b44c594200809986900f7077f17afce875ab6dc2c9933d0bfc",
                 "exposure_input_sha256": null
@@ -11873,7 +11873,7 @@
               "source_index": 0,
               "weight": 0.5,
               "source_identity": {
-                "engine_version": "0.4.0",
+                "engine_version": "0.4.1",
                 "parameter_set_version": "v1.54",
                 "input_content_sha256": "95f2a692bae648d64ba81ef3bedf18a01ab9f925fd7428717cc52ea486c7326c",
                 "exposure_input_sha256": null
@@ -12127,7 +12127,7 @@
               "source_index": 1,
               "weight": 0.5,
               "source_identity": {
-                "engine_version": "0.4.0",
+                "engine_version": "0.4.1",
                 "parameter_set_version": "v1.54",
                 "input_content_sha256": "b82912bc98a605b44c594200809986900f7077f17afce875ab6dc2c9933d0bfc",
                 "exposure_input_sha256": null
@@ -12425,7 +12425,7 @@
               "source_index": 0,
               "weight": 0.5,
               "source_identity": {
-                "engine_version": "0.4.0",
+                "engine_version": "0.4.1",
                 "parameter_set_version": "v1.54",
                 "input_content_sha256": "95f2a692bae648d64ba81ef3bedf18a01ab9f925fd7428717cc52ea486c7326c",
                 "exposure_input_sha256": null
@@ -12648,7 +12648,7 @@
               "source_index": 1,
               "weight": 0.5,
               "source_identity": {
-                "engine_version": "0.4.0",
+                "engine_version": "0.4.1",
                 "parameter_set_version": "v1.54",
                 "input_content_sha256": "b82912bc98a605b44c594200809986900f7077f17afce875ab6dc2c9933d0bfc",
                 "exposure_input_sha256": null

@@ -100,7 +100,7 @@
   "fixed_input_reference": {
     "label": "scenario",
     "parameter_set_version": "v1.54",
-    "engine_version": "0.4.0",
+    "engine_version": "0.4.1",
     "uncertainty": {
       "band_kind": "parameter-support envelope, not a confidence interval",
       "fixed_inputs": [

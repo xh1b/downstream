@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "downstream"
-version = "0.4.0"
+version = "0.4.1"
 description = "Citation-calibrated scenario model of displacement consequences"
 readme = "README.md"
 requires-python = ">=3.12"
