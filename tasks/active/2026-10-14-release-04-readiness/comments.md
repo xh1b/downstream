@@ -98,3 +98,12 @@ The owner required input repair before a stable release. Parameter set v1.53 wit
 Published release: https://github.com/xh1b/downstream/releases/tag/v0.4.0 — source/tag a1f54ad9390812a03436e4cd68bca81e5506dc75. Exact-source CI passes all 1,526 tests and push gates; nine asset SHA-256 digests/sizes verified. Full qualification, source identities and limits: [publication receipt](../../../docs/audits/release_publication_2026-10-27.json), [release record](../../../docs/audits/release_0_4.md#stable-publication--october-27), @task:2026-10-27-publish-04.
 
 This does not close companion deployment or human/independent validation. The companion integration remains blocked by its retained NYC contract/Massachusetts WARN publication holds; v1.53 repin/cache/render/deployment receipts are still required there. This parent's body/checklist remains with its existing owner.
+
+## c-8e774f0da8a2
+
+- At: 2026-10-27 17:19 HKT
+- By: codex-release041
+
+Corrected 0.4.1 candidate is ready for owner publication confirmation
+
+Preparation and board review are complete under @task:2026-10-27-prepare-041. Exact source 1691850d70a27be5cfadf775c7a3edc9ce17b465 has 1,552 passing tests, eight passing CI release jobs and twelve isolated-wheel checks. Receipt: docs/audits/release_0_4_1.md and release_0_4_1.json. Thirteen source estimates are verified/corrected; three original relationships remain unsupported. Eleven artifacts are prepared locally. No release or tag was created; publication acceptance and companion integration/deployment remain separate.
